@@ -12,13 +12,6 @@ namespace WHAT_PageObject
         public BasePage(IWebDriver driver)
         {
             this.driver = driver;
-
-            string currentUrl = driver.Url;
-
-            //if (!Equals())
-            //{
-            //    throw new Exception("");
-            //}
         }
 
     }

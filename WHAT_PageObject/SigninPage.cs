@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 
 namespace WHAT_PageObject
 {
@@ -9,13 +10,19 @@ namespace WHAT_PageObject
         /// </summary>
         private By emailLocator = By.Id("email");
         private By passwordLocator = By.Id("password");
-        private By signinButtonLocator = By.CssSelector("button[type='submit']");
+        private By signInButtonLocator = By.CssSelector("button[type='submit']");
         private By forgotPasswordLinkLocator = By.CssSelector("a[href='/forgot-password']");
         private By registrationLinkLocator = By.CssSelector("a[href='/registration']");
 
         public SignInPage(IWebDriver driver) : base(driver)
         {
-            
+            this.driver = driver;
+
+            string currentURL = driver.Url;
+            if (!Equals(currentURL, "http://localhost:8080/auth"))
+            {
+                throw new Exception("This is not the 'Log In' page");
+            }
         }
 
         public SignInPage FillEmail(string email)
@@ -34,14 +41,13 @@ namespace WHAT_PageObject
 
         public void ClickLoginButton()
         {
-            driver.FindElement(signinButtonLocator).Click();
+            driver.FindElement(signInButtonLocator).Click();
         }
 
-        public RegistrationPage ClickRegistrationLink()
+        public void ClickRegistrationLink()
         {
             driver.FindElement(registrationLinkLocator).Click();
 
-            return new RegistrationPage(driver);
         }
 
     }

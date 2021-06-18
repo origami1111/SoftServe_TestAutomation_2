@@ -5,3 +5,4 @@ add class driver - Антон
 add class credentials - Вячеслав
 page factory - Лена
 works with links - Арсен
+тесты реализуються с помощью Fluent Builder, в конце цепоцки вызовов -вызываеться Assert

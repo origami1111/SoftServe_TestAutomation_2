@@ -15,8 +15,6 @@ namespace WHAT_PageObject
 
         public SignInPage(IWebDriver driver) : base(driver)
         {
-            this.driver = driver;
-
             string currentURL = driver.Url;
             if (!Equals(currentURL, "http://localhost:8080/auth"))
             {

@@ -4,4 +4,4 @@ add class for locators(in fields) - Лена
 add class driver - Антон
 add class credentials - Вячеслав
 page factory - Лена
-
+works with links - Арсен

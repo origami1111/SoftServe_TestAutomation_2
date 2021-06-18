@@ -36,7 +36,7 @@ namespace WHAT_PageObject
             return this;
         }
 
-        public void ClickLoginButton()
+        public void ClickSignInButton()
         {
             driver.FindElement(signInButtonLocator).Click();
         }

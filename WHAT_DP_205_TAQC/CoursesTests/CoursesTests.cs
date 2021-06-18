@@ -1,12 +1,13 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System;
 using WHAT_PageObject;
 
 namespace WHAT_DP_205_TAQC
 {
     [TestFixture]
-    public class WHAT_CoursesTests
+    public class CoursesTests
     {
         private IWebDriver driver;
 
@@ -28,11 +29,12 @@ namespace WHAT_DP_205_TAQC
         public void Setup()
         {
             driver.Navigate().GoToUrl("http://localhost:8080/auth");
-            
+
             var signInPage = new SignInPage(driver);
-            var lessonsPage = signInPage.LoginAsMentor();
-            
-            coursesPage = lessonsPage.OpenCoursesPage();
+            LessonsPage lessonsPage = signInPage.SignInAsMentor(signInPage);
+
+            coursesPage = lessonsPage.ClickCoursesSidebar();
+
         }
 
         [TearDown]

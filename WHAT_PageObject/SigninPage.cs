@@ -39,12 +39,11 @@ namespace WHAT_PageObject
             return this;
         }
 
-        //public HomePage enterLoginButton()
-        //{
-        //    driver.FindElement(signinButtonLocator).Click();
+        public void enterLoginButton()
+        {
+            driver.FindElement(signInButtonLocator).Click();
+        }
 
-        //    return new HomePage(driver);
-        //}
 
         public RegistrationPage clickRegistrationLink()
         {
@@ -59,5 +58,14 @@ namespace WHAT_PageObject
 
         //    return new ForgotPasswordPage(driver);
         //}
+
+        public LessonsPage SignInAsMentor(SignInPage signInPage)
+        {
+            signInPage.fillEmail("mentor@gmail.com")
+                      .fillPassword("What_123")
+                      .enterLoginButton();
+
+            return new LessonsPage(driver);
+        }
     }
 }

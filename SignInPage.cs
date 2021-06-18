@@ -8,16 +8,13 @@ namespace WHAT_PageObject
         /// <summary>
         /// Locators
         /// </summary>
-        private By emailLocator = By.Id("email");
-        private By passwordLocator = By.Id("password");
-        private By signInButtonLocator = By.CssSelector("button[type='submit']");
-        private By forgotPasswordLinkLocator = By.CssSelector("a[href='/forgot-password']");
-        private By registrationLinkLocator = By.CssSelector("a[href='/registration']");
+        private readonly By emailLocator = By.Id("email");
+        private readonly By passwordLocator = By.Id("password");
+        private readonly By signInButtonLocator = By.CssSelector("button[type='submit']");
+        private readonly By registrationLinkLocator = By.CssSelector("a[href='/registration']");
 
         public SignInPage(IWebDriver driver) : base(driver)
         {
-            this.driver = driver;
-
             string currentURL = driver.Url;
             if (!Equals(currentURL, "http://localhost:8080/auth"))
             {
@@ -44,10 +41,11 @@ namespace WHAT_PageObject
             driver.FindElement(signInButtonLocator).Click();
         }
 
-        public void ClickRegistrationLink()
+        public RegistrationPage ClickRegistrationLink()
         {
             driver.FindElement(registrationLinkLocator).Click();
 
+            return new RegistrationPage(driver);
         }
 
     }

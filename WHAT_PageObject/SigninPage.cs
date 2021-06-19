@@ -22,21 +22,21 @@ namespace WHAT_PageObject
             }
         }
 
-        public SignInPage FillEmail(string email)
+        private SignInPage FillEmail(string email)
         {
             driver.FindElement(emailLocator).SendKeys(email);
 
             return this;
         }
 
-        public SignInPage FillPassword(string password)
+        private SignInPage FillPassword(string password)
         {
             driver.FindElement(passwordLocator).SendKeys(password);
 
             return this;
         }
 
-        public void ClickSignInButton()
+        private void ClickSignInButton()
         {
             driver.FindElement(signInButtonLocator).Click();
         }
@@ -46,6 +46,33 @@ namespace WHAT_PageObject
             driver.FindElement(registrationLinkLocator).Click();
             
             return new RegistrationPage(driver);
+        }
+
+        public LessonsPage SignInAsMentor(string email, string password)
+        {
+            FillEmail(email);
+            FillPassword(password);
+            ClickSignInButton();
+
+            return new LessonsPage(driver);
+        }
+
+        public MentorsPage SignInAsSercetar(string email, string password)
+        {
+            FillEmail(email);
+            FillPassword(password);
+            ClickSignInButton();
+
+            return new MentorsPage(driver);
+        }
+
+        public SupportPage SignInAsStudent(string email, string password)
+        {
+            FillEmail(email);
+            FillPassword(password);
+            ClickSignInButton();
+
+            return new SupportPage(driver);
         }
 
     }

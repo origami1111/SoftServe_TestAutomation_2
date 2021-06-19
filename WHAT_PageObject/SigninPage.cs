@@ -15,11 +15,6 @@ namespace WHAT_PageObject
 
         public SignInPage(IWebDriver driver) : base(driver)
         {
-            string currentURL = driver.Url;
-            if (!Equals(currentURL, "http://localhost:8080/auth"))
-            {
-                throw new Exception("This is not the 'Log In' page");
-            }
         }
 
         private SignInPage FillEmail(string email)

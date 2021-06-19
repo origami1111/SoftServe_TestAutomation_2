@@ -1,12 +1,12 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using WHAT_PageObject;
+using WHAT_PageFactory;
 
 namespace WHAT_DP_205_TAQC
 {
     [TestFixture]
-    public class CoursesTests
+    public class FactoryCoursesTests
     {
         private IWebDriver driver;
 
@@ -29,11 +29,8 @@ namespace WHAT_DP_205_TAQC
         {
             driver.Navigate().GoToUrl("http://localhost:8080/auth");
 
-            var signInPage = new SignInPage(driver);
-            LessonsPage lessonsPage = signInPage.SignInAsMentor(signInPage);
-
-            coursesPage = lessonsPage.ClickCoursesSidebar();
-
+            coursesPage = new SignInPage(driver).SignInAsMentor()
+                                                .ClickCoursesSidebar();
         }
 
         [TearDown]
@@ -45,11 +42,10 @@ namespace WHAT_DP_205_TAQC
         [Test]
         public void VerifyCourseDetails()
         {
-            string courseNumber = "1";
-            string expectedText =  coursesPage.ReadCourseName(courseNumber);
+            string expectedText = coursesPage.ReadCourseName();
             
-            var courseDetailsComponent = coursesPage.ClickCourseName(courseNumber);
-            string actualText = courseDetailsComponent.ReadCourseNameDetails();
+            string actualText = coursesPage.ClickCourseName()
+                                           .ReadCourseNameDetails();
 
             Assert.AreEqual(expectedText, actualText);
         }

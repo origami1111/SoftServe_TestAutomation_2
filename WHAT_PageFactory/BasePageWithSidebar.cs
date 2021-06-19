@@ -1,16 +1,20 @@
 ﻿using OpenQA.Selenium;
+using SeleniumExtras.PageObjects;
 using System;
 using System.Collections.Generic;
 
-namespace WHAT_PageObject
+namespace WHAT_PageFactory
 {
     public class BasePageWithSidebar : BasePage
     {
+        [FindsBy(How = How.XPath, Using = "//span[@class='sidebar__menu-item___1MMsk']")]
+        [CacheLookup]
+        private IList<IWebElement> sidebarMenu;
+
         public BasePageWithSidebar(IWebDriver driver) : base(driver)
         {
+            PageFactory.InitElements(driver, this);
         }
-
-        private static By sidebarMenuLocator = By.XPath("//span[@class='sidebar__menu-item___1MMsk']");
         
         public bool IsSidebarItemExist(String name)
         {
@@ -30,8 +34,6 @@ namespace WHAT_PageObject
         private IWebElement FindSidebarItem(String name)
         {
             IWebElement element = default;
-
-            IList<IWebElement> sidebarMenu = driver.FindElements(sidebarMenuLocator);
 
             foreach (IWebElement sidebarItem in sidebarMenu)
             {

@@ -18,11 +18,6 @@ namespace WHAT_PageObject
 
         public RegistrationPage(IWebDriver driver) : base(driver)
         {
-            string currentURL = driver.Url;
-            if (!Equals(currentURL, "http://localhost:8080/registration"))
-            {
-                throw new Exception("This is not the 'Registration' page");
-            }
         }
 
         public RegistrationPage FillFirstName(string firstName)

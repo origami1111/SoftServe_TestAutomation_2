@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
 
 namespace WHAT_PageObject
 {
@@ -51,7 +50,8 @@ namespace WHAT_PageObject
 
             return new LessonsPage(driver);
         }
-/*
+
+        /*
         public MentorsPage SignInAsSercetar(string email, string password)
         {
             FillEmail(email);
@@ -69,7 +69,17 @@ namespace WHAT_PageObject
 
             return new SupportPage(driver);
         }
-*/
+
+        public StudentsPage SignInAsAdmin(string email, string password)
+        {
+            FillEmail(email);
+            FillPassword(password);
+            ClickSignInButton();
+
+            return new StudentsPage(driver);
+        }
+        */
+
     }
 }
 

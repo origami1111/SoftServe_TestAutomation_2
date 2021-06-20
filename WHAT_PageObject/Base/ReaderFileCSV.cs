@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using WHAT_PageObject;
 
-namespace AutoLoginWHAT
+namespace WHAT_PageObject.Base
 {
     public class ReaderFileCSV
     {

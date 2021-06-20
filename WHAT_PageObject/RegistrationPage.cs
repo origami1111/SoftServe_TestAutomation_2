@@ -18,58 +18,51 @@ namespace WHAT_PageObject
 
         public RegistrationPage(IWebDriver driver) : base(driver)
         {
-            this.driver = driver;
-
-            string currentURL = driver.Url;
-            if (!Equals(currentURL, "http://localhost:8080/registration"))
-            {
-                throw new Exception("This is not the 'Registration' page");
-            }
         }
 
-        public RegistrationPage fillFirstName(string firstName)
+        public RegistrationPage FillFirstName(string firstName)
         {
             driver.FindElement(firstNameLocator).SendKeys(firstName);
 
             return this;
         }
 
-        public RegistrationPage fillLastName(string lastName)
+        public RegistrationPage FillLastName(string lastName)
         {
             driver.FindElement(lastNameLocator).SendKeys(lastName);
 
             return this;
         }
 
-        public RegistrationPage fillEmail(string email)
+        public RegistrationPage FillEmail(string email)
         {
             driver.FindElement(emailLocator).SendKeys(email);
 
             return this;
         }
 
-        public RegistrationPage fillPassword(string password)
+        public RegistrationPage FillPassword(string password)
         {
             driver.FindElement(passwordLocator).SendKeys(password);
 
             return this;
         }
 
-        public RegistrationPage fillConfirmPassword(string confirmPassword)
+        public RegistrationPage FillConfirmPassword(string confirmPassword)
         {
             driver.FindElement(confirmPasswordLocator).SendKeys(confirmPassword);
 
             return this;
         }
 
-        public RegistrationPage clickSignUpButton()
+        public RegistrationPage ClickSignUpButton()
         {
             driver.FindElement(signUpButtonLocator).Click();
 
             return this;
         }
 
-        public SignInPage clickLogInLink()
+        public SignInPage ClickLogInLink()
         {
             driver.FindElement(logInLinkLocator).Click();
 

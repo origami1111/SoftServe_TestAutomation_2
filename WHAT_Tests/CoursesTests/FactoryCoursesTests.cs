@@ -3,7 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using WHAT_PageFactory;
 
-namespace WHAT_DP_205_TAQC
+namespace WHAT_Tests
 {
     [TestFixture]
     public class FactoryCoursesTests

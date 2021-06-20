@@ -16,8 +16,6 @@ namespace WHAT_PageObject
 
         public SignInPage(IWebDriver driver) : base(driver)
         {
-            this.driver = driver;
-
             string currentURL = driver.Url;
             if (!Equals(currentURL, "http://localhost:8080/auth"))
             {
@@ -59,11 +57,11 @@ namespace WHAT_PageObject
         //    return new ForgotPasswordPage(driver);
         //}
 
-        public LessonsPage SignInAsMentor(SignInPage signInPage)
+        public LessonsPage SignInAsMentor()
         {
-            signInPage.fillEmail("mentor@gmail.com")
-                      .fillPassword("What_123")
-                      .enterLoginButton();
+             fillEmail("mentor@gmail.com")
+            .fillPassword("What_123")
+            .enterLoginButton();
 
             return new LessonsPage(driver);
         }

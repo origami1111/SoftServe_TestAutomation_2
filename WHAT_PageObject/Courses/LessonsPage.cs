@@ -3,7 +3,7 @@ using System;
 
 namespace WHAT_PageObject
 {
-    public class LessonsPage : BasePageWithSidebar
+    public class LessonsPage : Sidebar
     {
         public LessonsPage(IWebDriver driver) : base(driver)
         {

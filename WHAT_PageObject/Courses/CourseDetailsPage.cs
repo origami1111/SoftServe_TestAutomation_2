@@ -3,7 +3,7 @@
 namespace WHAT_PageObject
 
 {
-    public class CourseDetailsPage : BasePageWithSidebar
+    public class CourseDetailsPage : Sidebar
     {
         public CourseDetailsPage(IWebDriver driver) : base(driver)
         {

@@ -3,26 +3,25 @@ using SeleniumExtras.PageObjects;
 
 namespace WHAT_PageFactory
 {
-    public class CoursesPage : BasePageWithSidebar
+    public class CoursesPage : Sidebar
     {
         [FindsBy(How = How.XPath, Using = "//tr[@data-student-id='1']/td[2]")]
         [CacheLookup]
-        private IWebElement course;
-
+        private IWebElement courseElement;
+        
         public CoursesPage(IWebDriver driver) : base(driver)
         {
-            PageFactory.InitElements(driver, this);
         }
 
         public string ReadCourseName()
         {
-            return course.Text;
+            return courseElement.Text;
         }
 
         public CourseDetailsPage ClickCourseName()
         {
-            course.Click();
-
+            courseElement.Click();
+            
             return new CourseDetailsPage(driver);
         }
     }

@@ -29,8 +29,9 @@ namespace WHAT_DP_205_TAQC
         {
             driver.Navigate().GoToUrl("http://localhost:8080/auth");
 
-            coursesPage = new SignInPage(driver).SignInAsMentor()
-                                                .ClickCoursesSidebar();
+            coursesPage = new SignInPage(driver)
+                .SignInAsMentor()
+                .SidebarNavigateTo<CoursesPage>();
         }
 
         [TearDown]

@@ -2,13 +2,12 @@
 using SeleniumExtras.PageObjects;
 
 namespace WHAT_PageFactory
-
 {
-    public class CourseDetailsPage : BasePageWithSidebar
+    public class CourseDetailsPage : Sidebar
     {
         [FindsBy(How = How.XPath, Using = "//h3[.='Course Details']")]
         [CacheLookup]
-        private IWebElement courseDetails;
+        private IWebElement courseDetailsElements;
 
         [FindsBy(How = How.XPath, Using = "//div[@class='container']//div[@class='row']/div[2]")]
         [CacheLookup]
@@ -16,7 +15,6 @@ namespace WHAT_PageFactory
 
         public CourseDetailsPage(IWebDriver driver) : base(driver)
         {
-            PageFactory.InitElements(driver, this);
         }
 
         public string ReadCourseNameDetails()

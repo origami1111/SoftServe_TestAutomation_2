@@ -31,6 +31,11 @@ namespace WHAT_Tests
 
             coursesPage = new SignInPage(driver)
                 .SignInAsMentor()
+                .SidebarNavigateTo<CoursesPage>()
+                .ClickCourseName()
+                .SidebarNavigateTo<LessonsPage>()
+                .SidebarNavigateTo<CoursesPage>()
+                .ClickCourseName()
                 .SidebarNavigateTo<CoursesPage>();
         }
 

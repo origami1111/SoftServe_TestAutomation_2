@@ -8,7 +8,7 @@ namespace WHAT_PageObject
     {
         
 
-        private By sidebarMenuLocator = By.XPath("//span[@class='sidebar__menu-item___1MMsk']");
+        private By sidebarMenu = By.XPath("//span[@class='sidebar__menu-item___1MMsk']");
 
         public Sidebar(IWebDriver driver) : base(driver)
         {
@@ -16,7 +16,7 @@ namespace WHAT_PageObject
 
         internal IWebElement FindSidebarItem(string label)
         {
-            IList<IWebElement> sidebarItems = driver.FindElements(sidebarMenuLocator);
+            IList<IWebElement> sidebarItems = driver.FindElements(sidebarMenu);
 
             foreach (IWebElement sidebarItem in sidebarItems)
             {

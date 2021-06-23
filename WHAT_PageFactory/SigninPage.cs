@@ -31,7 +31,6 @@ namespace WHAT_PageFactory
             {
                 throw new Exception("This is not the 'Sign In' page");
             }
-            PageFactory.InitElements(driver, this);
         }
 
         public SignInPage fillEmail(string email)

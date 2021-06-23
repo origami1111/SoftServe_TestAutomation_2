@@ -19,8 +19,10 @@ namespace WHAT_Tests
             driver.Navigate().GoToUrl("http://localhost:8080/auth");
 
             coursesPage = new SignInPage(driver)
-                            .SignInAsMentor("mentor@gmail.com","What_123")
-                            .ClickCoursesSidebar();
+                            .SignInAsMentor("mentor@gmail.com", "What_123")
+                            .SidebarNavigateTo<CoursesPage>().ClickCourseName("5")
+                            .SidebarNavigateTo<LessonsPage>()
+                            .SidebarNavigateTo<CoursesPage>().ClickCourseName("3").SidebarNavigateTo<CoursesPage>();
         }
 
         [TearDown]

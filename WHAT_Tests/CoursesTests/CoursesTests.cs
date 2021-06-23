@@ -11,16 +11,16 @@ namespace WHAT_Tests
         private IWebDriver driver;
 
         private CoursesPage coursesPage;
-        
+
         [SetUp]
         public void Setup()
         {
             driver = new ChromeDriver();
-            driver.Navigate().GoToUrl("http://localhost:8080/auth");
+            driver.Navigate().GoToUrl("http://localhost:8080/");
 
             coursesPage = new SignInPage(driver)
-                            .SignInAsMentor("mentor@gmail.com","What_123")
-                            .ClickCoursesSidebar();
+                            .SignInAsMentor("mentor@gmail.com", "What_123").ClickCoursesSidebar();
+                            
         }
 
         [TearDown]
@@ -33,8 +33,8 @@ namespace WHAT_Tests
         public void VerifyCourseDetails()
         {
             string courseNumber = "1";
-            string expected =  coursesPage.ReadCourseName(courseNumber);
-            
+            string expected = coursesPage.ReadCourseName(courseNumber);
+
             var courseDetailsComponent = coursesPage.ClickCourseName(courseNumber);
             string actual = courseDetailsComponent.ReadCourseNameDetails();
 

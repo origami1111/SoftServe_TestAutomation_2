@@ -20,7 +20,7 @@ namespace WHAT_Tests
 
             coursesPage = new SignInPage(driver)
                             .SignInAsMentor("mentor@gmail.com", "What_123").ClickCoursesSidebar();
-                            
+
         }
 
         [TearDown]

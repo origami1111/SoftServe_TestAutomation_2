@@ -24,7 +24,7 @@ namespace WHAT_PageObject
             driver.FindElement(locator).Click();
         }
 
-        private By headerBarLocator = By.CssSelector(".header__header__account-user--fullname___2kSON");
+        private By headerBarLocator = By.CssSelector(".header__header__dropdown-icon___1CTJ8");
         private By logOutLocator = By.LinkText("Log Out");
 
         public void Logout()

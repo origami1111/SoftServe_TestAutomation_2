@@ -2,23 +2,31 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using WHAT_PageObject;
 
 namespace WHAT_Tests
 {
-    class TestBase
+    [SetUpFixture]
+    public abstract class TestBase 
     {
-        //private IWebDriver driver;
-        //[OneTimeSetUp]
-        //public void Setup()
-        //{
-           
-        //}
 
-        //[OneTimeTearDown]
-        //public void TearDown()
-        //{
-        //    driver.Quit();
-        //}
+        protected IWebDriver driver;
+
+        [OneTimeSetUp]
+        public void SetUp()
+        {
+            driver = new ChromeDriver();
+            driver.Manage().Window.Size = new System.Drawing.Size(1200, 800);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
+            driver.Navigate().GoToUrl("http://localhost:8080/");
+        }
+
+        [OneTimeTearDown]
+        public void TearDown()
+        {
+            driver.Quit();
+        }
+
 
     }
 

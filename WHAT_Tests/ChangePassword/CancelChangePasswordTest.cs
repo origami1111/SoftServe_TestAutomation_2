@@ -1,15 +1,14 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
 {
     [TestFixture]
-    public class ChangePasswordTests : TestBase
+    public class CancelChangePasswordTest:TestBase
     {
-        
         private ChangePasswordPage changePasswordPage;
 
         string currentPass = "What_123";
@@ -25,30 +24,22 @@ namespace WHAT_Tests
         }
 
         [Test]
-        public void ChangePasswordTest()
+        public void CancelChangePassword()
         {
-           
             changePasswordPage
                 .FillCurrentPassword(currentPass)
                 .FillNewPassword(newPass)
                 .FillConfirmNewPassword(newPass)
-                .ClickSaveButton()
-                .ClickSaveInPopUpMenu();
-
+                .ClickCancelButton();
         }
 
         [TearDown]
         public void SetPostConditions()
         {
-            changePasswordPage
-                .ClickChangePassword()
-                .FillCurrentPassword(newPass)
-                .FillNewPassword(currentPass)
-                .FillConfirmNewPassword(currentPass)
-                .ClickSaveButton()
-                .ClickSaveInPopUpMenu();
-               
+            changePasswordPage.Logout();
+            changePasswordPage = new SignInPage(driver)
+                .SignInAsMentor(email, currentPass).ClickChangePassword();
+            changePasswordPage.Logout();
         }
-
     }
 }

@@ -1,19 +1,25 @@
 ﻿using OpenQA.Selenium;
-using System;
 
 namespace WHAT_PageObject
 {
     public class ChangePasswordPage : Sidebar
     {
-        private By emailLocator = By.Id("email");
-        private By currentPasswordLocator = By.Id("currentPassword");
-        private By newPasswordLocator = By.Id("newPassword");
-        private By confirmNewPasswordLocator = By.Id("confirmNewPassword");
-        private By saveButtonLocator = By.XPath("//button[contains(.,\'Save\')]");
-        private By cancelButtonLocator = By.XPath("//button[contains(.,\'Cancel\')]");
-        private By cancelInPopUpMenuLocator = By.XPath("//div[3]/button");
-        private By saveButtonInPopUpMenu = By.XPath("//button[contains(.,'Confirm')]");
+        private By email = By.Id("email");
+        private By currentPassword = By.Id("currentPassword");
+        private By newPassword = By.Id("newPassword");
+        private By confirmNewPassword = By.Id("confirmNewPassword");
+        private By saveButton = By.XPath("//button[contains(.,\'Save\')]");
+        private By cancelButton = By.XPath("//button[contains(.,\'Cancel\')]");
+        private By cancelInPopUpMenu = By.CssSelector(".btn-secondary");
+        private By saveInPopUpMenu = By.XPath("//button[contains(.,'Confirm')]");
 
+        private By header = By.CssSelector(".header__header__dropdown - icon___1CTJ8");
+        private By changePassword = By.LinkText("Change password");
+
+        private By currentPassErrorField = By.XPath("//input[@name='currentPassword']//following-sibling::div");
+        private By newPassErrorField = By.XPath("//input[@name='newPassword']//following-sibling::div");
+        private By confirmPassErrorField = By.XPath("//input[@name='confirmNewPassword']//following-sibling::div");
+        private By passSuccessMessage = By.XPath("//div[@role='alert']");
         public ChangePasswordPage(IWebDriver driver) : base(driver)
         {
 
@@ -21,51 +27,49 @@ namespace WHAT_PageObject
         
         public ChangePasswordPage FillCurrentPassword(string currentPassword)
         {
-            FillField(currentPasswordLocator, currentPassword);
+            FillField(this.currentPassword, currentPassword);
             return this;
         }
 
         public ChangePasswordPage FillNewPassword(string newPassword)
         {
-            FillField(newPasswordLocator, newPassword);
+            FillField(this.newPassword, newPassword);
             return this;
         }
 
         public ChangePasswordPage FillConfirmNewPassword(string newPassword)
         {
-            FillField(confirmNewPasswordLocator, newPassword);
+            FillField(confirmNewPassword, newPassword);
             return this;
         }
 
         public ChangePasswordPage ClickSaveButton()
         {
-            ClickItem(saveButtonLocator);
+            ClickItem(saveButton);
             return this;
         }
 
         public ChangePasswordPage ClickCancelButton()
         {
-            ClickItem(cancelButtonLocator);
+            ClickItem(cancelButton);
             return this;
         }
 
         public ChangePasswordPage ClickCancelButtonInPopUpMenu()
         {
-            ClickItem(cancelInPopUpMenuLocator);
+            ClickItem(cancelInPopUpMenu);
             return this;
         }
 
         public ChangePasswordPage ClickSaveInPopUpMenu()
         {
-            ClickItem(saveButtonInPopUpMenu);
+            ClickItem(saveInPopUpMenu);
             return this;
         }
         public ChangePasswordPage ClickChangePassword()
         {
-            
-            ClickItem(By.CssSelector(".header__header__dropdown-icon___1CTJ8"));
-            ClickItem(By.LinkText("Change password"));
-
+            ClickItem(header);
+            ClickItem(changePassword);
             return new ChangePasswordPage(driver);
         }
     }

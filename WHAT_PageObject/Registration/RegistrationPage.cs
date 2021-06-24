@@ -7,11 +7,11 @@ namespace WHAT_PageObject
         /// <summary>
         /// Locators
         /// </summary>
-        private By firstName = By.Id("firstName");
-        private By lastName = By.Id("lastName");
-        private By email = By.Id("email");
-        private By password = By.Id("password");
-        private By confirmPassword = By.Id("confirm-password");
+        private By firstNameField = By.Id("firstName");
+        private By lastNameField = By.Id("lastName");
+        private By emailField = By.Id("email");
+        private By passwordField = By.Id("password");
+        private By confirmPasswordField = By.Id("confirm-password");
         private By signUpButton = By.CssSelector("button[type='submit']");
         private By logInLink = By.XPath("a[href='/auth']");
 
@@ -27,35 +27,35 @@ namespace WHAT_PageObject
 
         public RegistrationPage FillFirstName(string firstName)
         {
-            driver.FindElement(this.firstName).SendKeys(firstName);
+            driver.FindElement(this.firstNameField).SendKeys(firstName);
 
             return this;
         }
 
         public RegistrationPage FillLastName(string lastName)
         {
-            driver.FindElement(this.lastName).SendKeys(lastName);
+            driver.FindElement(this.lastNameField).SendKeys(lastName);
 
             return this;
         }
 
         public RegistrationPage FillEmail(string email)
         {
-            driver.FindElement(this.email).SendKeys(email);
+            driver.FindElement(this.emailField).SendKeys(email);
 
             return this;
         }
 
         public RegistrationPage FillPassword(string password)
         {
-            driver.FindElement(this.password).SendKeys(password);
+            driver.FindElement(this.passwordField).SendKeys(password);
 
             return this;
         }
 
         public RegistrationPage FillConfirmPassword(string confirmPassword)
         {
-            driver.FindElement(this.confirmPassword).SendKeys(confirmPassword);
+            driver.FindElement(this.confirmPasswordField).SendKeys(confirmPassword);
 
             return this;
         }

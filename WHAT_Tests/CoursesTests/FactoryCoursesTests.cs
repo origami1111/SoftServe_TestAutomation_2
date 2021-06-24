@@ -17,13 +17,13 @@ namespace WHAT_Tests
         {
             driver = new ChromeDriver();
         }
-        
+
         [OneTimeTearDown]
         public void AfterAllMethod()
         {
             driver.Quit();
         }
-        
+
         [SetUp]
         public void Setup()
         {
@@ -42,14 +42,14 @@ namespace WHAT_Tests
         [TearDown]
         public void Logout()
         {
-            
+
         }
-        
+
         [Test]
         public void VerifyCourseDetails()
         {
             string expectedText = coursesPage.ReadCourseName();
-            
+
             string actualText = coursesPage.ClickCourseName()
                                            .ReadCourseNameDetails();
 

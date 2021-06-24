@@ -15,6 +15,12 @@ namespace WHAT_PageObject
         private By signUpButton = By.CssSelector("button[type='submit']");
         private By logInLink = By.XPath("a[href='/auth']");
 
+        private By errorFirstName = By.XPath("//input[@name='firstName']//following-sibling::p");
+        private By errorLastName = By.XPath("//input[@name='lastName']//following-sibling::p");
+        private By errorEmail = By.XPath("//input[@name='email']//following-sibling::p");
+        private By errorPassword = By.XPath("//input[@name='password']//following-sibling::p");
+        private By errorConfirmPassword = By.XPath("//input[@name='confirmPassword']//following-sibling::p");
+
         public RegistrationPage(IWebDriver driver) : base(driver)
         {
         }

@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System.Threading;
 using WHAT_PageObject;
 
 namespace WHAT_Tests.RegistrationTests
@@ -10,6 +11,7 @@ namespace WHAT_Tests.RegistrationTests
     {
         private IWebDriver driver;
         private RegistrationPage registrationPage;
+
 
         [SetUp]
         public void Setup()
@@ -27,7 +29,7 @@ namespace WHAT_Tests.RegistrationTests
         }
 
         [Test]
-        public void RegistrationWithValidData()
+        public void RegistrationWithInvalidData()
         {
 
         }
@@ -35,7 +37,11 @@ namespace WHAT_Tests.RegistrationTests
         [Test]
         public void RedirectToSignInPage()
         {
+            registrationPage.ClickLogInLink();
 
+            Thread.Sleep(3000);
+
+            Assert.AreEqual("http://localhost:8080/auth", driver.Url);
         }
     }
 }

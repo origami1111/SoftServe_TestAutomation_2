@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
 
 namespace WHAT_PageObject
 {
@@ -15,11 +14,6 @@ namespace WHAT_PageObject
 
         public SignInPage(IWebDriver driver) : base(driver)
         {
-            string currentURL = driver.Url;
-            if (!Equals(currentURL, "http://localhost:8080/auth"))
-            {
-                throw new Exception("This is not the 'Log In' page");
-            }
         }
 
         private SignInPage FillEmail(string email)
@@ -44,7 +38,7 @@ namespace WHAT_PageObject
         public RegistrationPage ClickRegistrationLink()
         {
             driver.FindElement(registrationLinkLocator).Click();
-            
+
             return new RegistrationPage(driver);
         }
 
@@ -57,6 +51,7 @@ namespace WHAT_PageObject
             return new LessonsPage(driver);
         }
 
+ /*       
         public MentorsPage SignInAsSercetar(string email, string password)
         {
             FillEmail(email);
@@ -75,5 +70,16 @@ namespace WHAT_PageObject
             return new SupportPage(driver);
         }
 
+        public StudentsPage SignInAsAdmin(string email, string password)
+        {
+            FillEmail(email);
+            FillPassword(password);
+            ClickSignInButton();
+
+            return new StudentsPage(driver);
+        }
+        */
+
     }
 }
+

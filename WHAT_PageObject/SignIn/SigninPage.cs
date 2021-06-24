@@ -7,11 +7,14 @@ namespace WHAT_PageObject
         /// <summary>
         /// Locators
         /// </summary>
-        private By email = By.Id("email");
-        private By password = By.Id("password");
+        private By emailField = By.Id("email");
+        private By passwordField = By.Id("password");
         private By signInButton = By.CssSelector("button[type='submit']");
         private By registrationLink = By.CssSelector("a[href='/registration']");
         private By errorText = By.XPath("//p[contains(.,'An error occurred')]");
+
+        private By errorEmail = By.XPath("//input[@name='email']//following-sibling::p");
+        private By errorPassword = By.XPath("//input[@name='password']//following-sibling::p");
 
         public SignInPage(IWebDriver driver) : base(driver)
         {
@@ -19,14 +22,14 @@ namespace WHAT_PageObject
 
         public SignInPage FillEmail(string email)
         {
-            driver.FindElement(this.email).SendKeys(email);
+            driver.FindElement(emailField).SendKeys(email);
 
             return this;
         }
 
         public SignInPage FillPassword(string password)
         {
-            driver.FindElement(this.password).SendKeys(password);
+            driver.FindElement(passwordField).SendKeys(password);
 
             return this;
         }

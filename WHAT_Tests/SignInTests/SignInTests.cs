@@ -70,20 +70,19 @@ namespace WHAT_Tests.SignInTests
             Assert.AreEqual("http://localhost:8080/support", driver.Url);
         }
 
-        //[Test]
-        //public void SignInAsWithInvalidData()
-        //{
-        //    signInPage.
-        //        FillEmail("sdsadsad").
-        //        FillPassword("asdddsad").
-        //        ClickSignInButton();
+        [Test]
+        [TestCase("email", "password")]
+        public void SignInAsWithInvalidData(string email, string password)
+        {
+            signInPage.
+                FillEmail(email).
+                FillPassword(password).
+                ClickSignInButton();
 
-        //    Thread.Sleep(3000);
+            Thread.Sleep(3000);
 
-            
-
-        //    Assert.AreEqual("An error occurred", text);
-        //}
+            Assert.AreEqual("An error occurred", signInPage.GetAnErrorOccured());
+        }
 
         [Test]
         public void RedirectToRegistrationPage()

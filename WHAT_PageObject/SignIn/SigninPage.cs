@@ -13,8 +13,6 @@ namespace WHAT_PageObject
         private By registrationLink = By.CssSelector("a[href='/registration']");
         private By errorText = By.XPath("//p[contains(.,'An error occurred')]");
 
-        private By errorEmail = By.XPath("//input[@name='email']//following-sibling::p");
-        private By errorPassword = By.XPath("//input[@name='password']//following-sibling::p");
 
         public SignInPage(IWebDriver driver) : base(driver)
         {
@@ -46,6 +44,10 @@ namespace WHAT_PageObject
             return new RegistrationPage(driver);
         }
 
+        public string GetAnErrorOccured()
+        {
+            return driver.FindElement(errorText).Text;
+        }
     }
 }
 

@@ -7,78 +7,41 @@ namespace WHAT_PageObject
         /// <summary>
         /// Locators
         /// </summary>
-        private By emailLocator = By.Id("email");
-        private By passwordLocator = By.Id("password");
-        private By signInButtonLocator = By.CssSelector("button[type='submit']");
-        private By registrationLinkLocator = By.CssSelector("a[href='/registration']");
+        private By email = By.Id("email");
+        private By password = By.Id("password");
+        private By signInButton = By.CssSelector("button[type='submit']");
+        private By registrationLink = By.CssSelector("a[href='/registration']");
+        private By errorText = By.XPath("//p[contains(.,'An error occurred')]");
 
         public SignInPage(IWebDriver driver) : base(driver)
         {
         }
 
-        private SignInPage FillEmail(string email)
+        public SignInPage FillEmail(string email)
         {
-            driver.FindElement(emailLocator).SendKeys(email);
+            driver.FindElement(this.email).SendKeys(email);
 
             return this;
         }
 
-        private SignInPage FillPassword(string password)
+        public SignInPage FillPassword(string password)
         {
-            driver.FindElement(passwordLocator).SendKeys(password);
+            driver.FindElement(this.password).SendKeys(password);
 
             return this;
         }
 
-        private void ClickSignInButton()
+        public void ClickSignInButton()
         {
-            driver.FindElement(signInButtonLocator).Click();
+            driver.FindElement(signInButton).Click();
         }
 
         public RegistrationPage ClickRegistrationLink()
         {
-            driver.FindElement(registrationLinkLocator).Click();
-
+            driver.FindElement(registrationLink).Click();
+            
             return new RegistrationPage(driver);
         }
-
-        public LessonsPage SignInAsMentor(string email, string password)
-        {
-            FillEmail(email);
-            FillPassword(password);
-            ClickSignInButton();
-
-            return new LessonsPage(driver);
-        }
-
- /*       
-        public MentorsPage SignInAsSercetar(string email, string password)
-        {
-            FillEmail(email);
-            FillPassword(password);
-            ClickSignInButton();
-
-            return new MentorsPage(driver);
-        }
-
-        public SupportPage SignInAsStudent(string email, string password)
-        {
-            FillEmail(email);
-            FillPassword(password);
-            ClickSignInButton();
-
-            return new SupportPage(driver);
-        }
-
-        public StudentsPage SignInAsAdmin(string email, string password)
-        {
-            FillEmail(email);
-            FillPassword(password);
-            ClickSignInButton();
-
-            return new StudentsPage(driver);
-        }
-        */
 
     }
 }

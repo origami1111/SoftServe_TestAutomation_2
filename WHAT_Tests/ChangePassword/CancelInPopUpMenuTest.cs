@@ -6,8 +6,8 @@ using WHAT_PageObject;
 
 namespace WHAT_Tests
 {
-    [TestFixture]
-    public class CancelChangePasswordTest:TestBase
+   [TestFixture]
+   public class CancelInPopUpMenuTest : TestBase
     {
         private ChangePasswordPage changePasswordPage;
 
@@ -24,21 +24,24 @@ namespace WHAT_Tests
         }
 
         [Test]
-        public void CancelChangePassword()
+        public void CancelChangePasswordInPopUpMenuTest()
         {
             changePasswordPage
                 .FillCurrentPassword(currentPass)
                 .FillNewPassword(newPass)
                 .FillConfirmNewPassword(newPass)
-                .ClickCancelButton();
+                .ClickSaveButton()
+                .ClickCancelButtonInPopUpMenu();
+
+            changePasswordPage.Logout();
+
+            changePasswordPage = new SignInPage(driver)
+                .SignInAsMentor(email, currentPass).ClickChangePassword();
         }
 
         [TearDown]
         public void SetPostConditions()
         {
-            changePasswordPage.Logout();
-            changePasswordPage = new SignInPage(driver)
-                .SignInAsMentor(email, currentPass).ClickChangePassword();
             changePasswordPage.Logout();
         }
     }

@@ -1,13 +1,9 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
 using WHAT_PageObject;
-
 namespace WHAT_Tests
 {
     [TestFixture]
-    public class ChangePasswordTests : TestBase
+    public class ChangePasswordTestsValid : TestBase
     {
         
         private ChangePasswordPage changePasswordPage;
@@ -25,16 +21,18 @@ namespace WHAT_Tests
         }
 
         [Test]
-        public void ChangePasswordTest()
+        public void ChangePasswordWithValidDataTest()
         {
-           
-            changePasswordPage
+            string expected = "×\r\nClose alert\r\nThe password has been successfully changed";
+            string actual= changePasswordPage
                 .FillCurrentPassword(currentPass)
                 .FillNewPassword(newPass)
                 .FillConfirmNewPassword(newPass)
                 .ClickSaveButton()
-                .ClickSaveInPopUpMenu();
+                .ClickSaveInPopUpMenu()
+                .VerifySuccesMessage();
 
+            Assert.AreEqual(expected, actual);
         }
 
         [TearDown]
@@ -47,7 +45,6 @@ namespace WHAT_Tests
                 .FillConfirmNewPassword(currentPass)
                 .ClickSaveButton()
                 .ClickSaveInPopUpMenu();
-               
         }
 
     }

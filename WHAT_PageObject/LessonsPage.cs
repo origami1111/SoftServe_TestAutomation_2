@@ -8,5 +8,10 @@ namespace WHAT_PageObject
         public LessonsPage(IWebDriver driver) : base(driver)
         {
         }
+
+        public ChangePasswordPage ClickChangePassword()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

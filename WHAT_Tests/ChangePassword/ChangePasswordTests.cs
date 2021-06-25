@@ -9,7 +9,7 @@ namespace WHAT_Tests
     [TestFixture]
     public class ChangePasswordTests : TestBase
     {
-        
+
         private ChangePasswordPage changePasswordPage;
 
         string currentPass = "What_123";
@@ -27,7 +27,7 @@ namespace WHAT_Tests
         [Test]
         public void ChangePasswordTest()
         {
-           
+
             changePasswordPage
                 .FillCurrentPassword(currentPass)
                 .FillNewPassword(newPass)
@@ -47,7 +47,7 @@ namespace WHAT_Tests
                 .FillConfirmNewPassword(currentPass)
                 .ClickSaveButton()
                 .ClickSaveInPopUpMenu();
-               
+
         }
 
     }

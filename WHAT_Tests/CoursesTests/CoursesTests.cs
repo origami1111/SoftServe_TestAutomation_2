@@ -17,8 +17,8 @@ namespace WHAT_Tests
         private CoursesPage coursesPage;
 
 
-        [SetUp]
-        public void Setup()
+        [OneTimeSetUp]
+        public void OneTimeSetup()
         {
             configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             
@@ -40,16 +40,17 @@ namespace WHAT_Tests
             driver = new ChromeDriver();
             driver.Navigate().GoToUrl(url);
             driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
             coursesPage = new SignInPage(driver)
-                            .SignInAsMentor(mentor.Email, mentor.Password)
+                            .SignInAsAdmin(admin.Email, admin.Password)
                             .SidebarNavigateTo<CoursesPage>();
         }
 
-        [TearDown]
-        public void Logout()
+        [OneTimeTearDown]
+        public void TearDown()
         {
+            coursesPage.Logout();
             driver.Quit();
         }
 
@@ -59,19 +60,20 @@ namespace WHAT_Tests
             string courseNumber = "1";
             string expected =  coursesPage.ReadCourseName(courseNumber);
             
-            var courseDetailsComponent = coursesPage.ClickCourseName(courseNumber);
-            string actual = courseDetailsComponent.ReadCourseNameDetails();
+            var courseDetailsPage = coursesPage.ClickCourseName(courseNumber);
+            string actual = courseDetailsPage.ReadCourseNameDetails();
 
+            driver.Navigate().Back();
             Assert.AreEqual(expected, actual);
+
         }
 
         [Test]
         public void AddCourse()
         {
-
-
-
-            
+            string courseName = "New course";
+            coursesPage.ClickAddCourseButton().FillCourseNameField(courseName).ClickSaveButton();
+            driver.Navigate().Back();
         }
     }
 }

@@ -43,8 +43,7 @@ namespace WHAT_PageObject
 
         public CourseDetailsPage ClickCourseName(string courseNumber)
         {
-            var course = driver.FindElement(CourseName(courseNumber));
-            course.Click();
+            driver.FindElement(CourseName(courseNumber)).Click();
 
             return new CourseDetailsPage(driver);
         }
@@ -56,6 +55,12 @@ namespace WHAT_PageObject
             return this;
         }
 
-        
+        public AddCoursePage ClickAddCourseButton()
+        {
+            driver.FindElement(addCourseButton).Click();
+
+            return new AddCoursePage(driver);
+        }
+
     }
 }

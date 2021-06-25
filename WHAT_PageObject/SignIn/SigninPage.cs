@@ -41,7 +41,7 @@ namespace WHAT_PageObject
 
             return new RegistrationPage(driver);
         }
-
+/*
         public LessonsPage SignInAsMentor(string email, string password)
         {
             FillEmail(email);
@@ -51,7 +51,7 @@ namespace WHAT_PageObject
             return new LessonsPage(driver);
         }
 
- /*       
+        
         public MentorsPage SignInAsSercetar(string email, string password)
         {
             FillEmail(email);
@@ -69,7 +69,7 @@ namespace WHAT_PageObject
 
             return new SupportPage(driver);
         }
-
+ */
         public StudentsPage SignInAsAdmin(string email, string password)
         {
             FillEmail(email);
@@ -78,7 +78,7 @@ namespace WHAT_PageObject
 
             return new StudentsPage(driver);
         }
-        */
+        
 
     }
 }

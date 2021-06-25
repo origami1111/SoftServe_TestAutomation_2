@@ -9,8 +9,6 @@ namespace WHAT_PageObject
         {
         }
 
-        private IWebElement CourseDetailsLabel => driver.FindElement(By.XPath("//h3[.='Course Details']"));
-
         private IWebElement CourseNameDetails => driver.FindElement(
             By.XPath("//div[@class='container']//div[@class='row']/div[2]"));
 

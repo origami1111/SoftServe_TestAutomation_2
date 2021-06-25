@@ -2,7 +2,7 @@
 
 namespace WHAT_PageObject
 {
-    public class ChangePasswordPage : Sidebar
+    public class ChangePasswordPage : BasePageWithHeaderSidebar
     {
         private By email = By.Id("email");
         private By email1 = By.XPath("//*[@id='email']");
@@ -16,8 +16,8 @@ namespace WHAT_PageObject
         private By saveInPopUpMenu = By.XPath("//button[contains(.,'Confirm')]");
 
         private By header = By.XPath("//span[contains(.,'▼')]");
-        private By changePassword = By.LinkText("Change password");
 
+        private By changePassword = By.LinkText("Change password");
         private By currentPassErrorField = By.XPath("//input[@name='currentPassword']//following-sibling::div");
         private By newPassErrorField = By.XPath("//input[@name='newPassword']//following-sibling::div");
         private By confirmPassErrorField = By.XPath("//input[@name='confirmNewPassword']//following-sibling::div");
@@ -92,11 +92,13 @@ namespace WHAT_PageObject
             ClickItem(saveInPopUpMenu);
             return this;
         }
+       /*
         public ChangePasswordPage ClickChangePassword()
         {
             ClickItem(header);
             ClickItem(changePassword);
             return new ChangePasswordPage(driver);
         }
+       */
     }
 }

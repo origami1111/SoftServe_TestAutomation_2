@@ -1,14 +1,11 @@
 ﻿using OpenQA.Selenium;
-using System;
 using System.Collections.Generic;
 
 namespace WHAT_PageObject
 {
-    public class Sidebar : BasePage
+    public sealed class Sidebar : BasePage
     {
-        
-
-        private By sidebarMenu = By.XPath("//span[@class='sidebar__menu-item___1MMsk']");
+        private readonly By sidebarMenu = By.XPath("//span[@class='sidebar__menu-item___1MMsk']");
 
         public Sidebar(IWebDriver driver) : base(driver)
         {

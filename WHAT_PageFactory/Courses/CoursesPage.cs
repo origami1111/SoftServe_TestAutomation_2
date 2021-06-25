@@ -8,7 +8,7 @@ namespace WHAT_PageFactory
         [FindsBy(How = How.XPath, Using = "//tr[@data-student-id='1']/td[2]")]
         [CacheLookup]
         private IWebElement courseElement;
-
+        
         public CoursesPage(IWebDriver driver) : base(driver)
         {
         }
@@ -21,7 +21,7 @@ namespace WHAT_PageFactory
         public CourseDetailsPage ClickCourseName()
         {
             courseElement.Click();
-
+            
             return new CourseDetailsPage(driver);
         }
     }

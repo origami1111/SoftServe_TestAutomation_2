@@ -21,7 +21,6 @@ namespace WHAT_PageFactory
         public CourseDetailsPage ClickCourseName()
         {
             courseElement.Click();
-
             return new CourseDetailsPage(driver);
         }
     }

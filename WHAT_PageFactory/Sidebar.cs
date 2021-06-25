@@ -11,13 +11,6 @@ namespace WHAT_PageFactory
         {
             [typeof(CoursesPage)] = "Students",
             //[typeof(MentorsPage)] = "Mentors",
-            // [typeof(SecretariesPage)] = "Secretaries",
-            [typeof(LessonsPage)] = "Lessons",
-            // [typeof(GroupsPage)] = "Groups",
-            [typeof(CoursesPage)] = "Courses",
-            // [typeof(SchedulePage)] = "Schedule",
-            // [typeof(AssigmentPage)] = "Assigment",
-            //  [typeof(SupportPage)] = "Support"
         };
 
         [FindsBy(How = How.XPath, Using = "//span[@class='sidebar__menu-item___1MMsk']")]
@@ -37,8 +30,6 @@ namespace WHAT_PageFactory
         {
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3000);
 
-            ClickSidebarItem(sidebarLabels[typeof(T)]);
-
             var nextPage = New<T>();
             return nextPage;
         }
@@ -53,7 +44,6 @@ namespace WHAT_PageFactory
         private T New<T>() where T : BasePage
         {
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3000);
-
             var newPage = (T)Activator.CreateInstance(typeof(T), driver);
             return newPage;
         }

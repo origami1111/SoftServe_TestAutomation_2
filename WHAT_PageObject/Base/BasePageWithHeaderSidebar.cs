@@ -8,9 +8,11 @@ namespace WHAT_PageObject
     {
         private readonly Sidebar sidebar;
 
+        private readonly Header header;
+
         private readonly Dictionary<Type, string> sidebarLabels = new Dictionary<Type, string>()
         {
-            [typeof(CoursesPage)] = "Students",
+            [typeof(StudentsPage)] = "Students",
             // [typeof(MentorsPage)] = "Mentors",
             // [typeof(SecretariesPage)] = "Secretaries",
             [typeof(LessonsPage)] = "Lessons",
@@ -24,15 +26,14 @@ namespace WHAT_PageObject
         protected BasePageWithHeaderSidebar(IWebDriver driver) : base(driver)
         {
             sidebar = new Sidebar(driver);
+            header = new Header(driver);
         }
 
         public T SidebarNavigateTo<T>() where T : BasePage
         {
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3000);
-
             ClickSidebarItem(sidebarLabels[typeof(T)]);
 
-            var nextPage = (T)Activator.CreateInstance(typeof(T), driver); ;
+            var nextPage = (T)Activator.CreateInstance(typeof(T), driver);
             return nextPage;
         }
 
@@ -40,6 +41,30 @@ namespace WHAT_PageObject
         {
             IWebElement sidebarItem = sidebar.FindSidebarItem(label);
             sidebarItem?.Click();
+        }
+
+        public void ClickArrowIcon()
+        {
+            header.FindArrowIcon().Click();
+        }
+
+        public void ClickDropdownItem(string label)
+        {
+            IWebElement dropdownItem = header.FindDropdownItem(label);
+            dropdownItem?.Click();
+        }
+
+        public ChangePasswordPage ClickChangePassword()
+        {
+            ClickArrowIcon();
+            ClickDropdownItem("Change password");
+            return new ChangePasswordPage(driver);
+        }
+        public SignInPage Logout()
+        {
+            ClickArrowIcon();
+            ClickDropdownItem("Log out");
+            return new SignInPage(driver);
         }
     }
 }

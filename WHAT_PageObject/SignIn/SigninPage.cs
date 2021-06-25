@@ -13,7 +13,6 @@ namespace WHAT_PageObject
         private By registrationLink = By.CssSelector("a[href='/registration']");
         private By errorText = By.XPath("//p[contains(.,'An error occurred')]");
 
-
         public SignInPage(IWebDriver driver) : base(driver)
         {
         }
@@ -21,7 +20,6 @@ namespace WHAT_PageObject
         public SignInPage FillEmail(string email)
         {
             driver.FindElement(emailField).SendKeys(email);
-
             return this;
         }
 

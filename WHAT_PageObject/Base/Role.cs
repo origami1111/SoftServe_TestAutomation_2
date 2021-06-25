@@ -1,5 +1,4 @@
-﻿
-namespace WHAT_PageObject
+﻿namespace WHAT_PageObject
 {
     public enum Role
     {

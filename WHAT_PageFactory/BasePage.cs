@@ -15,7 +15,6 @@ namespace WHAT_PageFactory
         {
             this.driver = driver;
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-
             PageFactory.InitElements(driver, this);
         }
     }

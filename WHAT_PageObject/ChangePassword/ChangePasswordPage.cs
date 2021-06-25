@@ -51,6 +51,7 @@ namespace WHAT_PageObject
         {
             return driver.FindElement(confirmPassErrorField).Text;
         }
+        
         public ChangePasswordPage FillCurrentPassword(string currentPassword)
         {
             FillField(this.currentPassword, currentPassword);
@@ -92,13 +93,5 @@ namespace WHAT_PageObject
             ClickItem(saveInPopUpMenu);
             return this;
         }
-       /*
-        public ChangePasswordPage ClickChangePassword()
-        {
-            ClickItem(header);
-            ClickItem(changePassword);
-            return new ChangePasswordPage(driver);
-        }
-       */
     }
 }

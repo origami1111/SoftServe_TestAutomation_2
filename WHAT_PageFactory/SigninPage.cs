@@ -12,17 +12,6 @@ namespace WHAT_PageFactory
         [FindsBy(How = How.Id, Using = "email")]
         [CacheLookup]
         private IWebElement email;
-        
-        [FindsBy(How = How.Id, Using = "password")]
-        [CacheLookup]
-        private IWebElement password;
-        
-        [FindsBy(How = How.CssSelector, Using = "button[type='submit']")]
-        [CacheLookup]
-        private IWebElement signInButton;
-        
-       // private By forgotPasswordLinkLocator = By.CssSelector("a[href='/forgot-password']");
-       // private By registrationLinkLocator = By.CssSelector("a[href='/registration']");
 
         public SignInPage(IWebDriver driver) : base(driver)
         {
@@ -54,9 +43,7 @@ namespace WHAT_PageFactory
 
         public LessonsPage SignInAsMentor()
         {
-             fillEmail("mentor@gmail.com")
-            .fillPassword("What_123")
-            .ClickSignInButton();
+
 
             return new LessonsPage(driver);
         }

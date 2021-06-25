@@ -11,12 +11,14 @@ namespace WHAT_PageObject
             this.driver = driver;
         }
 
+
         protected void FillField(By locator, string text)
         {
             var field = driver.FindElement(locator);
             field.Click();
             field.Clear();
             field.SendKeys(text);
+
         }
 
         protected void ClickItem(By locator)

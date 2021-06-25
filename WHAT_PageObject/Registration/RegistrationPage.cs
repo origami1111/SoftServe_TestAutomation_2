@@ -7,13 +7,19 @@ namespace WHAT_PageObject
         /// <summary>
         /// Locators
         /// </summary>
-        private By firstNameLocator = By.Id("firstName");
-        private By lastNameLocator = By.Id("lastName");
-        private By emailLocator = By.Id("email");
-        private By passwordLocator = By.Id("password");
-        private By confirmPasswordLocator = By.Id("confirm-password");
-        private By signUpButtonLocator = By.CssSelector("button[type='submit']");
-        private By logInLinkLocator = By.XPath("a[href='/auth']");
+        private By firstNameField = By.Id("firstName");
+        private By lastNameField = By.Id("lastName");
+        private By emailField = By.Id("email");
+        private By passwordField = By.Id("password");
+        private By confirmPasswordField = By.Id("confirm-password");
+        private By signUpButton = By.CssSelector("button[type='submit']");
+        private By logInLink = By.XPath("a[href='/auth']");
+
+        private By errorFirstName = By.XPath("//input[@name='firstName']//following-sibling::p");
+        private By errorLastName = By.XPath("//input[@name='lastName']//following-sibling::p");
+        private By errorEmail = By.XPath("//input[@name='email']//following-sibling::p");
+        private By errorPassword = By.XPath("//input[@name='password']//following-sibling::p");
+        private By errorConfirmPassword = By.XPath("//input[@name='confirmPassword']//following-sibling::p");
 
         public RegistrationPage(IWebDriver driver) : base(driver)
         {
@@ -21,53 +27,52 @@ namespace WHAT_PageObject
 
         public RegistrationPage FillFirstName(string firstName)
         {
-            driver.FindElement(firstNameLocator).SendKeys(firstName);
+            driver.FindElement(this.firstNameField).SendKeys(firstName);
 
             return this;
         }
 
         public RegistrationPage FillLastName(string lastName)
         {
-            driver.FindElement(lastNameLocator).SendKeys(lastName);
+            driver.FindElement(this.lastNameField).SendKeys(lastName);
 
             return this;
         }
 
         public RegistrationPage FillEmail(string email)
         {
-            driver.FindElement(emailLocator).SendKeys(email);
+            driver.FindElement(this.emailField).SendKeys(email);
 
             return this;
         }
 
         public RegistrationPage FillPassword(string password)
         {
-            driver.FindElement(passwordLocator).SendKeys(password);
+            driver.FindElement(this.passwordField).SendKeys(password);
 
             return this;
         }
 
         public RegistrationPage FillConfirmPassword(string confirmPassword)
         {
-            driver.FindElement(confirmPasswordLocator).SendKeys(confirmPassword);
+            driver.FindElement(this.confirmPasswordField).SendKeys(confirmPassword);
 
             return this;
         }
 
         public RegistrationPage ClickSignUpButton()
         {
-            driver.FindElement(signUpButtonLocator).Click();
+            driver.FindElement(signUpButton).Click();
 
             return this;
         }
 
         public SignInPage ClickLogInLink()
         {
-            driver.FindElement(logInLinkLocator).Click();
+            driver.FindElement(logInLink).Click();
 
             return new SignInPage(driver);
         }
-
 
     }
 }

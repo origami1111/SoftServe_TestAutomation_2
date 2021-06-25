@@ -3,36 +3,27 @@ using System.Collections.Generic;
 
 namespace WHAT_PageObject
 {
-    public class Sidebar : BasePage
+    public sealed class Sidebar : BasePage
     {
-        private By sidebarMenuLocator = By.XPath("//span[@class='sidebar__menu-item___1MMsk']");
+        private readonly By sidebarMenu = By.XPath("//span[@class='sidebar__menu-item___1MMsk']");
 
         public Sidebar(IWebDriver driver) : base(driver)
         {
         }
 
-        public void ClickSidebarItem(string sidebarLabel)
+        internal IWebElement FindSidebarItem(string label)
         {
-            IWebElement sidebarItem = FindSidebarItem(sidebarLabel);
-
-            sidebarItem?.Click();
-        }
-
-        private IWebElement FindSidebarItem(string sidebarLabel)
-        {
-            IWebElement element = default;
-
-            IList<IWebElement> sidebarItems = driver.FindElements(sidebarMenuLocator);
+            IList<IWebElement> sidebarItems = driver.FindElements(sidebarMenu);
 
             foreach (IWebElement sidebarItem in sidebarItems)
             {
-                if (sidebarItem.Text.Equals(sidebarLabel))
+                if (sidebarItem.Text.Equals(label))
                 {
-                    element = sidebarItem;
+                    return sidebarItem;
                 }
             }
 
-            return element;
+            return null;
         }
     }
 }

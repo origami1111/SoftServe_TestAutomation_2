@@ -17,13 +17,13 @@ namespace WHAT_Tests
         {
             driver = new ChromeDriver();
         }
-        
+
         [OneTimeTearDown]
         public void AfterAllMethod()
         {
             driver.Quit();
         }
-        
+
         [SetUp]
         public void Setup()
         {
@@ -31,20 +31,25 @@ namespace WHAT_Tests
 
             coursesPage = new SignInPage(driver)
                 .SignInAsMentor()
+                .SidebarNavigateTo<CoursesPage>()
+                .ClickCourseName()
+                .SidebarNavigateTo<LessonsPage>()
+                .SidebarNavigateTo<CoursesPage>()
+                .ClickCourseName()
                 .SidebarNavigateTo<CoursesPage>();
         }
 
         [TearDown]
         public void Logout()
         {
-            
+
         }
-        
+
         [Test]
         public void VerifyCourseDetails()
         {
             string expectedText = coursesPage.ReadCourseName();
-            
+
             string actualText = coursesPage.ClickCourseName()
                                            .ReadCourseNameDetails();
 

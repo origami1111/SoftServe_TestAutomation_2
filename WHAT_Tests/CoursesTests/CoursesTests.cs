@@ -1,6 +1,8 @@
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
@@ -10,22 +12,45 @@ namespace WHAT_Tests
     {
         private IWebDriver driver;
 
+        private IConfigurationRoot configuration;
+
         private CoursesPage coursesPage;
-        
-        [SetUp]
-        public void Setup()
+
+
+        [OneTimeSetUp]
+        public void OneTimeSetup()
         {
+            configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            
+            var url = configuration["Url"];
+            var credential = configuration.GetSection("Credentials");
+
+            var admin = new Credentials()
+            {
+                Email = credential["Admin:Email"],
+                Password = credential["Admin:Password"]
+            };
+            
+            var mentor = new Credentials()
+            {
+                Email = credential["Mentor:Email"],
+                Password = credential["Mentor:Password"]
+            };
+            
             driver = new ChromeDriver();
-            driver.Navigate().GoToUrl("http://localhost:8080/auth");
+            driver.Navigate().GoToUrl(url);
+            driver.Manage().Window.Maximize();
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
             coursesPage = new SignInPage(driver)
-                            .SignInAsMentor("mentor@gmail.com","What_123")
-                            .ClickCoursesSidebar();
+                            .SignInAsAdmin(admin.Email, admin.Password)
+                            .SidebarNavigateTo<CoursesPage>();
         }
 
-        [TearDown]
-        public void Logout()
+        [OneTimeTearDown]
+        public void TearDown()
         {
+            coursesPage.Logout();
             driver.Quit();
         }
 
@@ -35,10 +60,20 @@ namespace WHAT_Tests
             string courseNumber = "1";
             string expected =  coursesPage.ReadCourseName(courseNumber);
             
-            var courseDetailsComponent = coursesPage.ClickCourseName(courseNumber);
-            string actual = courseDetailsComponent.ReadCourseNameDetails();
+            var courseDetailsPage = coursesPage.ClickCourseName(courseNumber);
+            string actual = courseDetailsPage.ReadCourseNameDetails();
 
+            driver.Navigate().Back();
             Assert.AreEqual(expected, actual);
+
+        }
+
+        [Test]
+        public void AddCourse()
+        {
+            string courseName = "New course";
+            coursesPage.ClickAddCourseButton().FillCourseNameField(courseName).ClickSaveButton();
+            driver.Navigate().Back();
         }
     }
 }

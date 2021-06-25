@@ -28,11 +28,9 @@ namespace WHAT_PageObject
 
         public T SidebarNavigateTo<T>() where T : BasePage
         {
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3000);
-
             ClickSidebarItem(sidebarLabels[typeof(T)]);
 
-            var nextPage = (T)Activator.CreateInstance(typeof(T), driver); ;
+            var nextPage = (T)Activator.CreateInstance(typeof(T), driver);
             return nextPage;
         }
 

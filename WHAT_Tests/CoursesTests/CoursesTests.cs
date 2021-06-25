@@ -1,6 +1,8 @@
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
@@ -10,19 +12,39 @@ namespace WHAT_Tests
     {
         private IWebDriver driver;
 
+        private IConfigurationRoot configuration;
+
         private CoursesPage coursesPage;
-        
+
+
         [SetUp]
         public void Setup()
         {
+            configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            
+            var url = configuration["Url"];
+            var credential = configuration.GetSection("Credentials");
+
+            var admin = new Credentials()
+            {
+                Email = credential["Admin:Email"],
+                Password = credential["Admin:Password"]
+            };
+            
+            var mentor = new Credentials()
+            {
+                Email = credential["Mentor:Email"],
+                Password = credential["Mentor:Password"]
+            };
+            
             driver = new ChromeDriver();
-            driver.Navigate().GoToUrl("http://localhost:8080/auth");
+            driver.Navigate().GoToUrl(url);
+            driver.Manage().Window.Maximize();
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
             coursesPage = new SignInPage(driver)
-                            .SignInAsMentor("mentor@gmail.com", "What_123")
-                            .SidebarNavigateTo<CoursesPage>().ClickCourseName("5")
-                            .SidebarNavigateTo<LessonsPage>()
-                            .SidebarNavigateTo<CoursesPage>().ClickCourseName("3").SidebarNavigateTo<CoursesPage>();
+                            .SignInAsMentor(mentor.Email, mentor.Password)
+                            .SidebarNavigateTo<CoursesPage>();
         }
 
         [TearDown]
@@ -41,6 +63,15 @@ namespace WHAT_Tests
             string actual = courseDetailsComponent.ReadCourseNameDetails();
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void AddCourse()
+        {
+
+
+
+            
         }
     }
 }

@@ -32,12 +32,6 @@ namespace WHAT_PageObject
 
         public CoursesPage(IWebDriver driver) : base(driver)
         {
-            string currentURL = driver.Url;
-            
-            if (!currentURL.EndsWith("/courses"))
-            {
-                throw new Exception("This is not the 'Courses' page!");
-            }
         }
 
         public string ReadCourseName(string courseNumber)

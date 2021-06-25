@@ -27,35 +27,32 @@ namespace WHAT_PageObject
 
         public RegistrationPage FillFirstName(string firstName)
         {
-            driver.FindElement(this.firstNameField).SendKeys(firstName);
-
+            driver.FindElement(firstNameField).SendKeys(firstName);
             return this;
         }
 
         public RegistrationPage FillLastName(string lastName)
         {
-            driver.FindElement(this.lastNameField).SendKeys(lastName);
+            driver.FindElement(lastNameField).SendKeys(lastName);
 
             return this;
         }
 
         public RegistrationPage FillEmail(string email)
         {
-            driver.FindElement(this.emailField).SendKeys(email);
-
+            driver.FindElement(emailField).SendKeys(email);
             return this;
         }
 
         public RegistrationPage FillPassword(string password)
         {
-            driver.FindElement(this.passwordField).SendKeys(password);
-
+            driver.FindElement(passwordField).SendKeys(password);
             return this;
         }
 
         public RegistrationPage FillConfirmPassword(string confirmPassword)
         {
-            driver.FindElement(this.confirmPasswordField).SendKeys(confirmPassword);
+            driver.FindElement(confirmPasswordField).SendKeys(confirmPassword);
 
             return this;
         }
@@ -63,7 +60,6 @@ namespace WHAT_PageObject
         public RegistrationPage ClickSignUpButton()
         {
             driver.FindElement(signUpButton).Click();
-
             return this;
         }
 

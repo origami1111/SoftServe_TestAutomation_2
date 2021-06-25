@@ -21,6 +21,7 @@ namespace WHAT_Tests
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl("http://localhost:8080/auth");
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(40);
             studentsPage = new SignInPage(driver)
                            .SignInAsAdmin("admin.@gmail.com", "admiN_12");
             studentsPage.SidebarNavigateTo<StudentsPage>();

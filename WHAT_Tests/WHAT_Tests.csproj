@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WHAT_PageFactory\WHAT_PageFactory.csproj" />
     <ProjectReference Include="..\WHAT_PageObject\WHAT_PageObject.csproj" />
   </ItemGroup>
 

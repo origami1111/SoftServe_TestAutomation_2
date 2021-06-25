@@ -10,7 +10,7 @@ namespace WHAT_PageObject
 
         private readonly Dictionary<Type, string> sidebarLabels = new Dictionary<Type, string>()
         {
-            [typeof(CoursesPage)] = "Students",
+            [typeof(StudentsPage)] = "Students",
             // [typeof(MentorsPage)] = "Mentors",
             // [typeof(SecretariesPage)] = "Secretaries",
             [typeof(LessonsPage)] = "Lessons",

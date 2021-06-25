@@ -10,45 +10,45 @@ namespace WHAT_Tests
     public class ChangePasswordTests : TestBase
     {
         
-        private ChangePasswordPage changePasswordPage;
+        //private ChangePasswordPage changePasswordPage;
 
-        string currentPass = "What_123";
-        string newPass = "What_1234";
-        string email = "mentor@gmail.com";
+        //string currentPass = "What_123";
+        //string newPass = "What_1234";
+        //string email = "mentor@gmail.com";
 
 
-        [SetUp]
-        public void SetupPage()
-        {
-            changePasswordPage = new SignInPage(driver)
-                .SignInAsMentor(email, currentPass).ClickChangePassword();
-        }
+        //[SetUp]
+        //public void SetupPage()
+        //{
+        //    changePasswordPage = new SignInPage(driver)
+        //        .SignInAsMentor(email, currentPass).ClickChangePassword();
+        //}
 
-        [Test]
-        public void ChangePasswordTest()
-        {
+        //[Test]
+        //public void ChangePasswordTest()
+        //{
            
-            changePasswordPage
-                .FillCurrentPassword(currentPass)
-                .FillNewPassword(newPass)
-                .FillConfirmNewPassword(newPass)
-                .ClickSaveButton()
-                .ClickSaveInPopUpMenu();
+        //    changePasswordPage
+        //        .FillCurrentPassword(currentPass)
+        //        .FillNewPassword(newPass)
+        //        .FillConfirmNewPassword(newPass)
+        //        .ClickSaveButton()
+        //        .ClickSaveInPopUpMenu();
 
-        }
+        //}
 
-        [TearDown]
-        public void SetPostConditions()
-        {
-            changePasswordPage
-                .ClickChangePassword()
-                .FillCurrentPassword(newPass)
-                .FillNewPassword(currentPass)
-                .FillConfirmNewPassword(currentPass)
-                .ClickSaveButton()
-                .ClickSaveInPopUpMenu();
+        //[TearDown]
+        //public void SetPostConditions()
+        //{
+        //    changePasswordPage
+        //        .ClickChangePassword()
+        //        .FillCurrentPassword(newPass)
+        //        .FillNewPassword(currentPass)
+        //        .FillConfirmNewPassword(currentPass)
+        //        .ClickSaveButton()
+        //        .ClickSaveInPopUpMenu();
                
-        }
+        //}
 
     }
 }

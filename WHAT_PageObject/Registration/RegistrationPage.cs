@@ -28,6 +28,7 @@ namespace WHAT_PageObject
         public RegistrationPage FillFirstName(string firstName)
         {
             driver.FindElement(firstNameField).SendKeys(firstName);
+
             return this;
         }
 
@@ -41,12 +42,14 @@ namespace WHAT_PageObject
         public RegistrationPage FillEmail(string email)
         {
             driver.FindElement(emailField).SendKeys(email);
+
             return this;
         }
 
         public RegistrationPage FillPassword(string password)
         {
             driver.FindElement(passwordField).SendKeys(password);
+
             return this;
         }
 
@@ -60,6 +63,7 @@ namespace WHAT_PageObject
         public RegistrationPage ClickSignUpButton()
         {
             driver.FindElement(signUpButton).Click();
+
             return this;
         }
 
@@ -70,5 +74,39 @@ namespace WHAT_PageObject
             return new SignInPage(driver);
         }
 
+        public string GetErrorMessageFirstName()
+        {
+            string text = driver.FindElement(errorFirstName).Text;
+
+            return text;
+        }
+
+        public string GetErrorMessageLastName()
+        {
+            string text = driver.FindElement(errorLastName).Text;
+
+            return text;
+        }
+
+        public string GetErrorMessageEmail()
+        {
+            string text = driver.FindElement(errorEmail).Text;
+
+            return text;
+        }
+
+        public string GetErrorMessagePassword()
+        {
+            string text = driver.FindElement(errorPassword).Text;
+
+            return text;
+        }
+
+        public string GetErrorMessageConfirmPassword()
+        {
+            string text = driver.FindElement(errorConfirmPassword).Text;
+
+            return text;
+        }
     }
 }

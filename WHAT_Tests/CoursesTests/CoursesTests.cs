@@ -26,8 +26,8 @@ namespace WHAT_Tests
         public void VerifyCourseDetails()
         {
             int courseNumber = 3;
-            string expected =  coursesPage.ReadCourseName(courseNumber);
-            
+            string expected = coursesPage.ReadCourseName(courseNumber);
+
             var courseDetailsPage = coursesPage.ClickCourseName(courseNumber);
             string actual = courseDetailsPage.ReadCourseNameDetails();
             driver.Navigate().Back();
@@ -42,8 +42,8 @@ namespace WHAT_Tests
             int courseNumber = 3;
             string courseName = "New course";
             coursesPage.ClickPencilLink(courseNumber);
-                     //  .FillCourseName(courseName)
-                     //  .ClickCancelButton();
+            //  .FillCourseName(courseName)
+            //  .ClickCancelButton();
 
         }
 

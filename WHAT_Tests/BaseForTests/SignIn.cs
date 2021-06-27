@@ -26,31 +26,31 @@ namespace WHAT_Tests
 
             return new LessonsPage(driver);
         }
-/*
-        public MentorsPage SignInAsSecretar()
-        {
-            Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(PATH, Role.Secretar);
+        /*
+                public MentorsPage SignInAsSecretar()
+                {
+                    Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(PATH, Role.Secretar);
 
-            signInPage.
-                FillEmail(credentials.Email).
-                FillPassword(credentials.Password).
-                ClickSignInButton();
+                    signInPage.
+                        FillEmail(credentials.Email).
+                        FillPassword(credentials.Password).
+                        ClickSignInButton();
 
-            return new MentorsPage(driver);
-        }
+                    return new MentorsPage(driver);
+                }
 
-        public SupportPage SignInAsStudent()
-        {
-            Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(PATH, Role.Student);
+                public SupportPage SignInAsStudent()
+                {
+                    Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(PATH, Role.Student);
 
-            signInPage.
-                FillEmail(credentials.Email).
-                FillPassword(credentials.Password).
-                ClickSignInButton();
+                    signInPage.
+                        FillEmail(credentials.Email).
+                        FillPassword(credentials.Password).
+                        ClickSignInButton();
 
-            return new SupportPage(driver);
-        }
-*/
+                    return new SupportPage(driver);
+                }
+        */
         public StudentsPage SignInAsAdmin()
         {
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(PATH, Role.Admin);

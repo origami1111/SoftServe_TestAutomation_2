@@ -5,8 +5,6 @@ namespace WHAT_PageObject
     public class ChangePasswordPage : BasePageWithHeaderSidebar
     {
         private By email = By.Id("email");
-        private By email1 = By.XPath("//*[@id='email']");
-
         private By currentPassword = By.Id("currentPassword");
         private By newPassword = By.Id("newPassword");
         private By confirmNewPassword = By.Id("confirmNewPassword");
@@ -14,29 +12,28 @@ namespace WHAT_PageObject
         private By cancelButton = By.XPath("//button[contains(.,\'Cancel\')]");
         private By cancelInPopUpMenu = By.CssSelector(".btn-secondary");
         private By saveInPopUpMenu = By.XPath("//button[contains(.,'Confirm')]");
-
-        private By header = By.XPath("//span[contains(.,'▼')]");
-
-        private By changePassword = By.LinkText("Change password");
         private By currentPassErrorField = By.XPath("//input[@name='currentPassword']//following-sibling::div");
         private By newPassErrorField = By.XPath("//input[@name='newPassword']//following-sibling::div");
         private By confirmPassErrorField = By.XPath("//input[@name='confirmNewPassword']//following-sibling::div");
 
         private By passSuccessMessage = By.XPath("//div[@role='alert']");
         private By passSuccessMessage1 = By.CssSelector(".fade");
+
         public ChangePasswordPage(IWebDriver driver) : base(driver)
         {
 
         }
 
-        public string VerifyCurrentEmail() 
+        public string VerifyCurrentEmail()
         {
             return driver.FindElement(email).GetAttribute("value");
         }
-        public string VerifySuccesMessage() 
-        { 
+
+        public string VerifySuccesMessage()
+        {
             return driver.FindElement(passSuccessMessage1).Text;
         }
+
         public string VerifyErrorMassegeForCurrentPassword()
         {
             return driver.FindElement(currentPassErrorField).Text;
@@ -51,22 +48,23 @@ namespace WHAT_PageObject
         {
             return driver.FindElement(confirmPassErrorField).Text;
         }
+
+        public ChangePasswordPage FillCurrentPassword(string currentPass)
+        {
+            FillField(currentPassword, currentPass);
+            return this;
+        }
         
-        public ChangePasswordPage FillCurrentPassword(string currentPassword)
+
+        public ChangePasswordPage FillNewPassword(string newPass)
         {
-            FillField(this.currentPassword, currentPassword);
+            FillField(newPassword, newPass);
             return this;
         }
 
-        public ChangePasswordPage FillNewPassword(string newPassword)
+        public ChangePasswordPage FillConfirmNewPassword(string newPass)
         {
-            FillField(this.newPassword, newPassword);
-            return this;
-        }
-
-        public ChangePasswordPage FillConfirmNewPassword(string newPassword)
-        {
-            FillField(confirmNewPassword, newPassword);
+            FillField(confirmNewPassword, newPass);
             return this;
         }
 

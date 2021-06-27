@@ -1,18 +1,12 @@
-﻿using System;
+﻿using OpenQA.Selenium;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.PageObjects;
 
 namespace WHAT_PageObject
 {
-    public class StudentsEditPage: BasePageWithHeaderSidebar
+    public class StudentsEditPage : BasePageWithHeaderSidebar
     {
-       
-        private By _detailsNavLink=By.LinkText("Student details");
+
+        private By _detailsNavLink = By.LinkText("Student details");
         private By _editNavLink = By.LinkText("Edit student details");
         private By _clearButton = By.XPath("//button[@class='w-100 btn btn-secondary edit-students-details__button___WOMG6']");
         private By _saveButton = By.XPath("//button[@class='w-100 btn btn-info edit-students-details__button___WOMG6']");
@@ -20,7 +14,7 @@ namespace WHAT_PageObject
         private By _lastName = By.Id("lastName");
         private By _email = By.Id("email");
 
-        private Queue<string> _allField= new Queue<string>();
+        private Queue<string> _allField = new Queue<string>();
 
         public StudentsEditPage clickClearButton()
         {
@@ -37,7 +31,7 @@ namespace WHAT_PageObject
         }
         public StudentsEditPage(IWebDriver driver) : base(driver)
         {
-            
+
         }
 
 

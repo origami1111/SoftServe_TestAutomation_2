@@ -1,27 +1,22 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.PageObjects;
 
 namespace WHAT_PageObject
 {
     public class StudentsPage : BasePageWithHeaderSidebar
     {
-        private By _searchingFieldLocator=By.XPath("//input[@class='search__searchInput___34nMl']");
-        private By  _controlBarDisabledStudentsLocator = By.XPath("//input[@id='show - disabled - check']");
+        private By _searchingFieldLocator = By.XPath("//input[@class='search__searchInput___34nMl']");
+        private By _controlBarDisabledStudentsLocator = By.XPath("//input[@id='show - disabled - check']");
         private By _addStudentButtonLocator = By.XPath("//*[@id='root']/div/div/div[2]/div/div/div[4]/button");
         private By _sortingListLocator = By.CssSelector("thead/tr");
         private By _studentsListLocator = By.XPath("//*[@id='root']/div/div/div[2]/div/table/tbody/");
 
-        public Dictionary<string, bool> arrowsState=new Dictionary<string, bool>();
+        public Dictionary<string, bool> arrowsState = new Dictionary<string, bool>();
 
         public StudentsPage(IWebDriver driver) : base(driver)
         {
-            
+
         }
 
 
@@ -31,7 +26,7 @@ namespace WHAT_PageObject
             int indexOfList = 1;
             foreach (var sortingElement in _sortingList)
             {
-                IWebElement sortingElementStatus= sortingElement.FindElement(By.TagName($"th:nth-child({indexOfList}) > span"));
+                IWebElement sortingElementStatus = sortingElement.FindElement(By.TagName($"th:nth-child({indexOfList}) > span"));
                 if (sortingElementStatus.GetCssValue("data-sorted-by-ascending") == Convert.ToString(1))
                 {
                     arrowsState.Add(sortingElementStatus.Text, true);
@@ -59,7 +54,7 @@ namespace WHAT_PageObject
         public StudentsEditPage ClickChoosedStudent(uint studentNumber)
         {
             IWebElement currentStudent;
-            if (studentNumber>=1 && studentNumber<=10)
+            if (studentNumber >= 1 && studentNumber <= 10)
             {
                 currentStudent = driver.FindElement(By.XPath($"//*[@id='root']/div/div/div[2]/div/table/tbody/tr[{studentNumber}]"));
                 currentStudent.Click();
@@ -67,8 +62,8 @@ namespace WHAT_PageObject
             return new StudentsEditPage(driver);
 
         }
-   
-        private  bool IsShowsDisabledStudents()
+
+        private bool IsShowsDisabledStudents()
         {
             IWebElement _controlBarDisabledStudents = driver.FindElement(_controlBarDisabledStudentsLocator);
             if (_controlBarDisabledStudents.GetCssValue("value") == "true")
@@ -81,10 +76,10 @@ namespace WHAT_PageObject
         public UnassignedUsers ClickAddStudentButton()
         {
             IWebElement _addStudentButton = driver.FindElement(_addStudentButtonLocator);
-             _addStudentButton.Click();
-             return new UnassignedUsers(driver);
+            _addStudentButton.Click();
+            return new UnassignedUsers(driver);
         }
-        
+
         public StudentsPage FillSearchingField(string inputingSentence)
         {
             IWebElement _searchingField = driver.FindElement(_searchingFieldLocator);

@@ -6,7 +6,7 @@ using System;
 namespace WHAT_Tests
 {
     [SetUpFixture]
-    public abstract class TestBase 
+    public abstract class TestBase
     {
         protected IWebDriver driver;
 

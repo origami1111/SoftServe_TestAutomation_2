@@ -5,26 +5,20 @@ namespace WHAT_Tests
     [TestFixture]
     public class ChangePasswordTestsValid : TestBase
     {
-        
+
         private ChangePasswordPage changePasswordPage;
-
-        string currentPass = "What_123";
-        string newPass = "What_1234";
-        string email = "mentor@gmail.com";
-
 
         [SetUp]
         public void SetupPage()
         {
-            changePasswordPage = new SignInPage(driver)
-                .SignInAsMentor(email, currentPass).ClickChangePassword();
+            changePasswordPage = new SignIn(driver).SignInAsMentor().ClickChangePassword();
         }
 
         [Test]
-        public void ChangePasswordWithValidDataTest()
+        [TestCase("What_123", "What_1234", "×\r\nClose alert\r\nThe password has been successfully changed")]
+        public void ChangePasswordWithValidDataTest(string currentPass, string newPass, string expected)
         {
-            string expected = "×\r\nClose alert\r\nThe password has been successfully changed";
-            string actual= changePasswordPage
+            string actual = changePasswordPage
                 .FillCurrentPassword(currentPass)
                 .FillNewPassword(newPass)
                 .FillConfirmNewPassword(newPass)
@@ -38,6 +32,8 @@ namespace WHAT_Tests
         [TearDown]
         public void SetPostConditions()
         {
+            string currentPass = "What_123";
+            string newPass = "What_1234";
             changePasswordPage
                 .ClickChangePassword()
                 .FillCurrentPassword(newPass)

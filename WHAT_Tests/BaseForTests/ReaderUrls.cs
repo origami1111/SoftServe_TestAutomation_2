@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 
 namespace WHAT_Tests
 {
@@ -12,7 +12,7 @@ namespace WHAT_Tests
         private string _fileName;
         public static Dictionary<string, Uri> dictLinks = new Dictionary<string, Uri>();
 
-        public ReaderUrls(string fileName= "whatURLs.csv")
+        public ReaderUrls(string fileName = "whatURLs.csv")
         {
             _fileName = fileName;
             dictLinks = GetAllUrl();
@@ -32,8 +32,8 @@ namespace WHAT_Tests
                 }
             }
             foreach (var item in dictLinks)
-            { 
-                Console.WriteLine($"{item.Key} , {item.Value}"); 
+            {
+                Console.WriteLine($"{item.Key} , {item.Value}");
             }
             return dictLinks;
 
@@ -54,8 +54,8 @@ namespace WHAT_Tests
                 }
             }
             return new Uri("0");
-            
+
         }
-            
+
     }
 }

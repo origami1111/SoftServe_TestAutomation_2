@@ -8,7 +8,7 @@ namespace WHAT_PageObject
         private readonly By arrowIcon = By.XPath("//*[contains(@class,'dropdown-toggler')]");
 
         private readonly By dropdownMenu = By.XPath("//*[contains(@class,'dropdown-list--item')]");
-        
+
         public Header(IWebDriver driver) : base(driver)
         {
         }

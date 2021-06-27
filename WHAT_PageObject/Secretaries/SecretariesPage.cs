@@ -17,7 +17,7 @@ namespace WHAT_PageObject.Secretaries
         //* Select users on page
         //* SearchField 
         //* DisabledSwitch
-        
+
         //          Methods:
 
         // Get first user with displayed data.
@@ -27,7 +27,7 @@ namespace WHAT_PageObject.Secretaries
         //* SortBy
         // GetTotalUsersShowedAmount.
         // GetOnPageUsersShowedAmount.
-        
+
         //* GetShowedUsersAmount.       
         // GetUsersOnPage.
         //* Get list users on page sorted by different params.
@@ -48,7 +48,7 @@ namespace WHAT_PageObject.Secretaries
         By sortedBy = By.XPath("//thead//th[1]/span");
         By userData = By.XPath("//tbody/tr/td[1]");
         // "//tbody/tr[1]/td[1]"; 
-        
+
         // ReaderFileCSV.ReadFileListCredentials("secretary_active.csv").Count; // Читать из файла
 
         //private void GetVisibleUsers ()
@@ -57,7 +57,7 @@ namespace WHAT_PageObject.Secretaries
         //    int visibleUsersReport = Int32.Parse(selectedOption.SelectedOption.Text);
         //}
 
-        public enum columnName 
+        public enum columnName
         {
             index = 1,
             firstName = 2,
@@ -65,9 +65,9 @@ namespace WHAT_PageObject.Secretaries
             email = 4
         }
 
-        public SecretariesPage(IWebDriver driver) : base (driver)
+        public SecretariesPage(IWebDriver driver) : base(driver)
         {
-           
+
         }
 
         public SecretariesPage AddSecretaryClick()
@@ -77,7 +77,7 @@ namespace WHAT_PageObject.Secretaries
             // return UnassigmentUsersPage;
         }
 
-        public SecretariesPage PrevPage ()
+        public SecretariesPage PrevPage()
         {
             driver.FindElement(prevPageLink).Click();
             return this;
@@ -89,33 +89,33 @@ namespace WHAT_PageObject.Secretaries
             return this;
         }
 
-        public SecretariesPage DisabledSwitch ()
+        public SecretariesPage DisabledSwitch()
         {
             driver.FindElement(disabledSwitch).Click();
             return this;
         }
 
-        public SecretariesPage SortBy (columnName column)
+        public SecretariesPage SortBy(columnName column)
         {
             sortedBy = By.XPath($"//thead//th[{(int)column}]/span");
             driver.FindElement(sortedBy).Click();
             return this;
         }
 
-        private string GetUserData (int columnNumber, int rowNumber)
+        private string GetUserData(int columnNumber, int rowNumber)
         {
-            return driver.FindElement(By.XPath($"//tbody/tr[{rowNumber}]/td[{columnNumber}]")).Text;            
+            return driver.FindElement(By.XPath($"//tbody/tr[{rowNumber}]/td[{columnNumber}]")).Text;
         }
 
-        public int GetShowedUsersAmount ()
+        public int GetShowedUsersAmount()
         {
             int count = driver.FindElements(userData).Count;
             return count;
         }
-        public SecretariesPage GetSortedList (columnName column)
+        public SecretariesPage GetSortedList(columnName column)
         {
             int count = GetShowedUsersAmount();
-            List<string> sortedList = new List <string> (count);
+            List<string> sortedList = new List<string>(count);
             for (int i = 1; i <= count; i++)
             {
                 sortedList.Add(GetUserData((int)column, i));
@@ -124,6 +124,6 @@ namespace WHAT_PageObject.Secretaries
         }
     }
 
-    
+
 
 }

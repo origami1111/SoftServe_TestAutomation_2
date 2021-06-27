@@ -8,8 +8,17 @@
 
   <ItemGroup>
     <Compile Remove="ChangePassword\**" />
+    <Compile Remove="SecretariesTests\**" />
+    <Compile Remove="SignInTests\**" />
+    <Compile Remove="StudentsTests\**" />
     <EmbeddedResource Remove="ChangePassword\**" />
+    <EmbeddedResource Remove="SecretariesTests\**" />
+    <EmbeddedResource Remove="SignInTests\**" />
+    <EmbeddedResource Remove="StudentsTests\**" />
     <None Remove="ChangePassword\**" />
+    <None Remove="SecretariesTests\**" />
+    <None Remove="SignInTests\**" />
+    <None Remove="StudentsTests\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +42,9 @@
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DataFiles\Credentials.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

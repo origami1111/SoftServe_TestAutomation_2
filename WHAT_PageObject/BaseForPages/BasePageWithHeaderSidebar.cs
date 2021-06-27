@@ -60,10 +60,11 @@ namespace WHAT_PageObject
             ClickDropdownItem("Change password");
             return new ChangePasswordPage(driver);
         }
+        
         public SignInPage Logout()
         {
             ClickArrowIcon();
-            ClickDropdownItem("Log out");
+            ClickDropdownItem("Log Out");
             return new SignInPage(driver);
         }
     }

@@ -1,9 +1,0 @@
-C:\Users\origami\Desktop\dev\WHAT_DP_205_TAQC\WHAT_PageObject\bin\Debug\netcoreapp3.1\WHAT_PageObject.deps.json
-C:\Users\origami\Desktop\dev\WHAT_DP_205_TAQC\WHAT_PageObject\bin\Debug\netcoreapp3.1\WHAT_PageObject.dll
-C:\Users\origami\Desktop\dev\WHAT_DP_205_TAQC\WHAT_PageObject\bin\Debug\netcoreapp3.1\WHAT_PageObject.pdb
-C:\Users\origami\Desktop\dev\WHAT_DP_205_TAQC\WHAT_PageObject\obj\Debug\netcoreapp3.1\WHAT_PageObject.csprojAssemblyReference.cache
-C:\Users\origami\Desktop\dev\WHAT_DP_205_TAQC\WHAT_PageObject\obj\Debug\netcoreapp3.1\WHAT_PageObject.AssemblyInfoInputs.cache
-C:\Users\origami\Desktop\dev\WHAT_DP_205_TAQC\WHAT_PageObject\obj\Debug\netcoreapp3.1\WHAT_PageObject.AssemblyInfo.cs
-C:\Users\origami\Desktop\dev\WHAT_DP_205_TAQC\WHAT_PageObject\obj\Debug\netcoreapp3.1\WHAT_PageObject.csproj.CoreCompileInputs.cache
-C:\Users\origami\Desktop\dev\WHAT_DP_205_TAQC\WHAT_PageObject\obj\Debug\netcoreapp3.1\WHAT_PageObject.dll
-C:\Users\origami\Desktop\dev\WHAT_DP_205_TAQC\WHAT_PageObject\obj\Debug\netcoreapp3.1\WHAT_PageObject.pdb

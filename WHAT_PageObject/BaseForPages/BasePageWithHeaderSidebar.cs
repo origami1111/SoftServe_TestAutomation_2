@@ -66,5 +66,11 @@ namespace WHAT_PageObject
             ClickDropdownItem("Log out");
             return new SignInPage(driver);
         }
+        public MyProfilePage ViewMyProfile()
+        {
+            ClickArrowIcon();
+            ClickDropdownItem("My Profile");
+            return new MyProfilePage(driver);
+        }
     }
 }

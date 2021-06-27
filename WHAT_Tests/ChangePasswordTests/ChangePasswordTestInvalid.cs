@@ -8,11 +8,6 @@ namespace WHAT_Tests
     {
         private ChangePasswordPage changePasswordPage;
 
-        //string currentPass = "What_123";
-        //string newPass = "What_1234";
-
-
-
         [SetUp]
         public void SetupPage()
         {
@@ -47,35 +42,6 @@ namespace WHAT_Tests
             Assert.AreEqual(expected, actual);
         }
 
-        //[Test]
-        //[TestCase("111", "What_1234", "What_123", "Password must contain at least 8 characters")]
-
-        //public void ChangePasswordWithShortNewPassTest(string newShortPass, string newPass, string currentPass, string expected)
-        //{
-        //    string actual = changePasswordPage
-        //        .FillCurrentPassword(currentPass)
-        //        .FillNewPassword(newShortPass)
-        //        .FillConfirmNewPassword(newPass)
-        //        .VerifyErrorMassegeForNewPassword();
-
-        //    Assert.AreEqual(expected, actual);
-        //}
-
-        //[Test]
-        //public void ChangePasswordWithNumbersOnlyInNewPassTest()
-        //{
-        //    string newPassOnlyNumbers = "11111111";
-        //    string expected = "Must contain at least one uppercase, one lowercase, one number";
-
-        //    string actual = changePasswordPage
-        //        .FillCurrentPassword(currentPass)
-        //        .FillNewPassword(newPassOnlyNumbers)
-        //        .FillConfirmNewPassword(newPass)
-        //        .VerifyErrorMassegeForNewPassword();
-
-        //    Assert.AreEqual(expected, actual);
-        //}
-
         [Test]
         [TestCase("11111111", "What_123", "What_1234", "You should confirm your password")]
         [TestCase("", "What_123", "What_1234", "This field is required")]
@@ -91,21 +57,6 @@ namespace WHAT_Tests
             Assert.AreEqual(expected, actual);
         }
 
-        //[Test]
-        //public void ChangePasswordWithEmptyConfirmPassTest()
-        //{
-        //    string newPassOnlyNumbers = "";
-        //    string expected = "This field is required";
-
-        //    string actual = changePasswordPage
-        //        .FillCurrentPassword(currentPass)
-        //        .FillNewPassword(newPass)
-        //        .FillConfirmNewPassword(newPassOnlyNumbers)
-        //        .FillNewPassword(newPass)
-        //        .VerifyErrorMassegeForConfirmPassword();
-
-        //    Assert.AreEqual(expected, actual);
-        //}
         [TearDown]
         public void SetPostConditions()
         {

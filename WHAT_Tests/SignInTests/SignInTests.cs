@@ -3,7 +3,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Threading;
 using WHAT_PageObject;
-using WHAT_PageObject.Base;
 
 namespace WHAT_Tests.SignInTests
 {

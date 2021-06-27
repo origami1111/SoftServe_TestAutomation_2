@@ -1,5 +1,5 @@
 ﻿
-namespace WHAT_PageObject
+namespace WHAT_Tests
 {
     public class Credentials
     {

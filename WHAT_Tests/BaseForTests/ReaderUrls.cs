@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
-namespace WHAT_PageObject
+namespace WHAT_Tests
 {
     public class ReaderUrls
     {

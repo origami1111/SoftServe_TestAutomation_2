@@ -29,7 +29,7 @@ namespace WHAT_PageObject
             header = new Header(driver);
         }
 
-        public T SidebarNavigateTo<T>() where T : BasePage
+        public T SidebarNavigateTo<T>() where T : BasePageWithHeaderSidebar
         {
             ClickSidebarItem(sidebarLabels[typeof(T)]);
 

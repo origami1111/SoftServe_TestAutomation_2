@@ -1,10 +1,11 @@
 ﻿using OpenQA.Selenium;
+using WHAT_PageObject;
 
-namespace WHAT_PageObject.Base
+namespace WHAT_Tests
 {
     public class SignIn
     {
-        private const string PATH = @"C:\Users\origami\Desktop\what-tests\WHAT_DP_205_TAQC\WHAT_PageObject\Files\Credentials.json";
+        private const string PATH = @"DataFiles\Credentials.json";
         private IWebDriver driver;
         private SignInPage signInPage;
 
@@ -25,7 +26,7 @@ namespace WHAT_PageObject.Base
 
             return new LessonsPage(driver);
         }
-
+/*
         public MentorsPage SignInAsSecretar()
         {
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(PATH, Role.Secretar);
@@ -49,7 +50,7 @@ namespace WHAT_PageObject.Base
 
             return new SupportPage(driver);
         }
-
+*/
         public StudentsPage SignInAsAdmin()
         {
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(PATH, Role.Admin);

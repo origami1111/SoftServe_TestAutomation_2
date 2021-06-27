@@ -1,9 +1,11 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
 using System.Collections.Generic;
 
 namespace WHAT_PageObject.Secretaries
 {
-    class SecretariesPage : BasePage
+    class SecretariesPage : BasePageWithHeaderSidebar
     {
         //        Locators:
 
@@ -20,8 +22,8 @@ namespace WHAT_PageObject.Secretaries
         
         //          Methods:
 
-        // Get first user with displayed data.
-        // First row click.
+        // Get user with displayed data (by index).
+        // Row click.
         //* 'Add a secretary' button click.
         //- Navigate buttons clicks.
         //* SortBy
@@ -29,7 +31,7 @@ namespace WHAT_PageObject.Secretaries
         // GetOnPageUsersShowedAmount.
         
         //* GetShowedUsersAmount.       
-        // GetUsersOnPage.
+        // 
         //* Get list users on page sorted by different params.
 
 
@@ -47,30 +49,23 @@ namespace WHAT_PageObject.Secretaries
         By emailColumn = By.XPath("//span[@data-sorting-param='email']"); // //thead//th[4]/span
         By sortedBy = By.XPath("//thead//th[1]/span");
         By userData = By.XPath("//tbody/tr/td[1]");
-        // "//tbody/tr[1]/td[1]"; 
-        
+                
         // ReaderFileCSV.ReadFileListCredentials("secretary_active.csv").Count; // Читать из файла
 
-        //private void GetVisibleUsers ()
-        //{
-        //    SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsers));
-        //    int visibleUsersReport = Int32.Parse(selectedOption.SelectedOption.Text);
-        //}
-
-        public enum columnName 
+        private void GetVisibleUsers ()
         {
-            index = 1,
-            firstName = 2,
-            lastName = 3,
-            email = 4
+            SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsers));
+            
+            int visibleUsersReport = Int32.Parse(selectedOption.SelectedOption.Text);
         }
+
 
         public SecretariesPage(IWebDriver driver) : base (driver)
         {
            
         }
 
-        public SecretariesPage AddSecretaryClick()
+        public SecretariesPage AddSecretary()
         {
             driver.FindElement(addSecretaryButton).Click();
             return this;

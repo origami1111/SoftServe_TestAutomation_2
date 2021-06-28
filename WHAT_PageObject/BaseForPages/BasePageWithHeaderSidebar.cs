@@ -19,7 +19,7 @@ namespace WHAT_PageObject
             //[typeof(GroupsPage)] = "Groups",
             [typeof(CoursesPage)] = "Courses",
             //[typeof(SchedulePage)] = "Schedule",
-            [typeof(UnassignedUsers)] = "Assigment",
+            [typeof(UnassignedUsersPage)] = "Assigment",
             [typeof(SupportPage)] = "Support"
         };
 

@@ -1,7 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WHAT_PageObject
 {
@@ -18,6 +15,7 @@ namespace WHAT_PageObject
         private By cancelButton = By.XPath("//button[contains(.,'Cancel')]");
         private By classRegisterButton = By.CssSelector(".button__default___3hOmG");
         private By saveButton = By.XPath("//button[contains(.,'Save')]");
+
         public AddLessonsPage FillLessonsTheme(string tema)
         {
             FillField(lessonsTheme, tema);
@@ -30,7 +28,7 @@ namespace WHAT_PageObject
         }
         public AddLessonsPage FillDateTime(string dataTime)
         {
-            FillField(dateTimePicker,dataTime);
+            FillField(dateTimePicker, dataTime);
             return this;
         }
         public AddLessonsPage FillMentorEmail(string mentorEmail)
@@ -53,9 +51,6 @@ namespace WHAT_PageObject
             ClickItem(saveButton);
             return new LessonsPage(driver);
         }
-
-
-
 
     }
 }

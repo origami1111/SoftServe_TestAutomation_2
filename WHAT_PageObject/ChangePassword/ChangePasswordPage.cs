@@ -15,9 +15,7 @@ namespace WHAT_PageObject
         private By currentPassErrorField = By.XPath("//input[@name='currentPassword']//following-sibling::div");
         private By newPassErrorField = By.XPath("//input[@name='newPassword']//following-sibling::div");
         private By confirmPassErrorField = By.XPath("//input[@name='confirmNewPassword']//following-sibling::div");
-
-        private By passSuccessMessage = By.XPath("//div[@role='alert']");
-        private By passSuccessMessage1 = By.CssSelector(".fade");
+        private By passSuccessMessage = By.CssSelector(".fade");
 
         public ChangePasswordPage(IWebDriver driver) : base(driver)
         {
@@ -31,7 +29,7 @@ namespace WHAT_PageObject
 
         public string VerifySuccesMessage()
         {
-            return driver.FindElement(passSuccessMessage1).Text;
+            return driver.FindElement(passSuccessMessage).Text;
         }
 
         public string VerifyErrorMassegeForCurrentPassword()
@@ -54,7 +52,7 @@ namespace WHAT_PageObject
             FillField(currentPassword, currentPass);
             return this;
         }
-        
+
 
         public ChangePasswordPage FillNewPassword(string newPass)
         {

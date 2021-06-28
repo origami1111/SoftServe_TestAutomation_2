@@ -1,7 +1,4 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
 using WHAT_PageObject;
 
 
@@ -16,7 +13,7 @@ namespace WHAT_Tests
         public void Setup()
         {
             var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
-            
+
             secretariesPage = new SignInPage(driver)
                             .SignInAsAdmin(credentials.Email, credentials.Password)
                             .SidebarNavigateTo<SecretariesPage>();
@@ -28,7 +25,7 @@ namespace WHAT_Tests
             secretariesPage.Logout();
         }
 
-        [Test]        
+        [Test]
         public void VerifyUsersOnFirstPage()
         {
             int expected = secretariesPage.GetUsersOnPage();

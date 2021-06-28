@@ -87,7 +87,7 @@ namespace WHAT_Tests.RegistrationTests
             string expected = "This field is required";
 
             string actual = registrationPage
-                .FillConfirmPassword(emptyConfirmPassword + Keys.Enter) 
+                .FillConfirmPassword(emptyConfirmPassword + Keys.Enter)
                 .GetErrorMessageFirstName();
 
             Assert.AreEqual(expected, actual);

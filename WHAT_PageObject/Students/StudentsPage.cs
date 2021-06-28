@@ -41,7 +41,7 @@ namespace WHAT_PageObject
         }
         public StudentsEditPage ClickIconEditStudent(uint studentNumber)
         {
-            
+
             IWebElement currentStudent;
             if (studentNumber >= 1 && studentNumber <= 10)
             {
@@ -70,8 +70,8 @@ namespace WHAT_PageObject
                     intreval += 10;
                     driver.FindElement(By.XPath("//button[@class='page-link pagination__link___2AEaH']")).Click();
                 }
-            } while (!isStudentFound || intreval<= (studentsCount/10)+1);
-        
+            } while (!isStudentFound || intreval <= (studentsCount / 10) + 1);
+
             return new StudentsEditPage(driver);
 
         }

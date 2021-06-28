@@ -8,10 +8,15 @@ namespace WHAT_Tests
     {
         private ChangePasswordPage changePasswordPage;
 
+        Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
+
         [SetUp]
         public void SetupPage()
         {
-            changePasswordPage = new SignIn(driver).SignInAsMentor().ClickChangePassword();
+            changePasswordPage = new SignInPage(driver)
+                            .SignInAsMentor(credentials.Email, credentials.Password)
+                            .ClickChangePassword();
+
         }
 
         [Test]
@@ -26,7 +31,9 @@ namespace WHAT_Tests
 
             changePasswordPage.Logout();
 
-            changePasswordPage = new SignIn(driver).SignInAsMentor().ClickChangePassword();
+            changePasswordPage = new SignInPage(driver)
+                            .SignInAsMentor(credentials.Email, credentials.Password)
+                            .ClickChangePassword();
         }
 
         [TearDown]

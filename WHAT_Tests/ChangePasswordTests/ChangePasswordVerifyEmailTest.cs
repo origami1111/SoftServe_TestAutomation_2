@@ -1,39 +1,36 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
 {
     [TestFixture]
-   public class ChangePasswordVerifyEmailTest : TestBase
+    public class ChangePasswordVerifyEmailTest : TestBase
     {
-    private ChangePasswordPage changePasswordPage;
 
-    string currentPass = "What_123";
-    string email = "mentor@gmail.com";
+        private ChangePasswordPage changePasswordPage;
+        Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
 
-    [SetUp]
-    public void SetupPage()
-    {
-        changePasswordPage = new SignInPage(driver)
-            .SignInAsMentor(email, currentPass).ClickChangePassword();
-    }
+        [SetUp]
+        public void SetupPage()
+        {
+            changePasswordPage = new SignInPage(driver)
+                               .SignInAsMentor(credentials.Email, credentials.Password)
+                               .ClickChangePassword();
+        }
+        [Test]
+        public void VerifyEmailTest()
+        {
+            string expected = credentials.Email;
+            string actual = changePasswordPage.VerifyCurrentEmail();
 
-    [Test]
-    public void VerifyEmailTest()
-    {
-        string expected = email;
-        string actual = changePasswordPage.VerifyCurrentEmail();
-            
-        Assert.AreEqual(expected, actual);
-    }
+            Assert.AreEqual(expected, actual);
+        }
 
-    [TearDown]
-    public void SetPostConditions()
-    {
+        [TearDown]
+        public void SetPostConditions()
+        {
             changePasswordPage.Logout();
-    }
+        }
+    } 
 }
-}
+

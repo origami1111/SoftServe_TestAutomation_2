@@ -1,9 +1,8 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using WHAT_PageObject;
-using System.Threading;
 using System;
+using WHAT_PageObject;
 
 namespace WHAT_Tests
 {
@@ -27,7 +26,7 @@ namespace WHAT_Tests
                                 .SignInAsAdmin(credentials.Email, credentials.Password);
             studentsPage.SidebarNavigateTo<StudentsPage>();
             Random randomStudent = new Random();
-            studentsEditPage = studentsPage.ClickChoosedStudent((uint)randomStudent.Next(1,11));
+            studentsEditPage = studentsPage.ClickChoosedStudent((uint)randomStudent.Next(1, 11));
         }
 
         [Test]

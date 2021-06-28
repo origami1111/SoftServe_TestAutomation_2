@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WHAT_Tests
+﻿namespace WHAT_Tests
 {
     public class Lesson
     {
@@ -29,12 +25,12 @@ namespace WHAT_Tests
             return groupName;
         }
 
-        public string GetDateTime() 
+        public string GetDateTime()
         {
             return dateTime;
         }
 
-        public string GetMentorEmail() 
+        public string GetMentorEmail()
         {
             return mentorEmail;
         }

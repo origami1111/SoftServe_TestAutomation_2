@@ -9,7 +9,7 @@ namespace WHAT_PageObject
     public class SecretariesPage : BasePageWithHeaderSidebar
     {
 
-        
+
         //        Locators:
 
         //* 'Add a secretary' button.
@@ -37,7 +37,7 @@ namespace WHAT_PageObject
         // 
         //* Get list users on page sorted by different params.
 
-        
+
 
         // Locators
         By addSecretaryButton = By.XPath("//span[contains(.,'Add a secretary')]");
@@ -54,8 +54,8 @@ namespace WHAT_PageObject
         By sortedBy = By.XPath("//thead//th[1]/span");
         By userData = By.XPath("//tbody/tr/td[1]");
 
-       
-        public SecretariesPage(IWebDriver driver) : base (driver)
+
+        public SecretariesPage(IWebDriver driver) : base(driver)
         {
 
         }
@@ -71,8 +71,8 @@ namespace WHAT_PageObject
         //    driver.FindElement(By.XPath($"//td[@data-secretary-id={index}]")).Click();
         //    return new SecretaryEditPage(driver);
         //}
-        
-        public SecretariesPage PrevPage ()
+
+        public SecretariesPage PrevPage()
         {
             driver.FindElement(prevPageLink).Click();
             return this;
@@ -101,7 +101,7 @@ namespace WHAT_PageObject
         {
             SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
             return Int32.Parse(selectedOption.SelectedOption.Text);
-            
+
         }
 
         public void SelectUsersOnPage(showedUsers showedUsers)
@@ -109,7 +109,7 @@ namespace WHAT_PageObject
             SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
             selectedOption.SelectByIndex((int)showedUsers);
         }
-        private string GetUserData (int columnNumber, int rowNumber)
+        private string GetUserData(int columnNumber, int rowNumber)
         {
             return driver.FindElement(By.XPath($"//tbody/tr[{rowNumber}]/td[{columnNumber}]")).Text;
         }
@@ -129,6 +129,6 @@ namespace WHAT_PageObject
             return this;
         }
     }
-    
+
 
 }

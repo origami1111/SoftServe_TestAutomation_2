@@ -37,7 +37,7 @@ namespace WHAT_PageObject
         // 
         //* Get list users on page sorted by different params.
 
-        // ReaderFileCSV.ReadFileListCredentials("secretary_active.csv").Count; // Читать из файла
+        
 
         // Locators
         By addSecretaryButton = By.XPath("//span[contains(.,'Add a secretary')]");
@@ -47,10 +47,10 @@ namespace WHAT_PageObject
         By visibleUsersSelect = By.Id("change-visible-people");
         By prevPageLink = By.XPath("//button[contains(.,'<')]");
         By nextPageLink = By.XPath("//button[contains(.,'>')]");
-        By indexColumn = By.XPath("//span[@data-sorting-param='index']"); 
-        By firstNameColumn = By.XPath("//span[@data-sorting-param='firstName']"); 
-        By lastNameColumn = By.XPath("//span[@data-sorting-param='lastName']"); 
-        By emailColumn = By.XPath("//span[@data-sorting-param='email']"); 
+        //By indexColumn = By.XPath("//span[@data-sorting-param='index']"); 
+        //By firstNameColumn = By.XPath("//span[@data-sorting-param='firstName']"); 
+        //By lastNameColumn = By.XPath("//span[@data-sorting-param='lastName']"); 
+        //By emailColumn = By.XPath("//span[@data-sorting-param='email']"); 
         By sortedBy = By.XPath("//thead//th[1]/span");
         By userData = By.XPath("//tbody/tr/td[1]");
 
@@ -97,10 +97,11 @@ namespace WHAT_PageObject
             return this;
         }
 
-        public void GetUsersOnPage()
+        public int GetUsersOnPage()
         {
             SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
-            int visibleUsersReport = Int32.Parse(selectedOption.SelectedOption.Text);
+            return Int32.Parse(selectedOption.SelectedOption.Text);
+            
         }
 
         public void SelectUsersOnPage(showedUsers showedUsers)
@@ -115,8 +116,7 @@ namespace WHAT_PageObject
 
         public int GetShowedUsersAmount ()
         {
-            int count = driver.FindElements(userData).Count;
-            return count;
+            return driver.FindElements(userData).Count;
         }
         public SecretariesPage GetSortedList (columnName column)
         {

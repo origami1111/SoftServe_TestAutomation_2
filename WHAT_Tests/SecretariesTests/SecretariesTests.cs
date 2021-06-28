@@ -26,6 +26,22 @@ namespace WHAT_Tests
             secretariesPage.Logout();
         }
 
-        //wwwwwwwwwww
+        [Test]        
+        public void VerifyUsersOnFirstPage()
+        {
+            int expected = secretariesPage.GetUsersOnPage();
+            int actual = secretariesPage.GetShowedUsersAmount();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void VerifyUsersOnLastPage()
+        {
+            int expected = secretariesPage.GetUsersOnPage();
+            int actual = secretariesPage.GetShowedUsersAmount();
+            // ReaderFileCSV.ReadFileListCredentials("secretary_active.csv").Count; // Читать из файла
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

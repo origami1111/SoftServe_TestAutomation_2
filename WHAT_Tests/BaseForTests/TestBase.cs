@@ -10,18 +10,18 @@ namespace WHAT_Tests
     {
         protected IWebDriver driver;
 
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
+        [SetUp]
+        public void SetUp()
         {
             driver = new ChromeDriver();
-            driver.Manage().Window.Size = new System.Drawing.Size(1200, 800);
+            driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
             driver.Navigate().GoToUrl(ReaderUrlsJSON.ByName("SigninPage"));
 
         }
 
-        [OneTimeTearDown]
-        public void OneTimeTearDown()
+        [TearDown]
+        public void TearDown()
         {
             driver.Quit();
         }

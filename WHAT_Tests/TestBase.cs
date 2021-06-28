@@ -18,7 +18,8 @@ namespace WHAT_Tests
             driver = new ChromeDriver();
             driver.Manage().Window.Size = new System.Drawing.Size(1200, 800);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
-            driver.Navigate().GoToUrl("http://localhost:8080/");
+            driver.Navigate().GoToUrl(ReaderUrlsJSON.ByName("SigninPage"));
+
         }
 
         [OneTimeTearDown]

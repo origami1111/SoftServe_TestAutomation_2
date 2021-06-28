@@ -42,9 +42,9 @@ namespace WHAT_Tests
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
-            coursesPage = new SignInPage(driver)
-                            .SignInAsAdmin(admin.Email, admin.Password)
-                            .SidebarNavigateTo<CoursesPage>();
+            //coursesPage = new SignInPage(driver)
+            //                .SignInAsAdmin(admin.Email, admin.Password)
+            //                .SidebarNavigateTo<CoursesPage>();
         }
 
         [OneTimeTearDown]

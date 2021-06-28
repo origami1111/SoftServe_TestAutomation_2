@@ -40,35 +40,35 @@ namespace WHAT_Tests.SignInTests
             Assert.AreEqual("http://localhost:8080/students", driver.Url);
         }
 
-        [Test]
-        public void SignInAsSecretar()
-        {
-            signIn.SignInAsSecretar();
+        //[Test]
+        //public void SignInAsSecretar()
+        //{
+        //    signIn.SignInAsSecretar();
 
-            Thread.Sleep(3000);
+        //    Thread.Sleep(3000);
 
-            Assert.AreEqual("http://localhost:8080/mentors", driver.Url);
-        }
+        //    Assert.AreEqual("http://localhost:8080/mentors", driver.Url);
+        //}
 
-        [Test]
-        public void SignInAsMentor()
-        {
-            signIn.SignInAsMentor();
+        //[Test]
+        //public void SignInAsMentor()
+        //{
+        //    signIn.SignInAsMentor();
 
-            Thread.Sleep(3000);
+        //    Thread.Sleep(3000);
 
-            Assert.AreEqual("http://localhost:8080/lessons", driver.Url);
-        }
+        //    Assert.AreEqual("http://localhost:8080/lessons", driver.Url);
+        //}
 
-        [Test]
-        public void SignInAsStudent()
-        {
-            signIn.SignInAsStudent();
+        //[Test]
+        //public void SignInAsStudent()
+        //{
+        //    signIn.SignInAsStudent();
 
-            Thread.Sleep(3000);
+        //    Thread.Sleep(3000);
 
-            Assert.AreEqual("http://localhost:8080/support", driver.Url);
-        }
+        //    Assert.AreEqual("http://localhost:8080/support", driver.Url);
+        //}
 
         [Test]
         [TestCase("email", "password")]

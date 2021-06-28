@@ -4,6 +4,7 @@ using OpenQA.Selenium.Chrome;
 using WHAT_PageObject;
 using System.Threading;
 using System;
+using WHAT_PageObject.Base;
 
 namespace WHAT_Tests
 {
@@ -20,10 +21,10 @@ namespace WHAT_Tests
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
-            driver.Navigate().GoToUrl("http://localhost:8080/auth");
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(40);
-            studentsPage = new SignInPage(driver)
-                           .SignInAsAdmin("admin.@gmail.com", "admiN_12");
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
+            driver.Navigate().GoToUrl(ReaderUrlsJSON.ByName("SigninPage"));
+            studentsPage = new SignIn(driver)
+                                .SignInAsAdmin();
             studentsPage.SidebarNavigateTo<StudentsPage>();
             Random randomStudent = new Random();
             studentsEditPage = studentsPage.ClickChoosedStudent((uint)randomStudent.Next(1,11));

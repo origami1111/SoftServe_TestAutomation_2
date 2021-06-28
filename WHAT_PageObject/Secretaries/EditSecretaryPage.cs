@@ -5,18 +5,20 @@ namespace WHAT_PageObject
 {
     public class EditSecretaryPage : BasePageWithHeaderSidebar
     {
-
+        #region Locators
         private By
-                        firstNameLocator = By.XPath("//input[@name='firstName']"),
-                        lastNameLocator = By.XPath("//input[@name='lastName']"),
-                        emailLocator = By.XPath("//input[@name='email']"),
-                        layOffButtonLocator = By.XPath("//button[text()='Lay off']"),
-                        clearButtonLocator = By.XPath("//button[text()='Clear']"),
-                        saveButtonLocator = By.XPath("//button[text()='Save']"),
-                        deselectLabel = By.XPath("//label[text()='First Name:']"),
-                        firstNameDangerField = By.XPath("//input[@name = 'firstName']/following-sibling::div"),
-                        lastNameDangerField = By.XPath("//input[@name = 'lastName']/following-sibling::div"),
-                        emailDangerField = By.XPath("//input[@name = 'email']/following-sibling::div");
+                       firstNameLocator = By.XPath("//input[@name='firstName']"),
+                       lastNameLocator = By.XPath("//input[@name='lastName']"),
+                       emailLocator = By.XPath("//input[@name='email']"),
+                       layOffButtonLocator = By.XPath("//button[text()='Lay off']"),
+                       clearButtonLocator = By.XPath("//button[text()='Clear']"),
+                       saveButtonLocator = By.XPath("//button[text()='Save']"),
+                       deselectLabel = By.XPath("//label[text()='First Name:']"),
+                       firstNameDangerField = By.XPath("//input[@name = 'firstName']/following-sibling::div"),
+                       lastNameDangerField = By.XPath("//input[@name = 'lastName']/following-sibling::div"),
+                       emailDangerField = By.XPath("//input[@name = 'email']/following-sibling::div");
+        #endregion
+
 
         public EditSecretaryPage(IWebDriver driver) : base(driver)
         {

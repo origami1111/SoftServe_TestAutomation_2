@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace WHAT_PageObject
 {
-    class SecretariesPage : BasePageWithHeaderSidebar
+    public class SecretariesPage : BasePageWithHeaderSidebar
     {
 
         
@@ -55,7 +55,6 @@ namespace WHAT_PageObject
         By userData = By.XPath("//tbody/tr/td[1]");
 
        
-
         public SecretariesPage(IWebDriver driver) : base (driver)
         {
            
@@ -106,7 +105,8 @@ namespace WHAT_PageObject
 
         public void SelectUsersOnPage(showedUsers showedUsers)
         {
-
+            SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
+            selectedOption.SelectByIndex((int)showedUsers);
         }
         private string GetUserData (int columnNumber, int rowNumber)
         {

@@ -14,11 +14,11 @@ namespace WHAT_PageObject
     }
     public enum showedUsers
     {
-        ten = 10,
-        thirty = 30,
-        fifty = 50,
-        seventyFive = 75,
-        oneHundred = 100
+        ten = 1,
+        thirty = 2,
+        fifty = 3,
+        seventyFive = 4,
+        oneHundred = 5
     }
 
 }

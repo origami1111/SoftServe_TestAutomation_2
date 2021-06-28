@@ -11,43 +11,11 @@ namespace WHAT_Tests
         [SetUp]
         public void Precondition()
         {
-<<<<<<< HEAD
-<<<<<<< HEAD
-            configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            
-            var url = configuration["Url"];
-            var credential = configuration.GetSection("Credentials");
 
-            var admin = new Credentials()
-            {
-                Email = credential["Admin:Email"],
-                Password = credential["Admin:Password"]
-            };
-            
-            var mentor = new Credentials()
-            {
-                Email = credential["Mentor:Email"],
-                Password = credential["Mentor:Password"]
-            };
-            
-            driver = new ChromeDriver();
-            driver.Navigate().GoToUrl(url);
-            driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
-            //coursesPage = new SignInPage(driver)
-            //                .SignInAsAdmin(admin.Email, admin.Password)
-            //                .SidebarNavigateTo<CoursesPage>();
-=======
-            coursesPage = new SignIn(driver)
-                            .SignInAsAdmin()
-=======
-            var credentials = ReaderFileJson.ReadFileJsonCredentials(@"DataFiles\Credentials.json", Role.Admin);
+            var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
             coursesPage = new SignInPage(driver)
                             .SignInAsAdmin(credentials.Email, credentials.Password)
->>>>>>> a2f8b9a178aa40ed188457277634d9bb53e58ace
                             .SidebarNavigateTo<CoursesPage>();
->>>>>>> 6a0c71d56ccbf1ac0c9b5968b16d1aae587faf68
         }
 
         [TearDown]

@@ -10,7 +10,7 @@ namespace WHAT_PageObject
     {
         public  ReaderUrlsJSON() { }
 
-        private static string path = @"DataFiles/links.json";
+        private static string path = @"Links/Links.json";
 
         public static Uri ByName(string name)
         {

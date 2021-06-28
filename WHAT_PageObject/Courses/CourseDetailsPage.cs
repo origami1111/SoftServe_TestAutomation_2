@@ -12,7 +12,7 @@ namespace WHAT_PageObject
         private IWebElement CourseNameDetails => driver.FindElement(
             By.XPath("//div[@class='container']//div[@class='row']/div[2]"));
 
-        public string ReadCourseNameDetails()
+        public string GetCourseNameDetails()
         {
             return CourseNameDetails.Text;
         }

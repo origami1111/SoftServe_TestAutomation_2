@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="StudentsTests\**" />
-    <EmbeddedResource Remove="StudentsTests\**" />
-    <None Remove="StudentsTests\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="CoursesTests\CoursesTests1.cs" />
     <Compile Remove="CoursesTests\DriversTests.cs" />
   </ItemGroup>

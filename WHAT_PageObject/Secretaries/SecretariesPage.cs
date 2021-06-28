@@ -1,9 +1,5 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using WHAT_PageObject.Base;
 
 namespace WHAT_PageObject.Secretaries
 {

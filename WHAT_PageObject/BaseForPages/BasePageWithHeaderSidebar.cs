@@ -29,7 +29,7 @@ namespace WHAT_PageObject
             header = new Header(driver);
         }
 
-        public T SidebarNavigateTo<T>() where T : BasePage
+        public T SidebarNavigateTo<T>() where T : BasePageWithHeaderSidebar
         {
             ClickSidebarItem(sidebarLabels[typeof(T)]);
 
@@ -60,10 +60,11 @@ namespace WHAT_PageObject
             ClickDropdownItem("Change password");
             return new ChangePasswordPage(driver);
         }
+        
         public SignInPage Logout()
         {
             ClickArrowIcon();
-            ClickDropdownItem("Log out");
+            ClickDropdownItem("Log Out");
             return new SignInPage(driver);
         }
     }

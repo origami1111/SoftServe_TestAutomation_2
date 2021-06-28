@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace WHAT_PageObject.Base
+namespace WHAT_Tests
 {
     public class ReaderFileJson
     {

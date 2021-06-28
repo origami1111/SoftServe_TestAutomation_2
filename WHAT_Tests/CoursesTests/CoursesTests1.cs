@@ -1,20 +1,29 @@
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
 {
     [TestFixture]
-    public class CoursesTests : TestBase
+    public class CoursesTests1
     {
+        private IWebDriver driver;
+
+        private IConfigurationRoot configuration;
+
         private CoursesPage coursesPage;
 
-        [SetUp]
-        public void Setup()
+
+        [OneTimeSetUp]
+        public void OneTimeSetup()
         {
-<<<<<<< HEAD
             configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             
             var url = configuration["Url"];
+            
             var credential = configuration.GetSection("Credentials");
 
             var admin = new Credentials()
@@ -34,20 +43,16 @@ namespace WHAT_Tests
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
-            //coursesPage = new SignInPage(driver)
-            //                .SignInAsAdmin(admin.Email, admin.Password)
-            //                .SidebarNavigateTo<CoursesPage>();
-=======
             coursesPage = new SignIn(driver)
                             .SignInAsAdmin()
                             .SidebarNavigateTo<CoursesPage>();
->>>>>>> 6a0c71d56ccbf1ac0c9b5968b16d1aae587faf68
         }
 
-        [TearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             coursesPage.Logout();
+            driver.Quit();
         }
 
         [Test]
@@ -64,17 +69,17 @@ namespace WHAT_Tests
 
         }
 
+        /*
         [Test]
         public void EditCourse()
         {
             int courseNumber = 3;
             string courseName = "New course";
-            coursesPage.ClickPencilLink(courseNumber);
-                     //  .FillCourseName(courseName)
-                     //  .ClickCancelButton();
+            coursesPage.ClickPencilLink(courseNumber)
+                       .FillCourseName(courseName)
+                       .ClickCancelButton();
 
-        }
-
+        }*/
 
         [Test]
         public void AddCourse()

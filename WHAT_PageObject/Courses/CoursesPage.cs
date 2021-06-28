@@ -23,30 +23,41 @@ namespace WHAT_PageObject
         private By pencilLink = By.CssSelector("use[href='/assets/svg/Edit.svg#Edit']");
         #endregion
 
+        public enum ColumnName
+        {
+            Id = 1,
+            Title = 2,
+            Edit = 3,
+        }
 
-        private By CourseName(string courseNumber) =>
-            By.XPath($"//tr[@data-student-id={courseNumber}]/td[2]");
-
-        private By pensilLink(string courseNumber) =>
-            By.XPath($"//tr[@data-student-id={courseNumber}]/td[2]");
+        private By TableCell(int rowNumber, ColumnName columnName) =>
+            By.XPath($"//tr[{rowNumber}]/td[{(int)columnName}]");
 
         public CoursesPage(IWebDriver driver) : base(driver)
         {
         }
 
-        public string ReadCourseName(string courseNumber)
+        public string ReadCourseName(int rowNumber)
         {
-            var course = driver.FindElement(CourseName(courseNumber));
+            var course = driver.FindElement(TableCell(rowNumber, ColumnName.Title));
 
             return course.Text;
         }
 
-        public CourseDetailsPage ClickCourseName(string courseNumber)
+        public CourseDetailsPage ClickCourseName(int courseNumber)
         {
 
-            driver.FindElement(CourseName(courseNumber)).Click();
+            driver.FindElement(TableCell(courseNumber, ColumnName.Title)).Click();
 
             return new CourseDetailsPage(driver);
+        }
+
+        public EditCourseDetailsPage ClickPencilLink(int courseNumber)
+        {
+
+            driver.FindElement(TableCell(courseNumber, ColumnName.Edit)).Click();
+
+            return new EditCourseDetailsPage(driver);
         }
 
         public CoursesPage CountTotalNumber(out int totalNumber)

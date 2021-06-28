@@ -1,36 +1,25 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
 using WHAT_PageObject;
 
-namespace WHAT_Tests.SignInTests
+namespace WHAT_Tests
 {
     [TestFixture]
-    class SignInTestWithRole
+    class SignInTestWithRole : TestBase
     {
-        private IWebDriver driver;
         private SignInPage signInPage;
         private Credentials credentials;
         private WebDriverWait wait;
 
         [SetUp]
-        public void Setup()
+        public void SetupPage()
         {
-            driver = new ChromeDriver();
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
 
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
-            driver.Navigate().GoToUrl("http://localhost:8080/auth");
 
             signInPage = new SignInPage(driver);
-        }
-
-        [TearDown]
-        public void Logout()
-        {
-            driver.Quit();
         }
 
         [Test]

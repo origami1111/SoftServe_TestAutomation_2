@@ -8,8 +8,8 @@ namespace WHAT_Tests
     public class ReaderFileJson
     {
         private ReaderFileJson() { }
-
-        public static Credentials ReadFileJsonCredentials(string path, Role role)
+        private const string path = @"Credentials\Credentials.json";
+        public static Credentials ReadFileJsonCredentials(Role role)
         {
             Credentials credentials = new Credentials();
 
@@ -24,7 +24,7 @@ namespace WHAT_Tests
             return credentials;
         }
 
-        public static List<Credentials> ReadFileJsonListCredentials(string path, Role role)
+        public static List<Credentials> ReadFileJsonListCredentials(Role role)
         {
             List<Credentials> credentials = new List<Credentials>();
 

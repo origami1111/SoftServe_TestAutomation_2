@@ -13,14 +13,14 @@ namespace WHAT_PageObject
         private readonly Dictionary<Type, string> sidebarLabels = new Dictionary<Type, string>()
         {
             [typeof(StudentsPage)] = "Students",
-            // [typeof(MentorsPage)] = "Mentors",
-            // [typeof(SecretariesPage)] = "Secretaries",
+            [typeof(MentorsPage)] = "Mentors",
+            [typeof(SecretariesPage)] = "Secretaries",
             [typeof(LessonsPage)] = "Lessons",
-            // [typeof(GroupsPage)] = "Groups",
+            //[typeof(GroupsPage)] = "Groups",
             [typeof(CoursesPage)] = "Courses",
-            // [typeof(SchedulePage)] = "Schedule",
-            // [typeof(AssigmentPage)] = "Assigment",
-            // [typeof(SupportPage)] = "Support"
+            //[typeof(SchedulePage)] = "Schedule",
+            [typeof(UnassignedUsers)] = "Assigment",
+            [typeof(SupportPage)] = "Support"
         };
 
         protected BasePageWithHeaderSidebar(IWebDriver driver) : base(driver)

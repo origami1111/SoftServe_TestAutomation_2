@@ -11,13 +11,11 @@ namespace WHAT_Tests
         [SetUp]
         public void Precondition()
         {
- 
 
-            var credentials = ReaderFileJson.ReadFileJsonCredentials(@"DataFiles\Credentials.json", Role.Admin);
+            var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
             coursesPage = new SignInPage(driver)
                             .SignInAsAdmin(credentials.Email, credentials.Password)
                             .SidebarNavigateTo<CoursesPage>();
-
         }
 
         [TearDown]

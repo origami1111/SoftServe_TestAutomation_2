@@ -20,6 +20,7 @@ namespace WHAT_PageObject
         public SignInPage FillEmail(string email)
         {
             driver.FindElement(emailField).SendKeys(email);
+
             return this;
         }
 
@@ -42,9 +43,45 @@ namespace WHAT_PageObject
             return new RegistrationPage(driver);
         }
 
-        public string GetAnErrorOccured()
+        public string GetErrorText()
         {
             return driver.FindElement(errorText).Text;
+        }
+
+        public LessonsPage SignInAsMentor(string email, string password)
+        {
+            FillEmail(email).
+            FillPassword(password).
+            ClickSignInButton();
+
+            return new LessonsPage(driver);
+        }
+
+        public MentorsPage SignInAsSecretar(string email, string password)
+        {
+            FillEmail(email).
+            FillPassword(password).
+            ClickSignInButton();
+
+            return new MentorsPage(driver);
+        }
+
+        public SupportPage SignInAsStudent(string email, string password)
+        {
+            FillEmail(email).
+            FillPassword(password).
+            ClickSignInButton();
+
+            return new SupportPage(driver);
+        }
+
+        public StudentsPage SignInAsAdmin(string email, string password)
+        {
+            FillEmail(email).
+            FillPassword(password).
+            ClickSignInButton();
+
+            return new StudentsPage(driver);
         }
     }
 }

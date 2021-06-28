@@ -4,7 +4,6 @@ using OpenQA.Selenium.Chrome;
 using System.Threading;
 using System;
 using WHAT_PageObject;
-using WHAT_PageObject.Base;
 using System.Linq;
 
 namespace WHAT_Tests
@@ -23,8 +22,9 @@ namespace WHAT_Tests
             driver.Manage().Window.Size = new System.Drawing.Size(1200, 800);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
             driver.Navigate().GoToUrl(ReaderUrlsJSON.ByName("SigninPage"));
-            studentsPage = new SignIn(driver)
-                                .SignInAsAdmin();
+            var credentials = ReaderFileJson.ReadFileJsonCredentials(@"DataFiles\Credentials.json", Role.Admin);
+            studentsPage = new SignInPage(driver)
+                                .SignInAsAdmin(credentials.Email, credentials.Password);
         }
 
         [SetUp]
@@ -56,7 +56,7 @@ namespace WHAT_Tests
             string studentEditURL = ReaderUrlsJSON.ByNameAndNumber("StudentsPage", studentNum).ToString();
             Assert.AreEqual(studentEditURL, driver.Url);
         }
-
+        
         //[Test]
         //public void RedirectStudentsEdit_EditIcon([Values((uint)1)] uint studentNum)
         //{

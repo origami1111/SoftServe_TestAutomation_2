@@ -1,29 +1,31 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using WHAT_PageObject;
 using System.Threading;
 using System;
+using WHAT_PageObject;
+using System.Linq;
 
 namespace WHAT_Tests
 {
     [TestFixture]
-    public class StudentsTests
+    public class StudentsTests_VerifyRedirection
     {
-        private IWebDriver driver;
 
         private StudentsPage studentsPage;
+        private IWebDriver driver;
 
         [OneTimeSetUp]
-        public void Setup()
+        public void SetUp()
         {
             driver = new ChromeDriver();
-            driver.Manage().Window.Maximize();
-            driver.Navigate().GoToUrl("http://localhost:8080/auth");
+            driver.Manage().Window.Size = new System.Drawing.Size(1200, 800);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
+            driver.Navigate().GoToUrl(ReaderUrlsJSON.ByName("SigninPage"));
+            var credentials = ReaderFileJson.ReadFileJsonCredentials(@"DataFiles\Credentials.json", Role.Admin);
             studentsPage = new SignInPage(driver)
-                           .SignInAsAdmin("admin.@gmail.com", "admiN_12");
+                                .SignInAsAdmin(credentials.Email, credentials.Password);
         }
-
 
         [SetUp]
         public void ToStudentPage()
@@ -31,40 +33,37 @@ namespace WHAT_Tests
             studentsPage.SidebarNavigateTo<StudentsPage>();
         }
 
-        [Test]
-        public void FillSearchingField_ValidData([Values("student", "Student")] string forSearch)
+
+        [OneTimeTearDown]
+        public void TearDown()
         {
-            studentsPage.FillSearchingField(forSearch);
+            driver.Quit();
         }
 
         [Test]
         public void RedirectUnassignedUsers()
         {
             studentsPage.ClickAddStudentButton();
-            string unassignedUsersURL = "http://localhost:8080/unassigned";
+            string unassignedUsersURL = ReaderUrlsJSON.ByName("UnassignedUsersPage").ToString();
             Assert.AreEqual(unassignedUsersURL, driver.Url);
         }
+        //uint[] arr = Enumerable.Range(1, 10).Cast<uint>().ToArray();
 
         [Test]
         public void RedirectStudentsEdit_AnyCard([Values((uint)1)] uint studentNum)
         {
             studentsPage.ClickChoosedStudent(studentNum);
-            string studentEditURL = $"http://localhost:8080/students/{studentNum}";
+            string studentEditURL = ReaderUrlsJSON.ByNameAndNumber("StudentsPage", studentNum).ToString();
             Assert.AreEqual(studentEditURL, driver.Url);
         }
-
+        
         //[Test]
         //public void RedirectStudentsEdit_EditIcon([Values((uint)1)] uint studentNum)
         //{
         //    studentsPage.ClickIconEditStudent(studentNum);
-        //    string studentEditURL = $"http://localhost:8080/students/edit/{studentNum}";
+        //    string studentEditURL = ReaderUrlsJSON.ByNameAndNumber("StudentsEditPage", studentNum).ToString();
         //    Assert.AreEqual(studentEditURL, driver.Url);
         //}
 
-        [OneTimeTearDown]
-        public void Logout()
-        {
-            driver.Quit();
-        }
     }
 }

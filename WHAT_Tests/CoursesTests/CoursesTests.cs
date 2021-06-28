@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
@@ -9,15 +9,19 @@ namespace WHAT_Tests
         private CoursesPage coursesPage;
 
         [SetUp]
-        public void Setup()
+        public void Precondition()
         {
-            coursesPage = new SignIn(driver)
-                            .SignInAsAdmin()
+ 
+
+            var credentials = ReaderFileJson.ReadFileJsonCredentials(@"DataFiles\Credentials.json", Role.Admin);
+            coursesPage = new SignInPage(driver)
+                            .SignInAsAdmin(credentials.Email, credentials.Password)
                             .SidebarNavigateTo<CoursesPage>();
+
         }
 
         [TearDown]
-        public void TearDown()
+        public void Postcondition()
         {
             coursesPage.Logout();
         }
@@ -29,33 +33,62 @@ namespace WHAT_Tests
             string expected = coursesPage.ReadCourseName(courseNumber);
 
             var courseDetailsPage = coursesPage.ClickCourseName(courseNumber);
-            string actual = courseDetailsPage.ReadCourseNameDetails();
-            driver.Navigate().Back();
+            string actual = courseDetailsPage.GetCourseNameDetails();
 
             Assert.AreEqual(expected, actual);
 
         }
 
         [Test]
-        public void EditCourse()
+        public void EditCourse_CLickClearButton()
         {
             int courseNumber = 3;
-            string courseName = "New course";
-            coursesPage.ClickPencilLink(courseNumber);
-            //  .FillCourseName(courseName)
-            //  .ClickCancelButton();
+            string expected = coursesPage.ReadCourseName(courseNumber);
 
+            var actual = coursesPage.ClickPencilLink(courseNumber)
+                                  //  .DeleteTextWithBackspaces()
+                                  //  .ClickClearButton()
+                                    .GetCourseName();
+
+            Assert.AreEqual(expected, actual);
         }
 
-
         [Test]
-        public void AddCourse()
+        public void AddCourse_ValidData()
         {
             string courseName = "New course";
             coursesPage.ClickAddCourseButton()
-                       .FillCourseName(courseName)
+                       .FillCourseNameField(courseName)
                        .ClickCancelButton();
+        }
 
+        [TestCase("a", "Too short")]
+        [TestCase("Course name with more than fifty characters is too long", "Too long")]
+        [TestCase(" Space before course name", "Invalid course name")]
+        [TestCase("More than one space   between words", "Invalid course name")]
+        [TestCase("Space after course name ", "Invalid course name")]
+        [TestCase("Course name with special symbols: C#, .Net", "Invalid course name")]
+        [TestCase("Not only Latin letters Кириллица", "Invalid course name")]
+        [TestCase("Course name with numbers 12", "Invalid course name")]
+        public void AddCourseWithInvalidData(string invalidData, string expected)
+        {
+            var actual = coursesPage.ClickAddCourseButton()
+                                    .FillCourseNameField(invalidData);
+            
+            Assert.True(expected == actual.GetErrorMessage() && actual.IsSaveButtonDisabled());
+        }
+
+        [Test]
+        public void AddCourse_EmptyName()
+        {
+            var expected = "This field is required";
+            var anyData = "Test";
+            
+            var actual = coursesPage.ClickAddCourseButton()
+                                    .FillCourseNameField(anyData)
+                                    .DeleteTextWithBackspaces(anyData.Length);
+            
+            Assert.True(expected == actual.GetErrorMessage() && actual.IsSaveButtonDisabled());
         }
     }
 }

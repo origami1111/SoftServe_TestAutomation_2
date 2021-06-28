@@ -1,10 +1,59 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Text;
+﻿[
+  {
+    "Name": "SigninPage",
+    "Url": "http://localhost:8080/auth"
+  },
+  {
+    "Name": "RegistrationPage",
+    "Url": "http://localhost:8080/registration"
+  },
+  //{
+  //  "MyProfile": "http://localhost:8080/my-profile"
+  //},
+  {
+    "Name": "ChangePasswordPage",
+    "Url": "http://localhost:8080/change-password"
+  },
+  {
+    "Name": "StudentsPage",
+    "Url": "http://localhost:8080/students"
+  },
+  {
+    "Name": "StudentsEditPage",
+    "Url": "http://localhost:8080/students/edit"
+  },
+  {
+    "Name": "SecretariesPage",
+    "Url": "http://localhost:8080/secretaries"
+  },
+  {
+    "Name": "UnassignedUsersPage",
+    "Url": "http://localhost:8080/unassigned"
+  },
+  //{
+  //  "Name": "LessonsAdd",
+  //  "Url": "http://localhost:8080/lessons/add"
+  //},
+  //{
+  //  "Name": "Groups",
+  //  "Url": "http://localhost:8080/groups"
+  //},
+  {
+    "Name": "CoursePage",
+    "Url": "http://localhost:8080/courses"
+  },
+  {
+    "Name": "AddCoursePage",
+    "Url": "http://localhost:8080/courses/add"
+  }
+  //{
+  //  "Name": "SchedulesPage",
+  //  "Schedules": "http://localhost:8080/schedules"
+  //},
+  //{
+  //  "Name": "Error404",
+  //  "Url": "http://localhost:8080/404"
+  //}
+]
 
-//namespace WHAT_PageObject
-//{
-//    class Links
-//    {
-//    }
-//}
+

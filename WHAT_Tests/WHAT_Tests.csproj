@@ -7,18 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ChangePassword\**" />
-    <Compile Remove="SecretariesTests\**" />
-    <Compile Remove="SignInTests\**" />
-    <Compile Remove="StudentsTests\**" />
-    <EmbeddedResource Remove="ChangePassword\**" />
-    <EmbeddedResource Remove="SecretariesTests\**" />
-    <EmbeddedResource Remove="SignInTests\**" />
-    <EmbeddedResource Remove="StudentsTests\**" />
-    <None Remove="ChangePassword\**" />
-    <None Remove="SecretariesTests\**" />
-    <None Remove="SignInTests\**" />
-    <None Remove="StudentsTests\**" />
+    <Compile Remove="CoursesTests\CoursesTests1.cs" />
+    <Compile Remove="CoursesTests\DriversTests.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +24,7 @@
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="91.0.4472.10100" />
+    <PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.29.1" />
   </ItemGroup>
 
   <ItemGroup>

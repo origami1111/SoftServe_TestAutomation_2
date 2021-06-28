@@ -60,10 +60,11 @@ namespace WHAT_PageObject
             driver.FindElement(By.LinkText("Change password")).Click();
             return new ChangePasswordPage(driver);
         }
+        
         public SignInPage Logout()
         {
-            driver.FindElement(By.XPath("//span[contains(.,\'▼\')]")).Click();
-            driver.FindElement(By.LinkText("Log Out")).Click();
+            ClickArrowIcon();
+            ClickDropdownItem("Log Out");
             return new SignInPage(driver);
         }
         public MyProfilePage ViewMyProfile()

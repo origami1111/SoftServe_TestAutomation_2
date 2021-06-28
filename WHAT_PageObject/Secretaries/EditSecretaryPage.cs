@@ -7,12 +7,12 @@ namespace WHAT_PageObject
     {
         #region Locators
         private By
-                       firstNameLocator = By.XPath("//input[@name='firstName']"),
-                       lastNameLocator = By.XPath("//input[@name='lastName']"),
-                       emailLocator = By.XPath("//input[@name='email']"),
-                       layOffButtonLocator = By.XPath("//button[text()='Lay off']"),
-                       clearButtonLocator = By.XPath("//button[text()='Clear']"),
-                       saveButtonLocator = By.XPath("//button[text()='Save']"),
+                       firstName = By.XPath("//input[@name='firstName']"),
+                       lastName = By.XPath("//input[@name='lastName']"),
+                       email = By.XPath("//input[@name='email']"),
+                       layOff = By.XPath("//button[text()='Lay off']"),
+                       clear = By.XPath("//button[text()='Clear']"),
+                       save = By.XPath("//button[text()='Save']"),
                        deselectLabel = By.XPath("//label[text()='First Name:']"),
                        firstNameDangerField = By.XPath("//input[@name = 'firstName']/following-sibling::div"),
                        lastNameDangerField = By.XPath("//input[@name = 'lastName']/following-sibling::div"),
@@ -28,7 +28,7 @@ namespace WHAT_PageObject
         public string Fill_FirstName(string FirstName)
         {
 
-            var firstNameField = driver.FindElement(firstNameLocator);
+            var firstNameField = driver.FindElement(firstName);
 
             firstNameField.SendKeys(Keys.LeftShift + Keys.Home);
             firstNameField.SendKeys(FirstName);
@@ -43,7 +43,7 @@ namespace WHAT_PageObject
         public string Fill_LastName(string LastName)
         {
 
-            var lastNameField = driver.FindElement(lastNameLocator);
+            var lastNameField = driver.FindElement(lastName);
 
             lastNameField.SendKeys(Keys.LeftShift + Keys.Home);
             lastNameField.SendKeys(LastName);
@@ -58,7 +58,7 @@ namespace WHAT_PageObject
         public string Fill_Email(string Email)
         {
 
-            var emailField = driver.FindElement(emailLocator);
+            var emailField = driver.FindElement(email);
 
             emailField.SendKeys(Keys.LeftShift + Keys.Home);
             emailField.SendKeys(Email);

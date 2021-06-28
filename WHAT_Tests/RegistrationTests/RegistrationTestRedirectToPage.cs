@@ -18,7 +18,7 @@ namespace WHAT_Tests
         [Test]
         public void RedirectToSignInPage()
         {
-            string expected = ReaderUrlsJSON.GetUrlByName("SigninPage");
+            string expected = "http://localhost:8080/auth";
 
             registrationPage.ClickLogInLink();
 

@@ -26,7 +26,7 @@ namespace WHAT_Tests
         public void SignInAsAdmin()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
-            string expected = ReaderUrlsJSON.GetUrlByName("StudentsPage");
+            string expected = "http://localhost:8080/students";
 
             signInPage.SignInAsAdmin(credentials.Email, credentials.Password);
 
@@ -41,7 +41,7 @@ namespace WHAT_Tests
         public void SignInAsSecretar()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretar);
-            string expected = ReaderUrlsJSON.GetUrlByName("MentorsPage");
+            string expected = "http://localhost:8080/mentors";
 
             signInPage.SignInAsSecretar(credentials.Email, credentials.Password);
 
@@ -56,7 +56,7 @@ namespace WHAT_Tests
         public void SignInAsMentor()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
-            string expected = ReaderUrlsJSON.GetUrlByName("LessonsPage");
+            string expected = "http://localhost:8080/lessons";
 
             signInPage.SignInAsMentor(credentials.Email, credentials.Password);
 
@@ -71,7 +71,7 @@ namespace WHAT_Tests
         public void SignInAsStudent()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Student);
-            string expected = ReaderUrlsJSON.GetUrlByName("SupportPage");
+            string expected = "http://localhost:8080/support";
 
             signInPage.SignInAsStudent(credentials.Email, credentials.Password);
 

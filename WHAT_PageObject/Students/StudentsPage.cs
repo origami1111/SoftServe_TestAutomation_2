@@ -21,7 +21,7 @@ namespace WHAT_PageObject
 
         public StudentsPage(IWebDriver driver) : base(driver)
         {
-            
+
         }
 
 
@@ -44,9 +44,9 @@ namespace WHAT_PageObject
             }
             return arrowsState;
         }
-
         public StudentsEditPage ClickIconEditStudent(uint studentNumber)
         {
+            
             IWebElement currentStudent;
             if (studentNumber >= 1 && studentNumber <= 10)
             {
@@ -58,12 +58,25 @@ namespace WHAT_PageObject
 
         public StudentsEditPage ClickChoosedStudent(uint studentNumber)
         {
+            int studentsCount = int.Parse(driver.FindElement(By.XPath("//div[@class='col-2 text-right']")).Text);
             IWebElement currentStudent;
-            if (studentNumber>=1 && studentNumber<=10)
+            uint intreval = 10;
+            bool isStudentFound = false;
+            do
             {
-                currentStudent = driver.FindElement(By.XPath($"//*[@id='root']/div/div/div[2]/div/table/tbody/tr[{studentNumber}]"));
-                currentStudent.Click();
-            }
+                if (studentNumber >= intreval - 9 && studentNumber <= intreval)
+                {
+                    currentStudent = driver.FindElement(By.XPath($"//*[@id='root']/div/div/div[2]/div/table/tbody/tr[{studentNumber}]"));
+                    currentStudent.Click();
+                    isStudentFound = true;
+                }
+                else
+                {
+                    intreval += 10;
+                    driver.FindElement(By.XPath("//button[@class='page-link pagination__link___2AEaH']")).Click();
+                }
+            } while (!isStudentFound || intreval<= (studentsCount/10)+1);
+        
             return new StudentsEditPage(driver);
 
         }

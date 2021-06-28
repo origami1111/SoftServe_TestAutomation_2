@@ -16,7 +16,8 @@ namespace WHAT_Tests
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
-            driver.Navigate().GoToUrl("http://localhost:8080/");
+            driver.Navigate().GoToUrl(ReaderUrlsJSON.ByName("SigninPage"));
+
         }
 
         [TearDown]

@@ -20,10 +20,11 @@ namespace WHAT_Tests
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
-            driver.Navigate().GoToUrl("http://localhost:8080/auth");
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(40);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
+            driver.Navigate().GoToUrl(ReaderUrlsJSON.ByName("SigninPage"));
+            var credentials = ReaderFileJson.ReadFileJsonCredentials(@"DataFiles\Credentials.json", Role.Admin);
             studentsPage = new SignInPage(driver)
-                           .SignInAsAdmin("admin.@gmail.com", "admiN_12");
+                                .SignInAsAdmin(credentials.Email, credentials.Password);
             studentsPage.SidebarNavigateTo<StudentsPage>();
             Random randomStudent = new Random();
             studentsEditPage = studentsPage.ClickChoosedStudent((uint)randomStudent.Next(1,11));

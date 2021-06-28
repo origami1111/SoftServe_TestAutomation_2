@@ -56,20 +56,20 @@ namespace WHAT_PageObject
 
         public ChangePasswordPage ClickChangePassword()
         {
-            ClickArrowIcon();
-            ClickDropdownItem("Change password");
+            driver.FindElement(By.XPath("//span[contains(.,\'▼\')]")).Click();
+            driver.FindElement(By.LinkText("Change password")).Click();
             return new ChangePasswordPage(driver);
         }
         public SignInPage Logout()
         {
-            ClickArrowIcon();
-            ClickDropdownItem("Log out");
+            driver.FindElement(By.XPath("//span[contains(.,\'▼\')]")).Click();
+            driver.FindElement(By.LinkText("Log Out")).Click();
             return new SignInPage(driver);
         }
         public MyProfilePage ViewMyProfile()
         {
-            ClickArrowIcon();
-            ClickDropdownItem("My Profile");
+            driver.FindElement(By.XPath("//span[contains(.,\'▼\')]")).Click();
+            driver.FindElement(By.LinkText("My profile")).Click();
             return new MyProfilePage(driver);
         }
     }

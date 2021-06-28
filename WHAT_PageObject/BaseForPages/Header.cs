@@ -5,9 +5,9 @@ namespace WHAT_PageObject
 {
     public sealed class Header : BasePage
     {
-        private readonly By arrowIcon = By.XPath("//*[contains(@class,'dropdown-toggler')]");
+        private readonly By arrowIcon = By.XPath("//body//*[contains(@class,'dropdown-toggler')]");
 
-        private readonly By dropdownMenu = By.XPath("//*[contains(@class,'dropdown-list--item')]");
+        private readonly By dropdownMenu = By.XPath("//body//*[contains(@class,'dropdown-list--item')]");
         
         public Header(IWebDriver driver) : base(driver)
         {

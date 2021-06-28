@@ -3,10 +3,13 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 
-namespace WHAT_PageObject.Secretaries
+
+namespace WHAT_PageObject
 {
     class SecretariesPage : BasePageWithHeaderSidebar
     {
+
+        
         //        Locators:
 
         //* 'Add a secretary' button.
@@ -19,7 +22,7 @@ namespace WHAT_PageObject.Secretaries
         //* Select users on page
         //* SearchField 
         //* DisabledSwitch
-        
+
         //          Methods:
 
         // Get user with displayed data (by index).
@@ -29,49 +32,47 @@ namespace WHAT_PageObject.Secretaries
         //* SortBy
         // GetTotalUsersShowedAmount.
         // GetOnPageUsersShowedAmount.
-        
+        // *EditSecretary
         //* GetShowedUsersAmount.       
         // 
         //* Get list users on page sorted by different params.
 
+        // ReaderFileCSV.ReadFileListCredentials("secretary_active.csv").Count; // Читать из файла
 
         // Locators
         By addSecretaryButton = By.XPath("//span[contains(.,'Add a secretary')]");
         By countUsersReport = By.XPath("//span[contains(.,'secretaries')]");
         By searchField = By.XPath("//input[@type='text']");
         By disabledSwitch = By.XPath("//label[contains(.,'Disabled Secretaries')]");
-        By visibleUsers = By.Id("change-visible-people");
+        By visibleUsersSelect = By.Id("change-visible-people");
         By prevPageLink = By.XPath("//button[contains(.,'<')]");
         By nextPageLink = By.XPath("//button[contains(.,'>')]");
-        By indexColumn = By.XPath("//span[@data-sorting-param='index']"); // //thead//th[1]/span
-        By firstNameColumn = By.XPath("//span[@data-sorting-param='firstName']"); // //thead//th[2]/span
-        By lastNameColumn = By.XPath("//span[@data-sorting-param='lastName']"); // //thead//th[3]/span
-        By emailColumn = By.XPath("//span[@data-sorting-param='email']"); // //thead//th[4]/span
+        By indexColumn = By.XPath("//span[@data-sorting-param='index']"); 
+        By firstNameColumn = By.XPath("//span[@data-sorting-param='firstName']"); 
+        By lastNameColumn = By.XPath("//span[@data-sorting-param='lastName']"); 
+        By emailColumn = By.XPath("//span[@data-sorting-param='email']"); 
         By sortedBy = By.XPath("//thead//th[1]/span");
         By userData = By.XPath("//tbody/tr/td[1]");
-                
-        // ReaderFileCSV.ReadFileListCredentials("secretary_active.csv").Count; // Читать из файла
 
-        private void GetVisibleUsers ()
-        {
-            SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsers));
-            
-            int visibleUsersReport = Int32.Parse(selectedOption.SelectedOption.Text);
-        }
-
+       
 
         public SecretariesPage(IWebDriver driver) : base (driver)
         {
            
         }
 
-        public SecretariesPage AddSecretary()
+        public UnassignedUsers AddSecretary()
         {
             driver.FindElement(addSecretaryButton).Click();
-            return this;
-            // return UnassigmentUsersPage;
+            return new UnassignedUsers(driver);
         }
 
+        //public SecretaryEditPage EditSecretary (int index)
+        //{
+        //    driver.FindElement(By.XPath($"//td[@data-secretary-id={index}]")).Click();
+        //    return new SecretaryEditPage(driver);
+        //}
+        
         public SecretariesPage PrevPage ()
         {
             driver.FindElement(prevPageLink).Click();
@@ -97,6 +98,16 @@ namespace WHAT_PageObject.Secretaries
             return this;
         }
 
+        public void GetUsersOnPage()
+        {
+            SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
+            int visibleUsersReport = Int32.Parse(selectedOption.SelectedOption.Text);
+        }
+
+        public void SelectUsersOnPage(showedUsers showedUsers)
+        {
+
+        }
         private string GetUserData (int columnNumber, int rowNumber)
         {
             return driver.FindElement(By.XPath($"//tbody/tr[{rowNumber}]/td[{columnNumber}]")).Text;            
@@ -118,7 +129,6 @@ namespace WHAT_PageObject.Secretaries
             return this;
         }
     }
-
     
 
 }

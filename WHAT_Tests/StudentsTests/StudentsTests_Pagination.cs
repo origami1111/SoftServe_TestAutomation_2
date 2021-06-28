@@ -22,7 +22,7 @@ namespace WHAT_Tests
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
             driver.Navigate().GoToUrl(ReaderUrlsJSON.ByName("SigninPage"));
-            var credentials = ReaderFileJson.ReadFileJsonCredentials(@"DataFiles\Credentials.json", Role.Admin);
+            var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
             studentsPage = new SignInPage(driver)
                                 .SignInAsAdmin(credentials.Email, credentials.Password);
         }

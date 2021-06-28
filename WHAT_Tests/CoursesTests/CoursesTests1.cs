@@ -62,7 +62,7 @@ namespace WHAT_Tests
             string expected =  coursesPage.ReadCourseName(courseNumber);
             
             var courseDetailsPage = coursesPage.ClickCourseName(courseNumber);
-            string actual = courseDetailsPage.ReadCourseNameDetails();
+            string actual = courseDetailsPage.GetCourseNameDetails();
             driver.Navigate().Back();
 
             Assert.AreEqual(expected, actual);

@@ -32,10 +32,10 @@ namespace WHAT_PageObject
            
         }
 
-        public UnassignedUsers AddSecretary()
+        public UnassignedUsersPage AddSecretary()
         {
             driver.FindElement(addSecretaryButton).Click();
-            return new UnassignedUsers(driver);
+            return new UnassignedUsersPage(driver);
         }
 
         //public SecretaryEditPage EditSecretary (int index)

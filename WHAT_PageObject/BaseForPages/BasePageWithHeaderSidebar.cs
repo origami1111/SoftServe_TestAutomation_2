@@ -46,7 +46,6 @@ namespace WHAT_PageObject
         public void ClickArrowIcon()
         {
             header.FindArrowIcon().Click();
-
         }
 
         public void ClickDropdownItem(string label)
@@ -54,36 +53,26 @@ namespace WHAT_PageObject
             IWebElement dropdownItem = header.FindDropdownItem(label);
             dropdownItem.Click();
         }
-        /*
+        
         public MyProfilePage ClickMyProfile()
         {
             ClickArrowIcon();
             ClickDropdownItem("My profile");
             return new MyProfilePage(driver);
         }
-        */
+        
         public ChangePasswordPage ClickChangePassword()
         {
-            //ClickArrowIcon();
-            //ClickDropdownItem("Change password");
-            driver.FindElement(By.XPath("//span[contains(.,\'▼\')]")).Click();
-            driver.FindElement(By.LinkText("Change password")).Click();
+            ClickArrowIcon();
+            ClickDropdownItem("Change password");
             return new ChangePasswordPage(driver);
         }
 
         public SignInPage Logout()
         {
-            //ClickArrowIcon();
-            //ClickDropdownItem("Log Out");
-            driver.FindElement(By.XPath("//span[contains(.,\'▼\')]")).Click();
-            driver.FindElement(By.LinkText("Log Out")).Click();
+            ClickArrowIcon();
+            ClickDropdownItem("Log Out");
             return new SignInPage(driver);
-        }
-        public MyProfilePage ViewMyProfile()
-        {
-            driver.FindElement(By.XPath("//span[contains(.,\'▼\')]")).Click();
-            driver.FindElement(By.LinkText("My profile")).Click();
-            return new MyProfilePage(driver);
         }
     }
 }

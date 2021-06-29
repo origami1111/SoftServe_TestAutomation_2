@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
 
 namespace WHAT_PageObject
 {
@@ -9,7 +8,7 @@ namespace WHAT_PageObject
 
         #region Locators
         private By pageTitle = By.TagName("h2");
-        
+
         private By courseNumberLabel = By.XPath("//span[contains(.,'#')]");
 
         private By counterOfCoursesLabel = By.CssSelector("span[class='col-2 text-right']");

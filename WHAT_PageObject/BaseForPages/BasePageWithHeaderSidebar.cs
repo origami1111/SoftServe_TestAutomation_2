@@ -46,7 +46,6 @@ namespace WHAT_PageObject
         public void ClickArrowIcon()
         {
             header.FindArrowIcon().Click();
-
         }
 
         public void ClickDropdownItem(string label)
@@ -54,21 +53,21 @@ namespace WHAT_PageObject
             IWebElement dropdownItem = header.FindDropdownItem(label);
             dropdownItem.Click();
         }
-        /*
+        
         public MyProfilePage ClickMyProfile()
         {
             ClickArrowIcon();
             ClickDropdownItem("My profile");
             return new MyProfilePage(driver);
         }
-        */
+        
         public ChangePasswordPage ClickChangePassword()
         {
             ClickArrowIcon();
             ClickDropdownItem("Change password");
             return new ChangePasswordPage(driver);
         }
-        
+
         public SignInPage Logout()
         {
             ClickArrowIcon();

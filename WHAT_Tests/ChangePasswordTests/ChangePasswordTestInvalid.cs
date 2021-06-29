@@ -1,66 +1,43 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
 {
     [TestFixture]
-     public class ChangePasswordTestInvalid : TestBase
+    public class ChangePasswordTestInvalid : TestBase
     {
         private ChangePasswordPage changePasswordPage;
-
-        string currentPass = "What_123";
-        string newPass = "What_1234";
-        string email = "mentor@gmail.com";
-
+        Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
 
         [SetUp]
         public void SetupPage()
         {
             changePasswordPage = new SignInPage(driver)
-                .SignInAsMentor(email, currentPass).ClickChangePassword();
+                           .SignInAsMentor(credentials.Email, credentials.Password)
+                           .ClickChangePassword();
         }
 
         [Test]
-        public void ChangePasswordWithEmptyCurrentPassTest()
+        [TestCase("", "What_1234", "This field is required")]
+        public void ChangePasswordWithInvalidCurrentPassTest(string invalidCurrentPass, string newPass, string expected)
         {
-            string currentEmptyPass = "";
-            string expected = "This field is required";
-
-            string actual= changePasswordPage
-                .FillCurrentPassword(currentEmptyPass)
+            string actual = changePasswordPage
+                .FillCurrentPassword(invalidCurrentPass)
                 .FillNewPassword(newPass)
                 .VerifyErrorMassegeForCurrentPassword();
-           
+
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void ChangePasswordWithEmptyNewPassTest()
+        [TestCase("", "What_1234", "What_123", "This field is required")]
+        [TestCase("111", "What_1234", "What_123", "Password must contain at least 8 characters")]
+        [TestCase("11111111", "What_1234", "What_123", "Must contain at least one uppercase, one lowercase, one number")]
+        public void ChangePasswordWithInvalidNewPassTest(string invalidNewPass, string newPass, string currentPass, string expected)
         {
-            string newEmptyPass = "";
-            string expected = "This field is required";
-
             string actual = changePasswordPage
                 .FillCurrentPassword(currentPass)
-                .FillNewPassword(newEmptyPass)
-                .FillConfirmNewPassword(newPass)
-                .VerifyErrorMassegeForNewPassword();
-                
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void ChangePasswordWithShortNewPassTest()
-        {
-            string newShortPass = "111";
-            string expected = "Password must contain at least 8 characters";
-
-            string actual = changePasswordPage
-                .FillCurrentPassword(currentPass)
-                .FillNewPassword(newShortPass)
+                .FillNewPassword(invalidNewPass)
                 .FillConfirmNewPassword(newPass)
                 .VerifyErrorMassegeForNewPassword();
 
@@ -68,51 +45,20 @@ namespace WHAT_Tests
         }
 
         [Test]
-        public void ChangePasswordWithNumbersOnlyInNewPassTest()
+        [TestCase("11111111", "What_123", "What_1234", "You should confirm your password")]
+        [TestCase("", "What_123", "What_1234", "This field is required")]
+        public void ChangePasswordWithInvalidConfirmPassTest(string invalidConfirmPass, string currentPass, string newPass, string expected)
         {
-            string newPassOnlyNumbers = "11111111";
-            string expected = "Must contain at least one uppercase, one lowercase, one number";
-
-            string actual = changePasswordPage
-                .FillCurrentPassword(currentPass)
-                .FillNewPassword(newPassOnlyNumbers)
-                .FillConfirmNewPassword(newPass)
-                .VerifyErrorMassegeForNewPassword();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void ChangePasswordWithNumbersOnlyInConfirmPassTest()
-        {
-            string newPassOnlyNumbers = "11111111";
-            string expected = "You should confirm your password";
-
             string actual = changePasswordPage
                 .FillCurrentPassword(currentPass)
                 .FillNewPassword(newPass)
-                .FillConfirmNewPassword(newPassOnlyNumbers)
+                .FillConfirmNewPassword(invalidConfirmPass)
                 .FillNewPassword(newPass)
                 .VerifyErrorMassegeForConfirmPassword();
 
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
-        public void ChangePasswordWithEmptyConfirmPassTest()
-        {
-            string newPassOnlyNumbers = "";
-            string expected = "This field is required";
-
-            string actual = changePasswordPage
-                .FillCurrentPassword(currentPass)
-                .FillNewPassword(newPass)
-                .FillConfirmNewPassword(newPassOnlyNumbers)
-                .FillNewPassword(newPass)
-                .VerifyErrorMassegeForConfirmPassword();
-
-            Assert.AreEqual(expected, actual);
-        }
         [TearDown]
         public void SetPostConditions()
         {

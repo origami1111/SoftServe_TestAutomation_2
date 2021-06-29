@@ -1,10 +1,8 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System.Threading;
 using System;
 using WHAT_PageObject;
-using System.Linq;
 
 namespace WHAT_Tests
 {
@@ -17,7 +15,7 @@ namespace WHAT_Tests
         private IWebDriver driver;
 
         [OneTimeSetUp]
-        public  void SetUp()
+        public void SetUp()
         {
             driver = new ChromeDriver();
             driver.Manage().Window.Maximize();

@@ -7,7 +7,7 @@ using WHAT_PageObject;
 namespace WHAT_Tests
 {
     [SetUpFixture]
-    public abstract class TestBase 
+    public abstract class TestBase
     {
         protected IWebDriver driver;
 
@@ -18,7 +18,6 @@ namespace WHAT_Tests
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
             driver.Navigate().GoToUrl(ReaderUrlsJSON.ByName("SigninPage"));
-
         }
 
         [TearDown]
@@ -26,10 +25,6 @@ namespace WHAT_Tests
         {
             driver.Quit();
         }
-
-
     }
-
-
 }
 

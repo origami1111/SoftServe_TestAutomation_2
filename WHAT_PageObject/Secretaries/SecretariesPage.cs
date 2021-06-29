@@ -29,7 +29,7 @@ namespace WHAT_PageObject
        
         public SecretariesPage(IWebDriver driver) : base (driver)
         {
-           
+
         }
 
         public UnassignedUsersPage AddSecretary()
@@ -91,10 +91,10 @@ namespace WHAT_PageObject
 
         private string GetUserData (int columnNumber, int rowNumber)
         {
-            return driver.FindElement(By.XPath($"//tbody/tr[{rowNumber}]/td[{columnNumber}]")).Text;            
+            return driver.FindElement(By.XPath($"//tbody/tr[{rowNumber}]/td[{columnNumber}]")).Text;
         }
 
-        public int GetShowedUsersAmount ()
+        public int GetShowedUsersAmount()
         {
             return driver.FindElements(userData).Count;
         }
@@ -102,7 +102,7 @@ namespace WHAT_PageObject
         public List<string> GetSortedList (ColumnName column)
         {
             int count = GetShowedUsersAmount();
-            List<string> sortedList = new List <string> (count);
+            List<string> sortedList = new List<string>(count);
             for (int i = 1; i <= count; i++)
             {
                 sortedList.Add(GetUserData((int)column, i));
@@ -126,6 +126,6 @@ namespace WHAT_PageObject
             return Int32.Parse(driver.FindElement(countUsersReport).Text.Split(" ")[usersTotalIndex]);
         }
     }
-    
+
 
 }

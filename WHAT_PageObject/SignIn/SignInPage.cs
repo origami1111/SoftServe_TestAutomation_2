@@ -39,7 +39,7 @@ namespace WHAT_PageObject
         public RegistrationPage ClickRegistrationLink()
         {
             driver.FindElement(registrationLink).Click();
-            
+
             return new RegistrationPage(driver);
         }
 

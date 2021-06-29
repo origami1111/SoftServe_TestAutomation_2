@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using Newtonsoft.Json;
+using System.Linq;
 
 namespace WHAT_PageObject
 {
     public class ReaderUrlsJSON
     {
-        public  ReaderUrlsJSON() { }
+        public ReaderUrlsJSON() { }
 
         private static string path = @"Links/Links.json";
 
@@ -46,7 +46,7 @@ namespace WHAT_PageObject
 
                 nameAndUrl = urls.Where(x => x.Name.Equals(name)).FirstOrDefault();
             }
-            Uri urlAndUserNum = new Uri(nameAndUrl.Url.ToString()+"/"+userNumber.ToString(),UriKind.Absolute);
+            Uri urlAndUserNum = new Uri(nameAndUrl.Url.ToString() + "/" + userNumber.ToString(), UriKind.Absolute);
             return urlAndUserNum;
         }
 

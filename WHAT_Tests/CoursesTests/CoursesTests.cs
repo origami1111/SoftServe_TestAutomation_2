@@ -17,6 +17,7 @@ namespace WHAT_Tests
             coursesPage = new SignInPage(driver)
                             .SignInAsAdmin(credentials.Email, credentials.Password)
                             .SidebarNavigateTo<CoursesPage>();
+
         }
 
         [TearDown]
@@ -71,7 +72,7 @@ namespace WHAT_Tests
         {
             var actual = coursesPage.ClickAddCourseButton()
                                     .FillCourseNameField(invalidData);
-            
+
             Assert.True(expected == actual.GetErrorMessage() && actual.IsSaveButtonDisabled());
         }
 
@@ -80,11 +81,11 @@ namespace WHAT_Tests
         {
             var expected = "This field is required";
             var anyData = "Test";
-            
+
             var actual = coursesPage.ClickAddCourseButton()
                                     .FillCourseNameField(anyData)
                                     .DeleteTextWithBackspaces(anyData.Length);
-            
+
             Assert.True(expected == actual.GetErrorMessage() && actual.IsSaveButtonDisabled());
         }
     }

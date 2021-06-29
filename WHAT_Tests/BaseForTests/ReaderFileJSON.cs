@@ -29,7 +29,7 @@ namespace WHAT_Tests
         {
             List<Credentials> credentials = new List<Credentials>();
 
-            using(StreamReader reader = new StreamReader(path))
+            using (StreamReader reader = new StreamReader(path))
             {
                 string json = reader.ReadToEnd();
                 List<Credentials> creds = JsonConvert.DeserializeObject<List<Credentials>>(json);

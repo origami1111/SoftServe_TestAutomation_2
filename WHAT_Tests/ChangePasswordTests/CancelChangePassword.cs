@@ -1,30 +1,25 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
 {
     [TestFixture]
-    public class CancelChangePassword:TestBase
+    public class CancelChangePassword : TestBase
     {
         private ChangePasswordPage changePasswordPage;
-
-        string currentPass = "What_123";
-        string newPass = "What_1234";
-        string email = "mentor@gmail.com";
-
+        Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
 
         [SetUp]
         public void SetupPage()
         {
             changePasswordPage = new SignInPage(driver)
-                .SignInAsMentor(email, currentPass).ClickChangePassword();
+                            .SignInAsMentor(credentials.Email, credentials.Password)
+                            .ClickChangePassword();
         }
 
         [Test]
-        public void CancelChangePasswordTest()
+        [TestCase("What_123", "What_1234")]
+        public void CancelChangePasswordTest(string currentPass, string newPass)
         {
             changePasswordPage
                 .FillCurrentPassword(currentPass)
@@ -32,11 +27,11 @@ namespace WHAT_Tests
                 .FillConfirmNewPassword(newPass)
                 .ClickCancelButton();
 
-
             changePasswordPage.Logout();
 
             changePasswordPage = new SignInPage(driver)
-                .SignInAsMentor(email, currentPass).ClickChangePassword();
+                            .SignInAsMentor(credentials.Email, credentials.Password)
+                            .ClickChangePassword();
         }
 
         [TearDown]

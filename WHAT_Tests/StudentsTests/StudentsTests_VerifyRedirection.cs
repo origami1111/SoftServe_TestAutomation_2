@@ -1,10 +1,8 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System.Threading;
 using System;
 using WHAT_PageObject;
-using System.Linq;
 
 namespace WHAT_Tests
 {
@@ -56,7 +54,7 @@ namespace WHAT_Tests
             string studentEditURL = ReaderUrlsJSON.ByNameAndNumber("StudentsPage", studentNum).ToString();
             Assert.AreEqual(studentEditURL, driver.Url);
         }
-        
+
         //[Test]
         //public void RedirectStudentsEdit_EditIcon([Values((uint)1)] uint studentNum)
         //{

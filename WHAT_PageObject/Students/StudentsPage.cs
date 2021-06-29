@@ -146,7 +146,7 @@ namespace WHAT_PageObject
         {
             IWebElement addStudentBtnEl = driver.FindElement(_addStudentButton);
             addStudentBtnEl.Click();
-            return new UnassignedUsers(driver);
+            return new UnassignedUsersPage(driver);
         }
 
         public StudentsPage FillSearchingField(string inputingSentence)

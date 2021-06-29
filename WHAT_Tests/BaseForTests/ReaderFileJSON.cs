@@ -18,8 +18,8 @@ namespace WHAT_Tests
             {
                 string json = reader.ReadToEnd();
                 List<Credentials> creds = JsonConvert.DeserializeObject<List<Credentials>>(json);
-
-                credentials = creds.Where(x => x.Role.Equals(role)).FirstOrDefault();
+                
+                credentials = creds.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).FirstOrDefault();
             }
 
             return credentials;
@@ -34,7 +34,8 @@ namespace WHAT_Tests
                 string json = reader.ReadToEnd();
                 List<Credentials> creds = JsonConvert.DeserializeObject<List<Credentials>>(json);
 
-                credentials = creds.Where(x => x.Role.Equals(role)).ToList();
+                credentials = creds.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).ToList();
+
             }
 
             return credentials;

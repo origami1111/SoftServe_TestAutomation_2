@@ -11,7 +11,7 @@ namespace WHAT_Tests
     {
         protected IWebDriver driver;
 
-        [OneTimeSetUp]
+        [SetUp]
         public void SetUp()
         {
             driver = new ChromeDriver();
@@ -20,15 +20,11 @@ namespace WHAT_Tests
             driver.Navigate().GoToUrl(ReaderUrlsJSON.ByName("SigninPage"));
         }
 
-        [OneTimeTearDown]
+        [TearDown]
         public void TearDown()
         {
             driver.Quit();
         }
-
-
     }
-
-
 }
 

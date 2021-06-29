@@ -7,7 +7,6 @@ namespace WHAT_Tests
     public class CancelChangePassword : TestBase
     {
         private ChangePasswordPage changePasswordPage;
-
         Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
 
         [SetUp]
@@ -16,7 +15,6 @@ namespace WHAT_Tests
             changePasswordPage = new SignInPage(driver)
                             .SignInAsMentor(credentials.Email, credentials.Password)
                             .ClickChangePassword();
-
         }
 
         [Test]

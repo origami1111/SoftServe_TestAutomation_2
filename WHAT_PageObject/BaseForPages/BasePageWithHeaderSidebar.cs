@@ -56,6 +56,8 @@ namespace WHAT_PageObject
 
         public ChangePasswordPage ClickChangePassword()
         {
+            //ClickArrowIcon();
+            //ClickDropdownItem("Change password");
             driver.FindElement(By.XPath("//span[contains(.,\'▼\')]")).Click();
             driver.FindElement(By.LinkText("Change password")).Click();
             return new ChangePasswordPage(driver);
@@ -63,6 +65,8 @@ namespace WHAT_PageObject
 
         public SignInPage Logout()
         {
+            //ClickArrowIcon();
+            //ClickDropdownItem("Log Out");
             driver.FindElement(By.XPath("//span[contains(.,\'▼\')]")).Click();
             driver.FindElement(By.LinkText("Log Out")).Click();
             return new SignInPage(driver);

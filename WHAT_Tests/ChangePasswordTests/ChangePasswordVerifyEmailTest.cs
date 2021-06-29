@@ -6,7 +6,6 @@ namespace WHAT_Tests
     [TestFixture]
     public class ChangePasswordVerifyEmailTest : TestBase
     {
-
         private ChangePasswordPage changePasswordPage;
         Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
 

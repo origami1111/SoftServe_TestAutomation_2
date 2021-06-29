@@ -19,11 +19,10 @@ namespace WHAT_Tests
 
         [Test]
         [TestCase("", "What_1234", "This field is required")]
-        public void ChangePasswordWithInvalidCurrentPassTest(string currentEmptyPass, string newPass, string expected)
+        public void ChangePasswordWithInvalidCurrentPassTest(string invalidCurrentPass, string newPass, string expected)
         {
-
             string actual = changePasswordPage
-                .FillCurrentPassword(currentEmptyPass)
+                .FillCurrentPassword(invalidCurrentPass)
                 .FillNewPassword(newPass)
                 .VerifyErrorMassegeForCurrentPassword();
 
@@ -34,11 +33,11 @@ namespace WHAT_Tests
         [TestCase("", "What_1234", "What_123", "This field is required")]
         [TestCase("111", "What_1234", "What_123", "Password must contain at least 8 characters")]
         [TestCase("11111111", "What_1234", "What_123", "Must contain at least one uppercase, one lowercase, one number")]
-        public void ChangePasswordWithInvalidNewPassTest(string newEmptyPass, string newPass, string currentPass, string expected)
+        public void ChangePasswordWithInvalidNewPassTest(string invalidNewPass, string newPass, string currentPass, string expected)
         {
             string actual = changePasswordPage
                 .FillCurrentPassword(currentPass)
-                .FillNewPassword(newEmptyPass)
+                .FillNewPassword(invalidNewPass)
                 .FillConfirmNewPassword(newPass)
                 .VerifyErrorMassegeForNewPassword();
 
@@ -48,12 +47,12 @@ namespace WHAT_Tests
         [Test]
         [TestCase("11111111", "What_123", "What_1234", "You should confirm your password")]
         [TestCase("", "What_123", "What_1234", "This field is required")]
-        public void ChangePasswordWithInvalidConfirmPassTest(string newInvalidPass, string currentPass, string newPass, string expected)
+        public void ChangePasswordWithInvalidConfirmPassTest(string invalidConfirmPass, string currentPass, string newPass, string expected)
         {
             string actual = changePasswordPage
                 .FillCurrentPassword(currentPass)
                 .FillNewPassword(newPass)
-                .FillConfirmNewPassword(newInvalidPass)
+                .FillConfirmNewPassword(invalidConfirmPass)
                 .FillNewPassword(newPass)
                 .VerifyErrorMassegeForConfirmPassword();
 

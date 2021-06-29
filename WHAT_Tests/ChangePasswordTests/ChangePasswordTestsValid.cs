@@ -5,10 +5,9 @@ namespace WHAT_Tests
     [TestFixture]
     public class ChangePasswordTestsValid : TestBase
     {
-
         private ChangePasswordPage changePasswordPage;
         Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
-
+        
         [SetUp]
         public void SetupPage()
         {
@@ -35,16 +34,15 @@ namespace WHAT_Tests
         [TearDown]
         public void SetPostConditions()
         {
-            string currentPass = "What_123";
-            string newPass = "What_1234";
+            string postNewPass = "What_123";
+            string postCurrPass = "What_1234";
             changePasswordPage
                 .ClickChangePassword()
-                .FillCurrentPassword(newPass)
-                .FillNewPassword(currentPass)
-                .FillConfirmNewPassword(currentPass)
+                .FillCurrentPassword(postCurrPass)
+                .FillNewPassword(postNewPass)
+                .FillConfirmNewPassword(postNewPass)
                 .ClickSaveButton()
                 .ClickSaveInPopUpMenu();
         }
-
     }
 }

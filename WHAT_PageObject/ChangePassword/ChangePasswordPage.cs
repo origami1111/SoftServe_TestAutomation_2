@@ -53,7 +53,6 @@ namespace WHAT_PageObject
             return this;
         }
 
-
         public ChangePasswordPage FillNewPassword(string newPass)
         {
             FillField(newPassword, newPass);

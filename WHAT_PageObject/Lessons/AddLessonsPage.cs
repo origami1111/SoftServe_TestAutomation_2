@@ -21,36 +21,41 @@ namespace WHAT_PageObject
             FillField(lessonsTheme, tema);
             return this;
         }
+
         public AddLessonsPage FillGroupName(string nameOfGroup)
         {
             FillField(groupName, nameOfGroup);
             return this;
         }
+
         public AddLessonsPage FillDateTime(string dataTime)
         {
             FillField(dateTimePicker, dataTime);
             return this;
         }
+
         public AddLessonsPage FillMentorEmail(string mentorEmail)
         {
             FillField(mentor, mentorEmail);
             return this;
         }
+
         public LessonsPage ClickCancelButton()
         {
             ClickItem(cancelButton);
             return new LessonsPage(driver);
         }
+
         public AddLessonsPage ClickClassRegisterButton()
         {
             ClickItem(classRegisterButton);
             return this;
         }
+
         public LessonsPage ClickSaveButton()
         {
             ClickItem(saveButton);
             return new LessonsPage(driver);
         }
-
     }
 }

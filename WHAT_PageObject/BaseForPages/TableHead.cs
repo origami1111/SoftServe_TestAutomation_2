@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WHAT_PageObject
 {
-    public enum columnName
+    public enum ColumnName
     {
         index = 1,
         firstName = 2,
@@ -12,7 +12,7 @@ namespace WHAT_PageObject
         email = 4,
         edit = 5
     }
-    public enum showedUsers
+    public enum ShowedUsers
     {
         ten = 1,
         thirty = 2,

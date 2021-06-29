@@ -32,6 +32,7 @@ namespace WHAT_Tests
 
         [Test]
         [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
+        [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
         public void RegistrationWithTooLongFirstNameTest(string tooLongFirstName)
         {
             string expected = "Too long";
@@ -44,7 +45,7 @@ namespace WHAT_Tests
         }
 
         [Test]
-        [TestCase("==")]
+        [TestCase("Name==")]
         public void RegistrationWithSpecialSymbolsFirstNameTest(string specialSymbolsFirstName)
         {
             string expected = "Invalid first name";
@@ -57,7 +58,7 @@ namespace WHAT_Tests
         }
 
         [Test]
-        [TestCase("111")]
+        [TestCase("Name111")]
         public void RegistrationWithNumbersFirstNameTest(string numbersFirstName)
         {
             string expected = "Invalid first name";
@@ -86,6 +87,7 @@ namespace WHAT_Tests
 
         [Test]
         [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
+        [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
         public void RegistrationWithTooLongLastNameTest(string tooLongLastName)
         {
             string expected = "Too long";
@@ -98,7 +100,7 @@ namespace WHAT_Tests
         }
 
         [Test]
-        [TestCase("==")]
+        [TestCase("LastName==")]
         public void RegistrationWithSpecialSymbolsLastNameTest(string specialSymbolsLastName)
         {
             string expected = "Invalid last name";
@@ -111,7 +113,7 @@ namespace WHAT_Tests
         }
 
         [Test]
-        [TestCase("111")]
+        [TestCase("LastName111")]
         public void RegistrationWithNumbersLastNameTest(string numbersLastName)
         {
             string expected = "Invalid last name";
@@ -154,7 +156,8 @@ namespace WHAT_Tests
 
         #region PasswordField
         [Test]
-        [TestCase("qwerty")]
+        [TestCase("q")]
+        [TestCase("qwerty1")]
         public void RegistrationWithShortPasswordTest(string shortPassword)
         {
             string expected = "Password must contain at least 8 characters";
@@ -168,7 +171,8 @@ namespace WHAT_Tests
 
         [Test]
         [TestCase("qwertyqwerty")]
-        public void RegistrationWithOnlyLowerCaseLettersPasswordTest(string withLowerCaseLetters)
+        [TestCase("qwertyqwerty1")]
+        public void RegistrationWithOnlyLowerCaseLettersAndNumbersPasswordTest(string withLowerCaseLetters)
         {
             string expected = "Must contain at least one uppercase, one lowercase, one number";
 

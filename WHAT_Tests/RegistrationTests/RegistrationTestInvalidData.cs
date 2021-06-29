@@ -1,31 +1,19 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
 using WHAT_PageObject;
 
-namespace WHAT_Tests.RegistrationTests
+namespace WHAT_Tests
 {
     [TestFixture]
-    class RegistrationTestInvalidData
+    class RegistrationTestInvalidData : TestBase
     {
-        private IWebDriver driver;
         private RegistrationPage registrationPage;
 
         [SetUp]
-        public void Setup()
+        public void SetupPage()
         {
-            driver = new ChromeDriver();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
-            driver.Navigate().GoToUrl("http://localhost:8080/registration");
-
-            registrationPage = new RegistrationPage(driver);
-        }
-
-        [TearDown]
-        public void Logout()
-        {
-            driver.Quit();
+            registrationPage = new SignInPage(driver)
+                               .ClickRegistrationLink();
         }
 
         #region FirstNameField
@@ -44,6 +32,7 @@ namespace WHAT_Tests.RegistrationTests
 
         [Test]
         [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
+        [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
         public void RegistrationWithTooLongFirstNameTest(string tooLongFirstName)
         {
             string expected = "Too long";
@@ -56,7 +45,7 @@ namespace WHAT_Tests.RegistrationTests
         }
 
         [Test]
-        [TestCase("==")]
+        [TestCase("Name==")]
         public void RegistrationWithSpecialSymbolsFirstNameTest(string specialSymbolsFirstName)
         {
             string expected = "Invalid first name";
@@ -69,7 +58,7 @@ namespace WHAT_Tests.RegistrationTests
         }
 
         [Test]
-        [TestCase("111")]
+        [TestCase("Name111")]
         public void RegistrationWithNumbersFirstNameTest(string numbersFirstName)
         {
             string expected = "Invalid first name";
@@ -98,6 +87,7 @@ namespace WHAT_Tests.RegistrationTests
 
         [Test]
         [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
+        [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
         public void RegistrationWithTooLongLastNameTest(string tooLongLastName)
         {
             string expected = "Too long";
@@ -110,7 +100,7 @@ namespace WHAT_Tests.RegistrationTests
         }
 
         [Test]
-        [TestCase("==")]
+        [TestCase("LastName==")]
         public void RegistrationWithSpecialSymbolsLastNameTest(string specialSymbolsLastName)
         {
             string expected = "Invalid last name";
@@ -123,7 +113,7 @@ namespace WHAT_Tests.RegistrationTests
         }
 
         [Test]
-        [TestCase("111")]
+        [TestCase("LastName111")]
         public void RegistrationWithNumbersLastNameTest(string numbersLastName)
         {
             string expected = "Invalid last name";
@@ -166,7 +156,8 @@ namespace WHAT_Tests.RegistrationTests
 
         #region PasswordField
         [Test]
-        [TestCase("qwerty")]
+        [TestCase("q")]
+        [TestCase("qwerty1")]
         public void RegistrationWithShortPasswordTest(string shortPassword)
         {
             string expected = "Password must contain at least 8 characters";
@@ -180,7 +171,8 @@ namespace WHAT_Tests.RegistrationTests
 
         [Test]
         [TestCase("qwertyqwerty")]
-        public void RegistrationWithOnlyLowerCaseLettersPasswordTest(string withLowerCaseLetters)
+        [TestCase("qwertyqwerty1")]
+        public void RegistrationWithOnlyLowerCaseLettersAndNumbersPasswordTest(string withLowerCaseLetters)
         {
             string expected = "Must contain at least one uppercase, one lowercase, one number";
 

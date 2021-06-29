@@ -19,6 +19,18 @@
     "Url": "http://localhost:8080/students"
   },
   {
+    "Name": "MentorsPage",
+    "Url": "http://localhost:8080/mentors"
+  },
+  {
+    "Name": "LessonsPage",
+    "Url": "http://localhost:8080/lessons"
+  },
+  {
+    "Name": "SupportPage",
+    "Url": "http://localhost:8080/support"
+  },
+  {
     "Name": "StudentsEditPage",
     "Url": "http://localhost:8080/students/edit"
   },

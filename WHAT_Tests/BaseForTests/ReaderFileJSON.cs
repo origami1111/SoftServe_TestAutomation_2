@@ -23,7 +23,6 @@ namespace WHAT_Tests
 
             return credentials;
         }
-
         public static List<Credentials> ReadFileJsonListCredentials(Role role)
         {
             List<Credentials> credentials = new List<Credentials>();

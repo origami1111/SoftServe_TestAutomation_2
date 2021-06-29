@@ -37,6 +37,12 @@
     <None Update="Credentials\Credentials.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Credentials\students_active.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Credentials\students_inactive.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Links\Links.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

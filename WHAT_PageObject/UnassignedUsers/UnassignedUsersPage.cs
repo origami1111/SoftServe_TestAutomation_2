@@ -46,39 +46,42 @@ namespace WHAT_PageObject
 
         }
 
-        public UnassignedUsersPage AddStudentRole(int rowNumber)
+        public string AddStudentRole(int rowNumber)
         {
+            string userName = driver.FindElement(TableCell(rowNumber, ColumnName.Name)).Text;
 
             select = new SelectElement(driver.FindElement(TableCell(rowNumber, ColumnName.SelectRole)));
             select.SelectByText("student");
 
             ClickItem(TableCell(rowNumber, ColumnName.AddRole));
 
-            return this;
+            return userName;
 
         }
 
-        public UnassignedUsersPage AddMentorRole(int rowNumber)
+        public string AddMentorRole(int rowNumber)
         {
+            string userName = driver.FindElement(TableCell(rowNumber, ColumnName.Name)).Text;
 
             select = new SelectElement(driver.FindElement(TableCell(rowNumber, ColumnName.SelectRole)));
             select.SelectByText("mentor");
 
             ClickItem(TableCell(rowNumber, ColumnName.AddRole));
 
-            return this;
+            return userName;
 
         }
 
-        public UnassignedUsersPage AddSecretaryRole(int rowNumber)
+        public string AddSecretaryRole(int rowNumber)
         {
+            string userName = driver.FindElement(TableCell(rowNumber, ColumnName.Name)).Text;
 
             select = new SelectElement(driver.FindElement(TableCell(rowNumber, ColumnName.SelectRole)));
             select.SelectByText("secretary");
 
             ClickItem(TableCell(rowNumber, ColumnName.AddRole));
 
-            return this;
+            return userName;
 
         }
 

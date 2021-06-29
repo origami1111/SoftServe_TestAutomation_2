@@ -66,11 +66,11 @@ namespace WHAT_PageObject
             return new UnassignedUsersPage(driver);
         }
 
-        //public SecretaryEditPage EditSecretary (int index)
-        //{
-        //    driver.FindElement(By.XPath($"//td[@data-secretary-id={index}]")).Click();
-        //    return new SecretaryEditPage(driver);
-        //}
+        public EditSecretaryPage EditSecretary (int index)
+        {
+            driver.FindElement(By.XPath($"//td[@data-secretary-id={index}]")).Click();
+            return new EditSecretaryPage(driver);
+        }
         
         public SecretariesPage PrevPage ()
         {

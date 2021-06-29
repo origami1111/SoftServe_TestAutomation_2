@@ -19,8 +19,6 @@ namespace WHAT_PageObject
             {
                 string json = reader.ReadToEnd();
                 var urls = JsonConvert.DeserializeObject<List<NameAndUrl>>(json);
-
-
                 nameAndUrl = urls.Where(x => x.Name.Equals(name)).FirstOrDefault();
             }
             return nameAndUrl.Url;
@@ -30,12 +28,12 @@ namespace WHAT_PageObject
             return ByName(name).ToString();
         }
 
-        public static string GetUrlByNameAndNumber(string name, uint userNumber)
+        public static string GetUrlByNameAndNumber(string name, int userNumber)
         {
             return ByNameAndNumber(name, userNumber).ToString();
         }
 
-        public static Uri ByNameAndNumber(string name, uint userNumber)
+        public static Uri ByNameAndNumber(string name, int userNumber)
         {
             NameAndUrl nameAndUrl = new NameAndUrl();
             using (StreamReader reader = new StreamReader(path))

@@ -1,46 +1,60 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
+using System.Threading;
 using WHAT_PageObject;
-
+using System.Collections.Generic;
 
 namespace WHAT_Tests
 {
     [TestFixture]
-    public class StudentsTests_Pagination
+    public class StudentsTests_Pagination : TestBase
     {
-        private StudentsPage studentsPage;
-        private IWebDriver driver;
 
-        [OneTimeSetUp]
-        public void SetUp()
-        {
-            driver = new ChromeDriver();
-            driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
-            driver.Navigate().GoToUrl(ReaderUrlsJSON.ByName("SigninPage"));
-            var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
-            studentsPage = new SignInPage(driver)
-                                .SignInAsAdmin(credentials.Email, credentials.Password);
-        }
+        private StudentsPage studentsPage;
 
         [SetUp]
-        public void ToStudentPage()
+        public void Precondition()
         {
-            studentsPage.SidebarNavigateTo<StudentsPage>();
+            var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+            studentsPage = new SignInPage(driver)
+                                .SignInAsAdmin(credentials.Email, credentials.Password)
+                                .SidebarNavigateTo<StudentsPage>();
+        }
+
+        [TearDown]
+        public void Postcondition()
+        {
+            studentsPage.Logout();
         }
 
         [Test]
-        public void FillSearchingField_ValidData([Values("student", "Student")] string forSearch)
+        public void VerifyPagination_PrevAndNextPageButton()
         {
+            Dictionary<int, string[]> expect = studentsPage.GetStudentsFromTable();
+            studentsPage.ClickNextPage();
+            studentsPage.ClickPreviousPage();
+            Dictionary<int, string[]> actual = studentsPage.GetStudentsFromTable();
+            CollectionAssert.AreEqual(expect, actual);
         }
 
-        [OneTimeTearDown]
-        public void TearDown()
+        
+        [Test]
+        public void VerifyPagination_ClickPrevPageButtonToEnd()
         {
-            driver.Quit();
+            Dictionary<int, string[]> expect = studentsPage.GetStudentsFromTable();
+            uint countPage = studentsPage.GetCountOfPages();
+            uint index = 1;
+            while (index <= countPage)
+            {
+                studentsPage.ClickNextPage();
+                index++;
+            }
+            while (index >= 1)
+            {
+                studentsPage.ClickPreviousPage();
+                index--;
+            }
+            Dictionary<int, string[]> actual = studentsPage.GetStudentsFromTable();
+            CollectionAssert.AreEqual(expect, actual);
         }
-
     }
 }

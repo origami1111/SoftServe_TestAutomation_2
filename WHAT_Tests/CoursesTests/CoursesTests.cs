@@ -40,12 +40,12 @@ namespace WHAT_Tests
         [Test]
         public void EditCourse_CLickClearButton()
         {
-            int courseNumber = 3;
+            int courseNumber = 1;
             string expected = coursesPage.ReadCourseName(courseNumber);
 
-            var actual = coursesPage.ClickPencilLink(courseNumber)
-                                  //  .DeleteTextWithBackspaces()
-                                  //  .ClickClearButton()
+            var actual = coursesPage.ClickEditIcon(courseNumber)
+                                    .DeleteTextWithBackspaces()
+                                    .ClickClearButton()
                                     .GetCourseName();
 
             Assert.AreEqual(expected, actual);

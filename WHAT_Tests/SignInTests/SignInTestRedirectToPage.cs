@@ -17,7 +17,7 @@ namespace WHAT_Tests
         [Test]
         public void RedirectToRegistrationPage()
         {
-            string expected = "http://localhost:8080/registration";
+            string expected = ReaderUrlsJSON.GetUrlByName("RegistrationPage");
 
             signInPage.ClickRegistrationLink();
 

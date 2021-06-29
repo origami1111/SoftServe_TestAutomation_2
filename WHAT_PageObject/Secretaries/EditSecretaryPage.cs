@@ -25,50 +25,70 @@ namespace WHAT_PageObject
 
         }
 
-        public string Fill_FirstName(string FirstName)
+        public EditSecretaryPage Fill_FirstName(string FirstName)
         {
-
             var firstNameField = driver.FindElement(firstName);
 
             firstNameField.SendKeys(Keys.LeftShift + Keys.Home);
             firstNameField.SendKeys(FirstName);
             ClickItem(deselectLabel);
 
-            var dangerMessage = driver.FindElement(firstNameDangerField).Text;
-
-            return dangerMessage;
-
+            return this;
         }
 
-        public string Fill_LastName(string LastName)
+        public EditSecretaryPage Fill_LastName(string LastName)
         {
-
             var lastNameField = driver.FindElement(lastName);
 
             lastNameField.SendKeys(Keys.LeftShift + Keys.Home);
             lastNameField.SendKeys(LastName);
             ClickItem(deselectLabel);
 
-            var dangerMessage = driver.FindElement(lastNameDangerField).Text;
-
-            return dangerMessage;
-
+            return this;
         }
 
-        public string Fill_Email(string Email)
+        public EditSecretaryPage Fill_Email(string Email)
         {
-
             var emailField = driver.FindElement(email);
 
             emailField.SendKeys(Keys.LeftShift + Keys.Home);
             emailField.SendKeys(Email);
             ClickItem(deselectLabel);
 
-            var dangerMessage = driver.FindElement(emailDangerField).Text;
-
-            return dangerMessage;
-
+            return this;
         }
 
+        public string DangerFieldMessage(string fieldName)
+        {
+            string dangerMessage;
+
+            switch (fieldName)
+            {
+                case "first name":
+                    dangerMessage = driver.FindElement(firstNameDangerField).Text;
+                    break;
+                case "last name":
+                    dangerMessage = driver.FindElement(lastNameDangerField).Text;
+                    break;
+                default:
+                    dangerMessage = driver.FindElement(emailDangerField).Text;
+                    break;
+            }
+            return dangerMessage;
+        }
+
+        public EditSecretaryPage ClickSaveButton()
+        {
+            ClickItem(save);
+
+            return this;
+        }
+
+        public EditSecretaryPage ClickClearButton()
+        {
+            ClickItem(clear);
+
+            return this;
+        }
     }
 }

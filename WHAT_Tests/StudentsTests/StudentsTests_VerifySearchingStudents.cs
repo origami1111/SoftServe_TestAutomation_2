@@ -36,7 +36,8 @@ namespace WHAT_Tests
         }
 
         [Test]
-        public void FillSearchingField_ValidData([Values("student", "Student")] string forSearch)
+        [TestCase("student", "Student")]
+        public void FillSearchingField_ValidData( string forSearch)
         {
             studentsPage.FillSearchingField(forSearch);
         }

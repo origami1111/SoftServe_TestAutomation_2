@@ -25,6 +25,15 @@ namespace WHAT_PageObject
             }
             return nameAndUrl.Url;
         }
+        public static string GetUrlByName(string name)
+        {
+            return ByName(name).ToString();
+        }
+
+        public static string GetUrlByNameAndNumber(string name, uint userNumber)
+        {
+            return ByNameAndNumber(name, userNumber).ToString();
+        }
 
         public static Uri ByNameAndNumber(string name, uint userNumber)
         {

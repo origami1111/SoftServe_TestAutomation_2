@@ -46,14 +46,22 @@ namespace WHAT_PageObject
         public void ClickArrowIcon()
         {
             header.FindArrowIcon().Click();
+
         }
 
         public void ClickDropdownItem(string label)
         {
             IWebElement dropdownItem = header.FindDropdownItem(label);
-            dropdownItem?.Click();
+            dropdownItem.Click();
         }
-
+        /*
+        public MyProfilePage ClickMyProfile()
+        {
+            ClickArrowIcon();
+            ClickDropdownItem("My profile");
+            return new MyProfilePage(driver);
+        }
+        */
         public ChangePasswordPage ClickChangePassword()
         {
             ClickArrowIcon();

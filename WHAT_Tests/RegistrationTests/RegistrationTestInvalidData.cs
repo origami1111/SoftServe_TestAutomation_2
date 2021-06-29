@@ -16,177 +16,66 @@ namespace WHAT_Tests
                                .ClickRegistrationLink();
         }
 
-        #region FirstNameField
         [Test]
-        [TestCase("a")]
-        public void RegistrationWithTooShortFirstNameTest(string tooShortFirstName)
+        [TestCase("a", "Too short")]
+        [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "Too long")]
+        [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "Too long")]
+        [TestCase("Name==", "Invalid first name")]
+        [TestCase("Name111", "Invalid first name")]
+        public void RegistrationWithInvalidDataFirstNameTest(string invalidData, string expected)
         {
-            string expected = "Too short";
-
             string actual = registrationPage
-                .FillFirstName(tooShortFirstName + Keys.Enter)
+                .FillFirstName(invalidData + Keys.Enter)
                 .GetErrorMessageFirstName();
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
-        public void RegistrationWithTooLongFirstNameTest(string tooLongFirstName)
+        [TestCase("a", "Too short")]
+        [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "Too long")]
+        [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "Too long")]
+        [TestCase("LastName==", "Invalid last name")]
+        [TestCase("LastName111", "Invalid last name")]
+        public void RegistrationWithInvalidDataLastNameTest(string invalidData, string expected)
         {
-            string expected = "Too long";
-
             string actual = registrationPage
-                .FillFirstName(tooLongFirstName + Keys.Enter)
-                .GetErrorMessageFirstName();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        [TestCase("==")]
-        public void RegistrationWithSpecialSymbolsFirstNameTest(string specialSymbolsFirstName)
-        {
-            string expected = "Invalid first name";
-
-            string actual = registrationPage
-                .FillFirstName(specialSymbolsFirstName + Keys.Enter)
-                .GetErrorMessageFirstName();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        [TestCase("111")]
-        public void RegistrationWithNumbersFirstNameTest(string numbersFirstName)
-        {
-            string expected = "Invalid first name";
-
-            string actual = registrationPage
-                .FillFirstName(numbersFirstName + Keys.Enter)
-                .GetErrorMessageFirstName();
-
-            Assert.AreEqual(expected, actual);
-        }
-        #endregion
-
-        #region LastNameField
-        [Test]
-        [TestCase("a")]
-        public void RegistrationWithTooShortLastNameTest(string tooShortLastName)
-        {
-            string expected = "Too short";
-
-            string actual = registrationPage
-                .FillLastName(tooShortLastName + Keys.Enter)
+                .FillLastName(invalidData + Keys.Enter)
                 .GetErrorMessageLastName();
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        [TestCase("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
-        public void RegistrationWithTooLongLastNameTest(string tooLongLastName)
+        [TestCase("email.com", "Invalid email address")]
+        [TestCase("email@com", "Invalid email address")]
+        public void RegistrationWithInvalidDataEmailTest(string invalidData, string expected)
         {
-            string expected = "Too long";
-
             string actual = registrationPage
-                .FillLastName(tooLongLastName + Keys.Enter)
-                .GetErrorMessageLastName();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        [TestCase("==")]
-        public void RegistrationWithSpecialSymbolsLastNameTest(string specialSymbolsLastName)
-        {
-            string expected = "Invalid last name";
-
-            string actual = registrationPage
-                .FillLastName(specialSymbolsLastName + Keys.Enter)
-                .GetErrorMessageLastName();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        [TestCase("111")]
-        public void RegistrationWithNumbersLastNameTest(string numbersLastName)
-        {
-            string expected = "Invalid last name";
-
-            string actual = registrationPage
-                .FillLastName(numbersLastName + Keys.Enter)
-                .GetErrorMessageLastName();
-
-            Assert.AreEqual(expected, actual);
-        }
-        #endregion
-
-        #region Email
-        [Test]
-        [TestCase("email.com")]
-        public void RegistrationWithoutAtInEmailTest(string withoutAt)
-        {
-            string expected = "Invalid email address";
-
-            string actual = registrationPage
-                .FillEmail(withoutAt + Keys.Enter)
+                .FillEmail(invalidData + Keys.Enter)
                 .GetErrorMessageEmail();
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        [TestCase("email@com")]
-        public void RegistrationWithoutDotInEmailTest(string withoutDot)
+        [TestCase("q", "Password must contain at least 8 characters")]
+        [TestCase("qwerty1", "Password must contain at least 8 characters")]
+        [TestCase("qwertyqwerty", "Must contain at least one uppercase, one lowercase, one number")]
+        [TestCase("qwertyqwerty1", "Must contain at least one uppercase, one lowercase, one number")]
+        public void RegistrationWithInvalidDataPasswordTest(string invalidData, string expected)
         {
-            string expected = "Invalid email address";
-
             string actual = registrationPage
-                .FillEmail(withoutDot + Keys.Enter)
-                .GetErrorMessageEmail();
-
-            Assert.AreEqual(expected, actual);
-        }
-        #endregion
-
-        #region PasswordField
-        [Test]
-        [TestCase("qwerty")]
-        public void RegistrationWithShortPasswordTest(string shortPassword)
-        {
-            string expected = "Password must contain at least 8 characters";
-
-            string actual = registrationPage
-                .FillPassword(shortPassword + Keys.Enter)
+                .FillPassword(invalidData + Keys.Enter)
                 .GetErrorMessagePassword();
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        [TestCase("qwertyqwerty")]
-        public void RegistrationWithOnlyLowerCaseLettersPasswordTest(string withLowerCaseLetters)
+        [TestCase("Qwerty_123", "ytrewq", "You should confirm your password")]
+        public void RegistrationWithInvalidDataPasswordConfirmTest(string password, string confirmPassword, string expected)
         {
-            string expected = "Must contain at least one uppercase, one lowercase, one number";
-
-            string actual = registrationPage
-                .FillPassword(withLowerCaseLetters + Keys.Enter)
-                .GetErrorMessagePassword();
-
-            Assert.AreEqual(expected, actual);
-        }
-        #endregion
-
-        #region ConfirmPasswordField
-        [Test]
-        [TestCase("Qwerty_123", "ytrewq")]
-        public void RegistrationWithMismatchedPasswordConfirmTest(string password, string confirmPassword)
-        {
-            string expected = "You should confirm your password";
-
             string actual = registrationPage
                 .FillPassword(password)
                 .FillConfirmPassword(confirmPassword + Keys.Enter)
@@ -194,6 +83,6 @@ namespace WHAT_Tests
 
             Assert.AreEqual(expected, actual);
         }
-        #endregion
+
     }
 }

@@ -8,7 +8,8 @@
     "Url": "http://localhost:8080/registration"
   },
   {
-    "MyProfile": "http://localhost:8080/my-profile"
+    "Name": "MyProfile",
+    "URL": "http://localhost:8080/my-profile"
   },
   {
     "Name": "ChangePasswordPage",

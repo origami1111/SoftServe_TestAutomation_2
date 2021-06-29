@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Internal;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
@@ -27,14 +28,13 @@ namespace WHAT_Tests
         [Test]
         public void VerifyCourseDetails()
         {
-            int courseNumber = 3;
+            int courseNumber = 1;
             string expected =  coursesPage.ReadCourseName(courseNumber);
             
             var courseDetailsPage = coursesPage.ClickCourseName(courseNumber);
             string actual = courseDetailsPage.GetCourseNameDetails();
 
             Assert.AreEqual(expected, actual);
-
         }
 
         [Test]
@@ -54,20 +54,19 @@ namespace WHAT_Tests
         [Test]
         public void AddCourse_ValidData()
         {
-            string courseName = "New course";
+            string courseName = StringRandomizer.GetRandomCourseName();
             coursesPage.ClickAddCourseButton()
                        .FillCourseNameField(courseName)
                        .ClickCancelButton();
         }
 
         [TestCase("a", "Too short")]
-        [TestCase("Course name with more than fifty characters is too long", "Too long")]
+        [TestCase("Course name with more than 50 characters is too long", "Too long")]
         [TestCase(" Space before course name", "Invalid course name")]
         [TestCase("More than one space   between words", "Invalid course name")]
         [TestCase("Space after course name ", "Invalid course name")]
-        [TestCase("Course name with special symbols: C#, .Net", "Invalid course name")]
+        [TestCase("Course name with special symbols: C#,/ .Net", "Invalid course name")]
         [TestCase("Not only Latin letters Кириллица", "Invalid course name")]
-        [TestCase("Course name with numbers 12", "Invalid course name")]
         public void AddCourseWithInvalidData(string invalidData, string expected)
         {
             var actual = coursesPage.ClickAddCourseButton()

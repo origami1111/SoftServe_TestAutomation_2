@@ -2,7 +2,7 @@
 
 namespace WHAT_PageObject
 {
-    public class MentorsPage : BasePage
+    public class MentorsPage : BasePageWithHeaderSidebar
     {
         public MentorsPage(IWebDriver driver) : base(driver)
         {

@@ -38,13 +38,13 @@ namespace WHAT_PageObject
             return new UnassignedUsersPage(driver);
         }
 
-        //public SecretaryEditPage EditSecretary (int index)
-        //{
-        //    driver.FindElement(By.XPath($"//td[@data-secretary-id={index}]")).Click();
-        //    return new SecretaryEditPage(driver);
-        //}
-
-        public SecretariesPage PrevPage()
+        public EditSecretaryPage EditSecretary (int index)
+        {
+            driver.FindElement(By.XPath($"//td[@data-secretary-id={index}]")).Click();
+            return new EditSecretaryPage(driver);
+        }
+        
+        public SecretariesPage PrevPage ()
         {
             driver.FindElement(prevPageLink).Click();
             return this;

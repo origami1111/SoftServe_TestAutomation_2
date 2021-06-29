@@ -19,7 +19,7 @@ namespace WHAT_PageObject
             //[typeof(GroupsPage)] = "Groups",
             [typeof(CoursesPage)] = "Courses",
             //[typeof(SchedulePage)] = "Schedule",
-            [typeof(UnassignedUsers)] = "Assigment",
+            [typeof(UnassignedUsersPage)] = "Assigment",
             [typeof(SupportPage)] = "Support"
         };
 
@@ -51,16 +51,23 @@ namespace WHAT_PageObject
         public void ClickDropdownItem(string label)
         {
             IWebElement dropdownItem = header.FindDropdownItem(label);
-            dropdownItem?.Click();
+            dropdownItem.Click();
         }
-
+        
+        public MyProfilePage ClickMyProfile()
+        {
+            ClickArrowIcon();
+            ClickDropdownItem("My profile");
+            return new MyProfilePage(driver);
+        }
+        
         public ChangePasswordPage ClickChangePassword()
         {
             ClickArrowIcon();
             ClickDropdownItem("Change password");
             return new ChangePasswordPage(driver);
         }
-        
+
         public SignInPage Logout()
         {
             ClickArrowIcon();

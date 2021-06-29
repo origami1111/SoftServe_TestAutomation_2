@@ -9,7 +9,8 @@ namespace WHAT_Tests
     {
         private ReaderFileJson() { }
         private const string path = @"Credentials\Credentials.json";
-        public static Credentials ReadFileJsonCredentials(Role role)
+
+        public static Credentials ReadFileJsonCredentials(Role role, Activity activity = Activity.Active)
         {
             Credentials credentials = new Credentials();
 
@@ -23,11 +24,12 @@ namespace WHAT_Tests
 
             return credentials;
         }
-        public static List<Credentials> ReadFileJsonListCredentials(Role role)
+
+        public static List<Credentials> ReadFileJsonListCredentials(Role role, Activity activity = Activity.Active)
         {
             List<Credentials> credentials = new List<Credentials>();
 
-            using(StreamReader reader = new StreamReader(path))
+            using (StreamReader reader = new StreamReader(path))
             {
                 string json = reader.ReadToEnd();
                 List<Credentials> creds = JsonConvert.DeserializeObject<List<Credentials>>(json);
@@ -37,5 +39,6 @@ namespace WHAT_Tests
 
             return credentials;
         }
+
     }
 }

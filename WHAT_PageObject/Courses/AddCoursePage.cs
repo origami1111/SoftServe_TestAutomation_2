@@ -28,14 +28,14 @@ namespace WHAT_PageObject
             field.Click();
             field.Clear();
             field.SendKeys(text);
-            
+
             return this;
         }
 
         public AddCoursePage DeleteTextWithBackspaces(int backspacesNumber)
         {
             var field = addCourseFormElement.FindElement(courseNameField);
-            
+
             for (int i = 0; i < backspacesNumber; i++)
             {
                 field.SendKeys(Keys.Backspace);

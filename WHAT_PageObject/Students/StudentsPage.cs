@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -141,13 +142,13 @@ namespace WHAT_PageObject
             return new StudentsEditPage(driver);
         }
 
-        public UnassignedUsers ClickAddStudentButton()
+        public UnassignedUsersPage ClickAddStudentButton()
         {
             IWebElement addStudentBtnEl = driver.FindElement(_addStudentButton);
             addStudentBtnEl.Click();
             return new UnassignedUsers(driver);
         }
-        
+
         public StudentsPage FillSearchingField(string inputingSentence)
        {
             IWebElement searchingFieldEl = driver.FindElement(_searchingField);

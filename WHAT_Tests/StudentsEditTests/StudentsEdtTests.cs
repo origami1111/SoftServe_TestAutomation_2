@@ -1,9 +1,8 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using WHAT_PageObject;
-using System.Threading;
 using System;
+using WHAT_PageObject;
 
 namespace WHAT_Tests
 {

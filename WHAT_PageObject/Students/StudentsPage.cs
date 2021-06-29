@@ -86,11 +86,11 @@ namespace WHAT_PageObject
             return false;
         }
 
-        public UnassignedUsers ClickAddStudentButton()
+        public UnassignedUsersPage ClickAddStudentButton()
         {
             IWebElement _addStudentButton = driver.FindElement(_addStudentButtonLocator);
-            _addStudentButton.Click();
-            return new UnassignedUsers(driver);
+             _addStudentButton.Click();
+             return new UnassignedUsersPage(driver);
         }
 
         public StudentsPage FillSearchingField(string inputingSentence)

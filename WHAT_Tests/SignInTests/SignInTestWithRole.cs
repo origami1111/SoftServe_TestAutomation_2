@@ -1,43 +1,32 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
 using WHAT_PageObject;
 
-namespace WHAT_Tests.SignInTests
+namespace WHAT_Tests
 {
     [TestFixture]
-    class SignInTestWithRole
+    class SignInTestWithRole : TestBase
     {
-        private IWebDriver driver;
         private SignInPage signInPage;
         private Credentials credentials;
         private WebDriverWait wait;
 
         [SetUp]
-        public void Setup()
+        public void SetupPage()
         {
-            driver = new ChromeDriver();
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
 
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
-            driver.Navigate().GoToUrl("http://localhost:8080/auth");
 
             signInPage = new SignInPage(driver);
-        }
-
-        [TearDown]
-        public void Logout()
-        {
-            driver.Quit();
         }
 
         [Test]
         public void SignInAsAdmin()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
-            string expected = "http://localhost:8080/students";
+            string expected = ReaderUrlsJSON.GetUrlByName("StudentsPage"); 
 
             signInPage.SignInAsAdmin(credentials.Email, credentials.Password);
 
@@ -52,7 +41,7 @@ namespace WHAT_Tests.SignInTests
         public void SignInAsSecretar()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretar);
-            string expected = "http://localhost:8080/mentors";
+            string expected = ReaderUrlsJSON.GetUrlByName("MentorsPage");
 
             signInPage.SignInAsSecretar(credentials.Email, credentials.Password);
 
@@ -67,7 +56,7 @@ namespace WHAT_Tests.SignInTests
         public void SignInAsMentor()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
-            string expected = "http://localhost:8080/lessons";
+            string expected = ReaderUrlsJSON.GetUrlByName("LessonsPage");
 
             signInPage.SignInAsMentor(credentials.Email, credentials.Password);
 
@@ -82,7 +71,7 @@ namespace WHAT_Tests.SignInTests
         public void SignInAsStudent()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Student);
-            string expected = "http://localhost:8080/support";
+            string expected = ReaderUrlsJSON.GetUrlByName("SupportPage");
 
             signInPage.SignInAsStudent(credentials.Email, credentials.Password);
 

@@ -19,7 +19,7 @@ namespace WHAT_PageObject
 
         private By addCourseButton = By.XPath("//button/span[contains(.,'Add a course')]");
 
-        private By pencilLink = By.CssSelector("use[href='/assets/svg/Edit.svg#Edit']");
+        private By editIcon = By.CssSelector("use[href='/assets/svg/Edit.svg#Edit']");
         #endregion
 
         public enum ColumnName
@@ -51,7 +51,7 @@ namespace WHAT_PageObject
             return new CourseDetailsPage(driver);
         }
 
-        public EditCourseDetailsPage ClickPencilLink(int courseNumber)
+        public EditCourseDetailsPage ClickEditIcon(int courseNumber)
         {
 
             driver.FindElement(TableCell(courseNumber, ColumnName.Edit)).Click();

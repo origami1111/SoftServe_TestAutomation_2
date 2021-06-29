@@ -66,7 +66,9 @@ namespace WHAT_PageObject
         }
         public string GetCourseName()
         {
-            return EditFormElement.FindElement(courseNameField).Text;
+            return EditFormElement
+                        .FindElement(courseNameField)
+                        .GetAttribute("value");
         }
 
         public bool IsSaveButtonDisabled()

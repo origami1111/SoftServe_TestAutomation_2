@@ -2,49 +2,21 @@
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace WHAT_PageObject
 {
     public class SecretariesPage : BasePageWithHeaderSidebar
     {
 
-
-        //        Locators:
-
-        //* 'Add a secretary' button.
-        //* Count users showed on page field.
-        //* Count users field.
-        //* Pagination navigate buttons.
-        //* Head captions.
-        //* Rows data.
-        //* Sorting buttons.
-        //* Select users on page
-        //* SearchField 
-        //* DisabledSwitch
-
-        //          Methods:
-
-        // Get user with displayed data (by index).
-        // Row click.
-        //* 'Add a secretary' button click.
-        //- Navigate buttons clicks.
-        //* SortBy
-        // GetTotalUsersShowedAmount.
-        // GetOnPageUsersShowedAmount.
-        // *EditSecretary
-        //* GetShowedUsersAmount.       
-        // 
-        //* Get list users on page sorted by different params.
-
-
-
-        // Locators
+        
         By addSecretaryButton = By.XPath("//span[contains(.,'Add a secretary')]");
-        By countUsersReport = By.XPath("//span[contains(.,'secretaries')]");
-        By searchField = By.XPath("//input[@type='text']");
         By disabledSwitch = By.XPath("//label[contains(.,'Disabled Secretaries')]");
+        By searchField = By.XPath("//input[@type='text']");
         By visibleUsersSelect = By.Id("change-visible-people");
+        private int usersOnPageIndex = 0;
+        private int usersTotalIndex = 2;
+        By countUsersReport = By.XPath("//span[contains(.,'secretaries')]");       
         By prevPageLink = By.XPath("//button[contains(.,'<')]");
         By nextPageLink = By.XPath("//button[contains(.,'>')]");
         //By indexColumn = By.XPath("//span[@data-sorting-param='index']"); 
@@ -52,18 +24,18 @@ namespace WHAT_PageObject
         //By lastNameColumn = By.XPath("//span[@data-sorting-param='lastName']"); 
         //By emailColumn = By.XPath("//span[@data-sorting-param='email']"); 
         By sortedBy = By.XPath("//thead//th[1]/span");
-        By userData = By.XPath("//tbody/tr/td[1]");
-
-
-        public SecretariesPage(IWebDriver driver) : base(driver)
+        By userData = By.XPath("//tbody/tr");
+        By pages = By.XPath("//div[1]/nav/ul[2]/li");
+       
+        public SecretariesPage(IWebDriver driver) : base (driver)
         {
 
         }
 
-        public UnassignedUsers AddSecretary()
+        public UnassignedUsersPage AddSecretary()
         {
             driver.FindElement(addSecretaryButton).Click();
-            return new UnassignedUsers(driver);
+            return new UnassignedUsersPage(driver);
         }
 
         //public SecretaryEditPage EditSecretary (int index)
@@ -84,13 +56,20 @@ namespace WHAT_PageObject
             return this;
         }
 
+        public SecretariesPage LastPage()
+        {
+            //driver.FindElements(pages).Last().Click();
+            driver.FindElement(By.XPath("//div[1]/nav/ul[2]/li[2]")).Click();
+            return this;
+        }
+
         public SecretariesPage DisabledSwitch()
         {
             driver.FindElement(disabledSwitch).Click();
             return this;
         }
 
-        public SecretariesPage SortBy(columnName column)
+        public SecretariesPage SortBy (ColumnName column)
         {
             sortedBy = By.XPath($"//thead//th[{(int)column}]/span");
             driver.FindElement(sortedBy).Click();
@@ -101,15 +80,16 @@ namespace WHAT_PageObject
         {
             SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
             return Int32.Parse(selectedOption.SelectedOption.Text);
-
         }
 
-        public void SelectUsersOnPage(showedUsers showedUsers)
+        public void SelectUsersOnPage(ShowedUsers showedUsers)
         {
+            driver.FindElement(visibleUsersSelect).Click();
             SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
-            selectedOption.SelectByIndex((int)showedUsers);
+            selectedOption.SelectByIndex((int)showedUsers-1);
         }
-        private string GetUserData(int columnNumber, int rowNumber)
+
+        private string GetUserData (int columnNumber, int rowNumber)
         {
             return driver.FindElement(By.XPath($"//tbody/tr[{rowNumber}]/td[{columnNumber}]")).Text;
         }
@@ -118,7 +98,8 @@ namespace WHAT_PageObject
         {
             return driver.FindElements(userData).Count;
         }
-        public SecretariesPage GetSortedList(columnName column)
+
+        public List<string> GetSortedList (ColumnName column)
         {
             int count = GetShowedUsersAmount();
             List<string> sortedList = new List<string>(count);
@@ -126,7 +107,23 @@ namespace WHAT_PageObject
             {
                 sortedList.Add(GetUserData((int)column, i));
             }
-            return this;
+            return sortedList;
+        }
+
+        public int GetPagesAmount ()
+        {
+            IReadOnlyCollection <IWebElement> buttons = driver.FindElements(pages);
+            return Int32.Parse(buttons.Last().Text);
+        }
+
+        public int GetReportedUsersOnPage()
+        {
+            return Int32.Parse(driver.FindElement(countUsersReport).Text.Split(" ")[usersOnPageIndex]);
+        }
+
+        public int GetReportedUsersTotal ()
+        {
+            return Int32.Parse(driver.FindElement(countUsersReport).Text.Split(" ")[usersTotalIndex]);
         }
     }
 

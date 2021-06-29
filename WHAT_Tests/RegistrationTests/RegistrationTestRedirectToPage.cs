@@ -1,37 +1,24 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
 using WHAT_PageObject;
 
-namespace WHAT_Tests.RegistrationTests
+namespace WHAT_Tests
 {
     [TestFixture]
-    class RegistrationTestRedirectToPage
+    class RegistrationTestRedirectToPage : TestBase
     {
-        private IWebDriver driver;
         private RegistrationPage registrationPage;
 
         [SetUp]
-        public void Setup()
+        public void SetupPage()
         {
-            driver = new ChromeDriver();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
-            driver.Navigate().GoToUrl("http://localhost:8080/registration");
-
-            registrationPage = new RegistrationPage(driver);
-        }
-
-        [TearDown]
-        public void Logout()
-        {
-            driver.Quit();
+            registrationPage = new SignInPage(driver)
+                               .ClickRegistrationLink();
         }
 
         [Test]
         public void RedirectToSignInPage()
         {
-            string expected = "http://localhost:8080/auth";
+            string expected = ReaderUrlsJSON.GetUrlByName("SigninPage");
 
             registrationPage.ClickLogInLink();
 

@@ -1,8 +1,4 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
-using System.Threading;
 using WHAT_PageObject;
 
 
@@ -17,7 +13,7 @@ namespace WHAT_Tests
         public void Setup()
         {
             var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
-            
+
             secretariesPage = new SignInPage(driver)
                             .SignInAsAdmin(credentials.Email, credentials.Password)
                             .SidebarNavigateTo<SecretariesPage>();
@@ -29,60 +25,56 @@ namespace WHAT_Tests
             secretariesPage.Logout();
         }
 
-        [Test]        
-        public void VerifyFirstPageCount10()
+        [TestCase(ShowedUsers.ten)]
+        [TestCase(ShowedUsers.fifty)]
+        [TestCase(ShowedUsers.oneHundred)]
+        [Test]
+        public void VerifyFirstPageCount(ShowedUsers usersOnPage)
         {
             int expected;
-            if (secretariesPage.GetReportedUsersTotal()/
-                secretariesPage.GetUsersOnPage()>0)
+            secretariesPage.SelectUsersAtPage(usersOnPage);
+            int actual = secretariesPage.GetShowedUsersAmount();
+            if (secretariesPage.GetLastUserIndex() >= secretariesPage.GetUsersAtPage())
             {
-                expected = secretariesPage.GetUsersOnPage();
+                expected = secretariesPage.GetUsersAtPage();
             }
             else
             {
-                expected = secretariesPage.GetReportedUsersTotal();
+                expected = secretariesPage.GetLastUserIndex();
             }
+            Assert.AreEqual(expected, actual);
+        }
 
+        [TestCase(ShowedUsers.ten)]
+        [TestCase(ShowedUsers.fifty)]
+        [TestCase(ShowedUsers.oneHundred)]
+        [Test]
+        public void VerifyLastPageCount(ShowedUsers usersOnPage)
+        {           
+            secretariesPage.SelectUsersAtPage(usersOnPage);
+            int expected = secretariesPage.GetLastUserIndex() % secretariesPage.GetUsersAtPage();
             int actual = secretariesPage.GetShowedUsersAmount();
             Assert.AreEqual(expected, actual);
         }
 
+        [TestCase(ShowedUsers.ten)]
+        [TestCase(ShowedUsers.fifty)]
+        [TestCase(ShowedUsers.oneHundred)]
         [Test]
-        public void VerifyFirstPageCount100()
+        public void VerifyMidlePageCount(ShowedUsers usersOnPage)
         {
-            int expected;
-            secretariesPage.SelectUsersOnPage(ShowedUsers.oneHundred);
-            if (secretariesPage.GetReportedUsersTotal() /
-                secretariesPage.GetUsersOnPage() > 0)
+            secretariesPage.SelectUsersAtPage(usersOnPage);
+            if(secretariesPage.GetPagesAmount()>2)
             {
-                expected = secretariesPage.GetUsersOnPage();
+                int expected = secretariesPage.GetUsersAtPage();
+                int actual = secretariesPage.PrevPage().GetShowedUsersAmount();
+                Assert.AreEqual(expected, actual);
             }
             else
             {
-                expected = secretariesPage.GetReportedUsersTotal();
-            }
 
-            int actual = secretariesPage.GetShowedUsersAmount();
-            Assert.AreEqual(expected, actual);
+            }          
         }
 
-        [Test]
-        public void VerifyLastPageCount10() 
-        {
-            int expected = secretariesPage.GetReportedUsersTotal() % 
-                            secretariesPage.GetUsersOnPage();
-            int actual = secretariesPage.LastPage().GetShowedUsersAmount();
-            Assert.AreEqual(expected, actual);
-        }
-
-        //[Test]    Should to fix LastPage()
-        //public void VerifyLastPageCount100()
-        //{
-        //    secretariesPage.SelectUsersOnPage(ShowedUsers.oneHundred);
-        //    int expected = secretariesPage.GetReportedUsersTotal() %
-        //                    secretariesPage.GetUsersOnPage();
-        //    int actual = secretariesPage.LastPage().GetShowedUsersAmount();
-        //    Assert.AreEqual(expected, actual);
-        //}
     }
 }

@@ -1,27 +1,28 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
 {
     [TestFixture]
-    public class StudentsEdtTests : TestBase
+    public class StudentsEdtTests: TestBase
     {
 
-        private StudentsPage studentsPage;
         private StudentsEditPage studentsEditPage;
-
+        private StudentsPage studentsPage;
 
         [SetUp]
         public void Precondition()
         {
             var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
             studentsPage = new SignInPage(driver)
-                                .SignInAsAdmin(credentials.Email, credentials.Password);
-            studentsPage.SidebarNavigateTo<StudentsPage>();
+                                .SignInAsAdmin(credentials.Email, credentials.Password)
+                                .SidebarNavigateTo<StudentsPage>();
+        }
 
+        [TearDown]
+        public void Postcondition()
+        {
+            studentsPage.Logout();
         }
 
         [Test]
@@ -29,7 +30,5 @@ namespace WHAT_Tests
         {
             Assert.Pass();
         }
-
-
     }
 }

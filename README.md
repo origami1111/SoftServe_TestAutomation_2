@@ -1,14 +1,7 @@
 # WHAT_DP_205_TAQC
-18.06.2021 \
-Лена - add class for locators(in fields), add courses page, page factory,tests \
-Антон - add Lessons page, add class driver, tests \
-Вячеслав - add class credentials, sign in page, tests \
-Арсен - works with links, add Students page, tests \
-Дима - add Secretary page, tests \
-Ярослав - List of unassigned users/Edit Secretary, tests \
-Микита - Start Group/My profile, tests \
-Тетяна - ADD LOGOUT!!!(please) ,Header/Mentors table, tests \
+Test scripts based on existing automation framework (C#/Selenium/NUnit) for testing based on application WHAT.
+WHAT (Who is absent today) is a project for control education process in the training centers.
 
-
-тесты реализуются с помощью Fluent Builder, в конце цепочки вызовов -вызывается Assert
-
+WHAT_DP_205_TAQC consists of two projects:
+1) WHAT_PageObject - library for page description in order to Page Object Model (POM).
+2) WHAT_Tests - library of autotests (NUnit).

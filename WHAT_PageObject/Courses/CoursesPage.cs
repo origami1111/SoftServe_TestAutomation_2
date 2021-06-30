@@ -43,7 +43,7 @@ namespace WHAT_PageObject
 
         public CourseDetailsPage ClickCourseName(int courseNumber = 1)
         {
-            ClickItem(TableCell(courseNumber, ColumnName.Title);
+            ClickItem(TableCell(courseNumber, ColumnName.Title));
 
             return new CourseDetailsPage(driver);
         }

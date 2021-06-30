@@ -18,7 +18,7 @@ namespace WHAT_PageObject
         private By  _controlBarDisabledStudents = By.XPath("//input[@id='show - disabled - check']");
         private By _addStudentButton = By.CssSelector("div:nth-child(4) > button");
         private By _previousPage = By.CssSelector("nav > ul:nth-child(1) > li > button");
-        private By _nextPage = By.CssSelector("nav > ul:nth-child(1) > li > button");
+        private By _nextPage = By.CssSelector("nav > ul:nth-child(3) > li > button");
         private By _studentsCount = By.CssSelector(".col-2:nth-child(2)");
         private By _countPages = By.CssSelector("ul:nth-child(2) > li:nth-child(4) > button");
         #endregion

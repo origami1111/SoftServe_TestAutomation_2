@@ -31,17 +31,15 @@ namespace WHAT_Tests
         }
 
         [Test]
-        [TestCase((int)1)]
-        [TestCase((int)5)]
-        [TestCase((int)10)]
+        [TestCase(1)]
+        [TestCase(5)]
+        [TestCase(10)]
         public void RedirectStudentsEdit_AnyCard(int studentNum)
         {
             studentsPage.ClickChoosedStudent(studentNum);
             string studentEditURL = ReaderUrlsJSON.GetUrlByNameAndNumber("StudentsPage", studentNum);
             Assert.AreEqual(studentEditURL, driver.Url);
         }
-        
-      
 
     }
 }

@@ -36,7 +36,6 @@ namespace WHAT_Tests
         [TestCaseSource("StudentInfoSource")]
         public void FillSearchingField_ValidData(int id,string firstName, string lastName)
         {
-            studentsPage.WaitStudentsLoad();
             studentsPage.FillSearchingField($@"{firstName} {lastName}");
             Dictionary<int, string[]> allStudentsInfo = studentsPage.GetStudentsFromTable();
             KeyValuePair<int, string[]> ourPair = new KeyValuePair<int, string[]>(id, new string[] { firstName, lastName });
@@ -64,9 +63,7 @@ namespace WHAT_Tests
         public void VeriifyStudentsCount(uint stundetsCount)
         {
             uint expect = studentsPage.GetCountStudents();
-            Dictionary<int, string[]> allStudentsInfo = studentsPage.GetStudentsFromTable();
             uint actual = stundetsCount;
-            
             Assert.AreEqual(expect, actual);
         }
 

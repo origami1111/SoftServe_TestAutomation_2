@@ -12,12 +12,11 @@ namespace WHAT_Tests
         [SetUp]
         public void Precondition()
         {
-
             var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+            
             coursesPage = new SignInPage(driver)
                             .SignInAsAdmin(credentials.Email, credentials.Password)
                             .SidebarNavigateTo<CoursesPage>();
-
         }
 
         [TearDown]
@@ -41,11 +40,10 @@ namespace WHAT_Tests
         [Test]
         public void EditCourse_CLickClearButton()
         {
-            int courseNumber = 1;
-            string expected = coursesPage.ReadCourseName(courseNumber);
+            string expected = coursesPage.ReadCourseName();
 
-            var actual = coursesPage.ClickEditIcon(courseNumber)
-                                    .DeleteTextWithBackspaces()
+            var actual = coursesPage.ClickEditIcon()
+                                    .DeleteTextWithBackspaces(expected.Length)
                                     .ClickClearButton()
                                     .GetCourseName();
 
@@ -55,10 +53,23 @@ namespace WHAT_Tests
         [Test]
         public void AddCourse_ValidData()
         {
-            string courseName = StringRandomizer.GetRandomCourseName();
-            coursesPage.ClickAddCourseButton()
-                       .FillCourseNameField(courseName)
-                       .ClickCancelButton();
+            string expected;
+            bool courseExists;
+            do
+            {
+                expected = StringRandomizer.GetRandomCourseName();
+                courseExists = coursesPage.FillSearchField(expected)
+                                          .CourseNotFound() == false;
+            }
+            while (courseExists);
+                
+            string actual = coursesPage.ClickAddCourseButton()
+                                       .FillCourseNameField(expected)
+                                       .ClickSaveButton()
+                                       .FillSearchField(expected)
+                                       .ReadCourseName();
+
+            Assert.AreEqual(expected, actual);
         }
 
         [TestCase("a", "Too short")]
@@ -66,27 +77,57 @@ namespace WHAT_Tests
         [TestCase(" Space before course name", "Invalid course name")]
         [TestCase("More than one space   between words", "Invalid course name")]
         [TestCase("Space after course name ", "Invalid course name")]
-        [TestCase("Course name with special symbols: C#,/ .Net", "Invalid course name")]
+        [TestCase("Course name with special symbols //", "Invalid course name")]
         [TestCase("Not only Latin letters Кириллица", "Invalid course name")]
-        public void AddCourseWithInvalidData(string invalidData, string expected)
+        public void AddCourse_InvalidData_isErrorMessageDisplayed(string invalidData, string expected)
         {
             var actual = coursesPage.ClickAddCourseButton()
-                                    .FillCourseNameField(invalidData);
+                                    .FillCourseNameField(invalidData)
+                                    .GetErrorMessage();
 
-            Assert.True(expected == actual.GetErrorMessage() && actual.IsSaveButtonDisabled());
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase("a")]
+        [TestCase("Course name with more than 50 characters is too long")]
+        [TestCase(" Space before course name")]
+        [TestCase("More than one space   between words")]
+        [TestCase("Space after course name ")]
+        [TestCase("Course name with special symbols //")]
+        [TestCase("Not only Latin letters Кириллица")]
+        public void AddCourse_InvalidData_IsSaveButtonDisabled(string invalidData)
+        {
+            var actual = coursesPage.ClickAddCourseButton()
+                                    .FillCourseNameField(invalidData)
+                                    .IsSaveButtonDisabled();
+
+            Assert.True(actual);
         }
 
         [Test]
-        public void AddCourse_EmptyName()
+        public void AddCourse_EmptyName_isErrorMessageDisplayed()
         {
             var expected = "This field is required";
-            var anyData = "Test";
-
+            
+            var anyData = StringRandomizer.GetRandomCourseName();
             var actual = coursesPage.ClickAddCourseButton()
                                     .FillCourseNameField(anyData)
-                                    .DeleteTextWithBackspaces(anyData.Length);
+                                    .DeleteTextWithBackspaces(anyData.Length)
+                                    .GetErrorMessage();
 
-            Assert.True(expected == actual.GetErrorMessage() && actual.IsSaveButtonDisabled());
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void AddCourse_EmptyName_IsSaveButtonDisabled()
+        {
+            var anyData = StringRandomizer.GetRandomCourseName();
+            var actual = coursesPage.ClickAddCourseButton()
+                                    .FillCourseNameField(anyData)
+                                    .DeleteTextWithBackspaces(anyData.Length)
+                                    .IsSaveButtonDisabled();
+
+            Assert.True(actual);
         }
     }
 }

@@ -1,13 +1,16 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
+using System.Linq;
 
 namespace WHAT_PageObject
 {
     public class CoursesPage : BasePageWithHeaderSidebar
     {
-        private readonly Table table;
-
         #region Locators
         private By pageTitle = By.TagName("h2");
+
+        private By courseNotFoundLabel = By.XPath("//tbody/h4[contains(.,'Course is not found')]");
 
         private By courseNumberLabel = By.XPath("//span[contains(.,'#')]");
 
@@ -19,9 +22,31 @@ namespace WHAT_PageObject
 
         private By addCourseButton = By.XPath("//button/span[contains(.,'Add a course')]");
 
+        private By searchField = By.CssSelector("input[class*='search']");
+
         private By editIcon = By.CssSelector("use[href='/assets/svg/Edit.svg#Edit']");
+
+        private By table = By.CssSelector("table");
+
+        private By tableHead = By.CssSelector("thead");
+
+        private By tableBody = By.CssSelector("tbody");
+
+        private By rows = By.CssSelector("tr");
+
+        private By idLabel = By.XPath("th/span[@data-sorting-param='id']");
+
+        private By titleLabel = By.XPath("//th/span[@data-sorting-param='name']");
+
+        private By editLabel = By.XPath("//th[contains(.,'Edit')]");
+        private By TableCell(int rowNumber, ColumnName columnName) =>
+                By.XPath($"//tr[{rowNumber}]/td[{(int)columnName}]");
         #endregion
 
+        public CoursesPage(IWebDriver driver) : base(driver)
+        {
+        }
+        
         public enum ColumnName
         {
             Id = 1,
@@ -29,21 +54,18 @@ namespace WHAT_PageObject
             Edit = 3,
         }
 
-        private By TableCell(int rowNumber, ColumnName columnName) =>
-            By.XPath($"//tr[{rowNumber}]/td[{(int)columnName}]");
-
-        public CoursesPage(IWebDriver driver) : base(driver)
+        public string ReadCourseName(int rowNumber = 1)
         {
+            var cells = driver.FindElements(TableCell(rowNumber, ColumnName.Title));
+            return cells.Select(cell => cell.Text).FirstOrDefault() ?? string.Empty;
         }
 
-        public string ReadCourseName(int rowNumber)
+        public bool CourseNotFound()
         {
-            var course = driver.FindElement(TableCell(rowNumber, ColumnName.Title));
-
-            return course.Text;
+            return driver.FindElements(courseNotFoundLabel).Count > 0;
         }
 
-        public CourseDetailsPage ClickCourseName(int courseNumber)
+        public CourseDetailsPage ClickCourseName(int courseNumber = 1)
         {
 
             driver.FindElement(TableCell(courseNumber, ColumnName.Title)).Click();
@@ -51,7 +73,7 @@ namespace WHAT_PageObject
             return new CourseDetailsPage(driver);
         }
 
-        public EditCourseDetailsPage ClickEditIcon(int courseNumber)
+        public EditCourseDetailsPage ClickEditIcon(int courseNumber = 1)
         {
 
             driver.FindElement(TableCell(courseNumber, ColumnName.Edit)).Click();
@@ -71,6 +93,19 @@ namespace WHAT_PageObject
             driver.FindElement(addCourseButton).Click();
 
             return new AddCoursePage(driver);
+        }
+
+        public CoursesPage FillSearchField(string text)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+            wait.Until(drv => drv.FindElement(tableBody));
+
+            IWebElement field = driver.FindElement(searchField);
+            field.Click();
+            field.Clear();
+            field.SendKeys(text);
+
+            return this;
         }
     }
 }

@@ -6,8 +6,8 @@ namespace WHAT_Tests
     internal class StringRandomizer
     {
         private const string AllowedRandomChars = " abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
-        
-        private static readonly Randomizer randomizer = Randomizer.CreateRandomizer();
+
+        private static readonly Randomizer randomizer = new Randomizer(Environment.TickCount);
 
         public static string GetRandomCourseName()
         {

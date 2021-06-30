@@ -29,60 +29,27 @@ namespace WHAT_Tests
             secretariesPage.Logout();
         }
 
-        [Test]        
-        public void VerifyFirstPageCount10()
+
+        [TestCase(ShowedUsers.ten)]
+        [TestCase(ShowedUsers.fifty)]
+        [TestCase(ShowedUsers.oneHundred)]
+        [Test]
+        public void VerifyFirstPageCount(ShowedUsers usersOnPage)
         {
             int expected;
-            if (secretariesPage.GetReportedUsersTotal()/
-                secretariesPage.GetUsersOnPage()>0)
+            secretariesPage.SelectUsersOnPage(usersOnPage);
+            if (secretariesPage.GetLastUserIndex() >= secretariesPage.GetUsersOnPage())
             {
                 expected = secretariesPage.GetUsersOnPage();
+                secretariesPage.FirstPage();
             }
             else
             {
-                expected = secretariesPage.GetReportedUsersTotal();
+                expected = secretariesPage.GetLastUserIndex();
             }
-
             int actual = secretariesPage.GetShowedUsersAmount();
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
-        public void VerifyFirstPageCount100()
-        {
-            int expected;
-            secretariesPage.SelectUsersOnPage(ShowedUsers.oneHundred);
-            if (secretariesPage.GetReportedUsersTotal() /
-                secretariesPage.GetUsersOnPage() > 0)
-            {
-                expected = secretariesPage.GetUsersOnPage();
-            }
-            else
-            {
-                expected = secretariesPage.GetReportedUsersTotal();
-            }
-
-            int actual = secretariesPage.GetShowedUsersAmount();
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void VerifyLastPageCount10() 
-        {
-            int expected = secretariesPage.GetReportedUsersTotal() % 
-                            secretariesPage.GetUsersOnPage();
-            int actual = secretariesPage.LastPage().GetShowedUsersAmount();
-            Assert.AreEqual(expected, actual);
-        }
-
-        //[Test]    Should to fix LastPage()
-        //public void VerifyLastPageCount100()
-        //{
-        //    secretariesPage.SelectUsersOnPage(ShowedUsers.oneHundred);
-        //    int expected = secretariesPage.GetReportedUsersTotal() %
-        //                    secretariesPage.GetUsersOnPage();
-        //    int actual = secretariesPage.LastPage().GetShowedUsersAmount();
-        //    Assert.AreEqual(expected, actual);
-        //}
     }
 }

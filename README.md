@@ -1,5 +1,6 @@
 # WHAT_DP_205_TAQC
 Test scripts based on existing automation framework (C#/Selenium/NUnit) for testing web application WHAT.
+
 WHAT (Who is absent today) is a project for control education process in the training centers.
 
 WHAT_DP_205_TAQC consists of two projects:

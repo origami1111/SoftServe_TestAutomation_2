@@ -1,4 +1,7 @@
 ﻿using NUnit.Framework;
+using OpenQA.Selenium.Support.UI;
+using System;
+using System.Threading;
 using WHAT_PageObject;
 
 
@@ -28,8 +31,8 @@ namespace WHAT_Tests
         [Test]
         public void ReportedTotalVerify ()
         {
-            int expected = secretariesPage.LastPage().GetLastUserIndex();
             int actual = secretariesPage.GetReportedUsersTotal();
+            int expected = secretariesPage.LastPage().GetLastUserIndex();
             Assert.IsTrue(expected == actual);
         }
 

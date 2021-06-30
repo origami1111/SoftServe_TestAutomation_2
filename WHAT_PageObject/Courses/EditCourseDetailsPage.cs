@@ -10,8 +10,6 @@ namespace WHAT_PageObject
 
         private By errorMessage = By.XPath("//div/p[contains(@class,'add-course__error')]");
 
-        private By deleteButton = By.CssSelector("button[type='button']");
-
         private By clearButton = By.CssSelector("button[type='reset']");
 
         private By saveButton = By.CssSelector("button[type='submit']");
@@ -46,34 +44,18 @@ namespace WHAT_PageObject
             return this;
         }
 
-        public CoursesPage ClickSaveButton()
-        {
-            EditFormElement.FindElement(saveButton).Click();
-
-            return new CoursesPage(driver);
-        }
-
         public EditCourseDetailsPage ClickClearButton()
         {
             EditFormElement.FindElement(clearButton).Click();
 
             return new EditCourseDetailsPage(driver);
         }
-
-        public string GetErrorMessage()
-        {
-            return EditFormElement.FindElement(errorMessage).Text;
-        }
+        
         public string GetCourseName()
         {
             return EditFormElement
                         .FindElement(courseNameField)
                         .GetAttribute("value");
-        }
-
-        public bool IsSaveButtonDisabled()
-        {
-            return !EditFormElement.FindElement(saveButton).Enabled;
         }
     }
 }

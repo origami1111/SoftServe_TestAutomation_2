@@ -8,8 +8,8 @@ namespace WHAT_PageObject
 {
     public class SecretariesPage : BasePageWithHeaderSidebar
     {
+        #region Locators
 
-        
         By addSecretaryButton = By.XPath("//span[contains(.,'Add a secretary')]");
         By disabledSwitch = By.XPath("//label[contains(.,'Disabled Secretaries')]");
         By searchField = By.XPath("//input[@type='text']");
@@ -19,14 +19,14 @@ namespace WHAT_PageObject
         By countUsersReport = By.XPath("//span[contains(.,'secretaries')]");       
         By prevPageLink = By.XPath("//button[contains(.,'<')]");
         By nextPageLink = By.XPath("//button[contains(.,'>')]");
-        //By indexColumn = By.XPath("//span[@data-sorting-param='index']"); 
-        //By firstNameColumn = By.XPath("//span[@data-sorting-param='firstName']"); 
-        //By lastNameColumn = By.XPath("//span[@data-sorting-param='lastName']"); 
-        //By emailColumn = By.XPath("//span[@data-sorting-param='email']"); 
         By sortedBy = By.XPath("//thead//th[1]/span");
         By userData = By.XPath("//tbody/tr");
-        By pages = By.XPath("//div[1]/nav/ul[2]/li");
-       
+        By firstPage = By.XPath("//nav/ul[2]/li[1]");
+        By lastPage = By.XPath("//nav/ul[2]/li[last()]");
+        By lastUserIndex = By.XPath($"//tbody/tr[last()]/td[{(int)ColumnName.index}]");
+
+        #endregion
+
         public SecretariesPage(IWebDriver driver) : base (driver)
         {
            
@@ -38,12 +38,13 @@ namespace WHAT_PageObject
             return new UnassignedUsersPage(driver);
         }
 
-        //public SecretaryEditPage EditSecretary (int index)
-        //{
-        //    driver.FindElement(By.XPath($"//td[@data-secretary-id={index}]")).Click();
-        //    return new SecretaryEditPage(driver);
-        //}
-        
+        public EditSecretaryPage EditSecretary (int index)
+        {
+            driver.FindElement (By.XPath($"//td[@data-secretary-id={index}]")).Click();
+            return new EditSecretaryPage (driver);
+        }
+
+        #region navigation
         public SecretariesPage PrevPage ()
         {
             driver.FindElement(prevPageLink).Click();
@@ -58,11 +59,18 @@ namespace WHAT_PageObject
 
         public SecretariesPage LastPage()
         {
-            //driver.FindElements(pages).Last().Click();
-            driver.FindElement(By.XPath("//div[1]/nav/ul[2]/li[2]")).Click();
+            driver.FindElement(lastPage).Click();
             return this;
         }
 
+        public SecretariesPage FirstPage()
+        {
+            driver.FindElement(firstPage).Click();
+            return this;
+        }
+        #endregion
+
+        #region notUsed
         public SecretariesPage DisabledSwitch()
         {
             driver.FindElement(disabledSwitch).Click();
@@ -75,6 +83,43 @@ namespace WHAT_PageObject
             driver.FindElement(sortedBy).Click();
             return this;
         }
+        
+        private string GetUserData (int columnNumber, int rowNumber)
+        {
+            return driver.FindElement(By.XPath($"//tbody/tr[{rowNumber}]/td[{columnNumber}]")).Text;            
+        }
+
+        public int GetPagesAmount()
+        {
+            return Int32.Parse(driver.FindElement(lastPage).Text);
+        }
+
+        public int GetReportedUsersOnPage()
+        {
+            return Int32.Parse(driver.FindElement(countUsersReport).Text.Split(" ")[usersOnPageIndex]);
+        }
+
+        public int GetReportedUsersTotal()
+        {
+            return Int32.Parse(driver.FindElement(countUsersReport).Text.Split(" ")[usersTotalIndex]);
+        }
+
+        public List<string> GetDataList(ColumnName column)
+        {
+            int count = GetShowedUsersAmount();
+            List<string> sortedList = new List<string>(count);
+            for (int i = 1; i <= count; i++)
+            {
+                sortedList.Add(GetUserData((int)column, i));
+            }
+            return sortedList;
+        }
+        #endregion
+
+        public int GetShowedUsersAmount ()
+        {
+            return driver.FindElements(userData).Count;
+        }
 
         public int GetUsersOnPage()
         {
@@ -86,45 +131,14 @@ namespace WHAT_PageObject
         {
             driver.FindElement(visibleUsersSelect).Click();
             SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
-            selectedOption.SelectByIndex((int)showedUsers-1);
+            selectedOption.SelectByIndex((int)showedUsers - 1);
         }
 
-        private string GetUserData (int columnNumber, int rowNumber)
+        public int GetLastUserIndex ()
         {
-            return driver.FindElement(By.XPath($"//tbody/tr[{rowNumber}]/td[{columnNumber}]")).Text;            
+            return Int32.Parse(LastPage().driver.FindElement(lastUserIndex).Text); 
         }
 
-        public int GetShowedUsersAmount ()
-        {
-            return driver.FindElements(userData).Count;
-        }
-
-        public List<string> GetSortedList (ColumnName column)
-        {
-            int count = GetShowedUsersAmount();
-            List<string> sortedList = new List <string> (count);
-            for (int i = 1; i <= count; i++)
-            {
-                sortedList.Add(GetUserData((int)column, i));
-            }
-            return sortedList;
-        }
-
-        public int GetPagesAmount ()
-        {
-            IReadOnlyCollection <IWebElement> buttons = driver.FindElements(pages);
-            return Int32.Parse(buttons.Last().Text);
-        }
-
-        public int GetReportedUsersOnPage()
-        {
-            return Int32.Parse(driver.FindElement(countUsersReport).Text.Split(" ")[usersOnPageIndex]);
-        }
-
-        public int GetReportedUsersTotal ()
-        {
-            return Int32.Parse(driver.FindElement(countUsersReport).Text.Split(" ")[usersTotalIndex]);
-        }
     }
     
 

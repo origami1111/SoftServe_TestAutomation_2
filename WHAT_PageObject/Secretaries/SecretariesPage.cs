@@ -29,7 +29,7 @@ namespace WHAT_PageObject
 
         public SecretariesPage(IWebDriver driver) : base (driver)
         {
-           
+
         }
 
         public UnassignedUsersPage AddSecretary()
@@ -140,6 +140,6 @@ namespace WHAT_PageObject
         }
 
     }
-    
+
 
 }

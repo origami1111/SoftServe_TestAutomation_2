@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
 
 namespace WHAT_PageObject
 {
@@ -9,7 +8,7 @@ namespace WHAT_PageObject
 
         #region Locators
         private By pageTitle = By.TagName("h2");
-        
+
         private By courseNumberLabel = By.XPath("//span[contains(.,'#')]");
 
         private By counterOfCoursesLabel = By.CssSelector("span[class='col-2 text-right']");
@@ -20,7 +19,7 @@ namespace WHAT_PageObject
 
         private By addCourseButton = By.XPath("//button/span[contains(.,'Add a course')]");
 
-        private By pencilLink = By.CssSelector("use[href='/assets/svg/Edit.svg#Edit']");
+        private By editIcon = By.CssSelector("use[href='/assets/svg/Edit.svg#Edit']");
         #endregion
 
         public enum ColumnName
@@ -52,7 +51,7 @@ namespace WHAT_PageObject
             return new CourseDetailsPage(driver);
         }
 
-        public EditCourseDetailsPage ClickPencilLink(int courseNumber)
+        public EditCourseDetailsPage ClickEditIcon(int courseNumber)
         {
 
             driver.FindElement(TableCell(courseNumber, ColumnName.Edit)).Click();

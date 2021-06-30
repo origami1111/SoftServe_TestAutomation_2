@@ -7,9 +7,10 @@
     "Name": "RegistrationPage",
     "Url": "http://localhost:8080/registration"
   },
-  //{
-  //  "MyProfile": "http://localhost:8080/my-profile"
-  //},
+  {
+    "Name": "MyProfile",
+    "URL": "http://localhost:8080/my-profile"
+  },
   {
     "Name": "ChangePasswordPage",
     "Url": "http://localhost:8080/change-password"
@@ -42,10 +43,14 @@
     "Name": "UnassignedUsersPage",
     "Url": "http://localhost:8080/unassigned"
   },
-  //{
-  //  "Name": "LessonsAdd",
-  //  "Url": "http://localhost:8080/lessons/add"
-  //},
+  {
+    "Name": "Lessons",
+    "Url": "http://localhost:8080/lessons"
+  },
+  {
+    "Name": "LessonsAdd",
+    "Url": "http://localhost:8080/lessons/add"
+  },
   //{
   //  "Name": "Groups",
   //  "Url": "http://localhost:8080/groups"

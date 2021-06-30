@@ -1,7 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WHAT_PageObject
 {
@@ -31,7 +28,7 @@ namespace WHAT_PageObject
             By.XPath($"//tr[{rowNumber}]/td[2]");
 
         private By pencilLink(string rowNumber) =>
-            By.XPath($"//tr[{rowNumber}]/td[3]"); 
+            By.XPath($"//tr[{rowNumber}]/td[3]");
 
         public string ReadCourseName(string courseNumber)
         {
@@ -52,7 +49,7 @@ namespace WHAT_PageObject
         {
             IWebElement table = driver.FindElement(this.table);
             var rows = table.FindElements(this.rows);
-            var rowTds = rows[rowNumber-1].FindElements(By.TagName("td"));
+            var rowTds = rows[rowNumber - 1].FindElements(By.TagName("td"));
 
             foreach (var td in rowTds)
             {

@@ -1,7 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WHAT_PageObject
 {
@@ -69,7 +66,9 @@ namespace WHAT_PageObject
         }
         public string GetCourseName()
         {
-            return EditFormElement.FindElement(courseNameField).Text;
+            return EditFormElement
+                        .FindElement(courseNameField)
+                        .GetAttribute("value");
         }
 
         public bool IsSaveButtonDisabled()

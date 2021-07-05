@@ -17,8 +17,6 @@ namespace WHAT_Tests
         {
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
 
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
-
             signInPage = new SignInPage(driver);
         }
 

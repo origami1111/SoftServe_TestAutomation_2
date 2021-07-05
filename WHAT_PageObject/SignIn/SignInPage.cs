@@ -50,8 +50,8 @@ namespace WHAT_PageObject
 
         public LessonsPage SignInAsMentor(string email, string password)
         {
-            FillEmail(email).
-            FillPassword(password).
+            FillEmail(email);
+            FillPassword(password);
             ClickSignInButton();
 
             return new LessonsPage(driver);
@@ -59,8 +59,8 @@ namespace WHAT_PageObject
 
         public MentorsPage SignInAsSecretar(string email, string password)
         {
-            FillEmail(email).
-            FillPassword(password).
+            FillEmail(email);
+            FillPassword(password);
             ClickSignInButton();
 
             return new MentorsPage(driver);
@@ -68,8 +68,8 @@ namespace WHAT_PageObject
 
         public SupportPage SignInAsStudent(string email, string password)
         {
-            FillEmail(email).
-            FillPassword(password).
+            FillEmail(email);
+            FillPassword(password);
             ClickSignInButton();
 
             return new SupportPage(driver);
@@ -77,12 +77,13 @@ namespace WHAT_PageObject
 
         public StudentsPage SignInAsAdmin(string email, string password)
         {
-            FillEmail(email).
-            FillPassword(password).
+            FillEmail(email);
+            FillPassword(password);
             ClickSignInButton();
 
             return new StudentsPage(driver);
         }
+
     }
 }
 

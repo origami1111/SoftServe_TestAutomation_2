@@ -1,8 +1,7 @@
 ﻿using NUnit.Framework;
-using WHAT_PageObject;
 using System.Collections.Generic;
-using OpenQA.Selenium.Support.UI;
-using System;
+using WHAT_PageObject;
+
 namespace WHAT_Tests
 {
     [TestFixture]

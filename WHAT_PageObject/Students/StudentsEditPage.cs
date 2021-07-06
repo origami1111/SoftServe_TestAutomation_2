@@ -29,6 +29,7 @@ namespace WHAT_PageObject
             _allField.Enqueue(driver.FindElement(_email).GetCssValue("value"));
             return this;
         }
+
         public StudentsEditPage(IWebDriver driver) : base(driver)
         {
 

@@ -12,7 +12,7 @@ namespace WHAT_Tests
         public void SetupPage()
         {
             registrationPage = new SignInPage(driver)
-                               .ClickRegistrationLink();
+                .ClickRegistrationLink();
         }
 
         [Test]
@@ -26,5 +26,6 @@ namespace WHAT_Tests
 
             Assert.AreEqual(expected, actual);
         }
+
     }
 }

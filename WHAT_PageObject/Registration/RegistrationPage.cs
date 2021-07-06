@@ -108,5 +108,6 @@ namespace WHAT_PageObject
 
             return text;
         }
+
     }
 }

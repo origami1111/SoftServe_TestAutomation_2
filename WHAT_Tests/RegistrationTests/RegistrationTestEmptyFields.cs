@@ -8,74 +8,61 @@ namespace WHAT_Tests
     class RegistrationTestEmptyFields : TestBase
     {
         private RegistrationPage registrationPage;
+        private string expected = "This field is required";
+        private string emptyField = "";
 
         [SetUp]
         public void SetupPage()
         {
             registrationPage = new SignInPage(driver)
-                               .ClickRegistrationLink();
+                .ClickRegistrationLink();
         }
 
         [Test]
-        [TestCase("")]
-        public void RegistrationWithEmptyFirstName(string emptyFirstName)
+        public void RegistrationWithEmptyFirstName()
         {
-            string expected = "This field is required";
-
             string actual = registrationPage
-                .FillFirstName(emptyFirstName + Keys.Enter)
+                .FillFirstName(emptyField + Keys.Enter)
                 .GetErrorMessageFirstName();
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        [TestCase("")]
-        public void RegistrationWithEmptyLastName(string emptyLastName)
+        public void RegistrationWithEmptyLastName()
         {
-            string expected = "This field is required";
-
             string actual = registrationPage
-                .FillLastName(emptyLastName + Keys.Enter)
+                .FillLastName(emptyField + Keys.Enter)
                 .GetErrorMessageFirstName();
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        [TestCase("")]
-        public void RegistrationWithEmptyEmail(string emptyEmail)
+        public void RegistrationWithEmptyEmail()
         {
-            string expected = "This field is required";
-
             string actual = registrationPage
-                .FillEmail(emptyEmail + Keys.Enter)
+                .FillEmail(emptyField + Keys.Enter)
                 .GetErrorMessageFirstName();
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        [TestCase("")]
-        public void RegistrationWithEmptyPassword(string emptyPassword)
+        public void RegistrationWithEmptyPassword()
         {
-            string expected = "This field is required";
-
             string actual = registrationPage
-                .FillPassword(emptyPassword + Keys.Enter)
+                .FillPassword(emptyField + Keys.Enter)
                 .GetErrorMessageFirstName();
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        [TestCase("")]
-        public void RegistrationWithEmptyConfirmPassword(string emptyConfirmPassword)
+        public void RegistrationWithEmptyConfirmPassword()
         {
-            string expected = "This field is required";
-
             string actual = registrationPage
-                .FillConfirmPassword(emptyConfirmPassword + Keys.Enter)
+                .FillConfirmPassword(emptyField + Keys.Enter)
                 .GetErrorMessageFirstName();
 
             Assert.AreEqual(expected, actual);

@@ -10,6 +10,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WHAT_Tests", "WHAT_Tests\WH
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WHAT_PageObject", "WHAT_PageObject\WHAT_PageObject.csproj", "{2E052202-9E7B-46C9-BEB5-DBBC3A95674E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WHAT_API", "WHAT_API\WHAT_API.csproj", "{3EF34912-6075-40E0-9BCD-E827B77EEEFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{2E052202-9E7B-46C9-BEB5-DBBC3A95674E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E052202-9E7B-46C9-BEB5-DBBC3A95674E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E052202-9E7B-46C9-BEB5-DBBC3A95674E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EF34912-6075-40E0-9BCD-E827B77EEEFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF34912-6075-40E0-9BCD-E827B77EEEFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF34912-6075-40E0-9BCD-E827B77EEEFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF34912-6075-40E0-9BCD-E827B77EEEFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

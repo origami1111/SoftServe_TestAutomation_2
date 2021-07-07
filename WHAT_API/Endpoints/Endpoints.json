@@ -1,0 +1,39 @@
+﻿[
+//Accounts
+  {
+    //POST
+    "Name": "ApiAccountsAuth",
+    "Url": "https://whatbackend.azurewebsites.net/api/accounts/auth"
+  },
+//Schedules
+  {
+    //POST
+    "Name": "ApiSchedules",
+    "Url": "https://whatbackend.azurewebsites.net/api/schedules"
+  },
+  {
+    //GET
+    "Name": "ApiSchedules-id",
+    "Url": "https://whatbackend.azurewebsites.net/api/schedules/{id}"
+  },
+  {
+    //POST
+    "Name": "ApiSchedulesEvent",
+    "Url": "https://whatbackend.azurewebsites.net/api/schedules/events"
+  },
+  {
+    //PUT
+    "Name": "ApiSchedulesEventsUpdateRange",
+    "Url": "https://whatbackend.azurewebsites.net/api/schedules/events/updateRange"
+  },
+  {
+    //PUT
+    "Name": "ApiSchedulesEventOccurrences-eventOccurrenceID",
+    "Url": "https://whatbackend.azurewebsites.net/api/schedules/eventOccurrences/{eventOccurrenceID}"
+  },
+  {
+    //GET
+    "Name": "ApiSchedulesEventOccurrences",
+    "Url": "https://whatbackend.azurewebsites.net/api/schedules/event-occurrences"
+  }
+]

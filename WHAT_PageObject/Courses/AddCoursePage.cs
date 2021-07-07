@@ -51,13 +51,6 @@ namespace WHAT_PageObject
             return new CoursesPage(driver);
         }
 
-        public CoursesPage ClickCancelButton()
-        {
-            addCourseFormElement.FindElement(cancelButton).Click();
-
-            return new CoursesPage(driver);
-        }
-
         public string GetErrorMessage()
         {
             return addCourseFormElement.FindElement(errorMessage).Text;

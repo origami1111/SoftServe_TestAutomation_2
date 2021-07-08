@@ -1,0 +1,39 @@
+﻿[
+//Accounts
+  {
+    //POST
+    "Name": "ApiAccountsAuth",
+    "Url": "accounts/auth"
+  },
+//Schedules
+  {
+    //POST
+    "Name": "ApiSchedules",
+    "Url": "schedules"
+  },
+  {
+    //GET
+    "Name": "ApiSchedules-id",
+    "Url": "schedules/{id}"
+  },
+  {
+    //POST
+    "Name": "ApiSchedulesEvent",
+    "Url": "schedules/events"
+  },
+  {
+    //PUT
+    "Name": "ApiSchedulesEventsUpdateRange",
+    "Url": "schedules/events/updateRange"
+  },
+  {
+    //PUT
+    "Name": "ApiSchedulesEventOccurrences-eventOccurrenceID",
+    "Url": "schedules/eventOccurrences/{eventOccurrenceID}"
+  },
+  {
+    //GET
+    "Name": "ApiSchedulesEventOccurrences",
+    "Url": "/api/schedules/event-occurrences"
+  }
+]

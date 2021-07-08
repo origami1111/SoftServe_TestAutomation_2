@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using WHAT_PageObject;
+using WHAT_Utilities;
 
 namespace WHAT_Tests
 {

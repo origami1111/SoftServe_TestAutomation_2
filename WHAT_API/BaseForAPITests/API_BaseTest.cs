@@ -11,8 +11,8 @@ namespace WHAT_API
     public abstract class API_BaseTest
     {
         protected RestClient client;
-        public readonly string endpointsPath = @"DateFiles/Endpoints.json";
-        private readonly string linksPath = @"DateFiles/Links.json";
+        public readonly string endpointsPath = @"DataFiles/Endpoints.json";
+        private readonly string linksPath = @"DataFiles/Links.json";
 
         [OneTimeSetUp]
         public void OneTimeSetUp()

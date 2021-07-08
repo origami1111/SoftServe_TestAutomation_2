@@ -2,44 +2,28 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using WHAT_Utilities;
 
-namespace WHAT_Tests
+namespace WHAT_Utilities
 {
     public class ReaderFileJson
     {
         private ReaderFileJson() { }
-        private const string path = @"Credentials\Credentials.json";
+        private const string path = @"DataFiles\Credentials.json";
 
         public static Credentials ReadFileJsonCredentials(Role role, Activity activity = Activity.Active)
         {
-            Credentials credentials = new Credentials();
+            string json = File.ReadAllText(path);
+            List<Credentials> creds = JsonConvert.DeserializeObject<List<Credentials>>(json);
 
-            using (StreamReader reader = new StreamReader(path))
-            {
-                string json = reader.ReadToEnd();
-                List<Credentials> creds = JsonConvert.DeserializeObject<List<Credentials>>(json);
-                
-                credentials = creds.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).FirstOrDefault();
-            }
-
-            return credentials;
+            return creds.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).FirstOrDefault();
         }
 
         public static List<Credentials> ReadFileJsonListCredentials(Role role, Activity activity = Activity.Active)
         {
-            List<Credentials> credentials = new List<Credentials>();
+            string json = File.ReadAllText(path);
+            List<Credentials> creds = JsonConvert.DeserializeObject<List<Credentials>>(json);
 
-            using (StreamReader reader = new StreamReader(path))
-            {
-                string json = reader.ReadToEnd();
-                List<Credentials> creds = JsonConvert.DeserializeObject<List<Credentials>>(json);
-
-                credentials = creds.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).ToList();
-
-            }
-
-            return credentials;
+            return creds.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).ToList();
         }
 
     }

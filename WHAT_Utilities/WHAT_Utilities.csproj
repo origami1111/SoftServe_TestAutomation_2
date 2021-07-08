@@ -9,13 +9,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="DateFiles\Credentials.json">
+    <None Update="DataFiles\Credentials.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="DateFiles\Endpoints.json">
+    <None Update="DataFiles\Endpoints.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="DateFiles\Links.json">
+    <None Update="DataFiles\Links.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

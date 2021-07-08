@@ -12,6 +12,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WHAT_PageObject", "WHAT_Pag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WHAT_API", "WHAT_API\WHAT_API.csproj", "{3EF34912-6075-40E0-9BCD-E827B77EEEFF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WHAT_Utilities", "WHAT_Utilities\WHAT_Utilities.csproj", "{A6B3B986-AFFD-4808-80DF-36C1C76ECBCA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{3EF34912-6075-40E0-9BCD-E827B77EEEFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EF34912-6075-40E0-9BCD-E827B77EEEFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EF34912-6075-40E0-9BCD-E827B77EEEFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6B3B986-AFFD-4808-80DF-36C1C76ECBCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6B3B986-AFFD-4808-80DF-36C1C76ECBCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6B3B986-AFFD-4808-80DF-36C1C76ECBCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6B3B986-AFFD-4808-80DF-36C1C76ECBCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

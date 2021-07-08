@@ -1,0 +1,80 @@
+﻿[
+  {
+    "Name": "BaseURLforAPI",
+    "Url": "https://whatbackend.azurewebsites.net/api/"
+  },
+  {
+    "Name": "SigninPage",
+    "Url": "http://localhost:8080/auth"
+  },
+  {
+    "Name": "RegistrationPage",
+    "Url": "http://localhost:8080/registration"
+  },
+  {
+    "Name": "MyProfile",
+    "URL": "http://localhost:8080/my-profile"
+  },
+  {
+    "Name": "ChangePasswordPage",
+    "Url": "http://localhost:8080/change-password"
+  },
+  {
+    "Name": "StudentsPage",
+    "Url": "http://localhost:8080/students"
+  },
+  {
+    "Name": "MentorsPage",
+    "Url": "http://localhost:8080/mentors"
+  },
+  {
+    "Name": "LessonsPage",
+    "Url": "http://localhost:8080/lessons"
+  },
+  {
+    "Name": "SupportPage",
+    "Url": "http://localhost:8080/support"
+  },
+  {
+    "Name": "StudentsEditPage",
+    "Url": "http://localhost:8080/students/edit"
+  },
+  {
+    "Name": "SecretariesPage",
+    "Url": "http://localhost:8080/secretaries"
+  },
+  {
+    "Name": "UnassignedUsersPage",
+    "Url": "http://localhost:8080/unassigned"
+  },
+  {
+    "Name": "Lessons",
+    "Url": "http://localhost:8080/lessons"
+  },
+  {
+    "Name": "LessonsAdd",
+    "Url": "http://localhost:8080/lessons/add"
+  },
+  //{
+  //  "Name": "Groups",
+  //  "Url": "http://localhost:8080/groups"
+  //},
+  {
+    "Name": "CoursePage",
+    "Url": "http://localhost:8080/courses"
+  },
+  {
+    "Name": "AddCoursePage",
+    "Url": "http://localhost:8080/courses/add"
+  }
+  //{
+  //  "Name": "SchedulesPage",
+  //  "Schedules": "http://localhost:8080/schedules"
+  //},
+  //{
+  //  "Name": "Error404",
+  //  "Url": "http://localhost:8080/404"
+  //}
+]
+
+

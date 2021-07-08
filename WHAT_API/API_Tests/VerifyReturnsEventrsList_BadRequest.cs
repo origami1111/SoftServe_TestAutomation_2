@@ -2,11 +2,12 @@
 using RestSharp;
 using System;
 using System.Net;
+using WHAT_Utilities;
 
 namespace WHAT_API
 {
     [TestFixture]
-    public class VerifyReturnsEventrsList_BadRequest : BaseTestAPI
+    public class VerifyReturnsEventrsList_BadRequest : API_BaseTest
     {
         [Test]
         [TestCase(12050125, null, 1, 1, 1, 1, "2020-10-12T10:15:00", "2020-10-12T10:15:00")]
@@ -15,9 +16,8 @@ namespace WHAT_API
             int mentorID, int groupID, int themeID, int studentAccountID, int eventOccurrenceID,
             DateTime startDate, DateTime finishDate)
         {
-            RestClient client = new RestClient(ReaderUrlsJSON.ByName("ApiSchedulesEvent"));
-            RestRequest request = new RestRequest(Method.POST);
-            request.AddHeader("Authorization", token);
+            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
+            request.AddHeader("Authorization", GetToken("admin.@gmail.com", "admiN_12"));
             request.AddJsonBody(new
             {
                 courseID = courseID,

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WHAT_API
+namespace WHAT_Utilities
 {
     class NameAndUrl
     {

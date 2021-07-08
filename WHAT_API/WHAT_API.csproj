@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -15,9 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Endpoints\Endpoints.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\WHAT_Utilities\WHAT_Utilities.csproj" />
   </ItemGroup>
 
 </Project>

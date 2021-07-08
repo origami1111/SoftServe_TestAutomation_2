@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium.Support.UI;
 using System;
+using WHAT_Utilities;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
@@ -24,7 +25,7 @@ namespace WHAT_Tests
         public void SignInAsAdmin()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
-            string expected = ReaderUrlsJSON.GetUrlByName("StudentsPage"); 
+            string expected = ReaderUrlsJSON.GetUrlByName("StudentsPage", LinksPath); 
 
             signInPage.SignInAsAdmin(credentials.Email, credentials.Password);
 
@@ -39,7 +40,7 @@ namespace WHAT_Tests
         public void SignInAsSecretar()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretar);
-            string expected = ReaderUrlsJSON.GetUrlByName("MentorsPage");
+            string expected = ReaderUrlsJSON.GetUrlByName("MentorsPage", LinksPath);
 
             signInPage.SignInAsSecretar(credentials.Email, credentials.Password);
 
@@ -54,7 +55,7 @@ namespace WHAT_Tests
         public void SignInAsMentor()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
-            string expected = ReaderUrlsJSON.GetUrlByName("LessonsPage");
+            string expected = ReaderUrlsJSON.GetUrlByName("LessonsPage", LinksPath);
 
             signInPage.SignInAsMentor(credentials.Email, credentials.Password);
 
@@ -69,7 +70,7 @@ namespace WHAT_Tests
         public void SignInAsStudent()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Student);
-            string expected = ReaderUrlsJSON.GetUrlByName("SupportPage");
+            string expected = ReaderUrlsJSON.GetUrlByName("SupportPage", LinksPath);
 
             signInPage.SignInAsStudent(credentials.Email, credentials.Password);
 

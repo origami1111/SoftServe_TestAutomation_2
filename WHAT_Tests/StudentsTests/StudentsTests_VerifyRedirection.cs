@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using WHAT_Utilities;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
@@ -26,7 +27,7 @@ namespace WHAT_Tests
         public void RedirectUnassignedUsers()
         {
             studentsPage.ClickAddStudentButton();
-            string unassignedUsersURL = ReaderUrlsJSON.GetUrlByName("UnassignedUsersPage");
+            string unassignedUsersURL = ReaderUrlsJSON.GetUrlByName("UnassignedUsersPage", LinksPath);
             Assert.AreEqual(unassignedUsersURL, driver.Url);
         }
 
@@ -37,7 +38,7 @@ namespace WHAT_Tests
         public void RedirectStudentsEdit_AnyCard(int studentNum)
         {
             studentsPage.ClickChoosedStudent(studentNum);
-            string studentEditURL = ReaderUrlsJSON.GetUrlByNameAndNumber("StudentsPage", studentNum);
+            string studentEditURL = ReaderUrlsJSON.GetUrlByNameAndNumber("StudentsPage", studentNum, LinksPath);
             Assert.AreEqual(studentEditURL, driver.Url);
         }
 

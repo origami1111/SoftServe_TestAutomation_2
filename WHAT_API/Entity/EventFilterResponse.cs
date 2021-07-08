@@ -1,23 +1,25 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace WHAT_API
 {
     public class EventFilterResponse
-    {
-        public int id { get; set; }
-        public int eventOccuranceId { get; set; }
-        public int studentGroupId { get; set; }
-        public int themeId { get; set; }
-        public int mentorId { get; set; }
-        public int lessonId { get; set; }
-        public DateTime eventStart { get; set; }
-        public DateTime eventFinish { get; set; }
-        public override string ToString()
-        {
-
-            return $"{id}, {eventOccuranceId}, {studentGroupId}, " +
-                $"{themeId}, {mentorId}, {lessonId}"+
-                $"{eventStart}, {eventFinish}";
-        }
+    { 
+        [JsonProperty("id")]
+        public int ID { get; set; }
+        [JsonProperty("eventOccuranceId")]
+        public int EventOccuranceId { get; set; }
+        [JsonProperty("studentGroupId")]
+        public int StudentGroupId { get; set; }
+        [JsonProperty("themeId")]
+        public int ThemeId { get; set; }
+        [JsonProperty("mentorId")]
+        public int MentorId { get; set; }
+        [JsonProperty("lessonId")]
+        public int LessonId { get; set; }
+        [JsonProperty("eventStart")]
+        public DateTime EventStart { get; set; }
+        [JsonProperty("eventFinish")]
+        public DateTime EventFinish { get; set; }
     }
 }

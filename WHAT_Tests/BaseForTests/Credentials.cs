@@ -1,5 +1,4 @@
-﻿
-namespace WHAT_Tests
+﻿namespace WHAT_Tests
 {
     public class Credentials
     {

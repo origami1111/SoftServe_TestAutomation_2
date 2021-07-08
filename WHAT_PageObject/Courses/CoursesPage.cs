@@ -7,11 +7,9 @@ namespace WHAT_PageObject
 {
     public class CoursesPage : BasePageWithHeaderSidebar
     {
-        private By courseNotFoundLabel = By.XPath("//tbody/h4[contains(.,'Course is not found')]");
-
         private By addCourseButton = By.XPath("//button/span[contains(.,'Add a course')]");
 
-        private By searchField = By.CssSelector("input[class*='search']");
+        private By searchField = By.CssSelector("input");
 
         private By tableBody = By.CssSelector("tbody");
         
@@ -34,11 +32,6 @@ namespace WHAT_PageObject
             var cells = driver.FindElements(TableCell(rowNumber, ColumnName.Title));
             
             return cells.Select(cell => cell.Text).FirstOrDefault() ?? string.Empty;
-        }
-
-        public bool CourseNotFound()
-        {
-            return driver.FindElements(courseNotFoundLabel).Count > 0;
         }
 
         public CourseDetailsPage ClickCourseName(int courseNumber = 1)

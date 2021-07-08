@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Request\**" />
+    <EmbeddedResource Remove="Request\**" />
+    <None Remove="Request\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="NUnit" Version="3.13.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
@@ -15,6 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="JsonDataFiles\CreateSchedule.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <ProjectReference Include="..\WHAT_Utilities\WHAT_Utilities.csproj" />
   </ItemGroup>
 

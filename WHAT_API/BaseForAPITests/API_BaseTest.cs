@@ -1,7 +1,10 @@
 ﻿using NUnit.Framework;
 using RestSharp;
+using System;
 using System.Linq;
+using System.Net;
 using WHAT_Utilities;
+
 namespace WHAT_API
 {
     [SetUpFixture]
@@ -21,12 +24,20 @@ namespace WHAT_API
         {
             var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
             request.AddJsonBody(new { email, password });
+
             var response = client.Execute(request);
-            string token = response.Headers.Where(h => h.Name == "Authorization")
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return response.Headers.Where(h => h.Name == "Authorization")
                                            .Select(h => h.Value)
                                            .FirstOrDefault()
                                            .ToString();
-            return token;
+            }
+            else
+            {
+                throw new Exception("Authorization is failed!");
+            }
         }
     }
 }
+

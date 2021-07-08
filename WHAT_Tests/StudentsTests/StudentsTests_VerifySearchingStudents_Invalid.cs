@@ -3,6 +3,7 @@ using WHAT_PageObject;
 using System.Collections.Generic;
 using OpenQA.Selenium.Support.UI;
 using System;
+using WHAT_Utilities;
 
 namespace WHAT_Tests
 {

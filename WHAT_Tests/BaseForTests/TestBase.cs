@@ -10,7 +10,7 @@ namespace WHAT_Tests
     public abstract class TestBase
     {
         protected IWebDriver driver;
-        public readonly string LinksPath = @"DateFiles/Links.json";
+        public readonly string LinksPath = @"DataFiles/Links.json";
         [SetUp]
         public void SetUp()
         {

@@ -2,6 +2,7 @@
 using NUnit.Framework.Internal;
 using System;
 using WHAT_PageObject;
+using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
@@ -10,7 +11,7 @@ namespace WHAT_Tests
     {
         private CoursesPage coursesPage;
 
-        private readonly Credentials credentials = ReaderCredentialsJSON.ReadFileJsonCredentials(Role.Secretar);
+        private readonly Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretar);
 
         private static string GenerateRandomCourseName() =>
             $"Test course {Guid.NewGuid():N}";

@@ -2,6 +2,7 @@
 using System;
 using System.Threading;
 using WHAT_PageObject;
+using WHAT_Utilities;
 
 namespace WHAT_Tests
 {

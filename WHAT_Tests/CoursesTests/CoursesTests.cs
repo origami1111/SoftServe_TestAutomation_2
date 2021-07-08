@@ -13,7 +13,7 @@ namespace WHAT_Tests
         private readonly Credentials credentials = ReaderCredentialsJSON.ReadFileJsonCredentials(Role.Secretar);
 
         private static string GenerateRandomCourseName() =>
-            $"Test course {Guid.NewGuid().ToString("N")}";
+            $"Test course {Guid.NewGuid():N}";
 
         [SetUp]
         public void Precondition()

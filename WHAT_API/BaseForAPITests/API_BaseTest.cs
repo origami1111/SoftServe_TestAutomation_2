@@ -20,10 +20,11 @@ namespace WHAT_API
             client = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
         }
 
-        public string GetToken(string email, string password)
+        public string GetToken(Role role)
         {
+            Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role);
             var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
-            request.AddJsonBody(new { email, password });
+            request.AddJsonBody(new { credentials.Email, credentials.Password });
 
             var response = client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)

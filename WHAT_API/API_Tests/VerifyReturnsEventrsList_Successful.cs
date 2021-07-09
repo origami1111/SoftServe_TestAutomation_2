@@ -18,7 +18,7 @@ namespace WHAT_API
         public void VerifyReturnsEventrsList_StatusCode200(int mentorID)
         {
             RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
-            request.AddHeader("Authorization", GetToken("admin.@gmail.com", "admiN_12"));
+            request.AddHeader("Authorization", GetToken(Role.Admin));
             request.AddJsonBody(new
             {
                 mentorID = mentorID

@@ -28,5 +28,20 @@ namespace WHAT_API
         
         [JsonProperty("eventFinish")] // Required
         public DateTime EventFinish { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            ScheduledEvent ev = (ScheduledEvent)obj;
+
+            return (this.Id == ev.Id
+                && this.EventOccuranceId == ev.EventOccuranceId
+                && this.StudentGroupId == ev.StudentGroupId
+                && this.ThemeId == ev.ThemeId
+                && this.MentorId == ev.MentorId
+                && this.LessonId == ev.LessonId
+                && this.EventStart == ev.EventStart
+                && this.EventFinish == ev.EventFinish);
+        }
+
     }
 }

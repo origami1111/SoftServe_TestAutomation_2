@@ -3,6 +3,7 @@ using NUnit.Framework;
 using RestSharp;
 using System.IO;
 using System.Net;
+using WHAT_Utilities;
 
 namespace WHAT_API
 {
@@ -15,8 +16,8 @@ namespace WHAT_API
         [OneTimeSetUp]
         public void GetResponse()
         {
-            var adminToken = GetToken("admin.@gmail.com", "admiN_12");
-            var secretaryToken = GetToken("secretary@gmail.com", "What_123");
+            var adminToken = GetToken(Role.Admin);
+            var secretaryToken = GetToken(Role.Secretar);
 
             string endPoint = $"schedules/eventOccurrences/{1}";
             var request = new RestRequest(endPoint, Method.PUT);

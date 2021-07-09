@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WHAT_API
 {
@@ -26,5 +27,33 @@ namespace WHAT_API
 
         [JsonProperty("storage")]
         public long Storage { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            EventOccurrence sc = (EventOccurrence)obj;
+
+            return (this.Id == sc.Id
+                && this.StudentGroupId == sc.StudentGroupId
+                && this.EventStart == sc.EventStart
+                && this.EventFinish == sc.EventFinish
+                && this.Pattern == sc.Pattern
+                && SequencesEqual(this.Events, sc.Events)
+                && this.Storage == sc.Storage);
+        }
+
+        private bool SequencesEqual(IEnumerable<ScheduledEvent> a, IEnumerable<ScheduledEvent> b)
+        {
+            if (ReferenceEquals(a, b))
+            {
+                return true;
+            }
+            if (a is null || b is null)
+            {
+                return false;
+            }
+
+            return a.SequenceEqual(b);
+        }
+
     }
 }

@@ -17,7 +17,7 @@ namespace WHAT_API
             DateTime startDate, DateTime finishDate)
         {
             RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
-            request.AddHeader("Authorization", GetToken("admin.@gmail.com", "admiN_12"));
+            request.AddHeader("Authorization", GetToken(Role.Admin));
             request.AddJsonBody(new
             {
                 courseID = courseID,

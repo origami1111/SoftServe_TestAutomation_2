@@ -2,10 +2,10 @@
 {
     public enum Role
     {
-        Admin = 0,
-        Secretar = 1,
+        Unassigned = 0,
+        Student = 1,
         Mentor = 2,
-        Student = 3,
-        Unassigned = 4
+        Secretar = 3,
+        Admin = 4
     }
 }

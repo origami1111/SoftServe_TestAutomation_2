@@ -14,7 +14,7 @@
   {
     //GET
     "Name": "ApiSchedules-id",
-    "Url": "schedules/{id}"
+    "Url": "schedules/"
   },
   {
     //POST

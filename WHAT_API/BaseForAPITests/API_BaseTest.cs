@@ -16,12 +16,12 @@ namespace WHAT_API
         protected readonly string linksPath = @"DataFiles/Links.json";
 
         [OneTimeSetUp]
-        public void OneTimeSetUp()
+        protected void OneTimeSetUp()
         {
             client = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
         }
 
-        public string GetToken(Role role)
+        protected string GetToken(Role role)
         {
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role);
             var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
@@ -38,7 +38,7 @@ namespace WHAT_API
             }
         }
 
-        public IAuthenticator GetAuthenticatorFor(Role role)
+        protected IAuthenticator GetAuthenticatorFor(Role role)
         {
             var accessToken = GetToken(role);
             if (accessToken.StartsWith("Bearer ", StringComparison.InvariantCultureIgnoreCase))
@@ -46,6 +46,29 @@ namespace WHAT_API
                 accessToken = accessToken.Substring("Bearer ".Length);
             }
             return new JwtAuthenticator(accessToken);
+        }
+
+        protected RestRequest InitNewRequest(string endPointName, Method method,
+            IAuthenticator authenticator)
+        {
+            var resource = ReaderUrlsJSON.ByName(endPointName, endpointsPath);
+            var request = new RestRequest(resource, method);
+            authenticator.Authenticate(client, request);
+            return request;
+        }
+
+        protected T Execute<T>(RestRequest request) where T : new()
+        {
+            var response = client.Execute<T>(request);
+
+            if (response.ErrorException != null)
+            {
+                const string message = "Error retrieving response. Check inner details for more info.";
+                var exception = new Exception(message, response.ErrorException);
+                throw exception;
+            }
+            System.Diagnostics.Debug.WriteLine(response.Content);
+            return response.Data;
         }
     }
 }

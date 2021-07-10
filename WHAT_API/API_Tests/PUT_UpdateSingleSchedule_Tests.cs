@@ -9,31 +9,8 @@ using WHAT_Utilities;
 namespace WHAT_API
 {
     [TestFixture]
-    public class PUT_UpdateSingleSchedule_Tests : API_BaseTest
+    public class CoursesTests : API_BaseTest
     {
-        protected RestRequest InitNewRequest(string endPointName, Method method,
-            IAuthenticator authenticator)
-        {
-            var resource = ReaderUrlsJSON.ByName(endPointName, endpointsPath);
-            var request = new RestRequest(resource, method);
-            authenticator.Authenticate(client, request);
-            return request;
-        }
-
-        protected T Execute<T>(RestRequest request) where T : new()
-        {
-            var response = client.Execute<T>(request);
-
-            if (response.ErrorException != null)
-            {
-                const string message = "Error retrieving response. Check inner details for more info.";
-                var exception = new Exception(message, response.ErrorException);
-                throw exception;
-            }
-            System.Diagnostics.Debug.WriteLine(response.Content);
-            return response.Data;
-        }
-
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretar)]
         public void Test(Role role)

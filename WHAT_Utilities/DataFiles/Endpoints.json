@@ -34,6 +34,11 @@
   {
     //GET
     "Name": "ApiSchedulesEventOccurrences",
-    "Url": "/api/schedules/event-occurrences"
+    "Url": "schedules/event-occurrences"
+  },
+  {
+    //DELETE
+    "Name": "ApiSchedulesEventOccurrenceID",
+    "Url": "schedules/{eventOccurrenceID}"
   }
 ]

@@ -14,7 +14,5 @@ namespace WHAT_API.Entities
         [JsonProperty("role")]
         public Role Role { get; set; }
 
-        [JsonProperty("id")]
-        public int ID { get; set; }
     }
 }

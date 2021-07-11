@@ -7,7 +7,7 @@ using WHAT_Utilities;
 namespace WHAT_API
 {
     [TestFixture]
-    public class VerifyReturnsEventrsList_BadRequest : API_BaseTest
+    public class POST_ReturnsEventrsList_BadRequest : API_BaseTest
     {
         [Test]
         [TestCase(12050125, null, 1, 1, 1, 1, "2020-10-12T10:15:00", "2020-10-12T10:15:00")]
@@ -17,9 +17,11 @@ namespace WHAT_API
             DateTime startDate, DateTime finishDate)
         {
             RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
+            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath)}");
             request.AddHeader("Authorization", GetToken(Role.Admin));
             request.AddJsonBody(new
             {
+                
                 courseID = courseID,
                 mentorID = mentorID,
                 groupID = groupID,
@@ -30,6 +32,7 @@ namespace WHAT_API
                 finishDate = finishDate
             });
             IRestResponse response = client.Execute(request);
+            log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }

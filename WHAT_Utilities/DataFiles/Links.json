@@ -1,5 +1,9 @@
 ﻿[
   {
+    "Name": "BaseURLforAPI",
+    "Url": "https://whatbackend.azurewebsites.net/api/"
+  },
+  {
     "Name": "SigninPage",
     "Url": "http://localhost:8080/auth"
   },

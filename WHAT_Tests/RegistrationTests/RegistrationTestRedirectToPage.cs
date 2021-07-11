@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using WHAT_Utilities;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
@@ -18,7 +19,7 @@ namespace WHAT_Tests
         [Test]
         public void RedirectToSignInPage()
         {
-            string expected = ReaderUrlsJSON.GetUrlByName("SigninPage");
+            string expected = ReaderUrlsJSON.GetUrlByName("SigninPage", LinksPath);
 
             registrationPage.ClickLogInLink();
 

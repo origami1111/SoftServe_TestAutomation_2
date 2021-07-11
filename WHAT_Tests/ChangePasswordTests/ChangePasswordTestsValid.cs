@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using WHAT_PageObject;
+using WHAT_Utilities;
+
 namespace WHAT_Tests
 {
     [TestFixture]

@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
 using WHAT_PageObject;
+using WHAT_Utilities;
 
 namespace WHAT_Tests
 {

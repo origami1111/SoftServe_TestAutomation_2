@@ -33,21 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WHAT_PageObject\WHAT_PageObject.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Credentials\Credentials.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Credentials\students_active.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Credentials\students_inactive.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Links\Links.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\WHAT_Utilities\WHAT_Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

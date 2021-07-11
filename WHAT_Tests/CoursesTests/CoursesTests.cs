@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using NUnit.Framework.Internal;
+using System;
 using WHAT_PageObject;
+using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
@@ -9,11 +11,14 @@ namespace WHAT_Tests
     {
         private CoursesPage coursesPage;
 
+        private readonly Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretar);
+
+        private static string GenerateRandomCourseName() =>
+            $"Test course {Guid.NewGuid():N}";
+
         [SetUp]
         public void Precondition()
         {
-            var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
-            
             coursesPage = new SignInPage(driver)
                             .SignInAsAdmin(credentials.Email, credentials.Password)
                             .SidebarNavigateTo<CoursesPage>();
@@ -29,8 +34,8 @@ namespace WHAT_Tests
         public void VerifyCourseDetails()
         {
             int courseNumber = 1;
-            string expected =  coursesPage.ReadCourseName(courseNumber);
-            
+            string expected = coursesPage.ReadCourseName(courseNumber);
+
             var courseDetailsPage = coursesPage.ClickCourseName(courseNumber);
             string actual = courseDetailsPage.GetCourseNameDetails();
 
@@ -53,16 +58,8 @@ namespace WHAT_Tests
         [Test]
         public void AddCourse_ValidData()
         {
-            string expected;
-            bool courseExists;
-            do
-            {
-                expected = StringRandomizer.GetRandomCourseName();
-                courseExists = coursesPage.FillSearchField(expected)
-                                          .CourseNotFound() == false;
-            }
-            while (courseExists);
-                
+            string expected = GenerateRandomCourseName();
+
             string actual = coursesPage.ClickAddCourseButton()
                                        .FillCourseNameField(expected)
                                        .ClickSaveButton()
@@ -108,8 +105,8 @@ namespace WHAT_Tests
         public void AddCourse_EmptyName_isErrorMessageDisplayed()
         {
             var expected = "This field is required";
-            
-            var anyData = StringRandomizer.GetRandomCourseName();
+
+            var anyData = GenerateRandomCourseName();
             var actual = coursesPage.ClickAddCourseButton()
                                     .FillCourseNameField(anyData)
                                     .DeleteTextWithBackspaces(anyData.Length)
@@ -121,7 +118,7 @@ namespace WHAT_Tests
         [Test]
         public void AddCourse_EmptyName_IsSaveButtonDisabled()
         {
-            var anyData = StringRandomizer.GetRandomCourseName();
+            var anyData = GenerateRandomCourseName();
             var actual = coursesPage.ClickAddCourseButton()
                                     .FillCourseNameField(anyData)
                                     .DeleteTextWithBackspaces(anyData.Length)

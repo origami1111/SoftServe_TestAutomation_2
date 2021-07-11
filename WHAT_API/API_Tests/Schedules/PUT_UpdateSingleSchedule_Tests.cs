@@ -1,56 +1,50 @@
 using Newtonsoft.Json;
 using NUnit.Framework;
 using RestSharp;
+using RestSharp.Authenticators;
+using System;
 using System.IO;
-using System.Net;
 using WHAT_Utilities;
 
 namespace WHAT_API
 {
     [TestFixture]
-    public class PUT_UpdateSingleSchedule_Tests : API_BaseTest
+    public class CoursesTests : API_BaseTest
     {
-        private IRestResponse response;
-        private string requestData;
-
-        [OneTimeSetUp]
-        public void GetResponse()
+        [TestCase(Role.Admin)]
+        [TestCase(Role.Secretar)]
+        public void Test(Role role)
         {
-            var adminToken = GetToken(Role.Admin);
-            var secretaryToken = GetToken(Role.Secretar);
+            var authenticator = GetAuthenticatorFor(role);
 
-            string endPoint = $"schedules/eventOccurrences/{1}";
-            var request = new RestRequest(endPoint, Method.PUT);
-            request.AddHeader("Authorization", adminToken?.ToString());
-            request.AddHeader("Accept", "application/json, text/plain, */*");
-
-            requestData = File.ReadAllText("JsonDataFiles/CreateSchedule.json");
-            request.AddJsonBody(requestData);
-
-            response = client.Execute(request);
-        }
-
-        [Test]
-        public void StatusCodeTest()
-        {
-            var expect = HttpStatusCode.OK;
-            var actual = response.StatusCode;
-            Assert.AreEqual(expect, actual);
-        }
-
-        [Test]
-        public void Test()
-        {
+            var requestData = File.ReadAllText("JsonDataFiles/CreateSchedule.json");
             var expected = JsonConvert.DeserializeObject<CreateSchedule>(requestData);
-
-            System.Diagnostics.Debug.WriteLine(response.Content);
-            var actual = JsonConvert.DeserializeObject<EventOccurrence>(response.Content);
+            
+            // POST
+            RestRequest postRequest = InitNewRequest("ApiSchedules", Method.POST, authenticator);
+            postRequest.AddJsonBody(requestData);
+            var originalSchedule = Execute<EventOccurrence>(postRequest);
+            
+            // PUT
+            RestRequest putRequest = InitNewRequest("ApiSchedulesEventOccurrences-eventOccurrenceID",
+                Method.PUT, authenticator);
+            putRequest.AddUrlSegment("eventOccurrenceID", originalSchedule.Id.ToString());
+            requestData = File.ReadAllText("JsonDataFiles/UpdateSchedule.json");
+            putRequest.AddJsonBody(requestData);
+            var actualSchedule = Execute<EventOccurrence>(putRequest);
             
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(expected.Pattern.Type, actual.Pattern);
-                Assert.AreEqual(expected.Context.GroupID, actual.StudentGroupId);
+                Assert.AreEqual(expected.Pattern.Type, actualSchedule.Pattern, "");
+                Assert.AreEqual(expected.Context.GroupID, actualSchedule.StudentGroupId);
+                CollectionAssert.AreEquivalent(originalSchedule.Events, actualSchedule.Events, "Updated Events");
             });
+            
+            // DELETE
+            RestRequest deleteRequest = InitNewRequest("ApiSchedulesEventOccurrenceID",
+                Method.DELETE, authenticator);
+            deleteRequest.AddUrlSegment("eventOccurrenceID", originalSchedule.Id.ToString());
+            var deleteSchedule = Execute<EventOccurrence>(deleteRequest);
         }
     }
 }

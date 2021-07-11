@@ -5,6 +5,32 @@
     "Name": "ApiAccountsAuth",
     "Url": "accounts/auth"
   },
+  //Courses
+  {
+    //POST
+    "Name": "POST Adds new course",
+    "Url": "courses"
+  },
+  {
+    //GET
+    "Name": "GET Gets courses",
+    "Url": "courses/isActive"
+  },
+  {
+    //PUT
+    "Name": "PUT Update course",
+    "Url": "courses/{id}"
+  },
+  {
+    //DELETE
+    "Name": "DELETE Disable courses",
+    "Url": "courses/{id}"
+  },
+  {
+    //PATCH
+    "Name": "PATCH Enable course",
+    "Url": "courses/{id}"
+  },
 //Schedules
   {
     //POST
@@ -34,6 +60,11 @@
   {
     //GET
     "Name": "ApiSchedulesEventOccurrences",
-    "Url": "/api/schedules/event-occurrences"
+    "Url": "schedules/event-occurrences"
+  },
+  {
+    //DELETE
+    "Name": "ApiSchedulesEventOccurrenceID",
+    "Url": "schedules/{eventOccurrenceID}"
   }
 ]

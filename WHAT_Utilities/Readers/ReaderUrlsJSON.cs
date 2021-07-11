@@ -16,7 +16,7 @@ namespace WHAT_Utilities
         {
             NameAndUrl nameAndUrl = new NameAndUrl();
             var urls = JsonConvert.DeserializeObject<List<NameAndUrl>>(File.ReadAllText(path));
-            nameAndUrl = urls.Where(x => x.Name.Equals(name)).FirstOrDefault();
+            nameAndUrl = urls.First(x => x.Name.Equals(name));
             return nameAndUrl.Url;
         }
 

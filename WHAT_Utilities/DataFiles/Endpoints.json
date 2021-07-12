@@ -1,9 +1,40 @@
 ﻿[
-//Accounts
+  //Accounts
   {
     //POST
     "Name": "ApiAccountsAuth",
     "Url": "accounts/auth"
+  },
+  {
+    //POST
+    "Name": "ApiAccountsReg",
+    "Url": "accounts/reg"
+  },
+  {
+    //POST
+    "Name": "ApiAccountsNotAssigned",
+    "Url": "accounts/NotAssigned"
+  },
+  //Students
+  {
+    //GET
+    "Name": "ApiStudents",
+    "Url": "students"
+  },
+  {
+    //GET/DELETE/PATCH
+    "Name": "ApiStudentsId",
+    "Url": "students/{id}"
+  },
+  {
+    //POST
+    "Name": "ApiStudentsAccountId",
+    "Url": "students/{accountId}"
+  },
+  {
+    //GET
+    "Name": "ApiStudentsActive",
+    "Url": "students/active"
   },
   //Courses
   {
@@ -31,7 +62,7 @@
     "Name": "PATCH Enable course",
     "Url": "courses/{id}"
   },
-//Schedules
+  //Schedules
   {
     //POST
     "Name": "ApiSchedules",

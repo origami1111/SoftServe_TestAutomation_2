@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using NLog;
+using NUnit.Framework;
 using RestSharp;
 using RestSharp.Authenticators;
 using System;
@@ -12,6 +13,7 @@ namespace WHAT_API
     public abstract class API_BaseTest
     {
         protected RestClient client;
+        protected Logger log= LogManager.GetCurrentClassLogger();
         protected readonly string endpointsPath = @"DataFiles/Endpoints.json";
         protected readonly string linksPath = @"DataFiles/Links.json";
 
@@ -19,6 +21,7 @@ namespace WHAT_API
         protected void OneTimeSetUp()
         {
             client = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
+            log.Info($"Go to BaseURLforAPI => {ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath)}");
         }
 
         protected string GetToken(Role role)
@@ -26,15 +29,16 @@ namespace WHAT_API
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role);
             var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
             request.AddJsonBody(new { credentials.Email, credentials.Password });
-
             var response = client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
+                log.Info($"Sccesfully get toke by role {role}");
                 return response.Headers.Single(h => h.Name == "Authorization").Value.ToString();
             }
             else
             {
-                throw new Exception("Authorization is failed!");
+                log.Error("Authorization is failed!");
+                throw new Exception();
             }
         }
 

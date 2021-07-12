@@ -26,6 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="C:\Users\user\.nuget\packages\nlog.config\4.7.10\contentFiles\any\any\NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="C:\Users\user\.nuget\packages\nlog.schema\4.7.10\contentFiles\any\any\NLog.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="JsonDataFiles\UpdateSchedule.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

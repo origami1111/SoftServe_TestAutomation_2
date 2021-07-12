@@ -9,32 +9,31 @@ namespace WHAT_API
 {
     public class SheduleGenerator
     {
-        public CreateSchedule GenerateShedule()
+        private CreateSchedule schedule = new CreateSchedule();
+        public CreateSchedule GenerateShedule(PatternType type, int interval,
+                                              List<DayOfWeek> list, DateTime startDate, DateTime finishDate, int mentorID, int groupID, int themeID)
         {
-            CreateSchedule shedule = new CreateSchedule
+            schedule.Pattern = new Pattern()
             {
-                Pattern = new Pattern
-                {
-                    Type = PatternType.Daily,
-                    Interval = 3,
-                    DaysOfWeek = { DayOfWeek.Monday, DayOfWeek.Friday }
-                },
-
-                Range = new OccurrenceRange
-                {
-                    StartDate = new DateTime(2020, 1, 3, 13, 27, 09).ToUniversalTime(),
-                    FinishDate = new DateTime(2021, 7, 7, 15, 27, 09).ToUniversalTime()
-                },
-
-                Context = new Context
-                {
-                    MentorID = 1,
-                    ThemeID = 4,
-                    GroupID = 4
-                }
+                Type = type,
+                Interval = interval,
+                DaysOfWeek = list
             };
 
-            return shedule;
+            schedule.Range = new OccurrenceRange()
+            {
+                StartDate = startDate,
+                FinishDate = finishDate
+            };
+
+            schedule.Context = new Context()
+            {
+                MentorID = mentorID,
+                ThemeID = groupID,
+                GroupID = themeID
+            };
+
+            return schedule;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace WHAT_API
         private CreateSchedule schedule;
         private RestRequest request;
         private IRestResponse response;
+        long? occurrenceID;
 
         [OneTimeSetUp]
         public void PreConditions()
@@ -23,12 +24,28 @@ namespace WHAT_API
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedules", endpointsPath), Method.POST);
             request.AddHeader("Authorization", GetToken(Role.Admin));
 
+            List<DayOfWeek> list = new List<DayOfWeek>() { DayOfWeek.Monday, DayOfWeek.Friday };
+            DateTime startDate = new DateTime(2019, 1, 2, 13, 27, 09).ToUniversalTime();
+            DateTime finishDate = new DateTime(2021, 7, 7, 15, 27, 09).ToUniversalTime();
 
             schedule = new SheduleGenerator()
-                           .GenerateShedule();
+                           .GenerateShedule(PatternType.Daily, 3, list, startDate, finishDate, 1, 3, 4);
 
             request.AddJsonBody(schedule);
             response = client.Execute(request);
+        }
+
+        [OneTimeTearDown]
+        public void PostConditions()
+        {
+            RestRequest deleteRequest = new RestRequest($"schedules/{occurrenceID}", Method.DELETE);
+            request.AddHeader("Authorization", GetToken(Role.Admin));
+            IRestResponse deleteResponse = client.Execute(request);
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception();
+            }
         }
 
         [Test, TestCase(HttpStatusCode.OK)]
@@ -38,6 +55,7 @@ namespace WHAT_API
             var actual = response.StatusCode;
             string stream = response.Content;
             var jsonSchedule = JsonConvert.DeserializeObject<EventOccurrence>(stream);
+            occurrenceID = jsonSchedule.Id;
 
             Assert.AreEqual(expected, actual);
 

@@ -56,7 +56,7 @@ namespace WHAT_API
             RestRequest deleteRequest = InitNewRequest("DELETE Disable courses",
                 Method.DELETE, authenticator);
             deleteRequest.AddUrlSegment("id", actual.Id.ToString());
-            Execute<Course>(deleteRequest);
+            Execute<bool>(deleteRequest);
         }
 
 /*

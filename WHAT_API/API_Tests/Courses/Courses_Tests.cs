@@ -47,7 +47,7 @@ namespace WHAT_API
 
             // POST
             RestRequest postRequest = InitNewRequest("POST Adds new course", Method.POST, authenticator);
-            postRequest.AddJsonBody(new { Name = expected });
+            postRequest.AddJsonBody(new CreateCourse { Name = expected });
             var actual = Execute<Course>(postRequest);
 
             Assert.AreEqual(expected, actual.Name);
@@ -56,7 +56,7 @@ namespace WHAT_API
             RestRequest deleteRequest = InitNewRequest("DELETE Disable courses",
                 Method.DELETE, authenticator);
             deleteRequest.AddUrlSegment("id", actual.Id.ToString());
-            Execute<Course>(deleteRequest);
+            Execute<bool>(deleteRequest);
         }
 
 /*

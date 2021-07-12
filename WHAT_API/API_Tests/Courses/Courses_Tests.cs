@@ -47,7 +47,7 @@ namespace WHAT_API
 
             // POST
             RestRequest postRequest = InitNewRequest("POST Adds new course", Method.POST, authenticator);
-            postRequest.AddJsonBody(new { Name = expected });
+            postRequest.AddJsonBody(new CreateCourse { Name = expected });
             var actual = Execute<Course>(postRequest);
 
             Assert.AreEqual(expected, actual.Name);

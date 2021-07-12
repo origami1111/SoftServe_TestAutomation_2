@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WHAT_API
 {
-    public class ScheduledEvent
+    public class ScheduledEvent : IEquatable<ScheduledEvent>
     {
         [JsonProperty("id")] // Required
         public long Id { get; set; }
@@ -32,16 +33,24 @@ namespace WHAT_API
         public override bool Equals(object obj)
         {
             ScheduledEvent ev = (ScheduledEvent)obj;
-
-            return (this.Id == ev.Id
-                && this.EventOccuranceId == ev.EventOccuranceId
-                && this.StudentGroupId == ev.StudentGroupId
-                && this.ThemeId == ev.ThemeId
-                && this.MentorId == ev.MentorId
-                && this.LessonId == ev.LessonId
-                && this.EventStart == ev.EventStart
-                && this.EventFinish == ev.EventFinish);
+            return this.Equals(ev);
         }
 
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
+        }
+
+        public bool Equals([AllowNull] ScheduledEvent that)
+        {
+            return (that != null
+                && this.EventOccuranceId == that.EventOccuranceId
+                && this.StudentGroupId == that.StudentGroupId
+                && this.ThemeId == that.ThemeId
+                && this.MentorId == that.MentorId
+                && this.LessonId == that.LessonId
+                && this.EventStart == that.EventStart
+                && this.EventFinish == that.EventFinish);
+        }
     }
 }

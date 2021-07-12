@@ -3,8 +3,6 @@ using NUnit.Framework;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
 using WHAT_Utilities;
 
@@ -17,14 +15,6 @@ namespace WHAT_API
         private IRestResponse response;
         private long? id;
         private EventOccurrence expected;
-
-        //[SetUp]
-        //public void Setup()
-        //{
-        //    int id = 1;
-        //    request = new RestRequest($"schedules/{id}", Method.GET);
-        //    //request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedules-id", endpointsPath), Method.GET);
-        //}
 
         public class Schedule
         {
@@ -110,25 +100,40 @@ namespace WHAT_API
         }
 
         [Test]
-        [TestCase(HttpStatusCode.OK)]
-        public void GetScheduleWithStatusCode200(HttpStatusCode expectedStatusCode)
+        [TestCase(HttpStatusCode.OK, Role.Admin)]
+        [TestCase(HttpStatusCode.OK, Role.Secretar)]
+        public void GetScheduleWithStatusCode200(HttpStatusCode expectedStatusCode, Role role)
         {
-            request = new RestRequest($"schedules/{id}", Method.GET);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
+            request = new RestRequest(ReaderUrlsJSON.GetUrlByName("ApiSchedules-id", endpointsPath) + id, Method.GET);
+            request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
 
-            string streamActual = response.Content;
+            string json = response.Content;
 
-            EventOccurrence actual = JsonConvert.DeserializeObject<EventOccurrence>(streamActual);
+            EventOccurrence actual = JsonConvert.DeserializeObject<EventOccurrence>(json);
 
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expected, actual);
             });
+        }
+
+        [Test]
+        [TestCase(HttpStatusCode.Forbidden, Role.Mentor)]
+        [TestCase(HttpStatusCode.Forbidden, Role.Student)]
+        public void GetScheduleWithStatusCode403(HttpStatusCode expectedStatusCode, Role role)
+        {
+            request = new RestRequest($"schedules/{id}", Method.GET);
+            request.AddHeader("Authorization", GetToken(role));
+            response = client.Execute(request);
+
+            HttpStatusCode actualStatusCode = response.StatusCode;
+
+            Assert.AreEqual(expectedStatusCode, actualStatusCode);
         }
 
     }

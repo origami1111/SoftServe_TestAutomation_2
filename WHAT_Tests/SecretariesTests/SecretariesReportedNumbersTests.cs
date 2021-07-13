@@ -29,8 +29,17 @@ namespace WHAT_Tests
         public void ReportedTotalVerify ()
         {
             int actual = secretariesPage.GetReportedUsersTotal();
-            int expected = secretariesPage.LastPage().GetLastUserIndex();
-            Assert.IsTrue(expected == actual);
+            int expected;
+
+            if (secretariesPage.LastPage().GetLastUserIndex(out expected))
+            {
+                Assert.IsTrue(expected == actual);
+            }
+            else
+            {
+                Assert.Fail();
+            }
+            
         }
 
         [Test]

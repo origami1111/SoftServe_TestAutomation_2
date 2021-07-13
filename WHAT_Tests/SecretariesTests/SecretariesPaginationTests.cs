@@ -32,16 +32,29 @@ namespace WHAT_Tests
         public void VerifyFirstPageCount(ShowedUsers usersOnPage)
         {
             int expected;
-            secretariesPage.SelectUsersAtPage(usersOnPage);
+            int lastUserIndex;
+            secretariesPage.SelectUsersAtPage(usersOnPage);           
             int actual = secretariesPage.GetShowedUsersAmount();
-            if (secretariesPage.GetLastUserIndex() >= secretariesPage.GetUsersAtPage())
+
+            if (secretariesPage.GetLastUserIndex(out lastUserIndex))
             {
-                expected = secretariesPage.GetUsersAtPage();
+
+                if(lastUserIndex >= (int)usersOnPage)
+                {
+                    expected = (int)usersOnPage;
+                }
+                else
+                {
+                    expected = lastUserIndex;
+                }
+
             }
             else
             {
-                expected = secretariesPage.GetLastUserIndex();
+                expected = 0;
+                Assert.Fail();
             }
+            
             Assert.AreEqual(expected, actual);
         }
 
@@ -52,7 +65,19 @@ namespace WHAT_Tests
         public void VerifyLastPageCount(ShowedUsers usersOnPage)
         {           
             secretariesPage.SelectUsersAtPage(usersOnPage);
-            int expected = secretariesPage.GetLastUserIndex() % secretariesPage.GetUsersAtPage();
+            int expected;
+            int lastUserIndex;
+
+            if(secretariesPage.GetLastUserIndex(out lastUserIndex))
+            {
+                expected = lastUserIndex % (int)usersOnPage;
+            }
+            else
+            {
+                expected = 0;
+                Assert.Fail();
+            }
+
             int actual = secretariesPage.GetShowedUsersAmount();
             Assert.AreEqual(expected, actual);
         }
@@ -64,15 +89,16 @@ namespace WHAT_Tests
         public void VerifyMidlePageCount(ShowedUsers usersOnPage)
         {
             secretariesPage.SelectUsersAtPage(usersOnPage);
-            if(secretariesPage.GetPagesAmount()>2)
+            int pagesAmount;
+            if (secretariesPage.GetPagesAmount(out pagesAmount) && (pagesAmount>2))
             {
-                int expected = secretariesPage.GetUsersAtPage();
+                int expected = (int) usersOnPage;
                 int actual = secretariesPage.PrevPage().GetShowedUsersAmount();
                 Assert.AreEqual(expected, actual);
             }
             else
             {
-
+                
             }          
         }
 

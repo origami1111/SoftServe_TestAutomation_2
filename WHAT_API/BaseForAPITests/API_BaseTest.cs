@@ -13,7 +13,7 @@ namespace WHAT_API
     public abstract class API_BaseTest
     {
         protected RestClient client;
-        protected Logger log= LogManager.GetCurrentClassLogger();
+        protected Logger log = LogManager.GetCurrentClassLogger();
         protected readonly string endpointsPath = @"DataFiles/Endpoints.json";
         protected readonly string linksPath = @"DataFiles/Links.json";
 
@@ -32,7 +32,7 @@ namespace WHAT_API
             var response = client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                log.Info($"Sccesfully get toke by role {role}");
+                log.Info($"Succesfully get toke by role {role}");
                 return response.Headers.Single(h => h.Name == "Authorization").Value.ToString();
             }
             else

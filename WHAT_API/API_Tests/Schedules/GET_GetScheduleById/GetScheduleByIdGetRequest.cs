@@ -13,8 +13,9 @@ namespace WHAT_API
     {
         private RestRequest request;
         private IRestResponse response;
-        private long? id;
         private EventOccurrence expected;
+        private long? id;
+
 
         public class Schedule
         {
@@ -76,27 +77,39 @@ namespace WHAT_API
         }
 
 
+        /// <summary>
+        /// Create schedule by POST method
+        /// </summary>
         [OneTimeSetUp]
         public void PreCondition()
         {
-            // Create schedule by POST method
-            request = new RestRequest("schedules", Method.POST);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
+            var authenticator = GetAuthenticatorFor(Role.Admin);
+            request = InitNewRequest("ApiSchedules", Method.POST, authenticator);
 
             ScheduleGenerator scheduleGenerator = new ScheduleGenerator();
             Schedule schedule = scheduleGenerator.GenerateSchedule();
 
             request.AddJsonBody(schedule);
-            response = client.Execute(request);
-            string stream = response.Content;
-            expected = JsonConvert.DeserializeObject<EventOccurrence>(stream);
+            expected = Execute<EventOccurrence>(request);
             id = expected.Id;
         }
 
+        /// <summary>
+        /// Delete created schedule by DELETE method
+        /// </summary>
         [OneTimeTearDown]
-        public void PostCondtion()
+        public void PostCondition()
         {
-            // Delete created schedule
+            var authenticator = GetAuthenticatorFor(Role.Admin);
+            request = InitNewRequest("ApiSchedulesEventOccurenceID-eventOccurenceID", Method.DELETE, authenticator);
+            request.AddUrlSegment("eventOccurenceID", id.ToString());
+
+            response = client.Execute(request);
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception();
+            }
         }
 
         [Test]
@@ -104,22 +117,26 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.OK, Role.Secretar)]
         public void GetScheduleWithStatusCode200(HttpStatusCode expectedStatusCode, Role role)
         {
-            request = new RestRequest(ReaderUrlsJSON.GetUrlByName("ApiSchedules-id", endpointsPath) + id, Method.GET);
-            request.AddHeader("Authorization", GetToken(role));
+            var authenticator = GetAuthenticatorFor(role);
+            request = InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
+            request.AddUrlSegment("id", id.ToString());
+            
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
             response = client.Execute(request);
-
+            
             HttpStatusCode actualStatusCode = response.StatusCode;
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            log.Info($"Request is done with {actualStatusCode} StatusCode");
 
             string json = response.Content;
-
             EventOccurrence actual = JsonConvert.DeserializeObject<EventOccurrence>(json);
 
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expected, actual);
             });
+            log.Info($"Expected and actual result is checked");
         }
 
         [Test]
@@ -127,11 +144,15 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.Forbidden, Role.Student)]
         public void GetScheduleWithStatusCode403(HttpStatusCode expectedStatusCode, Role role)
         {
-            request = new RestRequest($"schedules/{id}", Method.GET);
-            request.AddHeader("Authorization", GetToken(role));
+            var authenticator = GetAuthenticatorFor(role);
+            request = InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
+            request.AddUrlSegment("id", id.ToString());
+
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
+            log.Info($"Request is done with {actualStatusCode} StatusCode");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
         }

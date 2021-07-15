@@ -30,6 +30,7 @@ namespace WHAT_API
             var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
             request.AddJsonBody(new { credentials.Email, credentials.Password });
             var response = client.Execute(request);
+
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 log.Info($"Succesfully get toke by role {role}");
@@ -45,10 +46,12 @@ namespace WHAT_API
         protected IAuthenticator GetAuthenticatorFor(Role role)
         {
             var accessToken = GetToken(role);
+
             if (accessToken.StartsWith("Bearer ", StringComparison.InvariantCultureIgnoreCase))
             {
                 accessToken = accessToken.Substring("Bearer ".Length);
             }
+
             return new JwtAuthenticator(accessToken);
         }
 
@@ -58,6 +61,7 @@ namespace WHAT_API
             var resource = ReaderUrlsJSON.ByName(endPointName, endpointsPath);
             var request = new RestRequest(resource, method);
             authenticator.Authenticate(client, request);
+
             return request;
         }
 
@@ -72,6 +76,7 @@ namespace WHAT_API
                 throw exception;
             }
             System.Diagnostics.Debug.WriteLine(response.Content);
+
             return response.Data;
         }
     }

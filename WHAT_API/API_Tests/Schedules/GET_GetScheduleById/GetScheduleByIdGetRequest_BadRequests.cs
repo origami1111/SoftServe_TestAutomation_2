@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
 using RestSharp;
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using WHAT_Utilities;
 
 namespace WHAT_API
@@ -20,11 +17,15 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.NotFound, Role.Admin, 100000)]
         public void GetScheduleWithStatusCodeError(HttpStatusCode expectedStatusCode, Role role, int id)
         {
-            request = new RestRequest(ReaderUrlsJSON.GetUrlByName("ApiSchedules-id", endpointsPath) + id, Method.GET);
-            request.AddHeader("Authorization", GetToken(role));
+            var authenticator = GetAuthenticatorFor(role);
+            request = InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
+            request.AddUrlSegment("id", id.ToString());
+
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
+            log.Info($"Request is done with {actualStatusCode} StatusCode");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
         }

@@ -12,30 +12,50 @@ namespace WHAT_API.API_Tests.Students
     [TestFixture]
     public class POST_AddNewStudent : API_BaseTest
     {
-        [Test]
-        public void VerifyAddingStudentAccount_Valid()
-        {
-            //1     Account => Registration of account {POST}
-            //2     Account => Returns all not assigned accounts {GET}
-            //3     Student => Get all students {GET}
-            //4     Student => Addition of new student {POST}
-            //Are equal 3 and 4?
-            RegAccount();
-            Assert.Pass();
-        }
-        private void RegAccount()
-        {
-            RestRequest request = new RestRequest("ApiAccountsReg", Method.POST);
-            request.AddJsonBody(new { 
-                email= "ThompsonFarzaneh@gmail.com",
-                firstName = "Thompson",
-                lastName = "Farzaneh",
-                password = "qwerty1!",
-                confirmPassword = "qwerty1!",
-            });
-            IRestResponse response = client.Execute(request);
-            System.Console.WriteLine(response.StatusCode);
-        }
+        private RestRequest request;
+        private IRestResponse response;
 
+        [Test]
+        [TestCase (Role.Admin)]
+        [TestCase(Role.Secretar)]
+        public void VerifyAddingStudentAccount_Valid(Role role)
+        {
+            var expectedUser = UserGenerator.GenerateUser();
+            string expectedUserAvatarUrl = null;
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
+            request.AddJsonBody(expectedUser);
+            response = client.Execute(request);
+            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
+            //
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
+            request.AddHeader("Authorization", GetToken(role));
+            response = client.Execute(request);
+            int newUserAccountId= JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(response.Content).Max(s => s.Id); ;
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
+            //
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsAccountId", endpointsPath), Method.POST);
+            request = InitNewRequest("ApiStudentsAccountId", Method.POST, GetAuthenticatorFor(role));
+            request.AddUrlSegment("accountId", newUserAccountId.ToString());
+            request.AddParameter("accountId", newUserAccountId);
+            response = client.Execute(request);
+            log.Info($"POST request to {response.ResponseUri}");
+            //
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath), Method.GET);
+            request.AddHeader("Authorization", GetToken(role));
+            response = client.Execute(request);
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath)}");
+            var listActiveStudents = JsonConvert.DeserializeObject<List<StudentResponseBody>>(response.Content); ;
+            int maxId = listActiveStudents.Max(i=>i.Id);
+            var actualUser = listActiveStudents.First(x => x.Id == maxId);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedUser.FirstName, actualUser.FirstName);
+                Assert.AreEqual(expectedUser.LastName, actualUser.LastName);
+                Assert.AreEqual(expectedUser.Email, actualUser.Email);
+                Assert.AreEqual(expectedUserAvatarUrl, actualUser.AvatarUrl);
+            });
+            log.Info($"Expected and actual results is checked");
+
+        }
     }
 }

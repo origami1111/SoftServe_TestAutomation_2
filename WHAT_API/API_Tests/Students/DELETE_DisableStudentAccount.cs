@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using NUnit.Framework;
 using RestSharp;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,12 +9,15 @@ using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Students
 {
-
     public class DELETE_DisableStudentAccount:API_BaseTest
     {
         private RestRequest request;
         private IRestResponse response;
-       
+        public DELETE_DisableStudentAccount()
+        {
+            log = LogManager.GetLogger($"Students/{nameof(DELETE_DisableStudentAccount)}");
+        }
+
         public void Precondition(Role role)
         {
             var expectedUser = UserGenerator.GenerateUser();
@@ -26,7 +29,7 @@ namespace WHAT_API.API_Tests.Students
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
-            int newUserAccountId = JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(response.Content).Max(s => s.Id); ;
+            int newUserAccountId = JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(response.Content).Max(s => s.Id);
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
             //
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsAccountId", endpointsPath), Method.POST);
@@ -64,6 +67,5 @@ namespace WHAT_API.API_Tests.Students
             IRestResponse getResponse = client.Execute(getRequest);
             return JsonConvert.DeserializeObject<List<StudentResponseBody>>(getResponse.Content);
         }
-
     }
 }

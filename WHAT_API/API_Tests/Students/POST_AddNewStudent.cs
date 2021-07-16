@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using NUnit.Framework;
 using RestSharp;
 using System;
@@ -14,7 +15,10 @@ namespace WHAT_API.API_Tests.Students
     {
         private RestRequest request;
         private IRestResponse response;
-
+        public POST_AddNewStudent()
+        {
+            log = LogManager.GetLogger($"Students/{nameof(POST_AddNewStudent)}");
+        }
         [Test]
         [TestCase (Role.Admin)]
         [TestCase(Role.Secretar)]

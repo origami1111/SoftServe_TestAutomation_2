@@ -8,7 +8,7 @@ namespace WHAT_Tests
     {
         public static string FirstName = "first name",
                              LastName = "last name",
-                             Email = "email";
+                             Email = "email address";
 
         public static string WarningMessages(string data, string fieldName)
         {

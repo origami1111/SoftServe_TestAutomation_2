@@ -98,6 +98,23 @@
     "Name": "ApiSchedulesEventOccurrenceID",
     "Url": "schedules/{eventOccurrenceID}"
   },
+  //Mentors
+  {
+    //GET
+    "Name": "ApiOnlyActiveMentors",
+    "Url": "mentors/active"
+  },
+  //StudentsGroup
+  {
+    //GET
+    "Name": "ApiStudentsGroup",
+    "Url": "student_groups"
+  },
+  //Themes
+  {
+    //GET
+    "Name": "ApiThemes",
+    "Url": "themes"
   {
     //DELETE
     "Name": "ApiSchedulesEventOccurenceID-eventOccurenceID",

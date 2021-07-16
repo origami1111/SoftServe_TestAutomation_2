@@ -42,6 +42,23 @@ namespace WHAT_API
                 throw new Exception();
             }
         }
+        protected string GetToken(Role role, RestClient client)
+        {
+            Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role);
+            var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
+            request.AddJsonBody(new { credentials.Email, credentials.Password });
+            var response = client.Execute(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                log.Info($"Sccesfully get toke by role {role}");
+                return response.Headers.Single(h => h.Name == "Authorization").Value.ToString();
+            }
+            else
+            {
+                log.Error("Authorization is failed!");
+                throw new Exception();
+            }
+        }
 
         protected IAuthenticator GetAuthenticatorFor(Role role)
         {

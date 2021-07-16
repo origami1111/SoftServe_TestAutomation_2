@@ -115,6 +115,7 @@
     //GET
     "Name": "ApiThemes",
     "Url": "themes"
+  },
   {
     //DELETE
     "Name": "ApiSchedulesEventOccurenceID-eventOccurenceID",

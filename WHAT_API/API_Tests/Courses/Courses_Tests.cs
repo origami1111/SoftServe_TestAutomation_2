@@ -38,7 +38,7 @@ namespace WHAT_API
         */
 
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void AddCourse_ValidData(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);

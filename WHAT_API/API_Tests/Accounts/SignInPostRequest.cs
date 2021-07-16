@@ -16,7 +16,7 @@ namespace WHAT_API
         [Test]
         [TestCase(HttpStatusCode.OK, Role.Admin, Activity.Active)]
         [TestCase(HttpStatusCode.OK, Role.Mentor, Activity.Active)]
-        [TestCase(HttpStatusCode.OK, Role.Secretar, Activity.Active)]
+        [TestCase(HttpStatusCode.OK, Role.Secretary, Activity.Active)]
         [TestCase(HttpStatusCode.OK, Role.Student, Activity.Active)]
         public void SignInWithStatusCode200(HttpStatusCode expectedStatusCode, Role role, Activity activity)
         {

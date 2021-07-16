@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace WHAT_API
 {
     public class StudentsGroup
     {
-            public int id { get; set; }
-            public int courseId { get; set; }
-            public string name { get; set; }
-            public DateTime startDate { get; set; }
-            public DateTime finishDate { get; set; }
-            public List<int> studentIds { get; set; }
-            public List<int> mentorIds { get; set; }
+        [JsonProperty("id")]
+        public int ID { get; set; }
+        [JsonProperty("courseId")]
+        public int CourseId { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("startDate")]
+        public DateTime StartDate { get; set; }
+        [JsonProperty("finishDate")]
+        public DateTime FinishDate { get; set; }
+        [JsonProperty("studentIds ")]
+        public List<int> StudentIds { get; set; }
+        [JsonProperty("mentorIds")]
+        public List<int> MentorIds { get; set; }
     }
 }

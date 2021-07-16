@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Newtonsoft.Json;
 
 namespace WHAT_API
 {
     public class Themes
     {
-            public int id { get; set; }
-            public string name { get; set; }
+        [JsonProperty("id")]
+        public int ID { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
     }
 }

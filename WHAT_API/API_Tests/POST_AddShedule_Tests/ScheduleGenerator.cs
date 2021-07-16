@@ -86,7 +86,7 @@ namespace WHAT_API
             else 
             {
                 int randomElement = random.Next(0, listOfMentors.Count);
-                mentorID = listOfMentors.ElementAt(randomElement).id;
+                mentorID = listOfMentors.ElementAt(randomElement).ID;
             }
             return mentorID;
         }
@@ -108,7 +108,7 @@ namespace WHAT_API
             else
             {
                 int randomElement = random.Next(0, listOfStudentsGroup.Count);
-                studentsGroupID = listOfStudentsGroup.ElementAt(randomElement).id;
+                studentsGroupID = listOfStudentsGroup.ElementAt(randomElement).ID;
             }
             return studentsGroupID;
         }
@@ -130,7 +130,7 @@ namespace WHAT_API
             else
             {
                 int randomElement = random.Next(0, listOfThemes.Count);
-                themeID = listOfThemes.ElementAt(randomElement).id;
+                themeID = listOfThemes.ElementAt(randomElement).ID;
             }
             return themeID;
         }

@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Newtonsoft.Json;
 
 namespace WHAT_API
 {
     public class Mentors
     {
-            public int id { get; set; }
-            public string email { get; set; }
-            public string firstName { get; set; }
-            public string lastName { get; set; }
+        [JsonProperty("id")]
+        public int ID { get; set; }
+        [JsonProperty("email")]
+        public string Email { get; set; }
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
     }
 }

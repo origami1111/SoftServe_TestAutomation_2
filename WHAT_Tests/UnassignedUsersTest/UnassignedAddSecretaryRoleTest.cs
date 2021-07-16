@@ -26,18 +26,23 @@ namespace WHAT_Tests
         public void Down()
         {
             unassignedUsers.Logout();
-            driver.Quit();
         }
 
         [Test]
 
-        [TestCase(5)]
+        [TestCase(7)]
         public void AddRole(int secretaryID)
         {
-            string expected = unassignedUsers.AddSecretaryRole(secretaryID);
+            unassignedUsers.AddSecretaryRole(secretaryID);
 
             SecretariesPage secretariesPage = new SecretariesPage(driver)
                                           .SidebarNavigateTo<SecretariesPage>();
+
+            driver.Navigate().Refresh();
+
+            bool actual = unassignedUsers.UserVerify<SecretariesPage>(unassignedUsers.FirstName, unassignedUsers.LastName, unassignedUsers.Email);
+
+            Assert.IsTrue(actual);
         }
     }
 }

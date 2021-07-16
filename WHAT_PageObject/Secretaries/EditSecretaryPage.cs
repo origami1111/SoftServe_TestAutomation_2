@@ -10,13 +10,15 @@ namespace WHAT_PageObject
                        firstName = By.XPath("//input[@name='firstName']"),
                        lastName = By.XPath("//input[@name='lastName']"),
                        email = By.XPath("//input[@name='email']"),
-                       layOff = By.XPath("//button[text()='Lay off']"),
-                       clear = By.XPath("//button[text()='Clear']"),
-                       save = By.XPath("//button[text()='Save']"),
                        deselectLabel = By.XPath("//label[text()='First Name:']"),
                        firstNameDangerField = By.XPath("//input[@name = 'firstName']/following-sibling::div"),
                        lastNameDangerField = By.XPath("//input[@name = 'lastName']/following-sibling::div"),
                        emailDangerField = By.XPath("//input[@name = 'email']/following-sibling::div");
+
+        public By
+                       layOff = By.XPath("//button[text()='Lay off']"),
+                       clear = By.XPath("//button[text()='Clear']"),
+                       save = By.XPath("//button[text()='Save']");
         #endregion
 
 
@@ -89,6 +91,19 @@ namespace WHAT_PageObject
             ClickItem(clear);
 
             return this;
+        }
+
+        public string GetFirstName()
+        {
+            return driver.FindElement(firstName).GetAttribute("value");
+        }
+        public string GetLastName()
+        {
+            return driver.FindElement(lastName).GetAttribute("value");
+        }
+        public string GetEmail()
+        {
+            return driver.FindElement(email).GetAttribute("value");
         }
     }
 }

@@ -26,7 +26,6 @@ namespace WHAT_Tests
         public void Down()
         {
             unassignedUsers.Logout();
-            driver.Quit();
         }
 
         [Test]
@@ -34,10 +33,16 @@ namespace WHAT_Tests
         [TestCase(5)]
         public void AddRole(int mentorID)
         {
-            string expected = unassignedUsers.AddMentorRole(mentorID);
+            unassignedUsers.AddMentorRole(mentorID);
 
             MentorsPage mentorsPage = new MentorsPage(driver)
                                           .SidebarNavigateTo<MentorsPage>();
+
+            driver.Navigate().Refresh();
+
+            bool actual = unassignedUsers.UserVerify<MentorsPage>(unassignedUsers.FirstName,unassignedUsers.LastName, unassignedUsers.Email);
+
+            Assert.IsTrue(actual);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using WHAT_Utilities;
 
-namespace WHAT_API.Entities
+namespace WHAT_API
 {
     class RegistrationResponseBody
     {

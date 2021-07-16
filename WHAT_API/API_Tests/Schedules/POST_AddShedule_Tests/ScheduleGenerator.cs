@@ -74,7 +74,7 @@ namespace WHAT_API
             int mentorID;
 
             RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
-            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.GetUrlByName("ApiOnlyActiveMentors", endpointsPath), Method.GET);
+            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiOnlyActiveMentors", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin,getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
 
@@ -96,7 +96,7 @@ namespace WHAT_API
             int studentsGroupID;
 
             RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
-            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.GetUrlByName("ApiStudentsGroup", endpointsPath), Method.GET);
+            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsGroup", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin, getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
 
@@ -118,7 +118,7 @@ namespace WHAT_API
             int themeID;
 
             RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
-            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.GetUrlByName("ApiThemes", endpointsPath), Method.GET);
+            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiThemes", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin, getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
 

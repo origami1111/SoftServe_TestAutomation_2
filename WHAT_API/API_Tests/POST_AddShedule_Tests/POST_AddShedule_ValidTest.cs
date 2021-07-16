@@ -24,7 +24,7 @@ namespace WHAT_API
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedules", endpointsPath), Method.POST);
             request.AddHeader("Authorization", GetToken(Role.Admin));
 
-            schedule = new SheduleGenerator()
+            schedule = new ScheduleGenerator()
                            .GenerateShedule();
 
             request.AddJsonBody(schedule);

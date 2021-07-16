@@ -11,7 +11,7 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
-    public class SheduleGenerator : API_BaseTest
+    public class ScheduleGenerator : API_BaseTest
     {       
         private CreateSchedule schedule = new CreateSchedule();
         Random random = new Random();

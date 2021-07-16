@@ -70,8 +70,8 @@
   },
   {
     //GET
-    "Name": "ApiSchedules-id",
-    "Url": "schedules/"
+    "Name": "ApiSchedulesById-id",
+    "Url": "schedules/{id}"
   },
   {
     //POST
@@ -115,5 +115,9 @@
     //GET
     "Name": "ApiThemes",
     "Url": "themes"
+  {
+    //DELETE
+    "Name": "ApiSchedulesEventOccurenceID-eventOccurenceID",
+    "Url" : "schedules/{eventOccurenceID}"
   }
 ]

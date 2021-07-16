@@ -43,10 +43,11 @@ namespace WHAT_PageObject
             driver.FindElement (By.XPath($"//td[@data-secretary-id={index}]")).Click();
             return new EditSecretaryPage (driver);
         }
-        public int GetPagesAmount()
+        public bool GetPagesAmount(out int pagesAmount)
         {
-            return Int32.Parse(driver.FindElement(lastPage).Text);
+            return Int32.TryParse(driver.FindElement(lastPage).Text, out pagesAmount);
         }
+
         #region navigation
         public SecretariesPage PrevPage ()
         {
@@ -121,10 +122,10 @@ namespace WHAT_PageObject
             return driver.FindElements(userData).Count;
         }
 
-        public int GetUsersAtPage()
+        public bool GetUsersAtPage(out int usersAtPage)
         {
             SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
-            return Int32.Parse(selectedOption.SelectedOption.Text);
+            return Int32.TryParse(selectedOption.SelectedOption.Text, out usersAtPage);
         }
 
         public void SelectUsersAtPage(ShowedUsers showedUsers)
@@ -134,9 +135,9 @@ namespace WHAT_PageObject
             selectedOption.SelectByIndex((int)showedUsers - 1);
         }
 
-        public int GetLastUserIndex ()
+        public bool GetLastUserIndex (out int index)
         {
-            return Int32.Parse(LastPage().driver.FindElement(lastUserIndex).Text); 
+            return Int32.TryParse(LastPage().driver.FindElement(lastUserIndex).Text, out index); 
         }
 
     }

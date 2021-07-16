@@ -1,13 +1,19 @@
+using NLog;
 using NUnit.Framework;
 using RestSharp;
 using System;
 using WHAT_Utilities;
 
-namespace WHAT_API
+namespace WHAT_API.POST_ReturnsEventrsList
 {
     [TestFixture]
     public class POST_ReturnsEventrsList_InvalidRole : API_BaseTest
     {
+        public POST_ReturnsEventrsList_InvalidRole()
+        {
+            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventrsList_InvalidRole)}");
+        }
+
         [Test]
         public void VerifyReturnsEventrsList_RoleUnassigned_Invalid([Values(Role.Unassigned)] Role user)
         {

@@ -42,7 +42,7 @@ namespace WHAT_API.API_Tests.Students
 
         [Test]
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void VerifyDeletingStudentAccount_Valid(Role role)
         {
             Precondition(role);

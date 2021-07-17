@@ -5,6 +5,7 @@ using RestSharp.Authenticators;
 using System;
 using System.Linq;
 using System.Net;
+using WHAT_API.API_Tests;
 using WHAT_Utilities;
 
 namespace WHAT_API
@@ -95,6 +96,26 @@ namespace WHAT_API
             System.Diagnostics.Debug.WriteLine(response.Content);
 
             return response.Data;
+        }
+
+        protected RegistrationResponseBody RegistrationUser()
+        {
+            var user = UserGenerator.GenerateUser();
+            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
+            request.AddJsonBody(user);
+
+            IRestResponse response = client.Execute(request);
+
+            var data = new RegistrationResponseBody()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = Role.Unassigned,
+                Activity = Activity.Active
+            };
+
+            return data;
         }
     }
 }

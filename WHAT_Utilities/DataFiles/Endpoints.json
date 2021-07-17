@@ -11,9 +11,19 @@
     "Url": "accounts/reg"
   },
   {
-    //POST
+    //GET
+    "Name": "ApiAccountsAll",
+    "Url": "accounts"
+  },
+  {
+    //GET
     "Name": "ApiAccountsNotAssigned",
     "Url": "accounts/NotAssigned"
+  },
+  {
+    //PUT
+    "Name": "ApiAccountsChangePassword",
+    "Url": "accounts/password"
   },
   //Students
   {
@@ -119,6 +129,12 @@
   {
     //DELETE
     "Name": "ApiSchedulesEventOccurenceID-eventOccurenceID",
-    "Url" : "schedules/{eventOccurenceID}"
+    "Url": "schedules/{eventOccurenceID}"
+  },
+  // Mentors
+  {
+    // POST
+    "Name": "ApiMentorsAssignAccountToMentor-accountID",
+    "Url": "mentors/{accountId}"
   }
 ]

@@ -12,7 +12,7 @@ namespace WHAT_API
     public class CoursesTests : API_BaseTest
     {
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void Test(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);

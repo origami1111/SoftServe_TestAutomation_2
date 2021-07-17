@@ -19,7 +19,7 @@ namespace WHAT_API.POST_ReturnsEventrsList
 
         [Test]
         public void VerifyReturnsEventrsList_ByMentorId([Random(1,20,2)] int mentorID, 
-            [Values(Role.Admin, Role.Secretar, Role.Student, Role.Mentor)] Role user)
+            [Values(Role.Admin, Role.Secretary, Role.Student, Role.Mentor)] Role user)
         {
             RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath)}");
@@ -50,7 +50,7 @@ namespace WHAT_API.POST_ReturnsEventrsList
             [Values(1)] int themeID,
             [Values(1)] int studentAccountID,
             [Values(1)] int eventOccurrenceID,
-            [Values(Role.Admin, Role.Secretar, Role.Student, Role.Mentor)] Role user)
+            [Values(Role.Admin, Role.Secretary, Role.Student, Role.Mentor)] Role user)
         {
             RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath)}");

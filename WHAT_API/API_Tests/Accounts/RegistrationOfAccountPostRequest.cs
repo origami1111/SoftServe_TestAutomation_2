@@ -47,15 +47,10 @@ namespace WHAT_API.API_Tests.Accounts
         [TestCase(HttpStatusCode.Conflict, "admin.@gmail.com")]
         public void RegistrationOfAccountWithEmailAlreadyExists(HttpStatusCode expectedStatusCode, string email)
         {
+            var expectedData = UserGenerator.GenerateUser();
+            expectedData.Email = email;
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
-            request.AddJsonBody(new 
-            {
-                email = email,
-                firstName = "Test",
-                lastName = "Registration",
-                password = "Qwerty_123",
-                confirmPassword = "Qwerty_123"
-            });
+            request.AddJsonBody(expectedData);
 
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
             response = client.Execute(request);
@@ -75,15 +70,16 @@ namespace WHAT_API.API_Tests.Accounts
         public void RegistrationOfAccountWithInvalidData(HttpStatusCode expectedStatusCode, string email, 
             string firstName, string lastName, string password, string confirmPassword)
         {
+            var data = new RegistrationRequestBody 
+            { 
+                Email = email, 
+                FirstName = firstName, 
+                LastName = lastName, 
+                Password = password, 
+                ConfirmPassword = confirmPassword 
+            };
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
-            request.AddJsonBody(new
-            {
-                email = email,
-                firstName = firstName,
-                lastName = lastName,
-                password = password,
-                confirmPassword = confirmPassword
-            });
+            request.AddJsonBody(data);
 
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
             response = client.Execute(request);

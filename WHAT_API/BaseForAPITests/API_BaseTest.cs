@@ -16,7 +16,9 @@ namespace WHAT_API
         protected Logger log = LogManager.GetCurrentClassLogger();
         protected readonly string endpointsPath = @"DataFiles/Endpoints.json";
         protected readonly string linksPath = @"DataFiles/Links.json";
-
+        private readonly IAuthenticator[] authenticators =
+            new IAuthenticator[Enum.GetValues(typeof(Role)).Length];
+        
         [OneTimeSetUp]
         protected void OneTimeSetUp()
         {
@@ -45,14 +47,21 @@ namespace WHAT_API
 
         protected IAuthenticator GetAuthenticatorFor(Role role)
         {
-            var accessToken = GetToken(role);
+            IAuthenticator authenticator = authenticators[(int)role];
+            if (authenticator != null)
+            {
+                return authenticator;
+            }
 
+            var accessToken = GetToken(role);
             if (accessToken.StartsWith("Bearer ", StringComparison.InvariantCultureIgnoreCase))
             {
                 accessToken = accessToken.Substring("Bearer ".Length);
             }
 
-            return new JwtAuthenticator(accessToken);
+            authenticator = new JwtAuthenticator(accessToken);
+            authenticators[(int)role] = authenticator;
+            return authenticator;
         }
 
         protected RestRequest InitNewRequest(string endPointName, Method method,

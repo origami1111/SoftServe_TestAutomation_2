@@ -2,7 +2,7 @@
 
 namespace WHAT_API
 {
-    public class Student
+    public class StudentResponseBody
     {
         [JsonProperty("id")]
         public int Id { get; set; }

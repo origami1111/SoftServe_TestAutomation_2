@@ -11,9 +11,19 @@
     "Url": "accounts/reg"
   },
   {
-    //POST
+    //GET
+    "Name": "ApiAccountsAll",
+    "Url": "accounts"
+  },
+  {
+    //GET
     "Name": "ApiAccountsNotAssigned",
     "Url": "accounts/NotAssigned"
+  },
+  {
+    //PUT
+    "Name": "ApiAccountsChangePassword",
+    "Url": "accounts/password"
   },
   //Students
   {
@@ -98,15 +108,39 @@
     "Name": "ApiSchedulesEventOccurrenceID",
     "Url": "schedules/{eventOccurrenceID}"
   },
+  //Mentors
+  {
+    //GET
+    "Name": "ApiOnlyActiveMentors",
+    "Url": "mentors/active"
+  },
+  //StudentsGroup
+  {
+    //GET
+    "Name": "ApiStudentsGroup",
+    "Url": "student_groups"
+  },
+  //Themes
+  {
+    //GET
+    "Name": "ApiThemes",
+    "Url": "themes"
+  },
   {
     //DELETE
     "Name": "ApiSchedulesEventOccurenceID-eventOccurenceID",
-    "Url" : "schedules/{eventOccurenceID}"
+    "Url": "schedules/{eventOccurenceID}"
   },
   //Student groups
   {
     //POST
     "Name": "Add new student group",
-    "Url" : "student_groups"
+    "Url": "student_groups"
+  },
+  // Mentors
+  {
+    // POST
+    "Name": "ApiMentorsAssignAccountToMentor-accountID",
+    "Url": "mentors/{accountId}"
   }
 ]

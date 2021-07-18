@@ -119,7 +119,7 @@ namespace WHAT_API
         }
 
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void UpdateCourse_ValidCourseName(Role role)
         {
             var expected = new CreateOrUpdateCourse(GenerateNameOf<Course>());
@@ -161,7 +161,7 @@ namespace WHAT_API
         }
 
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void UpdateCourse_BadRequestStatusCode(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
@@ -213,7 +213,7 @@ namespace WHAT_API
         }
 
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void DisableCourse_Success(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
@@ -262,7 +262,7 @@ namespace WHAT_API
         }
 
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void DisableCourse_WithActiveStudentGroup(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
@@ -284,7 +284,7 @@ namespace WHAT_API
         }
 
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void EnableCourse_Success(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
@@ -346,7 +346,7 @@ namespace WHAT_API
         }
 
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void EnableCourse_CourseAlreadyActive(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);

@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using WHAT_Utilities;
 
-namespace WHAT_API.Entities
+namespace WHAT_API
 {
-    class RegistrationResponseBody
+    public class RegistrationResponseBody
     {
         [JsonProperty("id")]
         public int Id { get; set; }
@@ -22,5 +22,16 @@ namespace WHAT_API.Entities
 
         [JsonProperty("isActive")]
         public Activity Activity { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            RegistrationResponseBody other = (RegistrationResponseBody)obj;
+
+            return (this.Email == other.Email
+                && this.FirstName == other.FirstName
+                && this.LastName == other.LastName
+                && this.Role == other.Role
+                && this.Activity == other.Activity);
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using NUnit.Framework;
 using RestSharp;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,37 +9,63 @@ using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Students
 {
-    [TestFixture]
     public class DELETE_DisableStudentAccount:API_BaseTest
     {
-        [Test]
-        public void VerifyDeletingStudentAccount_Valid([Values(Role.Admin, Role.Secretar, Role.Mentor)] Role user)
+        private RestRequest request;
+        private IRestResponse response;
+        public DELETE_DisableStudentAccount()
         {
-            int maxId = GetActiveStudentsList(user).Max(s => s.Id);
-            log.Info($"List of students is taken, there are {GetActiveStudentsList(user).Count} active students");
-            DeleteStudentsAccount(maxId);
-            log.Info($"Deleted students with max id : {maxId}");
-            int expect = --maxId;
-            int actual = GetActiveStudentsList(user).Max(s => s.Id);
-            log.Info($"List of students is taken, there are {GetActiveStudentsList(user).Count} active students");
-            Assert.AreEqual(expect, actual);
+            log = LogManager.GetLogger($"Students/{nameof(DELETE_DisableStudentAccount)}");
         }
-        private List<Student> GetActiveStudentsList(Role role)
+
+        public void Precondition(Role role)
         {
-            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath), Method.GET);
+            var expectedUser = UserGenerator.GenerateUser();
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
+            request.AddJsonBody(expectedUser);
+            response = client.Execute(request);
+            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
+            //
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
-            IRestResponse response = client.Execute(request);
-            return JsonConvert.DeserializeObject<List<Student>>(response.Content);
+            response = client.Execute(request);
+            int newUserAccountId = JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(response.Content).Max(s => s.Id);
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
+            //
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsAccountId", endpointsPath), Method.POST);
+            request = InitNewRequest("ApiStudentsAccountId", Method.POST, GetAuthenticatorFor(role));
+            request.AddUrlSegment("accountId", newUserAccountId.ToString());
+            request.AddParameter("accountId", newUserAccountId);
+            response = client.Execute(request);
+            log.Info($"POST request to {response.ResponseUri}");
         }
-        private void DeleteStudentsAccount(int maxId)
+
+        [Test]
+        [TestCase(Role.Admin)]
+        [TestCase(Role.Secretary)]
+        public void VerifyDeletingStudentAccount_Valid(Role role)
         {
-            RestRequest request = new RestRequest($"students/{maxId}", Method.DELETE);
+            Precondition(role);
+            int lastUserId = GetActiveStudentsList(role).Last().Id;
+            int expect = GetActiveStudentsList(role).Count-1;
+            log.Info($"List of students is taken, there are {GetActiveStudentsList(role).Count} active students");
+            //
+            request = new RestRequest($"students/{lastUserId}", Method.DELETE);
             request.AddHeader("Authorization", GetToken(Role.Admin));
             IRestResponse response = client.Execute(request);
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                throw new Exception();
-            }
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            //
+            log.Info($"Deleted students with max id : {lastUserId}");
+            int actual = GetActiveStudentsList(role).Count;
+            log.Info($"List of students is taken, there are {GetActiveStudentsList(role).Count} active students");
+            Assert.AreEqual(expect, actual);
+        }
+        private List<StudentResponseBody> GetActiveStudentsList(Role role)
+        {
+            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath), Method.GET);
+            getRequest.AddHeader("Authorization", GetToken(role));
+            IRestResponse getResponse = client.Execute(getRequest);
+            return JsonConvert.DeserializeObject<List<StudentResponseBody>>(getResponse.Content);
         }
     }
 }

@@ -74,7 +74,7 @@ namespace WHAT_API
             var accessToken = GetToken(role);
             if (accessToken.StartsWith("Bearer ", StringComparison.InvariantCultureIgnoreCase))
             {
-                accessToken = accessToken.Substring("Bearer ".Length);
+                accessToken = accessToken["Bearer ".Length..];
             }
 
             authenticator = new JwtAuthenticator(accessToken);

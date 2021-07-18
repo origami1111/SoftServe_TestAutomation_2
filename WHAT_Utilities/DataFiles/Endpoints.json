@@ -102,5 +102,11 @@
     //DELETE
     "Name": "ApiSchedulesEventOccurenceID-eventOccurenceID",
     "Url" : "schedules/{eventOccurenceID}"
+  },
+  //Student groups
+  {
+    //POST
+    "Name": "Add new student group",
+    "Url" : "student_groups"
   }
 ]

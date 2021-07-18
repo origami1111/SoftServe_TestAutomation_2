@@ -15,7 +15,7 @@ namespace WHAT_API
             $"Test {typeof(T).Name} {Guid.NewGuid().ToString("N")}";
 
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void AddNewCourse_ValidCourseName(Role role)
         {
             var expected = new CreateOrUpdateCourse(GenerateNameOf<Course>());
@@ -34,7 +34,7 @@ namespace WHAT_API
         }
 
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void AddNewCourse_SameCourseName(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
@@ -70,7 +70,7 @@ namespace WHAT_API
 
         [Test]
         public void GetCourses_ActiveNotActive(
-            [Values(Role.Student, Role.Mentor, Role.Secretar, Role.Admin)] Role role,
+            [Values(Role.Student, Role.Mentor, Role.Secretary, Role.Admin)] Role role,
             [Values] bool isActive)
         {
             var authenticator = GetAuthenticatorFor(role);
@@ -143,7 +143,7 @@ namespace WHAT_API
         }
 
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void UpdateCourse_SameCourseName(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
@@ -271,8 +271,10 @@ namespace WHAT_API
             var originCourse = Execute<Course>(addCourseRequest);
 
             RestRequest addStudentGroupRequest = InitNewRequest("Add new student group", Method.POST, authenticator);
-            var studentGroup = new CreateStudentGroup();
-            studentGroup.CourseId = originCourse.Id;
+            var studentGroup = new CreateStudentGroup
+            {
+                CourseId = originCourse.Id
+            };
             addStudentGroupRequest.AddJsonBody(studentGroup);
             client.Execute(addStudentGroupRequest);
 

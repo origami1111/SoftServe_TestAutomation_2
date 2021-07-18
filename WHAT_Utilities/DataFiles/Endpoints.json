@@ -142,5 +142,26 @@
     // POST
     "Name": "ApiMentorsAssignAccountToMentor-accountID",
     "Url": "mentors/{accountId}"
+  },
+  //Lessons
+  {
+    //POST,GET
+    "Name": "Lessons",
+    "Url": "lessons"
+  },
+  {
+    //POST
+    "Name": "LessonsAssign",
+    "Url": "lessons/assign"
+  },
+  {
+    //PUT,GET
+    "Name": "LessonsID",
+    "Url": "lessons/{id}"
+  },
+  {
+    //GET
+    "Name": "CheckLessonDone",
+    "Url": "lessons/{id}/isdone"
   }
 ]

@@ -40,7 +40,6 @@ namespace WHAT_Tests
         {
             editSecretaryPage.ClickClearButton();
             editSecretaryPage.Logout();
-            driver.Quit();
         }
 
         [Test]
@@ -55,7 +54,14 @@ namespace WHAT_Tests
 
             string actual = editSecretaryPage.DangerFieldMessage(WarningMessagesData.FirstName);
 
-            Assert.AreEqual(expected, actual);
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expected, actual);
+                Assert.IsFalse(driver.FindElement(editSecretaryPage.save).Enabled);
+                Assert.IsFalse(driver.FindElement(editSecretaryPage.layOff).Enabled);
+                Assert.IsTrue(driver.FindElement(editSecretaryPage.clear).Enabled);
+            });
         }
 
         [Test]
@@ -70,7 +76,13 @@ namespace WHAT_Tests
 
             string actual = editSecretaryPage.DangerFieldMessage(WarningMessagesData.LastName);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expected, actual);
+                Assert.IsFalse(driver.FindElement(editSecretaryPage.save).Enabled);
+                Assert.IsFalse(driver.FindElement(editSecretaryPage.layOff).Enabled);
+                Assert.IsTrue(driver.FindElement(editSecretaryPage.clear).Enabled);
+            });
         }
 
         [Test]
@@ -84,7 +96,13 @@ namespace WHAT_Tests
 
             string actual = editSecretaryPage.DangerFieldMessage(WarningMessagesData.Email);
 
-            Assert.AreEqual(expected, actual);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expected, actual);
+                Assert.IsFalse(driver.FindElement(editSecretaryPage.save).Enabled);
+                Assert.IsFalse(driver.FindElement(editSecretaryPage.layOff).Enabled);
+                Assert.IsTrue(driver.FindElement(editSecretaryPage.clear).Enabled);
+            });
         }
 
     }

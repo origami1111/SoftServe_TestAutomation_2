@@ -5,6 +5,7 @@ using RestSharp.Authenticators;
 using System;
 using System.Linq;
 using System.Net;
+using WHAT_API.API_Tests;
 using WHAT_Utilities;
 
 namespace WHAT_API
@@ -13,7 +14,7 @@ namespace WHAT_API
     public abstract class API_BaseTest
     {
         protected RestClient client;
-        protected Logger log = LogManager.GetCurrentClassLogger();
+        protected static  Logger log = LogManager.GetCurrentClassLogger();
         protected readonly string endpointsPath = @"DataFiles/Endpoints.json";
         protected readonly string linksPath = @"DataFiles/Links.json";
 
@@ -31,6 +32,23 @@ namespace WHAT_API
             request.AddJsonBody(new { credentials.Email, credentials.Password });
             var response = client.Execute(request);
 
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                log.Info($"Sccesfully get toke by role {role}");
+                return response.Headers.Single(h => h.Name == "Authorization").Value.ToString();
+            }
+            else
+            {
+                log.Error("Authorization is failed!");
+                throw new Exception();
+            }
+        }
+        protected string GetToken(Role role, RestClient client)
+        {
+            Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role);
+            var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
+            request.AddJsonBody(new { credentials.Email, credentials.Password });
+            var response = client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 log.Info($"Sccesfully get toke by role {role}");
@@ -78,6 +96,26 @@ namespace WHAT_API
             System.Diagnostics.Debug.WriteLine(response.Content);
 
             return response.Data;
+        }
+
+        protected RegistrationResponseBody RegistrationUser()
+        {
+            var user = UserGenerator.GenerateUser();
+            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
+            request.AddJsonBody(user);
+
+            IRestResponse response = client.Execute(request);
+
+            var data = new RegistrationResponseBody()
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = Role.Unassigned,
+                Activity = Activity.Active
+            };
+
+            return data;
         }
     }
 }

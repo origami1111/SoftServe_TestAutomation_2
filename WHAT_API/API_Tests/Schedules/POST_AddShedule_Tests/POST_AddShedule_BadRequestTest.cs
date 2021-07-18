@@ -44,7 +44,7 @@ namespace WHAT_API
             DateTime startDate = new DateTime(2022, 1, 2, 13, 27, 09).ToUniversalTime();
             DateTime finishDate = new DateTime(2021, 7, 7, 15, 27, 09).ToUniversalTime();
 
-            schedule = new SheduleGenerator()
+            schedule = new ScheduleGenerator()
                            .GenerateShedule(PatternType.Daily, 3, list, startDate, finishDate, 1, 3, 4);
 
             request.AddJsonBody(schedule);

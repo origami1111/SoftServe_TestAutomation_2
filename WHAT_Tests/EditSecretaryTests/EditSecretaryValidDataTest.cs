@@ -12,6 +12,11 @@ namespace WHAT_Tests
     [TestFixture]
     public class EditSecretaryValidDataTest: TestBase
     {
+        private UnassignedUsersPage findUser;
+        private string FirstName { get; set; }
+        private string LastName { get; set; }
+        private string Email { get; set; }
+
 
         #region TestData
 
@@ -48,13 +53,23 @@ namespace WHAT_Tests
                             .SignInAsAdmin(credentials.Email, credentials.Password)
                             .SidebarNavigateTo<SecretariesPage>()
                             .EditSecretary(5);
+
+            FirstName = editSecretaryPage.GetFirstName();
+            LastName = editSecretaryPage.GetLastName();
+            Email = editSecretaryPage.GetEmail();
         }
 
         [TearDown]
         public void Down()
         {
-            editSecretaryPage.Logout();
-            driver.Quit();
+            editSecretaryPage.SidebarNavigateTo<SecretariesPage>()
+                             .EditSecretary(5)
+                             .Fill_FirstName(FirstName)
+                             .Fill_LastName(LastName)
+                             .Fill_Email(Email)
+                             .ClickSaveButton();
+
+            editSecretaryPage.Logout();  
         }
 
         [Test]
@@ -67,10 +82,12 @@ namespace WHAT_Tests
             editSecretaryPage.Fill_FirstName(firstName)
                              .Fill_LastName(lastName)
                              .Fill_Email(email)
-                             .ClickClearButton();
-                             //.ClickSaveButton();
+                             .ClickSaveButton();
 
-            //Assert.AreEqual(expected, actual);
+            findUser = new UnassignedUsersPage(driver);
+            bool actual = findUser.UserVerify<SecretariesPage>(firstName,lastName,email);
+
+            Assert.IsTrue(actual);
         }
 
     }

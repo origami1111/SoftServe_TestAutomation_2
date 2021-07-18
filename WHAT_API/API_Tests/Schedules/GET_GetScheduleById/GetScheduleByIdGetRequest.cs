@@ -114,7 +114,7 @@ namespace WHAT_API
 
         [Test]
         [TestCase(HttpStatusCode.OK, Role.Admin)]
-        [TestCase(HttpStatusCode.OK, Role.Secretar)]
+        [TestCase(HttpStatusCode.OK, Role.Secretary)]
         public void GetScheduleWithStatusCode200(HttpStatusCode expectedStatusCode, Role role)
         {
             var authenticator = GetAuthenticatorFor(role);

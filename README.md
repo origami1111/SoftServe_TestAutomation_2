@@ -16,7 +16,7 @@ The goals of our project:
 - Execute the program and get results of the functional testing
 
 Used technologies:
-.NET, C#, Visual Studio, Selenium, NUnit, NLog, MSTest, JUnit, RestSharp, Swagger, Postman, Jira, Git, Scrum.
+.NET, C#, Visual Studio 2019, Selenium, NUnit, NLog, RestSharp, Swagger, Postman, Jira, Git, Scrum, Allure.
 
 WHAT_DP_205_TAQC consists of two projects:
 1) WHAT_PageObject - library for page description in order to Page Object Model (POM).

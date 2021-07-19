@@ -31,9 +31,11 @@ namespace WHAT_API.API_Tests.Accounts
             var authenticator = GetAuthenticatorFor(role);
             request = InitNewRequest("ApiAccountsAll", Method.GET, authenticator);
 
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsAll", endpointsPath)}");
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
+            log.Info($"Request is done with {actualStatusCode} StatusCode");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
 
@@ -45,6 +47,7 @@ namespace WHAT_API.API_Tests.Accounts
             {
                 Assert.AreEqual(expectedData, actualData);
             });
+            log.Info($"Expected and actual results is checked");
         }
 
         [Test]
@@ -56,9 +59,11 @@ namespace WHAT_API.API_Tests.Accounts
             var authenticator = GetAuthenticatorFor(role);
             request = InitNewRequest("ApiAccountsAll", Method.GET, authenticator);
 
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
+            log.Info($"Request is done with {actualStatusCode} StatusCode");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
         }

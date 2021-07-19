@@ -30,15 +30,15 @@ namespace WHAT_API
 
         public override bool Equals(object obj)
         {
-            EventOccurrence sc = (EventOccurrence)obj;
+            EventOccurrence other = (EventOccurrence)obj;
 
-            return (this.Id == sc.Id
-                && this.StudentGroupId == sc.StudentGroupId
-                && this.EventStart == sc.EventStart
-                && this.EventFinish == sc.EventFinish
-                && this.Pattern == sc.Pattern
-                && SequencesEqual(this.Events, sc.Events)
-                && this.Storage == sc.Storage);
+            return (this.Id == other.Id
+                && this.StudentGroupId == other.StudentGroupId
+                && this.EventStart == other.EventStart
+                && this.EventFinish == other.EventFinish
+                && this.Pattern == other.Pattern
+                && SequencesEqual(this.Events, other.Events)
+                && this.Storage == other.Storage);
         }
 
         private bool SequencesEqual(IEnumerable<ScheduledEvent> a, IEnumerable<ScheduledEvent> b)
@@ -53,6 +53,11 @@ namespace WHAT_API
             }
 
             return a.SequenceEqual(b);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
         }
 
     }

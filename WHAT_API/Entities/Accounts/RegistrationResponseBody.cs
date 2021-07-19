@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using WHAT_Utilities;
 
 namespace WHAT_API
@@ -32,6 +33,11 @@ namespace WHAT_API
                 && this.LastName == other.LastName
                 && this.Role == other.Role
                 && this.Activity == other.Activity);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
         }
     }
 }

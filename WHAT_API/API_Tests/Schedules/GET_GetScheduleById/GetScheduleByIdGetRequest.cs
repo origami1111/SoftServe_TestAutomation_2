@@ -14,7 +14,6 @@ namespace WHAT_API
         private RestRequest request;
         private IRestResponse response;
         private EventOccurrence expected;
-        private long? id;
 
 
         public class Schedule
@@ -89,9 +88,12 @@ namespace WHAT_API
             ScheduleGenerator scheduleGenerator = new ScheduleGenerator();
             Schedule schedule = scheduleGenerator.GenerateSchedule();
 
+            //ScheduleGenerator scheduleGenerator = new ScheduleGenerator();
+            //CreateSchedule schedule = scheduleGenerator.GenerateShedule();
+
             request.AddJsonBody(schedule);
+
             expected = Execute<EventOccurrence>(request);
-            id = expected.Id;
         }
 
         /// <summary>
@@ -102,7 +104,7 @@ namespace WHAT_API
         {
             var authenticator = GetAuthenticatorFor(Role.Admin);
             request = InitNewRequest("ApiSchedulesEventOccurenceID-eventOccurenceID", Method.DELETE, authenticator);
-            request.AddUrlSegment("eventOccurenceID", id.ToString());
+            request.AddUrlSegment("eventOccurenceID", expected.Id.ToString());
 
             response = client.Execute(request);
 
@@ -119,7 +121,7 @@ namespace WHAT_API
         {
             var authenticator = GetAuthenticatorFor(role);
             request = InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
-            request.AddUrlSegment("id", id.ToString());
+            request.AddUrlSegment("id", expected.Id.ToString());
             
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
             response = client.Execute(request);
@@ -134,7 +136,27 @@ namespace WHAT_API
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(expected, actual);
+                //Assert.AreEqual(expected, actual);
+
+                Assert.AreEqual(expected.Id, actual.Id);
+                Assert.AreEqual(expected.StudentGroupId, actual.StudentGroupId);
+                Assert.AreEqual(expected.EventStart, actual.EventStart);
+                Assert.AreEqual(expected.EventFinish, actual.EventFinish);
+                Assert.AreEqual(expected.Pattern, actual.Pattern);
+                Assert.AreEqual(expected.Storage, actual.Storage);
+
+                Assert.AreEqual(expected.Events.Count, actual.Events.Count);
+                for (int i = 0; i < expected.Events.Count; i++)
+                {
+                    Assert.AreEqual(expected.Events[i].EventOccuranceId, actual.Events[i].EventOccuranceId);
+                    Assert.AreEqual(expected.Events[i].StudentGroupId, actual.Events[i].StudentGroupId);
+                    Assert.AreEqual(expected.Events[i].ThemeId, actual.Events[i].ThemeId);
+                    Assert.AreEqual(expected.Events[i].MentorId, actual.Events[i].MentorId);
+                    Assert.AreEqual(expected.Events[i].LessonId, actual.Events[i].LessonId);
+                    Assert.AreEqual(expected.Events[i].EventStart, actual.Events[i].EventStart);
+                    Assert.AreEqual(expected.Events[i].EventFinish, actual.Events[i].EventFinish);
+                }
+
             });
             log.Info($"Expected and actual result is checked");
         }
@@ -146,7 +168,7 @@ namespace WHAT_API
         {
             var authenticator = GetAuthenticatorFor(role);
             request = InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
-            request.AddUrlSegment("id", id.ToString());
+            request.AddUrlSegment("id", expected.Id.ToString());
 
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
             response = client.Execute(request);

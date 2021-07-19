@@ -65,7 +65,7 @@ namespace WHAT_API
 
             Assert.Multiple(() =>
             {
-                Assert.IsTrue(actual.Contains(expected));
+                Assert.AreEqual($"\"{credentials.Email} {expected}\"", actual);
             });
             log.Info($"Expected and actual results is checked");
         }

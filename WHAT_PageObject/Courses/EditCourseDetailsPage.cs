@@ -50,7 +50,7 @@ namespace WHAT_PageObject
 
             return new EditCourseDetailsPage(driver);
         }
-        
+
         public string GetCourseName()
         {
             return EditFormElement

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace WHAT_Utilities
 {
-    
+
     public class ReaderUrlsJSON
     {
         public ReaderUrlsJSON() { }

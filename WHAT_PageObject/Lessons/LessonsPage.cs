@@ -64,7 +64,7 @@ namespace WHAT_PageObject
             driver.Navigate().Refresh();
             return this;
         }
-        
+
         public string GetLessonThemaName(string number)
         {
             return driver.FindElement(LessonThemaName(number)).Text;

@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
-using WHAT_Utilities;
 using WHAT_PageObject;
+using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
     [TestFixture]
-    public class StudentsTests_VerifyRedirection: TestBase
+    public class StudentsTests_VerifyRedirection : TestBase
     {
 
         private StudentsPage studentsPage;

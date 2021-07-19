@@ -1,15 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
+﻿using NUnit.Framework;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
     [TestFixture]
-    public class EditSecretaryInvalidDataTest: TestBase
+    public class EditSecretaryInvalidDataTest : TestBase
     {
 
         #region TestData
@@ -17,7 +13,7 @@ namespace WHAT_Tests
         static string[] DivideCasesNames = new string[] { "G","qrSBFoVkahhXYLDRgtcoHWGQdwnyBzxyurXqHcsfXBlfyBILWJl",
         " name","name-","name@","name#","name$","name%","name^","name*","name5" };
 
-        static string[] DivideCasesEmail = new string[] { "fsapf","ya hah@gmail.com","yahahgmail.com", "email@com" };
+        static string[] DivideCasesEmail = new string[] { "fsapf", "ya hah@gmail.com", "yahahgmail.com", "email@com" };
 
         #endregion
 
@@ -32,7 +28,7 @@ namespace WHAT_Tests
             editSecretaryPage = new SignInPage(driver)
                             .SignInAsAdmin(credentials.Email, credentials.Password)
                             .SidebarNavigateTo<SecretariesPage>()
-                            .EditSecretary(secretaryID) ;
+                            .EditSecretary(secretaryID);
         }
 
         [TearDown]

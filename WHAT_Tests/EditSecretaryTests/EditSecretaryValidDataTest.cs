@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
 using WHAT_PageObject;
 using WHAT_Utilities;
@@ -10,7 +6,7 @@ using WHAT_Utilities;
 namespace WHAT_Tests
 {
     [TestFixture]
-    public class EditSecretaryValidDataTest: TestBase
+    public class EditSecretaryValidDataTest : TestBase
     {
         private UnassignedUsersPage findUser;
         private string FirstName { get; set; }
@@ -69,7 +65,7 @@ namespace WHAT_Tests
                              .Fill_Email(Email)
                              .ClickSaveButton();
 
-            editSecretaryPage.Logout();  
+            editSecretaryPage.Logout();
         }
 
         [Test]
@@ -85,7 +81,7 @@ namespace WHAT_Tests
                              .ClickSaveButton();
 
             findUser = new UnassignedUsersPage(driver);
-            bool actual = findUser.UserVerify<SecretariesPage>(firstName,lastName,email);
+            bool actual = findUser.UserVerify<SecretariesPage>(firstName, lastName, email);
 
             Assert.IsTrue(actual);
         }

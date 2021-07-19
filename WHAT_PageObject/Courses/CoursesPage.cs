@@ -12,14 +12,14 @@ namespace WHAT_PageObject
         private By searchField = By.CssSelector("input");
 
         private By tableBody = By.CssSelector("tbody");
-        
+
         private By TableCell(int rowNumber, ColumnName columnName) =>
                 By.XPath($"//tr[{rowNumber}]/td[{(int)columnName}]");
-        
+
         public CoursesPage(IWebDriver driver) : base(driver)
         {
         }
-        
+
         public enum ColumnName
         {
             Id = 1,
@@ -30,7 +30,7 @@ namespace WHAT_PageObject
         public string ReadCourseName(int rowNumber = 1)
         {
             var cells = driver.FindElements(TableCell(rowNumber, ColumnName.Title));
-            
+
             return cells.Select(cell => cell.Text).FirstOrDefault() ?? string.Empty;
         }
 
@@ -60,7 +60,7 @@ namespace WHAT_PageObject
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             wait.Until(drv => drv.FindElement(tableBody));
             FillField(searchField, text);
-            
+
             return this;
         }
     }

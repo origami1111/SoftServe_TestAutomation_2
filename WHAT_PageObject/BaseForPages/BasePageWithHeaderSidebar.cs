@@ -52,20 +52,20 @@ namespace WHAT_PageObject
         {
             header.FindDropdownItem(label).Click();
         }
-        
+
         public MyProfilePage ClickMyProfile()
         {
             ClickArrowIcon();
             ClickDropdownItem("My profile");
-            
+
             return new MyProfilePage(driver);
         }
-        
+
         public ChangePasswordPage ClickChangePassword()
         {
             ClickArrowIcon();
             ClickDropdownItem("Change password");
-            
+
             return new ChangePasswordPage(driver);
         }
 
@@ -73,7 +73,7 @@ namespace WHAT_PageObject
         {
             ClickArrowIcon();
             ClickDropdownItem("Log Out");
-            
+
             return new SignInPage(driver);
         }
     }

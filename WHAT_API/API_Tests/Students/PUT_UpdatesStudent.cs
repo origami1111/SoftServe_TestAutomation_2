@@ -64,7 +64,7 @@ namespace WHAT_API.API_Tests.Students
 
         private StudentResponseBody GetRandomActiveStudent(Role role)
         {
-            const int MIN_RANDOM = 3;
+            const int MIN_RANDOM = 4;
             Random random = new Random();
             StudentResponseBody randomStudent = new StudentResponseBody();
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath), Method.GET);

@@ -17,11 +17,9 @@ namespace WHAT_API
             while (!isValidId)
             {
                 int mentorID = generator.GetMentorID();
-                //RestRequest request = new RestRequest($"mentors/{mentorID}/lessons", Method.GET);
                 RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiMentorsIdLessons", endpointsPath), Method.GET);
                 request = InitNewRequest("ApiMentorsIdLessons", Method.GET, GetAuthenticatorFor(role));
                 request.AddUrlSegment("id", mentorID.ToString());
-                //request.AddHeader("Authorization", GetToken(role));
                 request.AddParameter("id", mentorID);
                 IRestResponse response = client.Execute(request);
                 var listLessonsForMentors = JsonConvert.DeserializeObject<List<LessonsForMentor>>(response.Content);

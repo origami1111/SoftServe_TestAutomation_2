@@ -15,7 +15,7 @@ namespace WHAT_API
     class GET_GetAllSchedules_Tests : API_BaseTest
     {
         //[TestCase(Role.Admin)]
-        //[TestCase(Role.Secretar)]
+        //[TestCase(Role.Secretary)]
         //public void Test(Role role)
         //{
         //    var authenticator = GetAuthenticatorFor(role);
@@ -25,11 +25,11 @@ namespace WHAT_API
         //    // POST
         //    RestRequest postRequest = InitNewRequest("ApiSchedules", Method.POST, authenticator);
         //    postRequest.AddJsonBody(requestData);
-        //    var originalOccurence = Execute<EventOccurrence>(postRequest);            
-            
+        //    var originalOccurence = Execute<EventOccurrence>(postRequest);
+
         //    //GET
         //    RestRequest getRequest = InitNewRequest("ApiSchedulesEventOccurrences", Method.GET, authenticator);
-        //    IRestResponse <List<CreateSchedule>> occurences = client.Execute<List<CreateSchedule>>(getRequest);
+        //    IRestResponse<List<EventOccurrence>> occurences = client.Execute<List<EventOccurrence>>(getRequest);
         //    var actualOriginalOccurence = occurences.Data.Last();
 
         //    // PUT
@@ -42,11 +42,11 @@ namespace WHAT_API
         //    var expectedUpdatedOccurence = JsonConvert.DeserializeObject<CreateSchedule>(requestData);
 
         //    //GET
-        //    occurences = client.Execute<List<CreateSchedule>>(getRequest);
-        //    CreateSchedule actualUpdatedOccurence = occurences.Data.Last();
+        //    occurences = client.Execute<List<EventOccurrence>>(getRequest);/////
+        //    EventOccurrence actualUpdatedOccurence = occurences.Data.Last();
 
         //    Assert.AreEqual(expectedOriginalOccurence, actualOriginalOccurence);
-          
+
 
         //    // DELETE
         //    RestRequest deleteRequest = InitNewRequest("ApiSchedulesEventOccurrenceID",

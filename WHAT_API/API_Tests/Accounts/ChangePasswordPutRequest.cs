@@ -45,7 +45,7 @@ namespace WHAT_API.API_Tests.Accounts
 
             // 3
             request = InitNewRequest("ApiMentorsAssignAccountToMentor-accountID", Method.POST, authenticator);
-            request.AddUrlSegment("accountID", registeredUser.Id.ToString());
+            request.AddUrlSegment("accountId", registeredUser.Id.ToString());
             response = client.Execute(request);
 
             registeredUser.Role = Role.Mentor;
@@ -74,7 +74,7 @@ namespace WHAT_API.API_Tests.Accounts
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
 

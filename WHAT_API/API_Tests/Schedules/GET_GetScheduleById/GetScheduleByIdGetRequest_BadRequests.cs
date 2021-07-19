@@ -25,7 +25,7 @@ namespace WHAT_API
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
         }

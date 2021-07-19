@@ -1,7 +1,7 @@
 ﻿
 namespace WHAT_API.Entities
 {
-    public class RegistrationRequestBody
+    public class RegistrationCreateUser
     {
         public string Email { get; set; }
         public string FirstName { get; set; }

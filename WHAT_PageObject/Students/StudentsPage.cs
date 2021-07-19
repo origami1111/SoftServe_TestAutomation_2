@@ -1,9 +1,7 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-
-using System.Threading;
-using OpenQA.Selenium.Support.UI;
 
 namespace WHAT_PageObject
 {
@@ -13,63 +11,55 @@ namespace WHAT_PageObject
         const int STUDENTS_ON_PAGE_LESS = STUDENTS_ON_PAGE - 1;
 
         #region LOCATORS
-        private By _tbody=By.XPath("//tbody/tr");
-        private By _searchingField=By.XPath("//input[@type='text']");
-        private By  _controlBarDisabledStudents = By.XPath("//input[@id='show - disabled - check']");
-        private By _addStudentButton = By.CssSelector("div:nth-child(4) > button");
-        private By _previousPage = By.CssSelector("nav > ul:nth-child(1) > li > button");
-        private By _nextPage = By.CssSelector("nav > ul:nth-child(3) > li > button");
-        private By _studentsCount = By.CssSelector(".col-2:nth-child(2)");
-        private By _countPages = By.CssSelector("ul:nth-child(2) > li:nth-child(4) > button");
+        private By tbody=By.XPath("//tbody/tr");
+        private By searchingField=By.XPath("//input[@type='text']");
+        private By disabledStudentCheckBox = By.XPath("//input[@type ='checkbox']");
+        private By addStudentButton = By.CssSelector("div:nth-child(4) > button");
+        private By previousPage = By.CssSelector("nav > ul:nth-child(1) > li > button");
+        private By nextPage = By.CssSelector("nav > ul:nth-child(3) > li > button");
+        private By studentsCount = By.CssSelector(".col-2:nth-child(2)");
+        private By countPages = By.CssSelector("li[class='page-item']");
+        private By alert = By.XPath("//button[text()='Student information has been edited successfully']");
         #endregion
-        private By GetPathToStudentInfo(int studentNumber, RowOfEl row) => By.XPath($@"//table/tbody/tr[{studentNumber}]/td[{(int)row}]");
 
-        private By StudentsName(int rowNumber) =>
-            By.XPath($"//tr[{rowNumber}]/td[2]");
         public StudentsPage(IWebDriver driver) : base(driver)
         {
 
         }
-        public uint GetCountOfPages()
-        {
-            if (driver.FindElement(_countPages).Enabled)
-            {
-                return Convert.ToUInt32(driver.FindElement(_countPages).Text);
-            }
-            else
-            {
-                return 0;
-            }
-        }
+
+        public int GetRangeStudent() => STUDENTS_ON_PAGE;
+        private By GetPathToStudentInfo(int studentNumber, RowOfElement row) => By.XPath($@"//table/tbody/tr[{studentNumber}]/td[{(int)row}]");
+        public int GetCountOfPages()=>driver.FindElements(countPages).Count-2;
+        private By StudentsName(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[2]");
+
         public StudentsPage ClickPreviousPage()
         {
-            driver.FindElement(_previousPage).Click();
+            driver.FindElement(previousPage).Click();
             return this;
         }
 
         public StudentsPage ClickNextPage()
         {
-            driver.FindElement(_nextPage).Click();
+            driver.FindElement(nextPage).Click();
             return this;
         }
 
-        public StudentsPage ClickControlBarDisabledStudentsPage()
+        public StudentsPage ClickDisabledStudents_CheckBox()
         {
-            driver.FindElement(_controlBarDisabledStudents).Click();
+            driver.FindElement(disabledStudentCheckBox).Click();
             return this;
         }
-
        
         public void WaitStudentsLoad()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
-            IWebElement firstResult = wait.Until(e => e.FindElement(_tbody));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
+            IWebElement firstResult = wait.Until(e => e.FindElement(tbody));
         }
         private bool IsStudentDisplayed(int studentNumber)
         {
             try
             {
-                driver.FindElement(GetPathToStudentInfo(studentNumber, RowOfEl.Id));
+                driver.FindElement(GetPathToStudentInfo(studentNumber, RowOfElement.Id));
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
                 return true;
             }
@@ -78,60 +68,83 @@ namespace WHAT_PageObject
                 return false;
             }
         }
+        public string GetAlertText()
+        {
+            return driver.FindElement(alert).GetAttribute("value");
+        }
+
         public Dictionary<int, string[]> GetStudentsFromTable()
         {
             WaitStudentsLoad();
-
             Dictionary<int, string[]> studentsTable = new Dictionary<int, string[]>();
             int interval = STUDENTS_ON_PAGE;
-            int studentNumber = 1; 
-            while (IsStudentDisplayed(studentNumber))
+            int studentNumber = 1;
+            while (IsStudentDisplayed(studentNumber) || studentNumber == interval + 1)
             {
                 try
                 {
-                    if (studentNumber >= interval - STUDENTS_ON_PAGE_LESS && studentNumber <= interval)
+                    if (studentNumber >= STUDENTS_ON_PAGE - STUDENTS_ON_PAGE_LESS && studentNumber <= STUDENTS_ON_PAGE)
                     {
-                        int studentId = int.Parse(driver.FindElement(GetPathToStudentInfo(studentNumber, RowOfEl.Id)).Text);
-                        string studentFirstName = driver.FindElement(GetPathToStudentInfo(studentNumber, RowOfEl.FirstName)).Text;
-                        string studentLastName = driver.FindElement(GetPathToStudentInfo(studentNumber, RowOfEl.LastName)).Text;
-                        studentsTable.Add(studentId, new string[] { studentFirstName, studentLastName });
+                        int studentId = int.Parse(driver.FindElement(GetPathToStudentInfo(studentNumber, RowOfElement.Id)).Text);
+                        string studentFirstName = driver.FindElement(GetPathToStudentInfo(studentNumber, RowOfElement.FirstName)).Text;
+                        string studentLastName = driver.FindElement(GetPathToStudentInfo(studentNumber, RowOfElement.LastName)).Text;
+                        string studentEmail = driver.FindElement(GetPathToStudentInfo(studentNumber, RowOfElement.Email)).Text;
+                        studentsTable.Add(studentId, new string[] { studentFirstName, studentLastName, studentEmail });
+                        studentNumber++;
                     }
                     else
                     {
-                        driver.FindElement(_nextPage).Click();
-                        interval += interval;
-                        studentNumber--;
+                        driver.FindElement(nextPage).Click();
+                        interval += STUDENTS_ON_PAGE;
+                        studentNumber = studentNumber- STUDENTS_ON_PAGE;
                     }
-                    studentNumber++;
                 }
                 catch (Exception)
                 {
                     break;
                 }
             }
+            for (int i = 1; i <= GetCountOfPages()-1; i++)
+            {
+                driver.FindElement(previousPage).Click();
+            }
             return studentsTable;
         }
 
-        public uint  GetCountStudents()
+        public int GetCountStudents()
         {
             WaitStudentsLoad();
-            string[] textFromStudentsCount = driver.FindElement(_studentsCount).Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            return Convert.ToUInt32(textFromStudentsCount[0]);
+            string[] textFromStudentsCount = driver.FindElement(studentsCount).Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return int.Parse(textFromStudentsCount[0]);
         }
-
              
-        public StudentsEditPage ClickChoosedStudent(int studentNumber)
+        public StudentDetailsPage ClickChoosedStudent(int studentNumber)
         {
-            var course = driver.FindElement(StudentsName(studentNumber));
-            course.Click();
-
-            return new StudentsEditPage(driver);
-
+            while (true)
+            {
+                try
+                {
+                    if (studentNumber >= STUDENTS_ON_PAGE - STUDENTS_ON_PAGE_LESS && studentNumber <= STUDENTS_ON_PAGE)
+                    {
+                        driver.FindElement(StudentsName(studentNumber)).Click();
+                        return new StudentDetailsPage(driver);
+                    }
+                    else
+                    {
+                        driver.FindElement(nextPage).Click();
+                        studentNumber -= STUDENTS_ON_PAGE;
+                    }
+                }
+                catch (Exception)
+                {
+                    throw new Exception();
+                }
+            }
         }
-       
+
         public UnassignedUsersPage ClickAddStudentButton()
         {
-            IWebElement addStudentBtnEl = driver.FindElement(_addStudentButton);
+            IWebElement addStudentBtnEl = driver.FindElement(addStudentButton);
             addStudentBtnEl.Click();
             return new UnassignedUsersPage(driver);
         }
@@ -139,12 +152,11 @@ namespace WHAT_PageObject
         public StudentsPage FillSearchingField(string inputingSentence)
        {
             WaitStudentsLoad();
-            IWebElement searchingFieldEl = driver.FindElement(_searchingField);
+            IWebElement searchingFieldEl = driver.FindElement(searchingField);
             searchingFieldEl.Click();
             searchingFieldEl.Clear();
             searchingFieldEl.SendKeys(inputingSentence + Keys.Enter);
             return this;
         }
-
     }
 }

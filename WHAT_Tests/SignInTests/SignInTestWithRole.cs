@@ -39,7 +39,7 @@ namespace WHAT_Tests
         [Test]
         public void SignInAsSecretar()
         {
-            credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretar);
+            credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretary);
             string expected = ReaderUrlsJSON.GetUrlByName("MentorsPage", LinksPath);
 
             signInPage.SignInAsSecretar(credentials.Email, credentials.Password);

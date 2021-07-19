@@ -29,5 +29,6 @@ namespace WHAT_API
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
         }
+
     }
 }

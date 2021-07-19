@@ -19,9 +19,10 @@ namespace WHAT_API.API_Tests.Students
         {
             log = LogManager.GetLogger($"Students/{nameof(POST_AddNewStudent)}");
         }
+
         [Test]
         [TestCase (Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void VerifyAddingStudentAccount_Valid(Role role)
         {
             var expectedUser = UserGenerator.GenerateUser();
@@ -37,7 +38,6 @@ namespace WHAT_API.API_Tests.Students
             int newUserAccountId= JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(response.Content).Max(s => s.Id); ;
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
             //
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsAccountId", endpointsPath), Method.POST);
             request = InitNewRequest("ApiStudentsAccountId", Method.POST, GetAuthenticatorFor(role));
             request.AddUrlSegment("accountId", newUserAccountId.ToString());
             request.AddParameter("accountId", newUserAccountId);
@@ -59,7 +59,15 @@ namespace WHAT_API.API_Tests.Students
                 Assert.AreEqual(expectedUserAvatarUrl, actualUser.AvatarUrl);
             });
             log.Info($"Expected and actual results is checked");
+            PostCondition(role, maxId);
+            log.Info($"Last student in list is deleted");
+        }
 
+        public void PostCondition(Role role, int lastUserId)
+        {
+            request = InitNewRequest("ApiStudentsId", Method.DELETE, GetAuthenticatorFor(role));
+            request.AddUrlSegment("id", lastUserId.ToString());
+            response = client.Execute(request);
         }
     }
 }

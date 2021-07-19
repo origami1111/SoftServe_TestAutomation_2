@@ -1,7 +1,7 @@
 ﻿using System;
 using WHAT_API.Entities;
 
-namespace WHAT_API.API_Tests
+namespace WHAT_API
 {
     public class UserGenerator
     {

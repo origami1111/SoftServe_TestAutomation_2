@@ -9,6 +9,7 @@ using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Students
 {
+    [TestFixture]
     public class DELETE_DisableStudentAccount:API_BaseTest
     {
         private RestRequest request;
@@ -42,7 +43,7 @@ namespace WHAT_API.API_Tests.Students
 
         [Test]
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretar)]
+        [TestCase(Role.Secretary)]
         public void VerifyDeletingStudentAccount_Valid(Role role)
         {
             Precondition(role);
@@ -50,9 +51,9 @@ namespace WHAT_API.API_Tests.Students
             int expect = GetActiveStudentsList(role).Count-1;
             log.Info($"List of students is taken, there are {GetActiveStudentsList(role).Count} active students");
             //
-            request = new RestRequest($"students/{lastUserId}", Method.DELETE);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
-            IRestResponse response = client.Execute(request);
+            request = InitNewRequest("ApiStudentsId", Method.DELETE, GetAuthenticatorFor(role));
+            request.AddUrlSegment("id", lastUserId.ToString());
+            response = client.Execute(request);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             //
             log.Info($"Deleted students with max id : {lastUserId}");

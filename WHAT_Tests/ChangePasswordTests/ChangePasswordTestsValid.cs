@@ -9,7 +9,7 @@ namespace WHAT_Tests
     {
         private ChangePasswordPage changePasswordPage;
         Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
-        
+
         [SetUp]
         public void SetupPage()
         {

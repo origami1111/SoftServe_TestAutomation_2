@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
-using System.Threading;
-using WHAT_PageObject;
 using System.Collections.Generic;
+using WHAT_PageObject;
 using WHAT_Utilities;
 
 namespace WHAT_Tests
@@ -37,7 +36,7 @@ namespace WHAT_Tests
             CollectionAssert.AreEqual(expect, actual);
         }
 
-        
+
         [Test]
         public void VerifyPagination_ClickPrevPageButtonToEnd()
         {

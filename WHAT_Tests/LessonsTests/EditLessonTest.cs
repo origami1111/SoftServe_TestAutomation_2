@@ -1,8 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
@@ -23,7 +19,7 @@ namespace WHAT_Tests
 
         [Test]
         [TestCase("1", "nunit", "2021-06-29T08:00", "×\r\nClose alert\r\nThe lesson has been edit successfully!")]
-        public void EditLessonValidTest(string number,string tema,string time,string message)
+        public void EditLessonValidTest(string number, string tema, string time, string message)
         {
             string expected = message;
 
@@ -34,7 +30,7 @@ namespace WHAT_Tests
                 .ClickSaveButton()
                 .VerifySuccesMessage();
 
-            Assert.AreEqual(expected,actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [TearDown]

@@ -16,7 +16,7 @@ namespace WHAT_Tests
         [SetUp]
         public void Precondition()
         {
-            
+
 
             var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
             studentsPage = new SignInPage(driver)
@@ -30,11 +30,11 @@ namespace WHAT_Tests
             studentsPage.Logout();
         }
 
-       
+
 
         [Test]
         [TestCaseSource("StudentInfoSource")]
-        public void FillSearchingField_ValidData(int id,string firstName, string lastName)
+        public void FillSearchingField_ValidData(int id, string firstName, string lastName)
         {
             studentsPage.FillSearchingField($@"{firstName} {lastName}");
             Dictionary<int, string[]> allStudentsInfo = studentsPage.GetStudentsFromTable();
@@ -43,7 +43,7 @@ namespace WHAT_Tests
             int actual = 0;
             foreach (var item in allStudentsInfo)
             {
-                if (item.Value[0]==ourPair.Value[0]&& item.Value[1] == ourPair.Value[1])
+                if (item.Value[0] == ourPair.Value[0] && item.Value[1] == ourPair.Value[1])
                 {
                     actual++;
                     break;
@@ -55,7 +55,7 @@ namespace WHAT_Tests
 
         public static IEnumerable<TestCaseData> StudentInfoSource()
         {
-            yield return new TestCaseData(new object[] { studentInfo.ID, studentInfo.FirstName, studentInfo.LastName});
+            yield return new TestCaseData(new object[] { studentInfo.ID, studentInfo.FirstName, studentInfo.LastName });
         }
 
         [Test]

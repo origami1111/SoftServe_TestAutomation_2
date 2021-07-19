@@ -67,16 +67,16 @@ namespace WHAT_API.API_Tests.Accounts
         [TestCase(HttpStatusCode.BadRequest, "email@gmail.com", "Test", "", "Qwerty_123", "Qwerty_123")]
         [TestCase(HttpStatusCode.BadRequest, "email@gmail.com", "Test", "Registration", "", "Qwerty_123")]
         [TestCase(HttpStatusCode.BadRequest, "email@gmail.com", "Test", "Registration", "Qwerty_123", "")]
-        public void RegistrationOfAccountWithInvalidData(HttpStatusCode expectedStatusCode, string email, 
+        public void RegistrationOfAccountWithInvalidData(HttpStatusCode expectedStatusCode, string email,
             string firstName, string lastName, string password, string confirmPassword)
         {
-            var data = new RegistrationRequestBody 
-            { 
-                Email = email, 
-                FirstName = firstName, 
-                LastName = lastName, 
-                Password = password, 
-                ConfirmPassword = confirmPassword 
+            var data = new RegistrationRequestBody
+            {
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
+                Password = password,
+                ConfirmPassword = confirmPassword
             };
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(data);

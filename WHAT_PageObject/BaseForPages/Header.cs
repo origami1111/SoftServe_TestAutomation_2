@@ -14,7 +14,7 @@ namespace WHAT_PageObject
         {
             return driver.FindElement(arrowIcon);
         }
-         
+
         internal IWebElement FindDropdownItem(string label)
         {
             return driver.FindElement(By.LinkText(label));

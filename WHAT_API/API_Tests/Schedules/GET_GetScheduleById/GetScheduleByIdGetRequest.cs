@@ -120,10 +120,10 @@ namespace WHAT_API
             var authenticator = GetAuthenticatorFor(role);
             request = InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
             request.AddUrlSegment("id", id.ToString());
-            
+
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
             response = client.Execute(request);
-            
+
             HttpStatusCode actualStatusCode = response.StatusCode;
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);

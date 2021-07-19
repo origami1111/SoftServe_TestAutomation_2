@@ -2,9 +2,6 @@
 using NUnit.Framework;
 using RestSharp;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
 using WHAT_Utilities;
 
@@ -67,8 +64,8 @@ namespace WHAT_API
                     Assert.AreEqual(item.MentorId, schedule.Context.MentorID);
                     Assert.AreEqual(item.StudentGroupId, schedule.Context.GroupID);
                     Assert.AreEqual(item.ThemeId, schedule.Context.ThemeID);
-                    Assert.LessOrEqual(item.EventFinish,schedule.Range.FinishDate);
-                    Assert.GreaterOrEqual(item.EventStart,schedule.Range.StartDate);
+                    Assert.LessOrEqual(item.EventFinish, schedule.Range.FinishDate);
+                    Assert.GreaterOrEqual(item.EventStart, schedule.Range.StartDate);
                 }
             });
         }

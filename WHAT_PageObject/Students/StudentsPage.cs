@@ -1,9 +1,7 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-
-using System.Threading;
-using OpenQA.Selenium.Support.UI;
 
 namespace WHAT_PageObject
 {
@@ -13,9 +11,9 @@ namespace WHAT_PageObject
         const int STUDENTS_ON_PAGE_LESS = STUDENTS_ON_PAGE - 1;
 
         #region LOCATORS
-        private By _tbody=By.XPath("//tbody/tr");
-        private By _searchingField=By.XPath("//input[@type='text']");
-        private By  _controlBarDisabledStudents = By.XPath("//input[@id='show - disabled - check']");
+        private By _tbody = By.XPath("//tbody/tr");
+        private By _searchingField = By.XPath("//input[@type='text']");
+        private By _controlBarDisabledStudents = By.XPath("//input[@id='show - disabled - check']");
         private By _addStudentButton = By.CssSelector("div:nth-child(4) > button");
         private By _previousPage = By.CssSelector("nav > ul:nth-child(1) > li > button");
         private By _nextPage = By.CssSelector("nav > ul:nth-child(3) > li > button");
@@ -59,7 +57,7 @@ namespace WHAT_PageObject
             return this;
         }
 
-       
+
         public void WaitStudentsLoad()
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
@@ -84,7 +82,7 @@ namespace WHAT_PageObject
 
             Dictionary<int, string[]> studentsTable = new Dictionary<int, string[]>();
             int interval = STUDENTS_ON_PAGE;
-            int studentNumber = 1; 
+            int studentNumber = 1;
             while (IsStudentDisplayed(studentNumber))
             {
                 try
@@ -112,14 +110,14 @@ namespace WHAT_PageObject
             return studentsTable;
         }
 
-        public uint  GetCountStudents()
+        public uint GetCountStudents()
         {
             WaitStudentsLoad();
             string[] textFromStudentsCount = driver.FindElement(_studentsCount).Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             return Convert.ToUInt32(textFromStudentsCount[0]);
         }
 
-             
+
         public StudentsEditPage ClickChoosedStudent(int studentNumber)
         {
             var course = driver.FindElement(StudentsName(studentNumber));
@@ -128,7 +126,7 @@ namespace WHAT_PageObject
             return new StudentsEditPage(driver);
 
         }
-       
+
         public UnassignedUsersPage ClickAddStudentButton()
         {
             IWebElement addStudentBtnEl = driver.FindElement(_addStudentButton);
@@ -137,7 +135,7 @@ namespace WHAT_PageObject
         }
 
         public StudentsPage FillSearchingField(string inputingSentence)
-       {
+        {
             WaitStudentsLoad();
             IWebElement searchingFieldEl = driver.FindElement(_searchingField);
             searchingFieldEl.Click();

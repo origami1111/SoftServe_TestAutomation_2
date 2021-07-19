@@ -4,7 +4,7 @@ using System;
 namespace WHAT_API
 {
     public class EventFilterResponse
-    { 
+    {
         [JsonProperty("id")]
         public int ID { get; set; }
         [JsonProperty("eventOccuranceId")]

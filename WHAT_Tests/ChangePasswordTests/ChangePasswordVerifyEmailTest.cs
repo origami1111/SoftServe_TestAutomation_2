@@ -31,6 +31,6 @@ namespace WHAT_Tests
         {
             changePasswordPage.Logout();
         }
-    } 
+    }
 }
 

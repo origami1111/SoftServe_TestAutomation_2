@@ -17,7 +17,6 @@ namespace WHAT_API
         public DateTime LessonDate { get; set; }
         [JsonProperty("lessonVisits")]
         public Lessonvisit[] LessonVisits { get; set; }
-        
         public class Lessonvisit
         {
             [JsonProperty("studentId")]

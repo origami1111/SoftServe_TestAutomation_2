@@ -15,7 +15,6 @@ namespace WHAT_API.POST_ReturnsEventrsList
         private RestRequest request;
         private IRestResponse response; 
         private ScheduleGenerator generator = new ScheduleGenerator();
-        private ScheduleFilterGenerator filterGenerator = new ScheduleFilterGenerator();
         private LessonsForMentor lessonsForMentor = new LessonsForMentor();
         public POST_ReturnsEventrsList_Valid_ByElement()
         {
@@ -41,17 +40,6 @@ namespace WHAT_API.POST_ReturnsEventrsList
                 }
             }
             return item;
-        }
-
-        public StudentsGroup GetStudentsGroup(int studentGroupId, Role role)
-        {
-            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsGroupId", endpointsPath), Method.GET);
-            request = InitNewRequest("ApiStudentsGroupId", Method.GET, GetAuthenticatorFor(role));
-            request.AddUrlSegment("id", studentGroupId.ToString());
-            request.AddParameter("id", studentGroupId);
-            IRestResponse response = client.Execute(request);
-            var listLessonsForMentors = JsonConvert.DeserializeObject<StudentsGroup>(response.Content);
-            return listLessonsForMentors;
         }
 
         [Test]

@@ -96,7 +96,7 @@ namespace WHAT_API
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsGroup", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin, getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
-            List<StudentsGroup> listOfStudentsGroup = JsonConvert.DeserializeObject<List<StudentsGroup>>(getResponse.Content.ToString());
+            List<UpdateStudentsGroup> listOfStudentsGroup = JsonConvert.DeserializeObject<List<UpdateStudentsGroup>>(getResponse.Content.ToString());
             if (!listOfStudentsGroup.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {
                 throw new Exception();

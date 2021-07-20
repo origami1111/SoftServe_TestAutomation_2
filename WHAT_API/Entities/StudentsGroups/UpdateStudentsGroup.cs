@@ -4,9 +4,8 @@ using Newtonsoft.Json;
 
 namespace WHAT_API
 {
-    public class StudentsGroup
+    public class UpdateStudentsGroup
     {
-
         [JsonProperty("id")]
         public int ID { get; set; }
         [JsonProperty("courseId")]

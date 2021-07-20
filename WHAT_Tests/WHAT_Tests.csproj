@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WHAT_API\WHAT_API.csproj" />
     <ProjectReference Include="..\WHAT_PageObject\WHAT_PageObject.csproj" />
     <ProjectReference Include="..\WHAT_Utilities\WHAT_Utilities.csproj" />
   </ItemGroup>

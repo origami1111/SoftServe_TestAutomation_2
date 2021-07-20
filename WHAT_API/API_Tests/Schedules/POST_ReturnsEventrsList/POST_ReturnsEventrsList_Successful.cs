@@ -10,7 +10,7 @@ using WHAT_Utilities;
 namespace WHAT_API.POST_ReturnsEventrsList
 {
     [TestFixture]
-    public class POST_ReturnsEventrsList_Successful: API_BaseTest
+    public class POST_ReturnsEventrsList_Successful : API_BaseTest
     {
         public POST_ReturnsEventrsList_Successful()
         {
@@ -18,7 +18,7 @@ namespace WHAT_API.POST_ReturnsEventrsList
         }
 
         [Test]
-        public void VerifyReturnsEventrsList_ByMentorId([Random(1,20,2)] int mentorID, 
+        public void VerifyReturnsEventrsList_ByMentorId([Random(1, 20, 2)] int mentorID,
             [Values(Role.Admin, Role.Secretary, Role.Student, Role.Mentor)] Role user)
         {
             RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
@@ -39,7 +39,7 @@ namespace WHAT_API.POST_ReturnsEventrsList
                     Assert.AreEqual(mentorID, item.MentorId, "Presence of an item in the list");
                 }
                 log.Info($"Expected and actual results is checked");
-                
+
             });
         }
 

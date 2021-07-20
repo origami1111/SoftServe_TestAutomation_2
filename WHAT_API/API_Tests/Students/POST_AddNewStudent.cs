@@ -24,7 +24,7 @@ namespace WHAT_API.API_Tests.Students
         [TestCase(Role.Secretary)]
         public void VerifyAddingStudentAccount_Valid(Role role)
         {
-            var expectedUser = UserGenerator.GenerateUser();
+            var expectedUser = new GenerateUser();
             string expectedUserAvatarUrl = null;
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(expectedUser);

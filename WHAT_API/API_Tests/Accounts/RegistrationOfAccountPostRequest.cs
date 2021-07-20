@@ -17,7 +17,7 @@ namespace WHAT_API.API_Tests.Accounts
         [TestCase(HttpStatusCode.OK)]
         public void RegistrationOfAccountWithStatusCode200(HttpStatusCode expectedStatusCode)
         {
-            var expectedData = UserGenerator.GenerateUser();
+            var expectedData = new GenerateUser();
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(expectedData);
 
@@ -25,7 +25,7 @@ namespace WHAT_API.API_Tests.Accounts
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
 
@@ -47,7 +47,7 @@ namespace WHAT_API.API_Tests.Accounts
         [TestCase(HttpStatusCode.Conflict, "admin.@gmail.com")]
         public void RegistrationOfAccountWithEmailAlreadyExists(HttpStatusCode expectedStatusCode, string email)
         {
-            var expectedData = UserGenerator.GenerateUser();
+            var expectedData = new GenerateUser();
             expectedData.Email = email;
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(expectedData);
@@ -56,7 +56,7 @@ namespace WHAT_API.API_Tests.Accounts
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
         }
@@ -70,7 +70,7 @@ namespace WHAT_API.API_Tests.Accounts
         public void RegistrationOfAccountWithInvalidData(HttpStatusCode expectedStatusCode, string email, 
             string firstName, string lastName, string password, string confirmPassword)
         {
-            var data = new RegistrationRequestBody 
+            var data = new RegistrationCreateUser 
             { 
                 Email = email, 
                 FirstName = firstName, 
@@ -85,7 +85,7 @@ namespace WHAT_API.API_Tests.Accounts
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
         }

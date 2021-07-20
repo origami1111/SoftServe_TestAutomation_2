@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using WHAT_API.API_Tests;
-using WHAT_API.Entities;
 using WHAT_Utilities;
 
 namespace WHAT_API
@@ -160,7 +158,7 @@ namespace WHAT_API
 
         protected RegistrationResponseBody RegistrationUser()
         {
-            var user = UserGenerator.GenerateUser();
+            var user =new GenerateUser();
             return RegistrationUser(user);
         }
 

@@ -20,7 +20,7 @@ namespace WHAT_API.API_Tests.Students
 
         public void Precondition(Role role)
         {
-            var expectedUser = UserGenerator.GenerateUser();
+            var expectedUser = new GenerateUser();
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(expectedUser);
             response = client.Execute(request);

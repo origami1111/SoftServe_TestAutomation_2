@@ -2,7 +2,6 @@
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace WHAT_PageObject
 {
@@ -16,7 +15,7 @@ namespace WHAT_PageObject
         By visibleUsersSelect = By.Id("change-visible-people");
         private int usersAtPageIndex = 0;
         private int usersTotalIndex = 2;
-        By countUsersReport = By.XPath("//span[contains(.,'secretaries')]");       
+        By countUsersReport = By.XPath("//span[contains(.,'secretaries')]");
         By prevPageLink = By.XPath("//button[contains(.,'<')]");
         By nextPageLink = By.XPath("//button[contains(.,'>')]");
         By sortedBy = By.XPath("//thead//th[1]/span");
@@ -27,7 +26,7 @@ namespace WHAT_PageObject
 
         #endregion
 
-        public SecretariesPage(IWebDriver driver) : base (driver)
+        public SecretariesPage(IWebDriver driver) : base(driver)
         {
 
         }
@@ -38,10 +37,10 @@ namespace WHAT_PageObject
             return new UnassignedUsersPage(driver);
         }
 
-        public EditSecretaryPage EditSecretary (int index)
+        public EditSecretaryPage EditSecretary(int index)
         {
-            driver.FindElement (By.XPath($"//td[@data-secretary-id={index}]")).Click();
-            return new EditSecretaryPage (driver);
+            driver.FindElement(By.XPath($"//td[@data-secretary-id={index}]")).Click();
+            return new EditSecretaryPage(driver);
         }
         public bool GetPagesAmount(out int pagesAmount)
         {
@@ -49,7 +48,7 @@ namespace WHAT_PageObject
         }
 
         #region navigation
-        public SecretariesPage PrevPage ()
+        public SecretariesPage PrevPage()
         {
             driver.FindElement(prevPageLink).Click();
             return this;
@@ -81,16 +80,16 @@ namespace WHAT_PageObject
             return this;
         }
 
-        public SecretariesPage SortBy (ColumnName column)
+        public SecretariesPage SortBy(ColumnName column)
         {
             sortedBy = By.XPath($"//thead//th[{(int)column}]/span");
             driver.FindElement(sortedBy).Click();
             return this;
         }
-        
-        private string GetUserData (int columnNumber, int rowNumber)
+
+        private string GetUserData(int columnNumber, int rowNumber)
         {
-            return driver.FindElement(By.XPath($"//tbody/tr[{rowNumber}]/td[{columnNumber}]")).Text;            
+            return driver.FindElement(By.XPath($"//tbody/tr[{rowNumber}]/td[{columnNumber}]")).Text;
         }
 
         public int GetReportedUsersAtPage()
@@ -117,7 +116,7 @@ namespace WHAT_PageObject
             return dataList;
         }
 
-        public int GetShowedUsersAmount ()
+        public int GetShowedUsersAmount()
         {
             return driver.FindElements(userData).Count;
         }
@@ -135,9 +134,9 @@ namespace WHAT_PageObject
             selectedOption.SelectByIndex((int)showedUsers - 1);
         }
 
-        public bool GetLastUserIndex (out int index)
+        public bool GetLastUserIndex(out int index)
         {
-            return Int32.TryParse(LastPage().driver.FindElement(lastUserIndex).Text, out index); 
+            return Int32.TryParse(LastPage().driver.FindElement(lastUserIndex).Text, out index);
         }
 
     }

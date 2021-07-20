@@ -5,7 +5,7 @@ using WHAT_Utilities;
 namespace WHAT_Tests
 {
     [TestFixture]
-    public class StudentsEdtTests: TestBase
+    public class StudentsEdtTests : TestBase
     {
 
         private StudentsEditPage studentsEditPage;

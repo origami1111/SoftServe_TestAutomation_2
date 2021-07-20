@@ -1,8 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
@@ -23,10 +19,10 @@ namespace WHAT_Tests
         }
 
         [Test]
-        [TestCase("Junit","1")]
-        [TestCase("TestNG","1")]
-        [TestCase("API testing","1")]
-        public void SearchValidLessonTest(string input,string number)
+        [TestCase("Junit", "1")]
+        [TestCase("TestNG", "1")]
+        [TestCase("API testing", "1")]
+        public void SearchValidLessonTest(string input, string number)
         {
             string expected = input;
             string actual =

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.PageObjects;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.Collections.Generic;
 
 namespace WHAT_PageObject
 {
@@ -120,14 +117,14 @@ namespace WHAT_PageObject
                 var list = driver.FindElements(listNames[typeof(T)]);
                 foreach (var item in list)
                 {
-                    if (email == item.FindElement(By.XPath($"td[{(int)ColumnName.Email}]")).Text 
+                    if (email == item.FindElement(By.XPath($"td[{(int)ColumnName.Email}]")).Text
                                  && firstName == item.FindElement(By.XPath($"td[{(int)ColumnName.Name}]")).Text
-                                 && lastName == item.FindElement(By.XPath($"td[{(int)ColumnName.Surname}]")).Text) 
+                                 && lastName == item.FindElement(By.XPath($"td[{(int)ColumnName.Surname}]")).Text)
                     {
                         return true;
                     }
                 }
-        }
+            }
             return false;
         }
 

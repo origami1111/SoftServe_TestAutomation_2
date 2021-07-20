@@ -49,12 +49,12 @@ namespace WHAT_API
             schedule.Pattern = new Pattern()
             {
                 Type = PatternType.Daily,
-                Interval = random.Next(1,4)
-        };
+                Interval = 3
+            };
 
             schedule.Range = new OccurrenceRange()
             {
-                StartDate = new DateTime(2019, 1, 2, 13, 27, 09).ToUniversalTime(),
+                StartDate = new DateTime(2021, 6, 2, 13, 27, 09).ToUniversalTime(),
                 FinishDate = new DateTime(2021, 7, 7, 15, 27, 09).ToUniversalTime()
             };
 

@@ -13,7 +13,7 @@ namespace WHAT_API
     {
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]
-        public void Test(Role role)
+        public void PUT_UpdateSingleSchedule(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
 

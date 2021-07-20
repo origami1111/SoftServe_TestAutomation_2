@@ -46,6 +46,11 @@
     "Name": "ApiStudentsActive",
     "Url": "students/active"
   },
+  {
+    //PUT
+    "Name": "ApiStudentsStudentId",
+    "Url": "students/{studentId}"
+  },
   //Courses
   {
     //POST
@@ -108,17 +113,16 @@
     "Name": "ApiSchedulesEventOccurrenceID",
     "Url": "schedules/{eventOccurrenceID}"
   },
-  //Mentors
-  {
-    //GET
-    "Name": "ApiOnlyActiveMentors",
-    "Url": "mentors/active"
-  },
   //StudentsGroup
   {
     //GET
     "Name": "ApiStudentsGroup",
     "Url": "student_groups"
+  },
+  {
+    //GET/PUT
+    "Name": "ApiStudentsGroupId",
+    "Url": "student_groups/{id}"
   },
   //Themes
   {
@@ -143,6 +147,16 @@
     "Name": "ApiMentorsAssignAccountToMentor-accountID",
     "Url": "mentors/{accountId}"
   },
+  {
+    //GET
+    "Name": "ApiOnlyActiveMentors",
+    "Url": "mentors/active"
+  },
+  {
+    //GET
+    "Name": "ApiMentorsIdLessons",
+    "Url": "mentors/{id}/lessons"
+  },  
   //Lessons
   {
     //POST,GET
@@ -164,10 +178,25 @@
     "Name": "CheckLessonDone",
     "Url": "lessons/{id}/isdone"
   },
-   //Secretaries
+  //Secretaries
   {
     //POST
     "Name": "ApiSecretariesAccountId",
     "Url": "secretaries/{accountId}"
+  },
+  {
+    //GET
+    "Name": "ApiSecretaries",
+    "Url": "secretaries"
+  },
+  {
+    //GET
+    "Name": "ApiSecretariesActive",
+    "Url": "secretaries/active"
+  },
+  {
+    //PUT/DELETE/PATCH
+    "Name": "ApiSecretariesId",
+    "Url": "secretaries/{secretaryid}"
   }
 ]

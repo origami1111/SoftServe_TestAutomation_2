@@ -2,27 +2,34 @@
 using NUnit.Framework;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using WHAT_Utilities;
 
-namespace WHAT_API.POST_ReturnsEventrsList
+namespace WHAT_API
 {
     [TestFixture]
-    public class POST_ReturnsEventrsList_BadRequest : API_BaseTest
+    public class POST_ReturnsEventsList_BadRequest : API_BaseTest
     {
-        public POST_ReturnsEventrsList_BadRequest()
+        public POST_ReturnsEventsList_BadRequest()
         {
-            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventrsList_BadRequest)}");
+            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_BadRequest)}");
+        }
+
+        /// <summary> Return set values with filter for POST request</summary>
+        private static IEnumerable<TestCaseData> FilterRulesSources()
+        {
+                yield return new TestCaseData(12050125, null, 1, 1, 1, 1, null, null);
+                yield return new TestCaseData(12050125, null, 1, 1, 1, 1, new DateTime(2019,7,7,15,27,09).ToUniversalTime(), null);
+                yield return new TestCaseData(12050125, null, null, null, null, null, null, new DateTime(2019, 7, 7, 15, 27, 09).ToUniversalTime());
         }
 
         [Test]
-        [TestCase(12050125, null, 1, 1, 1, 1, "2020-10-12T10:15:00", "2020-10-12T10:15:00")]
-        [TestCase(null, null, null, null, null, null, "2021-10-12T10:15:00", "2021-10-12T10:15:00")]
+        [TestCaseSource(nameof(FilterRulesSources))]
         public void VerifyReturnsEventrsList_StatusCode400(int courseID,
             int mentorID, int groupID, int themeID, int studentAccountID, int eventOccurrenceID,
             DateTime startDate, DateTime finishDate)
         {
-
             RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath)}");
             request.AddHeader("Authorization", GetToken(Role.Admin));

@@ -72,12 +72,10 @@ namespace WHAT_API
         public int GetMentorID()
         {
             int mentorID;
-
             RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiOnlyActiveMentors", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin,getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
-
             List<Mentors> listOfMentors = JsonConvert.DeserializeObject<List<Mentors>>(getResponse.Content.ToString());
             if ( !listOfMentors.Any() || getResponse.StatusCode != HttpStatusCode.OK )
             {
@@ -94,12 +92,10 @@ namespace WHAT_API
         public int GetStudentsGroupID()
         {
             int studentsGroupID;
-
             RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsGroup", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin, getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
-
             List<StudentsGroup> listOfStudentsGroup = JsonConvert.DeserializeObject<List<StudentsGroup>>(getResponse.Content.ToString());
             if (!listOfStudentsGroup.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {
@@ -116,12 +112,10 @@ namespace WHAT_API
         public int GetThemeID()
         {
             int themeID;
-
             RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiThemes", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin, getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
-
             List<Themes> listOfThemes = JsonConvert.DeserializeObject<List<Themes>>(getResponse.Content.ToString());
             if (!listOfThemes.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {

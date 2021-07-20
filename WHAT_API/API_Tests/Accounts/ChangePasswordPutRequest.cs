@@ -14,8 +14,8 @@ namespace WHAT_API.API_Tests.Accounts
     {
         private RestRequest request;
         private IRestResponse response;
-        private RegistrationResponseBody registeredUser;
-        private ChangePasswordRequestBody changePasswordRequestBody;
+        private Account registeredUser;
+        private ChangeCurrentPassword changePasswordRequestBody;
 
         /// <summary>
         /// 1. Create account by POST method
@@ -39,18 +39,18 @@ namespace WHAT_API.API_Tests.Accounts
             response = client.Execute(request);
 
             string json = response.Content;
-            var users = JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(json);
+            var users = JsonConvert.DeserializeObject<List<Account>>(json);
             var searchedUser = users.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
             registeredUser.Id = searchedUser.Id;
 
             // 3
             request = InitNewRequest("ApiMentorsAssignAccountToMentor-accountID", Method.POST, authenticator);
-            request.AddUrlSegment("accountID", registeredUser.Id.ToString());
+            request.AddUrlSegment("accountId", registeredUser.Id.ToString());
             response = client.Execute(request);
 
             registeredUser.Role = Role.Mentor;
 
-            changePasswordRequestBody = new ChangePasswordRequestBody()
+            changePasswordRequestBody = new ChangeCurrentPassword()
             {
                 Email = registeredUser.Email,
                 CurrentPassword = "Qwerty_123",
@@ -74,18 +74,18 @@ namespace WHAT_API.API_Tests.Accounts
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
 
             string json = response.Content;
-            RegistrationResponseBody actualDataChangePassword = JsonConvert.DeserializeObject<RegistrationResponseBody>(json);
+            Account actualDataChangePassword = JsonConvert.DeserializeObject<Account>(json);
 
             Assert.AreEqual(registeredUser, actualDataChangePassword);
             log.Info($"Expected and actual results is checked");
 
             // 6
-            SignInRequestBody signInRequestBody = new SignInRequestBody()
+            Authentication signInRequestBody = new Authentication()
             {
                 Email = changePasswordRequestBody.Email,
                 Password = changePasswordRequestBody.NewPassword

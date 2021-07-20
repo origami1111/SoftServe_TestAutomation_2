@@ -12,12 +12,9 @@ namespace WHAT_Tests
         private StudentsPage studentsPage;
         private static Credentials studentInfo = ReaderFileJson.ReadFileJsonCredentials(Role.Student);
 
-
         [SetUp]
         public void Precondition()
         {
-
-
             var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
             studentsPage = new SignInPage(driver)
                                 .SignInAsAdmin(credentials.Email, credentials.Password)
@@ -30,10 +27,8 @@ namespace WHAT_Tests
             studentsPage.Logout();
         }
 
-
-
         [Test]
-        [TestCaseSource("StudentInfoSource")]
+        [TestCaseSource(nameof(StudentInfoSource))]
         public void FillSearchingField_ValidData(int id, string firstName, string lastName)
         {
             studentsPage.FillSearchingField($@"{firstName} {lastName}");
@@ -50,23 +45,11 @@ namespace WHAT_Tests
                 }
             }
             Assert.AreEqual(expected, actual);
-
         }
 
         public static IEnumerable<TestCaseData> StudentInfoSource()
         {
             yield return new TestCaseData(new object[] { studentInfo.ID, studentInfo.FirstName, studentInfo.LastName });
         }
-
-        [Test]
-        [TestCase(36U)]
-        public void VeriifyStudentsCount(uint stundetsCount)
-        {
-            uint expect = studentsPage.GetCountStudents();
-            uint actual = stundetsCount;
-            Assert.AreEqual(expect, actual);
-        }
-
-
     }
 }

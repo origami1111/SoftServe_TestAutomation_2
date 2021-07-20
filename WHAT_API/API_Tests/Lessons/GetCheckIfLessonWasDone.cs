@@ -31,7 +31,7 @@ namespace WHAT_API.API_Tests.Lessons
             var actualCode = response.StatusCode;
             Assert.AreEqual(expectedStatusCode, actualCode, "Assert status code");
 
-            var responseDetail = JsonConvert.DeserializeObject<List<ResponseAddsNewLesson>>(response.Content);
+            var responseDetail = JsonConvert.DeserializeObject<List<Lesson>>(response.Content);
             foreach (var lesson in responseDetail)
             {
                 if (lesson.LessonVisits.Count!=0)

@@ -4,6 +4,7 @@ using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using WHAT_API.Entities;
 using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Accounts
@@ -14,7 +15,7 @@ namespace WHAT_API.API_Tests.Accounts
     {
         private RestRequest request;
         private IRestResponse response;
-        private RegistrationResponseBody expectedData;
+        private Account expectedData;
 
         /// <summary>
         /// Create account by POST method
@@ -37,12 +38,12 @@ namespace WHAT_API.API_Tests.Accounts
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
 
             string json = response.Content;
-            var users = JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(json);
+            var users = JsonConvert.DeserializeObject<List<Account>>(json);
             var actualData = users.Where(user => user.Email == expectedData.Email).FirstOrDefault();
 
             Assert.Multiple(() =>
@@ -64,7 +65,7 @@ namespace WHAT_API.API_Tests.Accounts
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
         }

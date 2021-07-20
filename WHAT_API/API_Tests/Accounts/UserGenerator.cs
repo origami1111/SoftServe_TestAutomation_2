@@ -12,8 +12,8 @@ namespace WHAT_API.API_Tests
                 Email = $"{Guid.NewGuid():N}@gmail.com", // random email
                 FirstName = "Test",
                 LastName = "Registration",
-                Password = "Qwerty_123",
-                ConfirmPassword = "Qwerty_123"
+                Password = "What_123",
+                ConfirmPassword = "What_123"
             };
         }
     }

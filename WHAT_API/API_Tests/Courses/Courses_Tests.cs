@@ -12,9 +12,9 @@ namespace WHAT_API
     public class Courses_Tests : API_BaseTest
     {
         private static string GenerateNameOf<T>() =>
-            $"Test {typeof(T).Name} {Guid.NewGuid().ToString("N")}";
+            $"Test {typeof(T).Name} {Guid.NewGuid():N}";
 
-        private static string[] invalidCourseName = new string[]
+        private static readonly string[] invalidCourseName = new string[]
         {
             "a",
             "Course name with more than 50 characters is too long",
@@ -101,7 +101,7 @@ namespace WHAT_API
 
         [Test]
         public void GetCourses_ActiveNotActive(
-            [Values(Role.Student, Role.Mentor, Role.Secretary, Role.Admin)] Role role,
+            [Values(Role.Admin, Role.Student, Role.Mentor, Role.Secretary)] Role role,
             [Values] bool isActive)
         {
             var authenticator = GetAuthenticatorFor(role);

@@ -1,4 +1,5 @@
-﻿using NUnit.Allure.Core;
+﻿using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.Net;
@@ -12,6 +13,11 @@ namespace WHAT_API
     {
         private RestRequest request;
         private IRestResponse response;
+
+        public GetScheduleByIdGetRequest_BadRequests()
+        {
+            log = LogManager.GetLogger($"Schedule/{nameof(GetScheduleByIdGetRequest_BadRequests)}");
+        }
 
         [Test]
         [TestCase(HttpStatusCode.NotFound, Role.Admin, -10)]

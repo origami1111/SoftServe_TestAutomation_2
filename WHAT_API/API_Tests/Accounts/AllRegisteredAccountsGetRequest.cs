@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
@@ -16,6 +17,11 @@ namespace WHAT_API.API_Tests.Accounts
         private RestRequest request;
         private IRestResponse response;
         private Account expectedData;
+
+        public AllRegisteredAccountsGetRequest()
+        {
+            log = LogManager.GetLogger($"Accounts/{nameof(AllRegisteredAccountsGetRequest)}");
+        }
 
         /// <summary>
         /// Create account by POST method

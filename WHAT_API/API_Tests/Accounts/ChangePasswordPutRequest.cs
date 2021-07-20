@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
@@ -18,6 +19,11 @@ namespace WHAT_API.API_Tests.Accounts
         private IRestResponse response;
         private Account registeredUser;
         private ChangeCurrentPassword changePasswordRequestBody;
+
+        public ChangePasswordPutRequest()
+        {
+            log = LogManager.GetLogger($"Accounts/{nameof(ChangePasswordPutRequest)}");
+        }
 
         /// <summary>
         /// 1. Create account by POST method

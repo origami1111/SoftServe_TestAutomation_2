@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
@@ -14,6 +15,11 @@ namespace WHAT_API
     {
         private RestRequest request;
         private IRestResponse response;
+
+        public SignInPostRequest()
+        {
+            log = LogManager.GetLogger($"Accounts/{nameof(SignInPostRequest)}");
+        }
 
         [Test]
         [TestCase(HttpStatusCode.OK, Role.Admin, Activity.Active)]

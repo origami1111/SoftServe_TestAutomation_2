@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
@@ -15,6 +16,11 @@ namespace WHAT_API
         private RestRequest request;
         private IRestResponse response;
         private EventOccurrence expected;
+
+        public GetScheduleByIdGetRequest()
+        {
+            log = LogManager.GetLogger($"Schedule/{nameof(GetScheduleByIdGetRequest)}");
+        }
 
         /// <summary>
         /// Create schedule by POST method

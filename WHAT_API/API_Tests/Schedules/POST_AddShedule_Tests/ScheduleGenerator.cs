@@ -76,7 +76,7 @@ namespace WHAT_API
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiOnlyActiveMentors", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin,getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
-            List<Mentors> listOfMentors = JsonConvert.DeserializeObject<List<Mentors>>(getResponse.Content.ToString());
+            List<Mentor> listOfMentors = JsonConvert.DeserializeObject<List<Mentor>>(getResponse.Content.ToString());
             if ( !listOfMentors.Any() || getResponse.StatusCode != HttpStatusCode.OK )
             {
                 throw new Exception();
@@ -96,7 +96,7 @@ namespace WHAT_API
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsGroup", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin, getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
-            List<StudentsGroup> listOfStudentsGroup = JsonConvert.DeserializeObject<List<StudentsGroup>>(getResponse.Content.ToString());
+            List<StudentGroup> listOfStudentsGroup = JsonConvert.DeserializeObject<List<StudentGroup>>(getResponse.Content.ToString());
             if (!listOfStudentsGroup.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {
                 throw new Exception();

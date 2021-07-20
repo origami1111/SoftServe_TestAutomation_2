@@ -163,14 +163,14 @@ namespace WHAT_API
             return response.Data;
         }
 
-        protected RegistrationResponseBody RegistrationUser()
+        protected Account RegistrationUser()
         {
             var userInfo = new GenerateUser();
 
             return RegistrationUser(userInfo);
         }
 
-        protected RegistrationResponseBody RegistrationUser(GenerateUser userInfo)
+        protected Account RegistrationUser(GenerateUser userInfo)
         {
             RestRequest request =
                 new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
@@ -180,12 +180,12 @@ namespace WHAT_API
             var adminAuthenticator = GetAuthenticatorFor(Role.Admin);
             var getUnassignedUsersRequest =
                 InitNewRequest("ApiAccountsNotAssigned", Method.GET, adminAuthenticator);
-            var unassignedUsers = Execute<List<RegistrationResponseBody>>(getUnassignedUsersRequest);
+            var unassignedUsers = Execute<List<Account>>(getUnassignedUsersRequest);
 
             return unassignedUsers.First(u => u.Email == userInfo.Email);
         }
 
-        protected void AssignRole(RegistrationResponseBody user, Role role)
+        protected void AssignRole(Account user, Role role)
         {
             if (role != Role.Unassigned)
             {

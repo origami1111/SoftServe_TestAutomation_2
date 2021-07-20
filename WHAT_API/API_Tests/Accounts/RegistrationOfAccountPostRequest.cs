@@ -30,7 +30,7 @@ namespace WHAT_API.API_Tests.Accounts
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
 
             string json = response.Content;
-            RegistrationResponseBody actualData = JsonConvert.DeserializeObject<RegistrationResponseBody>(json);
+            Account actualData = JsonConvert.DeserializeObject<Account>(json);
 
             Assert.Multiple(() =>
             {
@@ -70,7 +70,7 @@ namespace WHAT_API.API_Tests.Accounts
         public void RegistrationOfAccountWithInvalidData(HttpStatusCode expectedStatusCode, string email, 
             string firstName, string lastName, string password, string confirmPassword)
         {
-            var data = new RegistrationCreateUser 
+            var data = new CreateAccount 
             { 
                 Email = email, 
                 FirstName = firstName, 

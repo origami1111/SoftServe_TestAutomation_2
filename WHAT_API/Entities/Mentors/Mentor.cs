@@ -2,10 +2,10 @@
 
 namespace WHAT_API
 {
-    public class StudentRequestBody
+    public class Mentor
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public int ID { get; set; }
         [JsonProperty("email")]
         public string Email { get; set; }
         [JsonProperty("firstName")]

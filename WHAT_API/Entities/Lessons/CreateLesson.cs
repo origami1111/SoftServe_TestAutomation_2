@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WHAT_API.Entities.Lessons
 {
-    public class AddsNewLesson
+    public class CreateLesson
     {
         [JsonProperty("themeName")]
         public string ThemeName { get; set; }
@@ -12,35 +12,35 @@ namespace WHAT_API.Entities.Lessons
         [JsonProperty("studentGroupId")]
         public int StudentGroupId { get; set; }
         [JsonProperty("lessonVisits")]
-        public List<LessonVisit> LessonVisits { get; set; }
+        public List<CreateVisit> LessonVisits { get; set; }
         [JsonProperty("lessonDate")]
         public string LessonDate { get; set; }
 
-        public AddsNewLesson WithThemaName(string themeName)
+        public CreateLesson WithThemaName(string themeName)
         {
             ThemeName = themeName;
             return this;
         }
 
-        public AddsNewLesson WithMentorId(int mentorId)
+        public CreateLesson WithMentorId(int mentorId)
         {
             MentorId = mentorId;
             return this;
         }
 
-        public AddsNewLesson WithStudentGroupId(int studentGroupId)
+        public CreateLesson WithStudentGroupId(int studentGroupId)
         {
             StudentGroupId = studentGroupId;
             return this;
         }
 
-        public AddsNewLesson WithLessonVisits(List<LessonVisit> lessonVisits)
+        public CreateLesson WithLessonVisits(List<CreateVisit> lessonVisits)
         {
             LessonVisits = lessonVisits;
             return this;
         }
 
-        public AddsNewLesson WithLessonDate(string lessonDate)
+        public CreateLesson WithLessonDate(string lessonDate)
         {
             LessonDate = lessonDate;
             return this;

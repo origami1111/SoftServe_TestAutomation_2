@@ -32,12 +32,12 @@ namespace WHAT_API.API_Tests.Students
         [TestCase( Role.Secretary)]
         public void VerifyDeletingStudentAccount_Valid(Role role)
         {
-            StudentResponseBody randomStudent = GetRandomActiveStudent(role);
+            StudentDetails randomStudent = GetRandomActiveStudent(role);
             log.Info($"Student information is generated: id={randomStudent.Id}");
             request = InitNewRequest("ApiStudentsStudentId", Method.PUT, GetAuthenticatorFor(role));
             request.AddUrlSegment("studentId", randomStudent.Id.ToString());
             request.AddParameter("studentId", randomStudent.Id);
-            StudentUpdateRequestBody updateRequestBody = new StudentUpdateRequestBody();
+            UpdateStudent updateRequestBody = new UpdateStudent();
             updateRequestBody.FirstName = randomStudent.FirstName;
             updateRequestBody.LastName = randomStudent.LastName;
             updateRequestBody.Email = randomStudent.Email;
@@ -55,7 +55,7 @@ namespace WHAT_API.API_Tests.Students
             response = client.Execute(request);
             log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            var student = JsonConvert.DeserializeObject<StudentResponseBody>(response.Content);
+            var student = JsonConvert.DeserializeObject<StudentDetails>(response.Content);
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(randomStudent.Email, student.Email);
@@ -71,15 +71,15 @@ namespace WHAT_API.API_Tests.Students
         /// <returns>
         /// StudentResponseBody entity
         /// </returns>
-        private StudentResponseBody GetRandomActiveStudent(Role role)
+        private StudentDetails GetRandomActiveStudent(Role role)
         {
             const int MIN_RANDOM = 4;
             Random random = new Random();
-            StudentResponseBody randomStudent = new StudentResponseBody();
+            StudentDetails randomStudent = new StudentDetails();
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(role));
             IRestResponse getResponse = client.Execute(getRequest);
-            var listOfActiveStudentsJsonConvert = JsonConvert.DeserializeObject<List<StudentResponseBody>>(getResponse.Content);
+            var listOfActiveStudentsJsonConvert = JsonConvert.DeserializeObject<List<StudentDetails>>(getResponse.Content);
             if (!listOfActiveStudentsJsonConvert.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {
                 throw new Exception();

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace WHAT_API
 {
-    public class StudentsGroup
+    public class StudentGroup
     {
         [JsonProperty("id")]
         public int ID { get; set; }

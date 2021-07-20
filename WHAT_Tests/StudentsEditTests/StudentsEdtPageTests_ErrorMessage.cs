@@ -54,7 +54,7 @@ namespace WHAT_Tests
             Assert.AreEqual(expectedErrorMessage, actualErrorMessage);
         }
 
-        public static IEnumerable<object[]> InvalidFirstNameSource()
+        private static IEnumerable<object[]> InvalidFirstNameSource()
         {
             yield return new object[] { "a", "Too short" };
             yield return new object[] { " ", "Too short" };
@@ -65,7 +65,7 @@ namespace WHAT_Tests
             yield return new object[] { "Name*/!&?", "Invalid first name" };
             yield return new object[] { "SpaceAfterFirst name ", "Invalid first name" };
         }
-        public static IEnumerable<object[]> InvalidLastNameSource()
+        private static IEnumerable<object[]> InvalidLastNameSource()
         {
             yield return new object[] { "z", "Too short" };
             yield return new object[] { " ", "Too short" };
@@ -76,7 +76,7 @@ namespace WHAT_Tests
             yield return new object[] { "*/!&?Name", "Invalid last name" };
             yield return new object[] { "SpaceAfterFirst name ", "Invalid last name" };
         }
-        public static IEnumerable<object[]> InvalidEmailSource()
+        private static IEnumerable<object[]> InvalidEmailSource()
         {
             yield return new object[] { "b", "Too short" };
             yield return new object[] { " ", "Too short" };

@@ -15,11 +15,6 @@ namespace WHAT_Tests
         [SetUp]
         public void Precondition()
         {
-<<<<<<< HEAD
-=======
-
-
->>>>>>> c11345376be2326474e72d711b78a0efd7a203fd
             var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
             studentsPage = new SignInPage(driver)
                                 .SignInAsAdmin(credentials.Email, credentials.Password)
@@ -32,13 +27,8 @@ namespace WHAT_Tests
             studentsPage.Logout();
         }
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> c11345376be2326474e72d711b78a0efd7a203fd
         [Test]
-        [TestCaseSource("StudentInfoSource")]
+        [TestCaseSource(nameof(StudentInfoSource))]
         public void FillSearchingField_ValidData(int id, string firstName, string lastName)
         {
             studentsPage.FillSearchingField($@"{firstName} {lastName}");

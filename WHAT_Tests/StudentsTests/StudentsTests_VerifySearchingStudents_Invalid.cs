@@ -63,10 +63,5 @@ namespace WHAT_Tests
             yield return new TestCaseData(new object[] { secretary.ID, secretary.FirstName, secretary.LastName });
             yield return new TestCaseData(new object[] { admin.ID, admin.FirstName, admin.LastName });
         }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> c11345376be2326474e72d711b78a0efd7a203fd
     }
 }

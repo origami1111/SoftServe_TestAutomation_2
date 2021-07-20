@@ -36,17 +36,14 @@ namespace WHAT_Tests
             Dictionary<int, string[]> actual = studentsPage.GetStudentsFromTable();
             CollectionAssert.AreEqual(expect, actual);
         }
-<<<<<<< HEAD
+
         [Test]
         public void VerifyPagination_PrevAndNextPageButton_DisabledStudents()
         {
             studentsPage.ClickDisabledStudents_CheckBox();
             VerifyPagination_PrevAndNextPageButton();
         }
-=======
 
-
->>>>>>> c11345376be2326474e72d711b78a0efd7a203fd
         [Test]
         public void VerifyPagination_ClickPrevPageButtonToEnd()
         {

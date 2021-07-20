@@ -7,14 +7,14 @@ using System.Collections.Generic;
 using System.Net;
 using WHAT_Utilities;
 
-namespace WHAT_API.POST_ReturnsEventrsList
+namespace WHAT_API
 {
     [TestFixture]
-    public class POST_ReturnsEventrsList_Successful : API_BaseTest
+    public class POST_ReturnsEventsList_Successful : API_BaseTest
     {
-        public POST_ReturnsEventrsList_Successful()
+        public POST_ReturnsEventsList_Successful()
         {
-            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventrsList_Successful)}");
+            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_Successful)}");
         }
 
         [Test]

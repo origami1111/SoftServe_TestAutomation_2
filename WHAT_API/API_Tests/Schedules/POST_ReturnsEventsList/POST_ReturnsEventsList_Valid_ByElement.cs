@@ -7,18 +7,18 @@ using System.Linq;
 using System.Net;
 using WHAT_Utilities;
 
-namespace WHAT_API.POST_ReturnsEventrsList
+namespace WHAT_API
 {
     [TestFixture]
-    public class POST_ReturnsEventrsList_Valid_ByElement: API_BaseTest
+    public class POST_ReturnsEventsList_Valid_ByElement: API_BaseTest
     {
         private RestRequest request;
         private IRestResponse response; 
         private ScheduleGenerator generator = new ScheduleGenerator();
         private LessonsForMentor lessonsForMentor = new LessonsForMentor();
-        public POST_ReturnsEventrsList_Valid_ByElement()
+        public POST_ReturnsEventsList_Valid_ByElement()
         {
-            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventrsList_Valid_ByElement)}");
+            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_Valid_ByElement)}");
         }
         public LessonsForMentor GetProperFilter(Role role)
         {

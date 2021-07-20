@@ -6,14 +6,14 @@ using System.Collections.Generic;
 using System.Net;
 using WHAT_Utilities;
 
-namespace WHAT_API.POST_ReturnsEventrsList
+namespace WHAT_API
 {
     [TestFixture]
-    public class POST_ReturnsEventrsList_BadRequest : API_BaseTest
+    public class POST_ReturnsEventsList_BadRequest : API_BaseTest
     {
-        public POST_ReturnsEventrsList_BadRequest()
+        public POST_ReturnsEventsList_BadRequest()
         {
-            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventrsList_BadRequest)}");
+            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_BadRequest)}");
         }
 
         private static IEnumerable<TestCaseData> FilterRulesSources

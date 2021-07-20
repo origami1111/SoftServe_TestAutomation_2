@@ -7,7 +7,7 @@ using System.Linq;
 using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests
-{ 
+{
     [TestFixture]
     class POST_AddNewSecretary : API_BaseTest
     {
@@ -38,11 +38,8 @@ namespace WHAT_API.API_Tests
             //response = client.Execute(request);
             //int newUserAccountId = JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(response.Content).Max(s => s.Id); ;
             //log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
-
-            
-
         }
-
     }       
-    
 }
+
+

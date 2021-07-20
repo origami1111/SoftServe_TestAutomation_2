@@ -11,13 +11,12 @@ namespace WHAT_Tests
 
         private StudentsPage studentsPage;
         private static Credentials mentor = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
-
+        private static Credentials admin = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+        private static Credentials secretary = ReaderFileJson.ReadFileJsonCredentials(Role.Secretary);
 
         [SetUp]
         public void Precondition()
         {
-
-
             var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
             studentsPage = new SignInPage(driver)
                                 .SignInAsAdmin(credentials.Email, credentials.Password)
@@ -30,10 +29,8 @@ namespace WHAT_Tests
             studentsPage.Logout();
         }
 
-
-
         [Test]
-        [TestCaseSource("MentorInfoSource")]
+        [TestCaseSource(nameof(InfoSource))]
         public void FillSearchingField_ValidData(int id, string firstName, string lastName)
         {
             studentsPage.FillSearchingField($@"{firstName} {lastName}");
@@ -50,14 +47,21 @@ namespace WHAT_Tests
                 }
             }
             Assert.AreNotEqual(expected, actual);
-
         }
 
-        public static IEnumerable<TestCaseData> MentorInfoSource()
+        [Test]
+        [TestCaseSource(nameof(InfoSource))]
+        public void FillSearchingField_ValidData_DisabledStudents(int id, string firstName, string lastName)
+        {
+            studentsPage.ClickDisabledStudents_CheckBox();
+            FillSearchingField_ValidData(id, firstName, lastName);
+        }
+
+        public static IEnumerable<TestCaseData> InfoSource()
         {
             yield return new TestCaseData(new object[] { mentor.ID, mentor.FirstName, mentor.LastName });
+            yield return new TestCaseData(new object[] { secretary.ID, secretary.FirstName, secretary.LastName });
+            yield return new TestCaseData(new object[] { admin.ID, admin.FirstName, admin.LastName });
         }
-
-
     }
 }

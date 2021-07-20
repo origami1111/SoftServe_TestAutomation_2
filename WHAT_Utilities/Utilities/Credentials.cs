@@ -1,5 +1,4 @@
-﻿
-namespace WHAT_Utilities
+﻿namespace WHAT_Utilities
 {
     public class Credentials
     {

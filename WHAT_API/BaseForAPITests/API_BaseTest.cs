@@ -13,26 +13,18 @@ namespace WHAT_API
 {
     public abstract class API_BaseTest
     {
-        [SetUpFixture]
-        public class API_TestsSetup
-        {
-            [OneTimeSetUp]
-            public static void OneTimeSetUp()
-            {
-                var baseUrl = ReaderUrlsJSON.ByName("BaseURLforAPI", API_BaseTest.linksPath);
-                API_BaseTest.client = new RestClient(baseUrl);
-            }
-        }
-
-        protected internal static RestClient client;
-        protected internal Logger log = LogManager.GetCurrentClassLogger();
-        protected readonly string endpointsPath = @"DataFiles/Endpoints.json";
+        protected internal const string endpointsPath = @"DataFiles/Endpoints.json";
         protected internal const string linksPath = @"DataFiles/Links.json";
+        
+        protected internal static RestClient client =
+            new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", API_BaseTest.linksPath));
+        protected internal Logger log = LogManager.GetCurrentClassLogger();
+        
         private readonly IAuthenticator[] authenticators =
             new IAuthenticator[Enum.GetValues(typeof(Role)).Length];
-
+        
         [TearDown]
-        public void TearDown()
+        public void LogAfterEachTest()
         {
             var context = TestContext.CurrentContext;
             var testName = context.Test.FullName;
@@ -57,18 +49,24 @@ namespace WHAT_API
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                log.Info($"Succesfully get token by role {role}");
+                log.Info($"Successfully get token for {role}");
                 return response.Headers.Single(h => h.Name == "Authorization").Value.ToString();
             }
             else
             {
-                log.Error("Authorization is failed!");
-                throw new Exception();
+                var message = $"Authorization is failed for {credentials.Role}: {credentials.Email}.";
+                log.Error(message);
+                throw new Exception(message);
             }
         }
 
         protected string GetToken(Role role, RestClient client)
         {
+            if (client is null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role);
             credentials.Role = role;
             return GetToken(credentials);
@@ -81,13 +79,14 @@ namespace WHAT_API
             var response = client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                log.Info($"Sccesfully get token by role {credentials.Role}");
+                log.Info($"Successfully get token by role {credentials.Role}");
                 return response.Headers.Single(h => h.Name == "Authorization").Value.ToString();
             }
             else
             {
-                log.Error("Authorization is failed!");
-                throw new Exception();
+                var message = $"Authorization is failed for {credentials.Role}: {credentials.Email}.";
+                log.Error(message);
+                throw new Exception(message);
             }
         }
 
@@ -100,25 +99,18 @@ namespace WHAT_API
             }
 
             string accessToken = null;
-
-            if (role == Role.Mentor ||
-                role == Role.Secretary ||
-                role == Role.Student)
-            {
-                var generatedUser = UserGenerator.GenerateUser();
-                generatedUser.LastName = $"{role}_{generatedUser.Email.Substring(0, 5)}";
-                var user = RegisterNewUserWithRole(generatedUser, role);
-                var credentials = new Credentials
-                {
-                    Email = generatedUser.Email,
-                    Password = generatedUser.Password,
-                    Role = role
-                };
-                accessToken = GetToken(credentials);
-            }
-            else
+            try
             {
                 accessToken = GetToken(role);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                if (role != Role.Admin)
+                {
+                    Credentials credentials = GetUserWithRole(role);
+                    accessToken = GetToken(credentials);
+                }
             }
 
             if (accessToken.StartsWith("Bearer ", StringComparison.InvariantCultureIgnoreCase))
@@ -129,6 +121,21 @@ namespace WHAT_API
             authenticator = new JwtAuthenticator(accessToken);
             authenticators[(int)role] = authenticator;
             return authenticator;
+        }
+
+        private Credentials GetUserWithRole(Role role)
+        {
+            var userInfo = new GenerateUser();
+            var newUser = RegistrationUser(userInfo);
+            newUser.LastName = $"{role}_{newUser.Email.Substring(0, 5)}";
+            AssignRole(newUser, role);
+            var credentials = new Credentials
+            {
+                Email = userInfo.Email,
+                Password = userInfo.Password,
+                Role = role
+            };
+            return credentials;
         }
 
         protected RestRequest InitNewRequest(string endPointName, Method method,
@@ -158,62 +165,42 @@ namespace WHAT_API
 
         protected RegistrationResponseBody RegistrationUser()
         {
-            var user =new GenerateUser();
-            return RegistrationUser(user);
+            var userInfo = new GenerateUser();
+
+            return RegistrationUser(userInfo);
         }
 
-        protected RegistrationResponseBody RegistrationUser(RegistrationRequestBody user)
+        protected RegistrationResponseBody RegistrationUser(GenerateUser userInfo)
         {
-            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
-            request.AddJsonBody(user);
-
+            RestRequest request =
+                new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
+            request.AddJsonBody(userInfo);
             client.Execute(request);
 
-            var data = new RegistrationResponseBody()
-            {
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Role = Role.Unassigned,
-                Activity = Activity.Active
-            };
-
-            return data;
-        }
-
-        protected RegistrationResponseBody RegisterNewUserWithRole(
-            RegistrationRequestBody userInfo, Role role)
-        {
-            string assignRoleEndPoint = role switch
-            {
-                Role.Mentor => "ApiMentorsAssignAccountToMentor-accountID",
-                Role.Secretary => "ApiSecretariesAccountId",
-                Role.Student => "ApiStudentsAccountId",
-                _ => throw new NotSupportedException()
-            };
-
             var adminAuthenticator = GetAuthenticatorFor(Role.Admin);
-
-            var newUser = RegistrationUser(userInfo);
-
-            var getUnassignedUsersRequest = InitNewRequest("ApiAccountsNotAssigned", Method.GET, adminAuthenticator);
-
+            var getUnassignedUsersRequest =
+                InitNewRequest("ApiAccountsNotAssigned", Method.GET, adminAuthenticator);
             var unassignedUsers = Execute<List<RegistrationResponseBody>>(getUnassignedUsersRequest);
 
-            var addedUser = unassignedUsers.FirstOrDefault(user => user.Email == newUser.Email);
+            return unassignedUsers.First(u => u.Email == userInfo.Email);
+        }
 
-            RestRequest assignRoleRequest =
-                InitNewRequest(assignRoleEndPoint, Method.POST, adminAuthenticator);
-            assignRoleRequest.AddUrlSegment("accountId", addedUser.Id.ToString());
-
-            var assignResponse = client.Execute(assignRoleRequest);
-
-            System.Diagnostics.Debug.WriteLine("Assign role: " + assignResponse.StatusDescription);
-
-           // if (assignResponse.IsSuccessful)
-            //    throw new Exception(assignResponse.StatusDescription);
-
-            return addedUser;
+        protected void AssignRole(RegistrationResponseBody user, Role role)
+        {
+            if (role != Role.Unassigned)
+            {
+                string endpoint = role switch
+                {
+                    Role.Mentor => "ApiMentorsAssignAccountToMentor-accountID",
+                    Role.Secretary => "ApiSecretariesAccountId",
+                    Role.Student => "ApiStudentsAccountId",
+                    _ => throw new NotSupportedException()
+                };
+                var adminAuthenticator = GetAuthenticatorFor(Role.Admin);
+                var assignRoleRequest = InitNewRequest(endpoint, Method.POST, adminAuthenticator);
+                assignRoleRequest.AddUrlSegment("accountId", user.Id.ToString());
+                client.Execute(assignRoleRequest);
+            }
         }
     }
 }

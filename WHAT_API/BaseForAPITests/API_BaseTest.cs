@@ -1,30 +1,53 @@
 ﻿using NLog;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using RestSharp;
 using RestSharp.Authenticators;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using WHAT_API.API_Tests;
+using WHAT_API.Entities;
 using WHAT_Utilities;
 
 namespace WHAT_API
 {
-    [SetUpFixture]
     public abstract class API_BaseTest
     {
-        protected RestClient client;
-        protected static  Logger log = LogManager.GetCurrentClassLogger();
+        [SetUpFixture]
+        public class API_TestsSetup
+        {
+            [OneTimeSetUp]
+            public static void OneTimeSetUp()
+            {
+                var baseUrl = ReaderUrlsJSON.ByName("BaseURLforAPI", API_BaseTest.linksPath);
+                API_BaseTest.client = new RestClient(baseUrl);
+            }
+        }
+
+        protected internal static RestClient client;
+        protected internal Logger log = LogManager.GetCurrentClassLogger();
         protected readonly string endpointsPath = @"DataFiles/Endpoints.json";
-        protected readonly string linksPath = @"DataFiles/Links.json";
+        protected internal const string linksPath = @"DataFiles/Links.json";
         private readonly IAuthenticator[] authenticators =
             new IAuthenticator[Enum.GetValues(typeof(Role)).Length];
-        
-        [OneTimeSetUp]
-        protected void OneTimeSetUp()
+
+        [TearDown]
+        public void TearDown()
         {
-            client = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
-            log.Info($"Go to BaseURLforAPI => {ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath)}");
+            var context = TestContext.CurrentContext;
+            var testName = context.Test.FullName;
+            if (context.Result.Outcome.Status == TestStatus.Passed)
+            {
+                log.Info($"{testName} {context.Result.Outcome.Status}");
+                return;
+            }
+
+            foreach (var assertion in context.Result.Assertions)
+            {
+                log.Error($"{testName} {assertion.Status}:{Environment.NewLine}{assertion.Message}");
+            }
         }
 
         protected string GetToken(Role role)
@@ -36,7 +59,7 @@ namespace WHAT_API
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                log.Info($"Succesfully get toke by role {role}");
+                log.Info($"Succesfully get token by role {role}");
                 return response.Headers.Single(h => h.Name == "Authorization").Value.ToString();
             }
             else
@@ -45,15 +68,22 @@ namespace WHAT_API
                 throw new Exception();
             }
         }
+
         protected string GetToken(Role role, RestClient client)
         {
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role);
+            credentials.Role = role;
+            return GetToken(credentials);
+        }
+
+        protected string GetToken(Credentials credentials)
+        {
             var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
             request.AddJsonBody(new { credentials.Email, credentials.Password });
             var response = client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                log.Info($"Sccesfully get toke by role {role}");
+                log.Info($"Sccesfully get token by role {credentials.Role}");
                 return response.Headers.Single(h => h.Name == "Authorization").Value.ToString();
             }
             else
@@ -71,7 +101,28 @@ namespace WHAT_API
                 return authenticator;
             }
 
-            var accessToken = GetToken(role);
+            string accessToken = null;
+
+            if (role == Role.Mentor ||
+                role == Role.Secretary ||
+                role == Role.Student)
+            {
+                var generatedUser = UserGenerator.GenerateUser();
+                generatedUser.LastName = $"{role}_{generatedUser.Email.Substring(0, 5)}";
+                var user = RegisterNewUserWithRole(generatedUser, role);
+                var credentials = new Credentials
+                {
+                    Email = generatedUser.Email,
+                    Password = generatedUser.Password,
+                    Role = role
+                };
+                accessToken = GetToken(credentials);
+            }
+            else
+            {
+                accessToken = GetToken(role);
+            }
+
             if (accessToken.StartsWith("Bearer ", StringComparison.InvariantCultureIgnoreCase))
             {
                 accessToken = accessToken["Bearer ".Length..];
@@ -110,10 +161,15 @@ namespace WHAT_API
         protected RegistrationResponseBody RegistrationUser()
         {
             var user = UserGenerator.GenerateUser();
+            return RegistrationUser(user);
+        }
+
+        protected RegistrationResponseBody RegistrationUser(RegistrationRequestBody user)
+        {
             RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(user);
 
-            IRestResponse response = client.Execute(request);
+            client.Execute(request);
 
             var data = new RegistrationResponseBody()
             {
@@ -125,6 +181,41 @@ namespace WHAT_API
             };
 
             return data;
+        }
+
+        protected RegistrationResponseBody RegisterNewUserWithRole(
+            RegistrationRequestBody userInfo, Role role)
+        {
+            string assignRoleEndPoint = role switch
+            {
+                Role.Mentor => "ApiMentorsAssignAccountToMentor-accountID",
+                Role.Secretary => "ApiSecretariesAccountId",
+                Role.Student => "ApiStudentsAccountId",
+                _ => throw new NotSupportedException()
+            };
+
+            var adminAuthenticator = GetAuthenticatorFor(Role.Admin);
+
+            var newUser = RegistrationUser(userInfo);
+
+            var getUnassignedUsersRequest = InitNewRequest("ApiAccountsNotAssigned", Method.GET, adminAuthenticator);
+
+            var unassignedUsers = Execute<List<RegistrationResponseBody>>(getUnassignedUsersRequest);
+
+            var addedUser = unassignedUsers.FirstOrDefault(user => user.Email == newUser.Email);
+
+            RestRequest assignRoleRequest =
+                InitNewRequest(assignRoleEndPoint, Method.POST, adminAuthenticator);
+            assignRoleRequest.AddUrlSegment("accountId", addedUser.Id.ToString());
+
+            var assignResponse = client.Execute(assignRoleRequest);
+
+            System.Diagnostics.Debug.WriteLine("Assign role: " + assignResponse.StatusDescription);
+
+           // if (assignResponse.IsSuccessful)
+            //    throw new Exception(assignResponse.StatusDescription);
+
+            return addedUser;
         }
     }
 }

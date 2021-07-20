@@ -16,14 +16,12 @@ namespace WHAT_API
             log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_BadRequest)}");
         }
 
-        private static IEnumerable<TestCaseData> FilterRulesSources
+        /// <summary> Return set values with filter for POST request</summary>
+        private static IEnumerable<TestCaseData> FilterRulesSources()
         {
-            get
-            {
                 yield return new TestCaseData(12050125, null, 1, 1, 1, 1, null, null);
                 yield return new TestCaseData(12050125, null, 1, 1, 1, 1, new DateTime(2019,7,7,15,27,09).ToUniversalTime(), null);
                 yield return new TestCaseData(12050125, null, null, null, null, null, null, new DateTime(2019, 7, 7, 15, 27, 09).ToUniversalTime());
-            }
         }
 
         [Test]

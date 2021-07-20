@@ -41,6 +41,20 @@ namespace WHAT_API.API_Tests.Students
             log.Info($"POST request to {response.ResponseUri}");
         }
 
+        /// <summary>
+        /// Verify deleting students using DELETE request / Student section with Admin/Secretary role
+        /// </summary>
+        /// <remarks>
+        /// Precondition:
+        /// 1.Generate student and register him using POST request gor registration users / Account section
+        /// 2.Find student ID at the end of active students list using GET request / Account section
+        /// 3.Execute adding new students using POST request / Students section
+        ///
+        /// Steps:
+        /// 1.Find student ID at the end of active students list using GET request / Account section
+        /// 2.Delete this student from list using DELETE request / Student section
+        /// 3.Сheck that the list has decreased by one
+        ///</remarks>
         [Test]
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]
@@ -50,17 +64,19 @@ namespace WHAT_API.API_Tests.Students
             int lastUserId = GetActiveStudentsList(role).Last().Id;
             int expect = GetActiveStudentsList(role).Count-1;
             log.Info($"List of students is taken, there are {GetActiveStudentsList(role).Count} active students");
-            //
             request = InitNewRequest("ApiStudentsId", Method.DELETE, GetAuthenticatorFor(role));
             request.AddUrlSegment("id", lastUserId.ToString());
             response = client.Execute(request);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            //
             log.Info($"Deleted students with max id : {lastUserId}");
             int actual = GetActiveStudentsList(role).Count;
             log.Info($"List of students is taken, there are {GetActiveStudentsList(role).Count} active students");
             Assert.AreEqual(expect, actual);
         }
+
+        /// <summary> Get list of active students using GET request / Student section</summary>
+        /// <param name="role"> User role </param>
+        /// <returns> StudentResponseBody entity </returns>
         private List<StudentResponseBody> GetActiveStudentsList(Role role)
         {
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath), Method.GET);

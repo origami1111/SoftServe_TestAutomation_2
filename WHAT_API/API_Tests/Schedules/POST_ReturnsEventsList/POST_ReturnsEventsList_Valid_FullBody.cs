@@ -20,6 +20,7 @@ namespace WHAT_API
             log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_Valid_FullBody)}");
         }
 
+        /// <summary> Return set values with filter for POST request</summary>
         private static IEnumerable<int[]> FilterRulesSources()
         {
             yield return new int[] { 9, 1, 1, 1};
@@ -29,6 +30,7 @@ namespace WHAT_API
             yield return new int[] { 12, 9, 7, 9 };
         }
 
+        /// <summary> Return role list for POST request</summary>
         private static IEnumerable<Role> FilterRoleSources()
         {
             yield return Role.Admin;
@@ -52,8 +54,8 @@ namespace WHAT_API
                 eventOccurrenceID = filter[(int)FilterIndex.EventOccurrenceId],
             });
             response = client.Execute(request);
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "StatusCode");
             log.Info($"Request is done with {response.StatusCode} StatusCode");
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "StatusCode");
             var events = JsonConvert.DeserializeObject<List<ScheduledEvent>>(response.Content);
             Assert.That(events.Count, Is.GreaterThan(0));
             Assert.Multiple(() =>
@@ -84,8 +86,8 @@ namespace WHAT_API
                 eventOccurrenceID = filter[(int)FilterIndex.EventOccurrenceId],
             });
             response = client.Execute(request);
-            Assert.AreNotEqual(HttpStatusCode.OK, response.StatusCode, "StatusCode");
             log.Info($"Request is done with {response.StatusCode} StatusCode");
+            Assert.AreNotEqual(HttpStatusCode.OK, response.StatusCode, "StatusCode");
         }
     }
 }

@@ -20,6 +20,10 @@ namespace WHAT_API
         {
             log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_Valid_ByElement)}");
         }
+
+        /// <summary> Get list of active students using GET request / Student section</summary>
+        /// <param name="role"> User role </param>
+        /// <returns> LessonsForMentor entity </returns>
         public LessonsForMentor GetProperFilter(Role role)
         {
             LessonsForMentor item = new LessonsForMentor();

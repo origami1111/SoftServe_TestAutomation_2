@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
@@ -33,15 +34,22 @@ namespace WHAT_Tests
         {
             studentsEditDetailsPage.Logout();
         }
-        [Test]
-        [TestCase("FirstEditTester", "LastTester", "qqqqqqqwew@gmail.com", "Student information has been edited successfully")]
-        public void VerifyChangeStudentInfo_ValidDate(string firstName, string lastName, string email, string expectAlert)
+
+        private static IEnumerable<string[]> Source()
         {
+            yield return new string[] { "FirstEditTester", "LastTester", "Student information has been edited successfully" };
+        }
+
+        [Test]
+        [TestCaseSource(nameof(Source))]
+        public void VerifyChangeStudentInfo_ValidDate(string firstName, string lastName, string expectAlert)
+        {
+            GenerateUser generatedUser = new GenerateUser();
             var actualAlert = studentsEditDetailsPage.FillFirstName(firstName)
                                                      .FillLastName(lastName)
-                                                     .FillEmail(email)
+                                                     .FillEmail(generatedUser.Email)
                                                      .ClickSaveButton()
-                                                     .GetAlertText();
+                                                     .GetPopUpText();
             Assert.AreEqual(expectAlert, actualAlert);
         }
     }

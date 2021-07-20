@@ -19,7 +19,7 @@ namespace WHAT_PageObject
         private By nextPage = By.CssSelector("nav > ul:nth-child(3) > li > button");
         private By studentsCount = By.CssSelector(".col-2:nth-child(2)");
         private By countPages = By.CssSelector("li[class='page-item']");
-        private By alert = By.XPath("//button[text()='Student information has been edited successfully']");
+        private By alert = By.XPath("//div[@role='alert']/button");
         #endregion
 
         public StudentsPage(IWebDriver driver) : base(driver)
@@ -68,8 +68,10 @@ namespace WHAT_PageObject
                 return false;
             }
         }
-        public string GetAlertText()
+        public string GetPopUpText()
         {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(2));
+            IWebElement firstResult = wait.Until(e => e.FindElement(alert));
             return driver.FindElement(alert).GetAttribute("value");
         }
 

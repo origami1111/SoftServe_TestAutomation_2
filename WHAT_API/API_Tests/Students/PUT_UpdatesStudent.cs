@@ -19,13 +19,21 @@ namespace WHAT_API.API_Tests.Students
         {
             log = LogManager.GetLogger($"Students/{nameof(PUT_UpdatesStudent)}");
         }
-
+        /// <summary>
+        /// That auto test verify updating students using PUT request / Student section with Admin/Secretary role
+        /// 
+        /// Steps:
+        /// 1.Generate student information for updating
+        /// 2.Update student information using PUT request / Student section
+        /// 3.Сheck that the list has decreased by one
+        /// </summary>
         [Test]
         [TestCase( Role.Admin)]
         [TestCase( Role.Secretary)]
         public void VerifyDeletingStudentAccount_Valid(Role role)
         {
             StudentResponseBody randomStudent = GetRandomActiveStudent(role);
+            log.Info($"Student information is generated: id={randomStudent.Id}");
             request = InitNewRequest("ApiStudentsStudentId", Method.PUT, GetAuthenticatorFor(role));
             request.AddUrlSegment("studentId", randomStudent.Id.ToString());
             request.AddParameter("studentId", randomStudent.Id);
@@ -35,23 +43,18 @@ namespace WHAT_API.API_Tests.Students
             updateRequestBody.Email = randomStudent.Email;
             var updateStudent = JsonConvert.SerializeObject(updateRequestBody);
             request.AddJsonBody(updateStudent);
+            log.Info($"PUT request to {ReaderUrlsJSON.ByName("ApiStudentsStudentId", endpointsPath)}");
             response = client.Execute(request);
+            log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            var changedStudent = JsonConvert.DeserializeObject<StudentRequestBody>(response.Content);
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(randomStudent.Email, changedStudent.Email);
-                Assert.AreEqual(randomStudent.FirstName, changedStudent.FirstName);
-                Assert.AreEqual(randomStudent.LastName, changedStudent.LastName);
-                log.Info($"Expected and actual results is checked");
-            });
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsId", endpointsPath), Method.GET);
             request = InitNewRequest("ApiStudentsId", Method.GET, GetAuthenticatorFor(role));
             request.AddUrlSegment("id", randomStudent.Id.ToString());
             request.AddParameter("id", randomStudent.Id);
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiStudentsStudentId", endpointsPath)}");
             response = client.Execute(request);
+            log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            //
             var student = JsonConvert.DeserializeObject<StudentResponseBody>(response.Content);
             Assert.Multiple(() =>
             {
@@ -62,6 +65,12 @@ namespace WHAT_API.API_Tests.Students
             });
         }
 
+        /// <summary>
+        /// Get and verify random active student from student lists
+        /// </summary>
+        /// <returns>
+        /// StudentResponseBody entity
+        /// </returns>
         private StudentResponseBody GetRandomActiveStudent(Role role)
         {
             const int MIN_RANDOM = 4;

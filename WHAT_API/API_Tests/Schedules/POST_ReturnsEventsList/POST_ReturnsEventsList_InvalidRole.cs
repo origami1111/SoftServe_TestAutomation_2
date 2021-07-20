@@ -4,14 +4,14 @@ using RestSharp;
 using System;
 using WHAT_Utilities;
 
-namespace WHAT_API.POST_ReturnsEventrsList
+namespace WHAT_API
 {
     [TestFixture]
-    public class POST_ReturnsEventrsList_InvalidRole : API_BaseTest
+    public class POST_ReturnsEventsList_InvalidRole : API_BaseTest
     {
-        public POST_ReturnsEventrsList_InvalidRole()
+        public POST_ReturnsEventsList_InvalidRole()
         {
-            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventrsList_InvalidRole)}");
+            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_InvalidRole)}");
         }
 
         [Test]

@@ -28,9 +28,9 @@ namespace WHAT_API
         {
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role);
             var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
+            request.RequestFormat = DataFormat.Json;
             request.AddJsonBody(new { credentials.Email, credentials.Password });
             var response = client.Execute(request);
-
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 log.Info($"Sccesfully get toke by role {role}");

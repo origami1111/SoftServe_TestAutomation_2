@@ -7,6 +7,7 @@ using System.Linq;
 using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests
+{
     [TestFixture]
     class POST_AddNewSecretary : API_BaseTest
     {
@@ -34,5 +35,5 @@ namespace WHAT_API.API_Tests
         //}
 
         //}       
-    
+    }
 }

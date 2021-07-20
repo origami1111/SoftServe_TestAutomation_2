@@ -11,6 +11,7 @@ namespace WHAT_PageObject
         const int STUDENTS_ON_PAGE_LESS = STUDENTS_ON_PAGE - 1;
 
         #region LOCATORS
+<<<<<<< HEAD
         private By tbody=By.XPath("//tbody/tr");
         private By searchingField=By.XPath("//input[@type='text']");
         private By disabledStudentCheckBox = By.XPath("//input[@type ='checkbox']");
@@ -20,6 +21,16 @@ namespace WHAT_PageObject
         private By studentsCount = By.CssSelector(".col-2:nth-child(2)");
         private By countPages = By.CssSelector("li[class='page-item']");
         private By alert = By.XPath("//button[text()='Student information has been edited successfully']");
+=======
+        private By _tbody = By.XPath("//tbody/tr");
+        private By _searchingField = By.XPath("//input[@type='text']");
+        private By _controlBarDisabledStudents = By.XPath("//input[@id='show - disabled - check']");
+        private By _addStudentButton = By.CssSelector("div:nth-child(4) > button");
+        private By _previousPage = By.CssSelector("nav > ul:nth-child(1) > li > button");
+        private By _nextPage = By.CssSelector("nav > ul:nth-child(3) > li > button");
+        private By _studentsCount = By.CssSelector(".col-2:nth-child(2)");
+        private By _countPages = By.CssSelector("ul:nth-child(2) > li:nth-child(4) > button");
+>>>>>>> c11345376be2326474e72d711b78a0efd7a203fd
         #endregion
 
         public StudentsPage(IWebDriver driver) : base(driver)
@@ -49,7 +60,12 @@ namespace WHAT_PageObject
             driver.FindElement(disabledStudentCheckBox).Click();
             return this;
         }
+<<<<<<< HEAD
        
+=======
+
+
+>>>>>>> c11345376be2326474e72d711b78a0efd7a203fd
         public void WaitStudentsLoad()
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
@@ -79,7 +95,11 @@ namespace WHAT_PageObject
             Dictionary<int, string[]> studentsTable = new Dictionary<int, string[]>();
             int interval = STUDENTS_ON_PAGE;
             int studentNumber = 1;
+<<<<<<< HEAD
             while (IsStudentDisplayed(studentNumber) || studentNumber == interval + 1)
+=======
+            while (IsStudentDisplayed(studentNumber))
+>>>>>>> c11345376be2326474e72d711b78a0efd7a203fd
             {
                 try
                 {
@@ -111,14 +131,24 @@ namespace WHAT_PageObject
             return studentsTable;
         }
 
+<<<<<<< HEAD
         public int GetCountStudents()
+=======
+        public uint GetCountStudents()
+>>>>>>> c11345376be2326474e72d711b78a0efd7a203fd
         {
             WaitStudentsLoad();
             string[] textFromStudentsCount = driver.FindElement(studentsCount).Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             return int.Parse(textFromStudentsCount[0]);
         }
+<<<<<<< HEAD
              
         public StudentDetailsPage ClickChoosedStudent(int studentNumber)
+=======
+
+
+        public StudentsEditPage ClickChoosedStudent(int studentNumber)
+>>>>>>> c11345376be2326474e72d711b78a0efd7a203fd
         {
             while (true)
             {
@@ -150,7 +180,7 @@ namespace WHAT_PageObject
         }
 
         public StudentsPage FillSearchingField(string inputingSentence)
-       {
+        {
             WaitStudentsLoad();
             IWebElement searchingFieldEl = driver.FindElement(searchingField);
             searchingFieldEl.Click();

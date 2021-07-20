@@ -125,7 +125,7 @@ namespace WHAT_API
             
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
             response = client.Execute(request);
-            
+
             HttpStatusCode actualStatusCode = response.StatusCode;
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode);

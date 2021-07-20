@@ -9,8 +9,12 @@ using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Students
 {
+<<<<<<< HEAD
     [TestFixture]
     public class DELETE_DisableStudentAccount:API_BaseTest
+=======
+    public class DELETE_DisableStudentAccount : API_BaseTest
+>>>>>>> c11345376be2326474e72d711b78a0efd7a203fd
     {
         private RestRequest request;
         private IRestResponse response;
@@ -48,7 +52,7 @@ namespace WHAT_API.API_Tests.Students
         {
             Precondition(role);
             int lastUserId = GetActiveStudentsList(role).Last().Id;
-            int expect = GetActiveStudentsList(role).Count-1;
+            int expect = GetActiveStudentsList(role).Count - 1;
             log.Info($"List of students is taken, there are {GetActiveStudentsList(role).Count} active students");
             //
             request = InitNewRequest("ApiStudentsId", Method.DELETE, GetAuthenticatorFor(role));

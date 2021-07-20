@@ -33,13 +33,13 @@ namespace WHAT_Tests
         {
             int expected;
             int lastUserIndex;
-            secretariesPage.SelectUsersAtPage(usersOnPage);           
+            secretariesPage.SelectUsersAtPage(usersOnPage);
             int actual = secretariesPage.GetShowedUsersAmount();
 
             if (secretariesPage.GetLastUserIndex(out lastUserIndex))
             {
 
-                if(lastUserIndex >= (int)usersOnPage)
+                if (lastUserIndex >= (int)usersOnPage)
                 {
                     expected = (int)usersOnPage;
                 }
@@ -54,7 +54,7 @@ namespace WHAT_Tests
                 expected = 0;
                 Assert.Fail();
             }
-            
+
             Assert.AreEqual(expected, actual);
         }
 
@@ -63,12 +63,12 @@ namespace WHAT_Tests
         [TestCase(ShowedUsers.oneHundred)]
         [Test]
         public void VerifyLastPageCount(ShowedUsers usersOnPage)
-        {           
+        {
             secretariesPage.SelectUsersAtPage(usersOnPage);
             int expected;
             int lastUserIndex;
 
-            if(secretariesPage.GetLastUserIndex(out lastUserIndex))
+            if (secretariesPage.GetLastUserIndex(out lastUserIndex))
             {
                 expected = lastUserIndex % (int)usersOnPage;
             }
@@ -90,16 +90,16 @@ namespace WHAT_Tests
         {
             secretariesPage.SelectUsersAtPage(usersOnPage);
             int pagesAmount;
-            if (secretariesPage.GetPagesAmount(out pagesAmount) && (pagesAmount>2))
+            if (secretariesPage.GetPagesAmount(out pagesAmount) && (pagesAmount > 2))
             {
-                int expected = (int) usersOnPage;
+                int expected = (int)usersOnPage;
                 int actual = secretariesPage.PrevPage().GetShowedUsersAmount();
                 Assert.AreEqual(expected, actual);
             }
             else
             {
-                
-            }          
+
+            }
         }
 
     }

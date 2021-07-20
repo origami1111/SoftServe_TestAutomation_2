@@ -14,7 +14,7 @@ namespace WHAT_API
     public abstract class API_BaseTest
     {
         protected RestClient client;
-        protected static  Logger log = LogManager.GetCurrentClassLogger();
+        protected static Logger log = LogManager.GetCurrentClassLogger();
         protected readonly string endpointsPath = @"DataFiles/Endpoints.json";
         protected readonly string linksPath = @"DataFiles/Links.json";
 

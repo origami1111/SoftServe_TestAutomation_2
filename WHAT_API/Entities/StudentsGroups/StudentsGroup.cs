@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace WHAT_API
 {
-    public class UpdateStudentsGroup
+    public class StudentsGroup
     {
         [JsonProperty("id")]
         public int ID { get; set; }

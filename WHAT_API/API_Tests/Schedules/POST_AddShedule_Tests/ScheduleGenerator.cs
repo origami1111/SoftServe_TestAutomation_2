@@ -1,23 +1,20 @@
 ﻿using Newtonsoft.Json;
-using NUnit.Framework;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using WHAT_Utilities;
 
 namespace WHAT_API
 {
     public class ScheduleGenerator : API_BaseTest
-    {       
+    {
         private CreateSchedule schedule = new CreateSchedule();
         Random random = new Random();
 
         public CreateSchedule GenerateShedule(PatternType type, int interval,
-                                              List<DayOfWeek> list, DateTime startDate, DateTime finishDate, 
+                                              List<DayOfWeek> list, DateTime startDate, DateTime finishDate,
                                               long? mentorID, long? groupID, long themeID)
         {
             schedule.Pattern = new Pattern()
@@ -45,12 +42,12 @@ namespace WHAT_API
 
         public CreateSchedule GenerateShedule()
         {
-           
+
             schedule.Pattern = new Pattern()
             {
                 Type = PatternType.Daily,
-                Interval = random.Next(1,4)
-        };
+                Interval = random.Next(1, 4)
+            };
 
             schedule.Range = new OccurrenceRange()
             {
@@ -64,7 +61,7 @@ namespace WHAT_API
                 ThemeID = GetThemeID(),
                 GroupID = GetStudentsGroupID()
             };
-          
+
 
             return schedule;
         }
@@ -74,14 +71,14 @@ namespace WHAT_API
             int mentorID;
             RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiOnlyActiveMentors", endpointsPath), Method.GET);
-            getRequest.AddHeader("Authorization", GetToken(Role.Admin,getClient));
+            getRequest.AddHeader("Authorization", GetToken(Role.Admin, getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
             List<Mentors> listOfMentors = JsonConvert.DeserializeObject<List<Mentors>>(getResponse.Content.ToString());
-            if ( !listOfMentors.Any() || getResponse.StatusCode != HttpStatusCode.OK )
+            if (!listOfMentors.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {
                 throw new Exception();
             }
-            else 
+            else
             {
                 int randomElement = random.Next(0, listOfMentors.Count);
                 mentorID = listOfMentors.ElementAt(randomElement).ID;
@@ -96,7 +93,7 @@ namespace WHAT_API
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsGroup", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin, getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
-            List<UpdateStudentsGroup> listOfStudentsGroup = JsonConvert.DeserializeObject<List<UpdateStudentsGroup>>(getResponse.Content.ToString());
+            List<StudentsGroup> listOfStudentsGroup = JsonConvert.DeserializeObject<List<StudentsGroup>>(getResponse.Content.ToString());
             if (!listOfStudentsGroup.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {
                 throw new Exception();

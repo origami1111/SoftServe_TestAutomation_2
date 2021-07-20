@@ -12,7 +12,7 @@ namespace WHAT_API.Entities.Lessons
         [JsonProperty("studentGroupId")]
         public int StudentGroupId { get; set; }
         [JsonProperty("lessonVisits")]
-        public List<Lessonvisit> LessonVisits { get; set; }
+        public List<LessonVisit> LessonVisits { get; set; }
         [JsonProperty("lessonDate")]
         public string LessonDate { get; set; }
 
@@ -34,52 +34,17 @@ namespace WHAT_API.Entities.Lessons
             return this;
         }
 
-        public AddsNewLesson WithLessonVisits(List<Lessonvisit> lessonVisits)
+        public AddsNewLesson WithLessonVisits(List<LessonVisit> lessonVisits)
         {
             LessonVisits = lessonVisits;
             return this;
         }
-        
+
         public AddsNewLesson WithLessonDate(string lessonDate)
         {
             LessonDate = lessonDate;
             return this;
         }
-
-        public class Lessonvisit
-        {
-            [JsonProperty("studentId")]
-            public int StudentId { get; set; }
-            [JsonProperty("studentMark")]
-            public object StudentMark { get; set; }
-            [JsonProperty("presence")]
-            public bool Presence { get; set; }
-            [JsonProperty("comment")]
-            public string Comment { get; set; }
-
-            public Lessonvisit WithStudentId(int studentId)
-            {
-                StudentId = studentId;
-                return this;
-            }
-            
-            public Lessonvisit WithStudentMark(object studentMark)
-            {
-                StudentMark = studentMark;
-                return this;
-            }
-            
-            public Lessonvisit WithPresence(bool presence)
-            {
-                Presence = presence;
-                return this;
-            }
-            
-            public Lessonvisit WithComment(string comment)
-            {
-                Comment = comment;
-                return this;
-            }
-        }
     }
 }
+

@@ -1,13 +1,18 @@
 ﻿using NUnit.Framework;
+<<<<<<< HEAD
 using System.Collections.Generic;
 using WHAT_PageObject;
 using WHAT_Utilities;
 using System.Linq;
+=======
+using WHAT_PageObject;
+using WHAT_Utilities;
+>>>>>>> c11345376be2326474e72d711b78a0efd7a203fd
 
 namespace WHAT_Tests
 {
     [TestFixture]
-    public class StudentsTests_VerifyRedirection: TestBase
+    public class StudentsTests_VerifyRedirection : TestBase
     {
         private StudentsPage studentsPage;
 

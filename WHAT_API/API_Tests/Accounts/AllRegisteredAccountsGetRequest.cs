@@ -4,7 +4,6 @@ using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using WHAT_API.Entities;
 using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Accounts

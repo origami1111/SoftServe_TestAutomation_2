@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.Net;
@@ -7,6 +8,7 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     class SignInPostRequest : API_BaseTest
     {

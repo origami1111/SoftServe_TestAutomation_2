@@ -1,10 +1,12 @@
-﻿using NUnit.Framework;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using RestSharp;
 using System.Net;
 using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     class GetScheduleByIdGetRequest_BadRequests : API_BaseTest
     {

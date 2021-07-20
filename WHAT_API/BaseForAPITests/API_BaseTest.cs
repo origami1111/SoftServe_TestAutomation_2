@@ -180,9 +180,12 @@ namespace WHAT_API
             var adminAuthenticator = GetAuthenticatorFor(Role.Admin);
             var getUnassignedUsersRequest =
                 InitNewRequest("ApiAccountsNotAssigned", Method.GET, adminAuthenticator);
-            var unassignedUsers = Execute<List<Account>>(getUnassignedUsersRequest);
 
-            return unassignedUsers.First(u => u.Email == userInfo.Email);
+            var unassignedUser = Execute<List<Account>>(getUnassignedUsersRequest)
+                .First(u => u.Email == userInfo.Email);
+            unassignedUser.Activity = Activity.Active;
+
+            return unassignedUser;
         }
 
         protected void AssignRole(Account user, Role role)

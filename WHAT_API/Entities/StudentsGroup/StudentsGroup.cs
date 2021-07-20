@@ -16,7 +16,7 @@ namespace WHAT_API
         public DateTime StartDate { get; set; }
         [JsonProperty("finishDate")]
         public DateTime FinishDate { get; set; }
-        [JsonProperty("studentIds ")]
+        [JsonProperty("studentIds")]
         public List<int> StudentIds { get; set; }
         [JsonProperty("mentorIds")]
         public List<int> MentorIds { get; set; }

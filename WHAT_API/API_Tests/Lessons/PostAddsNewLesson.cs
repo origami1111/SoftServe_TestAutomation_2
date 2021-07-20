@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using WHAT_API.Entities;
 using WHAT_API.Entities.Lessons;
@@ -12,33 +14,37 @@ using WHAT_Utilities;
 namespace WHAT_API.API_Tests.Lessons
 {
     [TestFixture]
+    [AllureNUnit]
     public class PostAddsNewLesson : API_BaseTest
     {
         [Test]
-        [TestCase(HttpStatusCode.OK, Role.Admin, "Some theme", 2, 22, "2015-07-20T18:30:25", "myComment")]
-        [TestCase(HttpStatusCode.OK, Role.Mentor, "Some theme", 2, 22, "2015-07-20T18:30:25", "myComment")]
-        public void LessonsPostAddsNewLesson(HttpStatusCode expectedStatusCode, Role role, string thema, int mentorId, int studentGroupId, string date, string comment)
+        [TestCase(HttpStatusCode.OK, Role.Admin, "Some theme", 22, "2015-07-20T18:30:25", 5, true, "myComment")]
+        public void LessonsPostAddsNewLesson(HttpStatusCode expectedStatusCode, Role role, string thema, int mentorId, string date, int mark, bool presense, string comment)
         {
             log = LogManager.GetLogger($"Lessons/{nameof(PostAddsNewLesson)}");
+            var request = InitNewRequest("ApiStudentsGroup", Method.GET, GetAuthenticatorFor(Role.Admin));
+            var response = client.Execute(request);
+            var responseDetail = JsonConvert.DeserializeObject<List<StudentsGroup>>(response.Content);
+
+            var studentGroup = responseDetail.FirstOrDefault();
+            int studentGroupId = studentGroup.ID;
             List<LessonVisit> lessonvisits = new List<LessonVisit>();
-            LessonVisit lessonvisit1 = new LessonVisit().WithStudentId(1).WithStudentMark(null).WithPresence(true).WithComment(comment);
-            lessonvisits.Add(lessonvisit1);
-            LessonVisit lessonvisit2 = new LessonVisit().WithStudentId(2).WithStudentMark(null).WithPresence(false).WithComment(comment);
-            lessonvisits.Add(lessonvisit2);
-            LessonVisit lessonvisit3 = new LessonVisit().WithStudentId(3).WithStudentMark(null).WithPresence(true).WithComment(comment);
-            lessonvisits.Add(lessonvisit3);
+            for (int i = 0; i < studentGroup.StudentIds.Count; i++)
+            {
+                lessonvisits.Add(new LessonVisit().WithStudentId(studentGroup.StudentIds[i]).WithStudentMark(mark).WithPresence(presense).WithComment(comment));
+            }
             AddsNewLesson newLesson = new AddsNewLesson().WithThemaName(thema).WithMentorId(mentorId).WithStudentGroupId(studentGroupId)
-                .WithLessonVisits(lessonvisits).WithLessonDate(date);
+               .WithLessonVisits(lessonvisits).WithLessonDate(date);
             var jsonfile = JsonConvert.SerializeObject(newLesson);
 
-            var request = InitNewRequest("Lessons", Method.POST, GetAuthenticatorFor(role)).AddJsonBody(jsonfile);
+            var newrequest = InitNewRequest("Lessons", Method.POST, GetAuthenticatorFor(role)).AddJsonBody(jsonfile);
 
-            var response = client.Execute(request);
-            log.Info($"Request is done with {response.StatusCode} StatusCode");
-            var actualCode = response.StatusCode;
+            var newresponse = client.Execute(newrequest);
+            log.Info($"Request is done with {newresponse.StatusCode} StatusCode");
+            var actualCode = newresponse.StatusCode;
             Assert.AreEqual(expectedStatusCode, actualCode, "Status Code Assert");
 
-            var resposneDetaile = JsonConvert.DeserializeObject<ResponseAddsNewLesson>(response.Content);
+            var resposneDetaile = JsonConvert.DeserializeObject<ResponseAddsNewLesson>(newresponse.Content);
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(thema, resposneDetaile.ThemeName, "Thema name Assert");

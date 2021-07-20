@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.Net;
@@ -9,6 +10,7 @@ using WHAT_Utilities;
 namespace WHAT_API.API_Tests.Lessons
 {
     [TestFixture]
+    [AllureNUnit]
     public class PostAssingingMentorToLesson : API_BaseTest
     {
         [Test]

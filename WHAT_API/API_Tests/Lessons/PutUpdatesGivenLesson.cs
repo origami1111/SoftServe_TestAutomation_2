@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System;
@@ -12,6 +13,7 @@ using WHAT_Utilities;
 namespace WHAT_API.API_Tests.Lessons
 {
     [TestFixture]
+    [AllureNUnit]
     public class PutUpdatesGivenLesson : API_BaseTest
     {
         [Test]
@@ -28,8 +30,6 @@ namespace WHAT_API.API_Tests.Lessons
             lessonvisits.Add(lessonvisit3);
             UpdatesGivenLesson updatesGivenLesson = new UpdatesGivenLesson().WithThemaName(themaName).WithLessonDate(date).WithLessonVisits(lessonvisits);
             var jsonfile = JsonConvert.SerializeObject(updatesGivenLesson);
-
-            
             var request = new RestRequest($"lessons/{id}", Method.PUT)
                 .AddHeader("Authorization", GetToken(Role.Admin))
                 .AddJsonBody(jsonfile);

@@ -21,7 +21,7 @@ namespace WHAT_API.API_Tests.Students
 
         public void Precondition(Role role)
         {
-            var expectedUser = UserGenerator.GenerateUser();
+            var expectedUser = new GenerateUser();
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(expectedUser);
             response = client.Execute(request);
@@ -48,7 +48,7 @@ namespace WHAT_API.API_Tests.Students
         {
             Precondition(role);
             int lastUserId = GetActiveStudentsList(role).Last().Id;
-            int expect = GetActiveStudentsList(role).Count - 1;
+            int expect = GetActiveStudentsList(role).Count-1;
             log.Info($"List of students is taken, there are {GetActiveStudentsList(role).Count} active students");
             //
             request = InitNewRequest("ApiStudentsId", Method.DELETE, GetAuthenticatorFor(role));

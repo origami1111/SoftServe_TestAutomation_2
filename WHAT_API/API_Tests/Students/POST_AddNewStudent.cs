@@ -2,8 +2,10 @@
 using NLog;
 using NUnit.Framework;
 using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Students
@@ -19,11 +21,11 @@ namespace WHAT_API.API_Tests.Students
         }
 
         [Test]
-        [TestCase(Role.Admin)]
+        [TestCase (Role.Admin)]
         [TestCase(Role.Secretary)]
         public void VerifyAddingStudentAccount_Valid(Role role)
         {
-            var expectedUser = UserGenerator.GenerateUser();
+            var expectedUser = new GenerateUser();
             string expectedUserAvatarUrl = null;
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(expectedUser);
@@ -33,7 +35,7 @@ namespace WHAT_API.API_Tests.Students
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
-            int newUserAccountId = JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(response.Content).Max(s => s.Id); ;
+            int newUserAccountId= JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(response.Content).Max(s => s.Id); ;
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
             //
             request = InitNewRequest("ApiStudentsAccountId", Method.POST, GetAuthenticatorFor(role));
@@ -47,7 +49,7 @@ namespace WHAT_API.API_Tests.Students
             response = client.Execute(request);
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath)}");
             var listActiveStudents = JsonConvert.DeserializeObject<List<StudentResponseBody>>(response.Content); ;
-            int maxId = listActiveStudents.Max(i => i.Id);
+            int maxId = listActiveStudents.Max(i=>i.Id);
             var actualUser = listActiveStudents.First(x => x.Id == maxId);
             Assert.Multiple(() =>
             {

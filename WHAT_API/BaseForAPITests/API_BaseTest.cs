@@ -5,7 +5,6 @@ using RestSharp.Authenticators;
 using System;
 using System.Linq;
 using System.Net;
-using WHAT_API.API_Tests;
 using WHAT_Utilities;
 
 namespace WHAT_API
@@ -14,7 +13,7 @@ namespace WHAT_API
     public abstract class API_BaseTest
     {
         protected RestClient client;
-        protected static Logger log = LogManager.GetCurrentClassLogger();
+        protected static  Logger log = LogManager.GetCurrentClassLogger();
         protected readonly string endpointsPath = @"DataFiles/Endpoints.json";
         protected readonly string linksPath = @"DataFiles/Links.json";
 
@@ -100,11 +99,11 @@ namespace WHAT_API
 
         protected RegistrationResponseBody RegistrationUser()
         {
-            var user = UserGenerator.GenerateUser();
+            var user = new GenerateUser();
             RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(user);
 
-            IRestResponse response = client.Execute(request);
+            client.Execute(request);
 
             var data = new RegistrationResponseBody()
             {

@@ -1,7 +1,7 @@
 ﻿
 namespace WHAT_API.Entities
 {
-    public class ChangePasswordRequestBody
+    public class ChangeCurrentPassword
     {
         public string Email { get; set; }
         public string CurrentPassword { get; set; }

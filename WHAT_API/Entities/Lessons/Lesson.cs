@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace WHAT_API.Entities
 {
-    public class ResponseAddsNewLesson
+    public class Lesson
     {
         [JsonProperty("id")]
         public int Id { get; set; }
@@ -17,6 +17,6 @@ namespace WHAT_API.Entities
         [JsonProperty("lessonDate")]
         public DateTime LessonDate { get; set; }
         [JsonProperty("lessonVisits")]
-        public List<ResponseLessonvisit> LessonVisits { get; set; }
+        public List<LessonVisit> LessonVisits { get; set; }
     }
 }

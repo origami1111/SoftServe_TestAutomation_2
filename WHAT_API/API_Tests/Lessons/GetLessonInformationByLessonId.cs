@@ -33,7 +33,7 @@ namespace WHAT_API.API_Tests.Lessons
             log.Info($"Request is done with {actualCode} StatusCode");
             Assert.AreEqual(expectedStatusCode, actualCode, "Status Code Assert");
 
-            var resposneDetaile = JsonConvert.DeserializeObject<ResponseAddsNewLesson>(response.Content);
+            var resposneDetaile = JsonConvert.DeserializeObject<Lesson>(response.Content);
             CollectionAssert.IsNotEmpty(resposneDetaile.LessonVisits,"Assert that list is not empty");
             log.Info($"Expected and actual results is checked");
         }

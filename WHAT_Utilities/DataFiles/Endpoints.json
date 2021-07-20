@@ -54,27 +54,27 @@
   //Courses
   {
     //POST
-    "Name": "POST Adds new course",
+    "Name": "Add new course",
     "Url": "courses"
   },
   {
     //GET
-    "Name": "GET Gets courses",
+    "Name": "Get courses",
     "Url": "courses/isActive"
   },
   {
     //PUT
-    "Name": "PUT Update course",
+    "Name": "Update course",
     "Url": "courses/{id}"
   },
   {
     //DELETE
-    "Name": "DELETE Disable courses",
+    "Name": "Disable course",
     "Url": "courses/{id}"
   },
   {
     //PATCH
-    "Name": "PATCH Enable course",
+    "Name": "Enable course",
     "Url": "courses/{id}"
   },
   //Schedules
@@ -134,6 +134,12 @@
     //DELETE
     "Name": "ApiSchedulesEventOccurenceID-eventOccurenceID",
     "Url": "schedules/{eventOccurenceID}"
+  },
+  //Student groups
+  {
+    //POST
+    "Name": "Add new student group",
+    "Url": "student_groups"
   },
   // Mentors
   {

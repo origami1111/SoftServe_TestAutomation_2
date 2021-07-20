@@ -20,14 +20,14 @@ namespace WHAT_API.API_Tests.Lessons
         public void LessonsPostAddsNewLesson(HttpStatusCode expectedStatusCode, Role role, string thema, int mentorId, int studentGroupId, string date, string comment)
         {
             log = LogManager.GetLogger($"Lessons/{nameof(PostAddsNewLesson)}");
-            List<LessonVisit> lessonvisits = new List<LessonVisit>();
-            LessonVisit lessonvisit1 = new LessonVisit().WithStudentId(1).WithStudentMark(null).WithPresence(true).WithComment(comment);
+            List<CreateVisit> lessonvisits = new List<CreateVisit>();
+            CreateVisit lessonvisit1 = new CreateVisit().WithStudentId(1).WithStudentMark(null).WithPresence(true).WithComment(comment);
             lessonvisits.Add(lessonvisit1);
-            LessonVisit lessonvisit2 = new LessonVisit().WithStudentId(2).WithStudentMark(null).WithPresence(false).WithComment(comment);
+            CreateVisit lessonvisit2 = new CreateVisit().WithStudentId(2).WithStudentMark(null).WithPresence(false).WithComment(comment);
             lessonvisits.Add(lessonvisit2);
-            LessonVisit lessonvisit3 = new LessonVisit().WithStudentId(3).WithStudentMark(null).WithPresence(true).WithComment(comment);
+            CreateVisit lessonvisit3 = new CreateVisit().WithStudentId(3).WithStudentMark(null).WithPresence(true).WithComment(comment);
             lessonvisits.Add(lessonvisit3);
-            AddsNewLesson newLesson = new AddsNewLesson().WithThemaName(thema).WithMentorId(mentorId).WithStudentGroupId(studentGroupId)
+            CreateLesson newLesson = new CreateLesson().WithThemaName(thema).WithMentorId(mentorId).WithStudentGroupId(studentGroupId)
                 .WithLessonVisits(lessonvisits).WithLessonDate(date);
             var jsonfile = JsonConvert.SerializeObject(newLesson);
 
@@ -38,7 +38,7 @@ namespace WHAT_API.API_Tests.Lessons
             var actualCode = response.StatusCode;
             Assert.AreEqual(expectedStatusCode, actualCode, "Status Code Assert");
 
-            var resposneDetaile = JsonConvert.DeserializeObject<ResponseAddsNewLesson>(response.Content);
+            var resposneDetaile = JsonConvert.DeserializeObject<Lesson>(response.Content);
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(thema, resposneDetaile.ThemeName, "Thema name Assert");
@@ -63,14 +63,14 @@ namespace WHAT_API.API_Tests.Lessons
         public void VerifyStatusCodeForbidden(HttpStatusCode expectedStatusCode, Role role, string thema, int mentorId, int studentGroupId, string date, string comment)
         {
             log = LogManager.GetLogger($"Lessons/{nameof(PostAddsNewLesson)}");
-            List<LessonVisit> lessonvisits = new List<LessonVisit>();
-            LessonVisit lessonvisit1 = new LessonVisit().WithStudentId(1).WithStudentMark(null).WithPresence(true).WithComment(comment);
+            List<CreateVisit> lessonvisits = new List<CreateVisit>();
+            CreateVisit lessonvisit1 = new CreateVisit().WithStudentId(1).WithStudentMark(null).WithPresence(true).WithComment(comment);
             lessonvisits.Add(lessonvisit1);
-            LessonVisit lessonvisit2 = new LessonVisit().WithStudentId(2).WithStudentMark(null).WithPresence(false).WithComment(comment);
+            CreateVisit lessonvisit2 = new CreateVisit().WithStudentId(2).WithStudentMark(null).WithPresence(false).WithComment(comment);
             lessonvisits.Add(lessonvisit2);
-            LessonVisit lessonvisit3 = new LessonVisit().WithStudentId(3).WithStudentMark(null).WithPresence(true).WithComment(comment);
+            CreateVisit lessonvisit3 = new CreateVisit().WithStudentId(3).WithStudentMark(null).WithPresence(true).WithComment(comment);
             lessonvisits.Add(lessonvisit3);
-            AddsNewLesson newLesson = new AddsNewLesson().WithThemaName(thema).WithMentorId(mentorId).WithStudentGroupId(studentGroupId)
+            CreateLesson newLesson = new CreateLesson().WithThemaName(thema).WithMentorId(mentorId).WithStudentGroupId(studentGroupId)
                 .WithLessonVisits(lessonvisits).WithLessonDate(date);
             var jsonfile = JsonConvert.SerializeObject(newLesson);
 
@@ -87,14 +87,14 @@ namespace WHAT_API.API_Tests.Lessons
         public void VerifyStatusCodeUnauthorized(HttpStatusCode expectedStatusCode, string thema, int mentorId, int studentGroupId, string date, string comment)
         {
             log = LogManager.GetLogger($"Lessons/{nameof(PostAddsNewLesson)}");
-            List<LessonVisit> lessonvisits = new List<LessonVisit>();
-            LessonVisit lessonvisit1 = new LessonVisit().WithStudentId(1).WithStudentMark(null).WithPresence(true).WithComment(comment);
+            List<CreateVisit> lessonvisits = new List<CreateVisit>();
+            CreateVisit lessonvisit1 = new CreateVisit().WithStudentId(1).WithStudentMark(null).WithPresence(true).WithComment(comment);
             lessonvisits.Add(lessonvisit1);
-            LessonVisit lessonvisit2 = new LessonVisit().WithStudentId(2).WithStudentMark(null).WithPresence(false).WithComment(comment);
+            CreateVisit lessonvisit2 = new CreateVisit().WithStudentId(2).WithStudentMark(null).WithPresence(false).WithComment(comment);
             lessonvisits.Add(lessonvisit2);
-            LessonVisit lessonvisit3 = new LessonVisit().WithStudentId(3).WithStudentMark(null).WithPresence(true).WithComment(comment);
+            CreateVisit lessonvisit3 = new CreateVisit().WithStudentId(3).WithStudentMark(null).WithPresence(true).WithComment(comment);
             lessonvisits.Add(lessonvisit3);
-            AddsNewLesson newLesson = new AddsNewLesson().WithThemaName(thema).WithMentorId(mentorId).WithStudentGroupId(studentGroupId)
+            CreateLesson newLesson = new CreateLesson().WithThemaName(thema).WithMentorId(mentorId).WithStudentGroupId(studentGroupId)
                 .WithLessonVisits(lessonvisits).WithLessonDate(date);
             var jsonfile = JsonConvert.SerializeObject(newLesson);
 
@@ -111,10 +111,10 @@ namespace WHAT_API.API_Tests.Lessons
         public void VerifyStatusCodeBadRequest(HttpStatusCode expectedStatusCode, Role role, string thema, int mentorId, int studentGroupId, string date, string comment)
         {
             log = LogManager.GetLogger($"Lessons/{nameof(PostAddsNewLesson)}");
-            List<LessonVisit> lessonvisits = new List<LessonVisit>();
-            LessonVisit lessonvisit1 = new LessonVisit().WithStudentId(1).WithStudentMark(null).WithPresence(true).WithComment(comment);
+            List<CreateVisit> lessonvisits = new List<CreateVisit>();
+            CreateVisit lessonvisit1 = new CreateVisit().WithStudentId(1).WithStudentMark(null).WithPresence(true).WithComment(comment);
             lessonvisits.Add(lessonvisit1);
-            AddsNewLesson newLesson = new AddsNewLesson().WithThemaName(thema).WithMentorId(mentorId).WithStudentGroupId(studentGroupId)
+            CreateLesson newLesson = new CreateLesson().WithThemaName(thema).WithMentorId(mentorId).WithStudentGroupId(studentGroupId)
                 .WithLessonVisits(lessonvisits).WithLessonDate(date);
             var jsonfile = JsonConvert.SerializeObject(newLesson);
 

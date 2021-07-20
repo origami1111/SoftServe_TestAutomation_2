@@ -4,7 +4,7 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
-    public class RegistrationResponseBody
+    public class Account
     {
         [JsonProperty("id")]
         public int Id { get; set; }
@@ -26,7 +26,7 @@ namespace WHAT_API
 
         public override bool Equals(object obj)
         {
-            RegistrationResponseBody other = (RegistrationResponseBody)obj;
+            Account other = (Account)obj;
 
             return (this.Email == other.Email
                 && this.FirstName == other.FirstName

@@ -2,20 +2,20 @@
 
 namespace WHAT_API.Entities.Lessons
 {
-    public class AssingingMentorRequest
+    public class AssignMentorToLesson
     {
         [JsonProperty("mentorId")]
         public int MentorId { get; set; }
         [JsonProperty("lessonId")]
         public int LessonId { get; set; }
 
-        public AssingingMentorRequest WithMentorId(int mentorId)
+        public AssignMentorToLesson WithMentorId(int mentorId)
         {
             MentorId = mentorId;
             return this;
         }
 
-        public AssingingMentorRequest WithLessonId(int lessonId)
+        public AssignMentorToLesson WithLessonId(int lessonId)
         {
             LessonId = lessonId;
             return this;

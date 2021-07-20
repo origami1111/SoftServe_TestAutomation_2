@@ -157,5 +157,26 @@
     //GET
     "Name": "CheckLessonDone",
     "Url": "lessons/{id}/isdone"
+  },
+  //Secretaries
+  {
+    //POST
+    "Name": "ApiSecretariesAccountId",
+    "Url": "secretaries/{accountId}"
+  },
+  {
+    //GET
+    "Name": "ApiSecretaries",
+    "Url": "secretaries"
+  },
+  {
+    //GET
+    "Name": "ApiSecretariesActive",
+    "Url": "secretaries/active"
+  },
+  {
+    //PUT/DELETE/PATCH
+    "Name": "ApiSecretariesId",
+    "Url": "secretaries/{secretaryid}"
   }
 ]

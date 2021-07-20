@@ -4,6 +4,7 @@ using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System;
+using System.Linq;
 using System.Net;
 using WHAT_Utilities;
 
@@ -76,6 +77,7 @@ namespace WHAT_API
 
             string json = response.Content;
             EventOccurrence actual = JsonConvert.DeserializeObject<EventOccurrence>(json);
+            actual.Events = actual.Events.OrderBy(ev => ev.EventStart).ToList();
 
             Assert.Multiple(() =>
             {

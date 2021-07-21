@@ -35,18 +35,18 @@ namespace WHAT_API.API_Tests.Accounts
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
             string json = response.Content;
             Account actualData = JsonConvert.DeserializeObject<Account>(json);
 
             Assert.Multiple(() =>
             {
-                Assert.IsTrue(expectedData.FirstName == actualData.FirstName
-                    && expectedData.LastName == actualData.LastName
-                    && expectedData.Email == actualData.Email
-                    && actualData.Role == Role.Unassigned
-                    && actualData.Activity == Activity.Active);
+                Assert.AreEqual(expectedData.FirstName, actualData.FirstName, "First name");
+                Assert.AreEqual(expectedData.LastName, actualData.LastName, "Last name");
+                Assert.AreEqual(expectedData.Email, actualData.Email, "Email");
+                Assert.AreEqual(actualData.Role, Role.Unassigned, "Role");
+                Assert.AreEqual(actualData.Activity, Activity.Active, "Is active");
             });
             log.Info($"Expected and actual results is checked");
         }
@@ -66,7 +66,7 @@ namespace WHAT_API.API_Tests.Accounts
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace WHAT_API.API_Tests.Accounts
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
         }
 
     }

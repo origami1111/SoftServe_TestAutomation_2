@@ -46,7 +46,7 @@ namespace WHAT_API.API_Tests.Accounts
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
             string json = response.Content;
             var users = JsonConvert.DeserializeObject<List<Account>>(json);
@@ -54,7 +54,11 @@ namespace WHAT_API.API_Tests.Accounts
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(expectedData, actualData);
+                Assert.AreEqual(expectedData.Email, actualData.Email, "Email");
+                Assert.AreEqual(expectedData.FirstName, actualData.FirstName, "First name");
+                Assert.AreEqual(expectedData.LastName, actualData.LastName, "Last name");
+                Assert.AreEqual(expectedData.Role, actualData.Role, "Role");
+                Assert.AreEqual(expectedData.Activity, actualData.Activity, "Is active");
             });
             log.Info($"Expected and actual results is checked");
         }
@@ -73,7 +77,7 @@ namespace WHAT_API.API_Tests.Accounts
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
         }
 
     }

@@ -7,10 +7,10 @@ namespace WHAT_API
     {
         [JsonProperty("studentGroupId")]
         public long? StudentGroupId { get; set; }
-        
+
         [JsonProperty("themeId")]
         public long? ThemeId { get; set; }
-        
+
         [JsonProperty("mentorId")]
         public long? MentorId { get; set; }
 

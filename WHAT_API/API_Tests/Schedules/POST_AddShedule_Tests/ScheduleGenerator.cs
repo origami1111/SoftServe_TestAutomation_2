@@ -49,8 +49,8 @@ namespace WHAT_API
             schedule.Pattern = new Pattern()
             {
                 Type = PatternType.Daily,
-                Interval = random.Next(1,4)
-        };
+                Interval = 1
+            };
 
             schedule.Range = new OccurrenceRange()
             {
@@ -72,13 +72,11 @@ namespace WHAT_API
         public int GetMentorID()
         {
             int mentorID;
-
             RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiOnlyActiveMentors", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin,getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
-
-            List<Mentors> listOfMentors = JsonConvert.DeserializeObject<List<Mentors>>(getResponse.Content.ToString());
+            List<Mentor> listOfMentors = JsonConvert.DeserializeObject<List<Mentor>>(getResponse.Content.ToString());
             if ( !listOfMentors.Any() || getResponse.StatusCode != HttpStatusCode.OK )
             {
                 throw new Exception();
@@ -94,13 +92,11 @@ namespace WHAT_API
         public int GetStudentsGroupID()
         {
             int studentsGroupID;
-
             RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsGroup", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin, getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
-
-            List<StudentsGroup> listOfStudentsGroup = JsonConvert.DeserializeObject<List<StudentsGroup>>(getResponse.Content.ToString());
+            List<StudentGroup> listOfStudentsGroup = JsonConvert.DeserializeObject<List<StudentGroup>>(getResponse.Content.ToString());
             if (!listOfStudentsGroup.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {
                 throw new Exception();
@@ -116,12 +112,10 @@ namespace WHAT_API
         public int GetThemeID()
         {
             int themeID;
-
             RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiThemes", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(Role.Admin, getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
-
             List<Themes> listOfThemes = JsonConvert.DeserializeObject<List<Themes>>(getResponse.Content.ToString());
             if (!listOfThemes.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {

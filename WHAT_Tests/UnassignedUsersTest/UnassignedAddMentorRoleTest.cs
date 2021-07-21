@@ -1,7 +1,4 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
@@ -40,7 +37,7 @@ namespace WHAT_Tests
 
             driver.Navigate().Refresh();
 
-            bool actual = unassignedUsers.UserVerify<MentorsPage>(unassignedUsers.FirstName,unassignedUsers.LastName, unassignedUsers.Email);
+            bool actual = unassignedUsers.UserVerify<MentorsPage>(unassignedUsers.FirstName, unassignedUsers.LastName, unassignedUsers.Email);
 
             Assert.IsTrue(actual);
         }

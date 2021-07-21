@@ -61,8 +61,8 @@ namespace WHAT_Tests
         [Test]
         [TestCase("q", "Password must contain at least 8 characters")]
         [TestCase("qwerty1", "Password must contain at least 8 characters")]
-        [TestCase("qwertyqwerty", "Must contain at least one uppercase, one lowercase, one number")]
-        [TestCase("qwertyqwerty1", "Must contain at least one uppercase, one lowercase, one number")]
+        [TestCase("qwertyqwerty", "Password must contain at least one uppercase, one lowercase, one number and one special symbol")]
+        [TestCase("qwertyqwerty1", "Password must contain at least one uppercase, one lowercase, one number and one special symbol")]
         public void RegistrationWithInvalidDataPasswordTest(string invalidData, string expected)
         {
             string actual = registrationPage

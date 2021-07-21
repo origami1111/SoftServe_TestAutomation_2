@@ -22,12 +22,12 @@ namespace WHAT_Tests
         public void CancelEditLessonValidTest(string number, string tema, string time)
         {
             string expected = "http://localhost:8080/lessons";
-       
-              lessonsPage
-                .ClickEditLesson(number)
-                .FillLessonTheme(tema)
-                .FillDateTime(time)
-                .ClickCancelButton();
+
+            lessonsPage
+              .ClickEditLesson(number)
+              .FillLessonTheme(tema)
+              .FillDateTime(time)
+              .ClickCancelButton();
 
             string actual = driver.Url;
 

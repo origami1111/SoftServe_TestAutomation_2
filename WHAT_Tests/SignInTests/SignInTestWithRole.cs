@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium.Support.UI;
 using System;
-using WHAT_Utilities;
 using WHAT_PageObject;
+using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
@@ -25,7 +25,7 @@ namespace WHAT_Tests
         public void SignInAsAdmin()
         {
             credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
-            string expected = ReaderUrlsJSON.GetUrlByName("StudentsPage", LinksPath); 
+            string expected = ReaderUrlsJSON.GetUrlByName("StudentsPage", LinksPath);
 
             signInPage.SignInAsAdmin(credentials.Email, credentials.Password);
 
@@ -39,7 +39,7 @@ namespace WHAT_Tests
         [Test]
         public void SignInAsSecretar()
         {
-            credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretar);
+            credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretary);
             string expected = ReaderUrlsJSON.GetUrlByName("MentorsPage", LinksPath);
 
             signInPage.SignInAsSecretar(credentials.Email, credentials.Password);

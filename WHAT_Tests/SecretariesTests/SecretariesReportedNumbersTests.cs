@@ -26,7 +26,7 @@ namespace WHAT_Tests
         }
 
         [Test]
-        public void ReportedTotalVerify ()
+        public void ReportedTotalVerify()
         {
             int actual = secretariesPage.GetReportedUsersTotal();
             int expected;
@@ -39,7 +39,7 @@ namespace WHAT_Tests
             {
                 Assert.Fail();
             }
-            
+
         }
 
         [Test]

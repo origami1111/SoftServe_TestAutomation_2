@@ -1,81 +1,27 @@
 ﻿using Newtonsoft.Json;
+using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     class GetScheduleByIdGetRequest : API_BaseTest
     {
         private RestRequest request;
         private IRestResponse response;
         private EventOccurrence expected;
-        private long? id;
 
-
-        public class Schedule
+        public GetScheduleByIdGetRequest()
         {
-            public Pattern Pattern { get; set; }
-            public Range Range { get; set; }
-            public Context Context { get; set; }
+            log = LogManager.GetLogger($"Schedule/{nameof(GetScheduleByIdGetRequest)}");
         }
-
-        public class Pattern
-        {
-            public int Type { get; set; }
-            public int Interval { get; set; }
-            public List<int> DaysOfWeek { get; set; }
-            public int Index { get; set; }
-            public List<int> Dates { get; set; }
-        }
-
-        public class Range
-        {
-            public DateTime StartDate { get; set; }
-            public DateTime FinishDate { get; set; }
-        }
-
-        public class Context
-        {
-            public int MentorId { get; set; }
-            public int ThemeId { get; set; }
-            public int GroupId { get; set; }
-        }
-
-        public class ScheduleGenerator
-        {
-            private Schedule schedule = new Schedule();
-
-            public Schedule GenerateSchedule()
-            {
-                schedule.Pattern = new Pattern()
-                {
-                    Type = 3,
-                    Interval = 1,
-                    DaysOfWeek = new List<int>() { 4, 5 },
-                    Index = 2,
-                    Dates = null
-                };
-                schedule.Range = new Range()
-                {
-                    StartDate = Convert.ToDateTime("2021-07-01T10:00:00"),
-                    FinishDate = Convert.ToDateTime("2021-08-31T11:00:00")
-                };
-                schedule.Context = new Context()
-                {
-                    MentorId = 5,
-                    ThemeId = 6,
-                    GroupId = 2
-                };
-
-                return schedule;
-            }
-        }
-
 
         /// <summary>
         /// Create schedule by POST method
@@ -87,11 +33,11 @@ namespace WHAT_API
             request = InitNewRequest("ApiSchedules", Method.POST, authenticator);
 
             ScheduleGenerator scheduleGenerator = new ScheduleGenerator();
-            Schedule schedule = scheduleGenerator.GenerateSchedule();
+            CreateSchedule schedule = scheduleGenerator.GenerateShedule();
 
             request.AddJsonBody(schedule);
+
             expected = Execute<EventOccurrence>(request);
-            id = expected.Id;
         }
 
         /// <summary>
@@ -102,7 +48,7 @@ namespace WHAT_API
         {
             var authenticator = GetAuthenticatorFor(Role.Admin);
             request = InitNewRequest("ApiSchedulesEventOccurenceID-eventOccurenceID", Method.DELETE, authenticator);
-            request.AddUrlSegment("eventOccurenceID", id.ToString());
+            request.AddUrlSegment("eventOccurenceID", expected.Id.ToString());
 
             response = client.Execute(request);
 
@@ -114,27 +60,45 @@ namespace WHAT_API
 
         [Test]
         [TestCase(HttpStatusCode.OK, Role.Admin)]
-        [TestCase(HttpStatusCode.OK, Role.Secretar)]
+        [TestCase(HttpStatusCode.OK, Role.Secretary)]
         public void GetScheduleWithStatusCode200(HttpStatusCode expectedStatusCode, Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
             request = InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
-            request.AddUrlSegment("id", id.ToString());
-            
+            request.AddUrlSegment("id", expected.Id.ToString());
+
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
             response = client.Execute(request);
-            
+
             HttpStatusCode actualStatusCode = response.StatusCode;
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
+            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             string json = response.Content;
             EventOccurrence actual = JsonConvert.DeserializeObject<EventOccurrence>(json);
+            actual.Events = actual.Events.OrderBy(ev => ev.EventStart).ToList();
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected.Id, actual.Id, "Schedule id");
+                Assert.AreEqual(expected.StudentGroupId, actual.StudentGroupId, "Student group id");
+                Assert.AreEqual(expected.EventStart, actual.EventStart, "Event start");
+                Assert.AreEqual(expected.EventFinish, actual.EventFinish, "Event finish");
+                Assert.AreEqual(expected.Pattern, actual.Pattern, "Pattern");
+                Assert.AreEqual(expected.Storage, actual.Storage, "Storage");
+
+                Assert.AreEqual(expected.Events.Count, actual.Events.Count, "Events count");
+                for (int i = 0; i < expected.Events.Count; i++)
+                {
+                    Assert.AreEqual(expected.Events[i].EventOccuranceId, actual.Events[i].EventOccuranceId, "Event occurance id");
+                    Assert.AreEqual(expected.Events[i].StudentGroupId, actual.Events[i].StudentGroupId, "Student group id");
+                    Assert.AreEqual(expected.Events[i].ThemeId, actual.Events[i].ThemeId, "Theme id");
+                    Assert.AreEqual(expected.Events[i].MentorId, actual.Events[i].MentorId, "Mentor id");
+                    Assert.AreEqual(expected.Events[i].LessonId, actual.Events[i].LessonId, "Lesson id");
+                    Assert.AreEqual(expected.Events[i].EventStart, actual.Events[i].EventStart, "Event start");
+                    Assert.AreEqual(expected.Events[i].EventFinish, actual.Events[i].EventFinish, "Event finish");
+                }
             });
             log.Info($"Expected and actual result is checked");
         }
@@ -146,15 +110,15 @@ namespace WHAT_API
         {
             var authenticator = GetAuthenticatorFor(role);
             request = InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
-            request.AddUrlSegment("id", id.ToString());
+            request.AddUrlSegment("id", expected.Id.ToString());
 
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
             response = client.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
         }
 
     }

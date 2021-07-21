@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
@@ -29,7 +27,7 @@ namespace WHAT_Tests
             int before = Convert.ToInt32(lessonsPage.GetLessonById(number));
 
             int after = Convert.ToInt32(lessonsPage.ClickNextPageOnPagination().GetLessonById(number));
-            
+
             Assert.AreNotEqual(before, after);
         }
 

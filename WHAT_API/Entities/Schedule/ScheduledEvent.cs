@@ -8,10 +8,10 @@ namespace WHAT_API
     {
         [JsonProperty("id")] // Required
         public long Id { get; set; }
-        
+
         [JsonProperty("eventOccuranceId")] // Required
         public long EventOccuranceId { get; set; }
-        
+
         [JsonProperty("studentGroupId")] // Required
         public long StudentGroupId { get; set; }
 
@@ -23,10 +23,10 @@ namespace WHAT_API
 
         [JsonProperty("lessonId")]
         public long? LessonId { get; set; }
-       
+
         [JsonProperty("eventStart")] // Required
         public DateTime EventStart { get; set; }
-        
+
         [JsonProperty("eventFinish")] // Required
         public DateTime EventFinish { get; set; }
 

@@ -49,7 +49,7 @@ namespace WHAT_API
             schedule.Pattern = new Pattern()
             {
                 Type = PatternType.Daily,
-                Interval = 3
+                Interval = 1
             };
 
             schedule.Range = new OccurrenceRange()

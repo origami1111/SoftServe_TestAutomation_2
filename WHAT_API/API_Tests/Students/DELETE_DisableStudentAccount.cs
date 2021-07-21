@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Students
 {
+    [AllureNUnit]
     [TestFixture]
     public class DELETE_DisableStudentAccount:API_BaseTest
     {
@@ -25,10 +27,12 @@ namespace WHAT_API.API_Tests.Students
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(expectedUser);
             response = client.Execute(request);
+
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
+
             int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsAccountId", endpointsPath), Method.POST);
@@ -62,10 +66,12 @@ namespace WHAT_API.API_Tests.Students
             int lastUserId = GetActiveStudentsList(role).Last().Id;
             int expect = GetActiveStudentsList(role).Count-1;
             log.Info($"List of students is taken, there are {GetActiveStudentsList(role).Count} active students");
+           
             request = InitNewRequest("ApiStudentsId", Method.DELETE, GetAuthenticatorFor(role));
             request.AddUrlSegment("id", lastUserId.ToString());
             response = client.Execute(request);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
             log.Info($"Deleted students with max id : {lastUserId}");
             int actual = GetActiveStudentsList(role).Count;
             log.Info($"List of students is taken, there are {GetActiveStudentsList(role).Count} active students");

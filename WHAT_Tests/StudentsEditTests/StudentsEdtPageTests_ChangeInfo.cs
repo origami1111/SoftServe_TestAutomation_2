@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using WHAT_PageObject;
 using WHAT_Utilities;
-using System.Linq;
 
 namespace WHAT_Tests
 {
@@ -24,11 +23,6 @@ namespace WHAT_Tests
                                 .ClickChoosedStudent(studentId)
                                 .ClickEditStudentsDetaisNav()
                                 .WaitStudentsEditingLoad();
-        }
-
-        public StudentsEdtPageTests_ChangeInfo()
-        { 
-            
         }
 
         [TearDown]

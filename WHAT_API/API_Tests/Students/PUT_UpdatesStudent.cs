@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System;
@@ -10,6 +11,7 @@ using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Students
 {
+    [AllureNUnit]
     [TestFixture]
     public class PUT_UpdatesStudent: API_BaseTest
     {
@@ -45,9 +47,10 @@ namespace WHAT_API.API_Tests.Students
             request.AddJsonBody(updateStudent);
             log.Info($"PUT request to {ReaderUrlsJSON.ByName("ApiStudentsStudentId", endpointsPath)}");
             response = client.Execute(request);
+
             log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            var changedStudent = JsonConvert.DeserializeObject<StudentRequestBody>(response.Content);
+            var changedStudent = JsonConvert.DeserializeObject<UpdateStudent>(response.Content);
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(randomStudent.Email, changedStudent.Email);
@@ -99,7 +102,5 @@ namespace WHAT_API.API_Tests.Students
             }
             return randomStudent;
         }
-
-        
     }
 }

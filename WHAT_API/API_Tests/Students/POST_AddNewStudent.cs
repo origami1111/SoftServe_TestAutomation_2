@@ -1,15 +1,15 @@
 ﻿using Newtonsoft.Json;
 using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Students
 {
+    [AllureNUnit]
     [TestFixture]
     public class POST_AddNewStudent : API_BaseTest
     {
@@ -20,6 +20,18 @@ namespace WHAT_API.API_Tests.Students
             log = LogManager.GetLogger($"Students/{nameof(POST_AddNewStudent)}");
         }
 
+        /// <summary>
+        /// That auto test verify adding new students using POST request / Student section with Admin/Secretary role
+        ///
+        /// Steps:
+        /// 1.Generate student and register him using POST request gor registration users / Account section
+        /// 2.Find student ID at the end of active students list using GET request / Account section
+        /// 3.Execute adding new students using POST request / Students section
+        /// 4.Find new student in students list using GET request / Students section
+        /// 
+        /// Postcondition:
+        /// 1. Delete this student from list using DELETE request / Student section
+        /// </summary>
         [Test]
         [TestCase (Role.Admin)]
         [TestCase(Role.Secretary)]
@@ -30,20 +42,24 @@ namespace WHAT_API.API_Tests.Students
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(expectedUser);
             response = client.Execute(request);
+
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
+
             int newUserAccountId= JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id); ;
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
             request = InitNewRequest("ApiStudentsAccountId", Method.POST, GetAuthenticatorFor(role));
             request.AddUrlSegment("accountId", newUserAccountId.ToString());
             request.AddParameter("accountId", newUserAccountId);
             response = client.Execute(request);
+
             log.Info($"POST request to {response.ResponseUri}");
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
+
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath)}");
             var listActiveStudents = JsonConvert.DeserializeObject<List<StudentDetails>>(response.Content); ;
             int maxId = listActiveStudents.Max(i=>i.Id);

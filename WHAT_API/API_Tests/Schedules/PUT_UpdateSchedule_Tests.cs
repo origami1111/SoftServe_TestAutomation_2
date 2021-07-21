@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.IO;
@@ -6,8 +7,9 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
-    public class CoursesTests : API_BaseTest
+    public class PUT_UpdateSchedule_Tests : API_BaseTest
     {
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]

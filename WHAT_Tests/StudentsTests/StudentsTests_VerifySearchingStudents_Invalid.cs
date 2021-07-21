@@ -8,7 +8,6 @@ namespace WHAT_Tests
     [TestFixture]
     public class StudentsTests_VerifySearchingStudents_Invalid : TestBase
     {
-
         private StudentsPage studentsPage;
         private static Credentials mentor = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
         private static Credentials admin = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);

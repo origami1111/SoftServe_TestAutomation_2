@@ -1,4 +1,5 @@
 ﻿using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.Net;
@@ -6,6 +7,7 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     public class POST_ReturnsEventsList_Unauthorized : API_BaseTest
     {

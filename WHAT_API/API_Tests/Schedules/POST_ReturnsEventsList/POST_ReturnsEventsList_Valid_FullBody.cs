@@ -1,13 +1,16 @@
 using Newtonsoft.Json;
 using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     public class POST_ReturnsEventsList_Valid_FullBody : API_BaseTest
     {
@@ -72,22 +75,22 @@ namespace WHAT_API
         }
 
         [Test]
-        public void VerifyReturnsEventrsList_FullBody_Inalid([ValueSource(nameof(FilterRulesSources))] int[] filter)
+        public void VerifyReturnsEventrsList_FullBody_Invalid([ValueSource(nameof(FilterRulesSources))] int[] filter)
         {
             var role = Role.Unassigned;
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath)}");
-            request.AddHeader("Authorization", GetToken(role));
-            request.AddJsonBody(new
+            try
             {
-                mentorID = filter[(int)FilterIndex.MentorId],
-                groupID = filter[(int)FilterIndex.GroupId],
-                themeID = filter[(int)FilterIndex.ThemeId],
-                eventOccurrenceID = filter[(int)FilterIndex.EventOccurrenceId],
-            });
-            response = client.Execute(request);
-            log.Info($"Request is done with {response.StatusCode} StatusCode");
-            Assert.AreNotEqual(HttpStatusCode.OK, response.StatusCode, "StatusCode");
+                request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
+                log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath)}");
+                request.AddHeader("Authorization", GetToken(role));
+                Assert.Fail();
+                log.Fatal("Not correct token, user is valid");
+            }
+            catch (Exception)
+            {
+                Assert.Pass();
+                log.Info("Exception is cought and correctly handled");
+            }
         }
     }
 }

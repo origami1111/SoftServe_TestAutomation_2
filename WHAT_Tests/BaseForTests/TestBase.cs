@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using NLog;
+using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
@@ -11,6 +13,8 @@ namespace WHAT_Tests
     {
         protected IWebDriver driver;
         public readonly string LinksPath = @"DataFiles/Links.json";
+        protected internal Logger log = LogManager.GetCurrentClassLogger();
+
         [SetUp]
         public void SetUp()
         {
@@ -24,6 +28,17 @@ namespace WHAT_Tests
         public void TearDown()
         {
             driver.Quit();
+            var context = TestContext.CurrentContext;
+            var testName = context.Test.FullName;
+            if (context.Result.Outcome.Status == TestStatus.Passed)
+            {
+                log.Info($"{testName} {context.Result.Outcome.Status}");
+                return;
+            }
+            foreach (var assertion in context.Result.Assertions)
+            {
+                log.Error($"{testName} {assertion.Status}:{Environment.NewLine}{assertion.Message}");
+            }
         }
     }
 }

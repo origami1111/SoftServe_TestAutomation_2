@@ -29,7 +29,7 @@ namespace WHAT_API.API_Tests.Students
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
-            int newUserAccountId = JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(response.Content).Max(s => s.Id);
+            int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsAccountId", endpointsPath), Method.POST);
             request = InitNewRequest("ApiStudentsAccountId", Method.POST, GetAuthenticatorFor(role));
@@ -75,12 +75,12 @@ namespace WHAT_API.API_Tests.Students
         /// <summary> Get list of active students using GET request / Student section</summary>
         /// <param name="role"> User role </param>
         /// <returns> StudentResponseBody entity </returns>
-        private List<StudentResponseBody> GetActiveStudentsList(Role role)
+        private List<StudentDetails> GetActiveStudentsList(Role role)
         {
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(role));
             IRestResponse getResponse = client.Execute(getRequest);
-            return JsonConvert.DeserializeObject<List<StudentResponseBody>>(getResponse.Content);
+            return JsonConvert.DeserializeObject<List<StudentDetails>>(getResponse.Content);
         }
     }
 }

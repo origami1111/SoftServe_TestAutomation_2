@@ -19,14 +19,14 @@ namespace WHAT_API.API_Tests.Lessons
         public void UpdatesGivenLesson(HttpStatusCode expectedStatusCode, int id, bool presense, string comment,string themaName,string date,int mark)
         {
             log = LogManager.GetLogger($"Lessons/{nameof(PostAddsNewLesson)}");
-            List<LessonVisit> lessonvisits = new List<LessonVisit>();
-            LessonVisit lessonvisit1 = new LessonVisit().WithStudentId(1).WithStudentMark(mark).WithPresence(presense).WithComment(comment);
+            List<CreateVisit> lessonvisits = new List<CreateVisit>();
+            CreateVisit lessonvisit1 = new CreateVisit().WithStudentId(1).WithStudentMark(mark).WithPresence(presense).WithComment(comment);
             lessonvisits.Add(lessonvisit1);
-            LessonVisit lessonvisit2 = new LessonVisit().WithStudentId(4).WithStudentMark(mark).WithPresence(presense).WithComment(comment);
+            CreateVisit lessonvisit2 = new CreateVisit().WithStudentId(4).WithStudentMark(mark).WithPresence(presense).WithComment(comment);
             lessonvisits.Add(lessonvisit2);
-            LessonVisit lessonvisit3 = new LessonVisit().WithStudentId(3).WithStudentMark(mark).WithPresence(presense).WithComment(comment);
+            CreateVisit lessonvisit3 = new CreateVisit().WithStudentId(3).WithStudentMark(mark).WithPresence(presense).WithComment(comment);
             lessonvisits.Add(lessonvisit3);
-            UpdatesGivenLesson updatesGivenLesson = new UpdatesGivenLesson().WithThemaName(themaName).WithLessonDate(date).WithLessonVisits(lessonvisits);
+            UpdateLesson updatesGivenLesson = new UpdateLesson().WithThemaName(themaName).WithLessonDate(date).WithLessonVisits(lessonvisits);
             var jsonfile = JsonConvert.SerializeObject(updatesGivenLesson);
 
             
@@ -39,7 +39,7 @@ namespace WHAT_API.API_Tests.Lessons
             log.Info($"Request is done with {actualCode} StatusCode");
             Assert.AreEqual(expectedStatusCode, actualCode, "Status Code Assert");
 
-            var resposneDetaile = JsonConvert.DeserializeObject<ResponseAddsNewLesson>(response.Content);
+            var resposneDetaile = JsonConvert.DeserializeObject<Lesson>(response.Content);
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(resposneDetaile.LessonDate, Convert.ToDateTime(date), "Assert lesson date");

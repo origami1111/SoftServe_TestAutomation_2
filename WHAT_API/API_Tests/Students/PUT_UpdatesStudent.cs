@@ -19,23 +19,33 @@ namespace WHAT_API.API_Tests.Students
         {
             log = LogManager.GetLogger($"Students/{nameof(PUT_UpdatesStudent)}");
         }
-
+        /// <summary>
+        /// That auto test verify updating students using PUT request / Student section with Admin/Secretary role
+        /// 
+        /// Steps:
+        /// 1.Generate student information for updating
+        /// 2.Update student information using PUT request / Student section
+        /// 3.Сheck that the list has decreased by one
+        /// </summary>
         [Test]
         [TestCase( Role.Admin)]
         [TestCase( Role.Secretary)]
         public void VerifyDeletingStudentAccount_Valid(Role role)
         {
-            StudentResponseBody randomStudent = GetRandomActiveStudent(role);
+            StudentDetails randomStudent = GetRandomActiveStudent(role);
+            log.Info($"Student information is generated: id={randomStudent.Id}");
             request = InitNewRequest("ApiStudentsStudentId", Method.PUT, GetAuthenticatorFor(role));
             request.AddUrlSegment("studentId", randomStudent.Id.ToString());
             request.AddParameter("studentId", randomStudent.Id);
-            StudentUpdateRequestBody updateRequestBody = new StudentUpdateRequestBody();
+            UpdateStudent updateRequestBody = new UpdateStudent();
             updateRequestBody.FirstName = randomStudent.FirstName;
             updateRequestBody.LastName = randomStudent.LastName;
             updateRequestBody.Email = randomStudent.Email;
             var updateStudent = JsonConvert.SerializeObject(updateRequestBody);
             request.AddJsonBody(updateStudent);
+            log.Info($"PUT request to {ReaderUrlsJSON.ByName("ApiStudentsStudentId", endpointsPath)}");
             response = client.Execute(request);
+            log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var changedStudent = JsonConvert.DeserializeObject<StudentRequestBody>(response.Content);
             Assert.Multiple(() =>
@@ -49,9 +59,11 @@ namespace WHAT_API.API_Tests.Students
             request = InitNewRequest("ApiStudentsId", Method.GET, GetAuthenticatorFor(role));
             request.AddUrlSegment("id", randomStudent.Id.ToString());
             request.AddParameter("id", randomStudent.Id);
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiStudentsStudentId", endpointsPath)}");
             response = client.Execute(request);
+            log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            var student = JsonConvert.DeserializeObject<StudentResponseBody>(response.Content);
+            var student = JsonConvert.DeserializeObject<StudentDetails>(response.Content);
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(randomStudent.Email, student.Email);
@@ -61,15 +73,21 @@ namespace WHAT_API.API_Tests.Students
             });
         }
 
-        private StudentResponseBody GetRandomActiveStudent(Role role)
+        /// <summary>
+        /// Get and verify random active student from student lists
+        /// </summary>
+        /// <returns>
+        /// StudentResponseBody entity
+        /// </returns>
+        private StudentDetails GetRandomActiveStudent(Role role)
         {
             const int MIN_RANDOM = 4;
             Random random = new Random();
-            StudentResponseBody randomStudent = new StudentResponseBody();
+            StudentDetails randomStudent = new StudentDetails();
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(role));
             IRestResponse getResponse = client.Execute(getRequest);
-            var listOfActiveStudentsJsonConvert = JsonConvert.DeserializeObject<List<StudentResponseBody>>(getResponse.Content);
+            var listOfActiveStudentsJsonConvert = JsonConvert.DeserializeObject<List<StudentDetails>>(getResponse.Content);
             if (!listOfActiveStudentsJsonConvert.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {
                 throw new Exception();

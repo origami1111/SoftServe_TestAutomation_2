@@ -34,7 +34,7 @@ namespace WHAT_API.API_Tests.Students
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
-            int newUserAccountId= JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(response.Content).Max(s => s.Id); ;
+            int newUserAccountId= JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id); ;
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
             request = InitNewRequest("ApiStudentsAccountId", Method.POST, GetAuthenticatorFor(role));
             request.AddUrlSegment("accountId", newUserAccountId.ToString());
@@ -45,7 +45,7 @@ namespace WHAT_API.API_Tests.Students
             request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath)}");
-            var listActiveStudents = JsonConvert.DeserializeObject<List<StudentResponseBody>>(response.Content); ;
+            var listActiveStudents = JsonConvert.DeserializeObject<List<StudentDetails>>(response.Content); ;
             int maxId = listActiveStudents.Max(i=>i.Id);
             var actualUser = listActiveStudents.First(x => x.Id == maxId);
             Assert.Multiple(() =>

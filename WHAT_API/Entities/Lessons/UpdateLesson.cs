@@ -3,28 +3,28 @@ using System.Collections.Generic;
 
 namespace WHAT_API.Entities.Lessons
 {
-    public class UpdatesGivenLesson
+    public class UpdateLesson
     {
         [JsonProperty("themeName")]
-        public string ThemeName { get; set; }
+        public string? ThemeName { get; set; }
         [JsonProperty("lessonDate")]
         public string LessonDate { get; set; }
         [JsonProperty("lessonVisits")]
-        public List<LessonVisit> LessonVisits { get; set; }
+        public List<CreateVisit>? LessonVisits { get; set; }
 
-        public UpdatesGivenLesson WithThemaName(string themeName)
+        public UpdateLesson WithThemaName(string themeName)
         {
             ThemeName = themeName;
             return this;
         }
 
-        public UpdatesGivenLesson WithLessonDate(string lessonDate)
+        public UpdateLesson WithLessonDate(string lessonDate)
         {
             LessonDate = lessonDate;
             return this;
         }
 
-        public UpdatesGivenLesson WithLessonVisits(List<LessonVisit> lessonVisits)
+        public UpdateLesson WithLessonVisits(List<CreateVisit> lessonVisits)
         {
             LessonVisits = lessonVisits;
             return this;

@@ -14,7 +14,7 @@ namespace WHAT_API.API_Tests.Accounts
     {
         private RestRequest request;
         private IRestResponse response;
-        private RegistrationResponseBody expectedData;
+        private Account expectedData;
 
         /// <summary>
         /// Create account by POST method
@@ -41,7 +41,7 @@ namespace WHAT_API.API_Tests.Accounts
             Assert.AreEqual(expectedStatusCode, actualStatusCode);
 
             string json = response.Content;
-            var users = JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(json);
+            var users = JsonConvert.DeserializeObject<List<Account>>(json);
             var actualData = users.Where(user => user.Email == expectedData.Email).FirstOrDefault();
 
             Assert.Multiple(() =>

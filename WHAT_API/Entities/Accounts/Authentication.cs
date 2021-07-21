@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WHAT_API.Entities
 {
-    public class SignInRequestBody
+    public class Authentication
     {
         public string Email { get; set; }
         public string Password { get; set; }

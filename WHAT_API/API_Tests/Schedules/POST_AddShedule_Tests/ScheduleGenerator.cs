@@ -84,7 +84,7 @@ namespace WHAT_API
             else 
             {
                 int randomElement = random.Next(0, listOfMentors.Count);
-                mentorID = listOfMentors.ElementAt(randomElement).ID;
+                mentorID = listOfMentors.ElementAt(randomElement).Id;
             }
             return mentorID;
         }

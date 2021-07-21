@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace WHAT_API.Entities.Lessons
@@ -8,7 +9,7 @@ namespace WHAT_API.Entities.Lessons
         [JsonProperty("themeName")]
         public string? ThemeName { get; set; }
         [JsonProperty("lessonDate")]
-        public string LessonDate { get; set; }
+        public DateTime LessonDate { get; set; }
         [JsonProperty("lessonVisits")]
         public List<CreateVisit>? LessonVisits { get; set; }
 
@@ -18,7 +19,7 @@ namespace WHAT_API.Entities.Lessons
             return this;
         }
 
-        public UpdateLesson WithLessonDate(string lessonDate)
+        public UpdateLesson WithLessonDate(DateTime lessonDate)
         {
             LessonDate = lessonDate;
             return this;

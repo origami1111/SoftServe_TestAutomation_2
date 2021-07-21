@@ -3,10 +3,9 @@ using NLog;
 using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
-using System.Text;
 using WHAT_API.Entities;
 using WHAT_Utilities;
 
@@ -16,25 +15,25 @@ namespace WHAT_API.API_Tests.Lessons
     [AllureNUnit]
     public class GetLessonInformationByLessonId : API_BaseTest
     {
-        [Test]
-        [TestCase(HttpStatusCode.OK, Role.Admin, 1)]
-        [TestCase(HttpStatusCode.OK, Role.Mentor, 1)]
-        [TestCase(HttpStatusCode.OK, Role.Secretary, 1)]
-        [TestCase(HttpStatusCode.OK, Role.Student, 1)]
-        [TestCase(HttpStatusCode.OK, Role.Unassigned, 1)]
-        public void GetLessonInformationById(HttpStatusCode expectedStatusCode,Role role ,int id)
+        [TestCaseSource(typeof(TestCase), nameof(TestCase.ValidRole))]
+        public void GetLessonInformationById(HttpStatusCode expectedStatusCode,Role role)
         {
-            log = LogManager.GetLogger($"Lessons/{nameof(PostAddsNewLesson)}");
-            var request = new RestRequest($"lessons/{id}", Method.GET)
-                .AddHeader("Authorization", GetToken(role));
-
+            log = LogManager.GetLogger($"Lessons/{nameof(GetLessonInformationByLessonId)}");
+            var request = InitNewRequest("ApiStudentsGroup", Method.GET, GetAuthenticatorFor(Role.Admin));
             var response = client.Execute(request);
-            var actualCode = response.StatusCode;
+            var responseDetail = JsonConvert.DeserializeObject<List<Lesson>>(response.Content);
+            int id = responseDetail
+                .Select(l=>l.Id)
+                .FirstOrDefault();
+            
+            var newRequest = new RestRequest($"lessons/{id}", Method.GET)
+                .AddHeader("Authorization", GetToken(role));
+            var newResponse = client.Execute(newRequest);
+            var actualCode = newResponse.StatusCode;
             log.Info($"Request is done with {actualCode} StatusCode");
             Assert.AreEqual(expectedStatusCode, actualCode, "Status Code Assert");
-
-            var resposneDetaile = JsonConvert.DeserializeObject<Lesson>(response.Content);
-            CollectionAssert.IsNotEmpty(resposneDetaile.LessonVisits,"Assert that list is not empty");
+            var resposneDetaile = JsonConvert.DeserializeObject<Lesson>(newResponse.Content);
+            Assert.AreEqual(resposneDetaile.Id, id,"Assert  lesson id");
             log.Info($"Expected and actual results is checked");
         }
     }

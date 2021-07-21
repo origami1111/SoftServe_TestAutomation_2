@@ -5,10 +5,9 @@ using NUnit.Framework;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
-using System.Text;
 using WHAT_API.Entities;
-using WHAT_API.Entities.Lessons;
 using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Lessons
@@ -17,42 +16,61 @@ namespace WHAT_API.API_Tests.Lessons
     [AllureNUnit]
     public class GetCheckIfLessonWasDone : API_BaseTest
     {
-        [Test]
-        [TestCase(HttpStatusCode.OK, Role.Admin)]
-        //[TestCase(HttpStatusCode.OK, Role.Mentor)]
-        //[TestCase(HttpStatusCode.OK, Role.Secretary)]
-        
+        [TestCaseSource(typeof(TestCase),nameof(TestCase.ValidRole))]
         public void CheckIfLessonWasDone(HttpStatusCode expectedStatusCode, Role role)
         {
-            log = LogManager.GetLogger($"Lessons/{nameof(PostAddsNewLesson)}");
+            log = LogManager.GetLogger($"Lessons/{nameof(GetCheckIfLessonWasDone)}");
             var request = new RestRequest(ReaderUrlsJSON.GetUrlByName("Lessons", endpointsPath), Method.GET)
-                .AddHeader("Authorization", GetToken(role));
+                .AddHeader("Authorization", GetToken(Role.Admin));
             var response = client.Execute(request);
-            var actualCode = response.StatusCode;
-            Assert.AreEqual(expectedStatusCode, actualCode, "Assert status code");
-
             var responseDetail = JsonConvert.DeserializeObject<List<Lesson>>(response.Content);
-            foreach (var lesson in responseDetail)
-            {
-                if (lesson.LessonVisits.Count!=0)
-                {
-                    foreach (var student in lesson.LessonVisits)
-                    {
-                        if (student.Presence == true)
-                        {
-                            var newrequest = new RestRequest($"lessons/{lesson.Id}/isdone", Method.GET)
-                                .AddHeader("Authorization", GetToken(role));
-                            var newresponse = client.Execute(newrequest);
-                            var actualStatusCode = newresponse.StatusCode;
-                            log.Info($"Request is done with {actualStatusCode} StatusCode");
-                            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status Code Assert");
-                            Assert.AreEqual(true, Convert.ToBoolean(newresponse.Content));
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
+
+            int lessonId = responseDetail
+                .Where(l => l.LessonVisits.Any(s => s.Presence == true))
+                .Select(l => l.Id)
+                .FirstOrDefault();
+
+            var newrequest = new RestRequest($"lessons/{lessonId}/isdone", Method.GET)
+                .AddHeader("Authorization", GetToken(role));           
+            var newresponse = client.Execute(newrequest);
+            var actualStatusCode = newresponse.StatusCode;
+            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status Code Assert");
+            Assert.AreEqual(true, Convert.ToBoolean(newresponse.Content));
+            log.Info($"Expected and actual results is checked");
+        }
+
+        [TestCase(HttpStatusCode.Unauthorized)]
+        public void VerifyUnauthorizedStatusCode(HttpStatusCode expectedStatusCode)
+        {
+            log = LogManager.GetLogger($"Lessons/{nameof(GetCheckIfLessonWasDone)}");
+            var request = new RestRequest(ReaderUrlsJSON.GetUrlByName("Lessons", endpointsPath), Method.GET)
+                .AddHeader("Authorization", GetToken(Role.Admin));
+            var response = client.Execute(request);
+            var responseDetail = JsonConvert.DeserializeObject<List<Lesson>>(response.Content);
+            int lessonId = responseDetail
+                .Where(l => l.LessonVisits.Any(s => s.Presence == true))
+                .Select(l => l.Id)
+                .FirstOrDefault();
+
+            var newrequest = new RestRequest($"lessons/{lessonId}/isdone", Method.GET);
+            var newresponse = client.Execute(newrequest);
+            var actualStatusCode = newresponse.StatusCode;
+            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status Code Assert");
+            log.Info($"Expected and actual results is checked");
+        }
+
+        [TestCase(HttpStatusCode.NotFound, Int32.MaxValue)]
+        public void VerifyNotFoundStatusCode(HttpStatusCode expectedStatusCode,int id)
+        {
+            log = LogManager.GetLogger($"Lessons/{nameof(GetCheckIfLessonWasDone)}");
+            var newrequest = new RestRequest($"lessons/{id}/isdone", Method.GET)
+                .AddHeader("Authorization", GetToken(Role.Admin));       
+            var newresponse = client.Execute(newrequest);
+            var actualStatusCode = newresponse.StatusCode;
+            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status Code Assert");
             log.Info($"Expected and actual results is checked");
         }
     }

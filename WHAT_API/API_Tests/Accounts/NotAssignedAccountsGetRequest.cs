@@ -50,15 +50,13 @@ namespace WHAT_API.API_Tests.Accounts
 
             string json = response.Content;
             var users = JsonConvert.DeserializeObject<List<Account>>(json);
-            var actualData = users.Where(user => user.Email == expectedData.Email).FirstOrDefault();
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(expectedData.Email, actualData.Email, "Email");
-                Assert.AreEqual(expectedData.FirstName, actualData.FirstName, "First name");
-                Assert.AreEqual(expectedData.LastName, actualData.LastName, "Last name");
-                Assert.AreEqual(expectedData.Role, actualData.Role, "Role");
-                Assert.AreEqual(expectedData.Activity, actualData.Activity, "Is active");
+                foreach (var user in users)
+                {
+                    Assert.AreEqual(expectedData.Role, user.Role, "Role");
+                }
             });
             log.Info($"Expected and actual results is checked");
         }

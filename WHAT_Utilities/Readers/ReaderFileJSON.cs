@@ -15,8 +15,7 @@ namespace WHAT_Utilities
             string json = File.ReadAllText(path);
             List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(json);
 
-            Account account = accounts.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).FirstOrDefault();
-            return account;
+            return accounts.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).FirstOrDefault();
         }
 
         public static List<Account> ReadFileJsonListAccounts(Role role, Activity activity = Activity.Active)

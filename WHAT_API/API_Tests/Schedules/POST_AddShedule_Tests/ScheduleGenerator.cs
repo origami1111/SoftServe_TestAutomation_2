@@ -54,8 +54,8 @@ namespace WHAT_API
 
             schedule.Range = new OccurrenceRange()
             {
-                StartDate = new DateTime(2019, 1, 2, 13, 27, 09).ToUniversalTime(),
-                FinishDate = new DateTime(2021, 7, 7, 15, 27, 09).ToUniversalTime()
+                StartDate = DateTime.Now.ToUniversalTime(),
+                FinishDate = DateTime.Now.ToUniversalTime()
             };
 
             schedule.Context = new Context()

@@ -8,22 +8,23 @@ namespace WHAT_Utilities
     public class ReaderFileJson
     {
         private ReaderFileJson() { }
-        private const string path = @"DataFiles\Credentials.json";
+        private const string path = @"DataFiles\Accounts.json";
 
-        public static Credentials ReadFileJsonCredentials(Role role, Activity activity = Activity.Active)
+        public static Account ReadFileJsonAccounts(Role role, Activity activity = Activity.Active)
         {
             string json = File.ReadAllText(path);
-            List<Credentials> creds = JsonConvert.DeserializeObject<List<Credentials>>(json);
+            List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(json);
 
-            return creds.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).FirstOrDefault();
+            Account account = accounts.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).FirstOrDefault();
+            return account;
         }
 
-        public static List<Credentials> ReadFileJsonListCredentials(Role role, Activity activity = Activity.Active)
+        public static List<Account> ReadFileJsonListAccounts(Role role, Activity activity = Activity.Active)
         {
             string json = File.ReadAllText(path);
-            List<Credentials> creds = JsonConvert.DeserializeObject<List<Credentials>>(json);
+            List<Account> accounts = JsonConvert.DeserializeObject<List<Account>>(json);
 
-            return creds.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).ToList();
+            return accounts.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).ToList();
         }
 
     }

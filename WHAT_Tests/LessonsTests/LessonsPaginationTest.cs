@@ -10,13 +10,13 @@ namespace WHAT_Tests
     {
 
         private LessonsPage lessonsPage;
-        Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
+        Account account = ReaderFileJson.ReadFileJsonAccounts(Role.Mentor);
 
         [SetUp]
         public void SetupPage()
         {
             lessonsPage = new SignInPage(driver)
-                            .SignInAsMentor(credentials.Email, credentials.Password);
+                            .SignInAsMentor(account.Email, account.Password);
         }
 
         [Test]

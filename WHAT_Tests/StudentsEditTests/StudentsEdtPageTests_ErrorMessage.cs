@@ -15,9 +15,9 @@ namespace WHAT_Tests
         [SetUp]
         public void Precondition()
         {
-            var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+            var account = ReaderFileJson.ReadFileJsonAccounts(Role.Admin);
             studentsEditDetailsPage = new SignInPage(driver)
-                                .SignInAsAdmin(credentials.Email, credentials.Password)
+                                .SignInAsAdmin(account.Email, account.Password)
                                 .SidebarNavigateTo<StudentsPage>()
                                 .ClickChoosedStudent(random.Next(1, 10))
                                 .ClickEditStudentsDetaisNav()

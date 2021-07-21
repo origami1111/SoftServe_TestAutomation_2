@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
-using WHAT_Utilities;
 
-namespace WHAT_API
+namespace WHAT_Utilities
 {
     public class Account
     {
@@ -17,6 +16,9 @@ namespace WHAT_API
 
         [JsonProperty("email")]
         public string Email { get; set; }
+        
+        [JsonProperty("password")]
+        public string Password { get; set; }
 
         [JsonProperty("role")]
         public Role Role { get; set; }

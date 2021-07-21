@@ -10,14 +10,14 @@ namespace WHAT_Tests
     {
 
         private StudentsPage studentsPage;
-        private static Credentials studentInfo = ReaderFileJson.ReadFileJsonCredentials(Role.Student);
+        private static Account studentInfo = ReaderFileJson.ReadFileJsonAccounts(Role.Student);
 
         [SetUp]
         public void Precondition()
         {
-            var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+            var account = ReaderFileJson.ReadFileJsonAccounts(Role.Admin);
             studentsPage = new SignInPage(driver)
-                                .SignInAsAdmin(credentials.Email, credentials.Password)
+                                .SignInAsAdmin(account.Email, account.Password)
                                 .SidebarNavigateTo<StudentsPage>();
         }
 
@@ -49,7 +49,7 @@ namespace WHAT_Tests
 
         public static IEnumerable<TestCaseData> StudentInfoSource()
         {
-            yield return new TestCaseData(new object[] { studentInfo.ID, studentInfo.FirstName, studentInfo.LastName });
+            yield return new TestCaseData(new object[] { studentInfo.Id, studentInfo.FirstName, studentInfo.LastName });
         }
     }
 }

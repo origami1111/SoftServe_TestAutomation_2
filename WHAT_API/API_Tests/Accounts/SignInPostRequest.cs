@@ -28,7 +28,7 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.OK, Role.Student, Activity.Active)]
         public void SignInWithStatusCode200(HttpStatusCode expectedStatusCode, Role role, Activity activity)
         {
-            Credentials expectedData = ReaderFileJson.ReadFileJsonCredentials(role, activity);
+            Account expectedData = ReaderFileJson.ReadFileJsonAccounts(role, activity);
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
             request.AddJsonBody(new { expectedData.Email, expectedData.Password });
 
@@ -56,9 +56,9 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.Forbidden, "is registered and waiting assign.", Role.Unassigned, Activity.Active)]
         public void SignInWithStatusCodeForbidden(HttpStatusCode expectedStatusCode, string expected, Role role, Activity activity)
         {
-            Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role, activity);
+            Account account = ReaderFileJson.ReadFileJsonAccounts(role, activity);
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
-            request.AddJsonBody(new { credentials.Email, credentials.Password });
+            request.AddJsonBody(new { account.Email, account.Password });
 
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
             response = client.Execute(request);
@@ -72,7 +72,7 @@ namespace WHAT_API
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual($"\"{credentials.Email} {expected}\"", actual);
+                Assert.AreEqual($"\"{account.Email} {expected}\"", actual);
             });
             log.Info($"Expected and actual results is checked");
         }
@@ -81,9 +81,9 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.Unauthorized, "\"Account is not active!\"", Role.Mentor, Activity.Inactive)]
         public void SignInWithStatusCodeUnauthorized(HttpStatusCode expectedStatusCode, string expected, Role role, Activity activity)
         {
-            Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role, activity);
+            Account account = ReaderFileJson.ReadFileJsonAccounts(role, activity);
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
-            request.AddJsonBody(new { credentials.Email, credentials.Password });
+            request.AddJsonBody(new { account.Email, account.Password });
 
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
             response = client.Execute(request);

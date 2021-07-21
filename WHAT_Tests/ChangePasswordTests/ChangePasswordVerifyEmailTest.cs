@@ -8,19 +8,19 @@ namespace WHAT_Tests
     public class ChangePasswordVerifyEmailTest : TestBase
     {
         private ChangePasswordPage changePasswordPage;
-        Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
+        Account account = ReaderFileJson.ReadFileJsonAccounts(Role.Mentor);
 
         [SetUp]
         public void SetupPage()
         {
             changePasswordPage = new SignInPage(driver)
-                               .SignInAsMentor(credentials.Email, credentials.Password)
+                               .SignInAsMentor(account.Email, account.Password)
                                .ClickChangePassword();
         }
         [Test]
         public void VerifyEmailTest()
         {
-            string expected = credentials.Email;
+            string expected = account.Email;
             string actual = changePasswordPage.VerifyCurrentEmail();
 
             Assert.AreEqual(expected, actual);

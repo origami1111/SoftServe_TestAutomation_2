@@ -42,10 +42,10 @@ namespace WHAT_API
 
         protected string GetToken(Role role)
         {
-            Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role);
+            Account account = ReaderFileJson.ReadFileJsonAccounts(role);
             var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
             request.RequestFormat = DataFormat.Json;
-            request.AddJsonBody(new { credentials.Email, credentials.Password });
+            request.AddJsonBody(new { account.Email, account.Password });
             var response = client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -54,7 +54,7 @@ namespace WHAT_API
             }
             else
             {
-                var message = $"Authorization is failed for {credentials.Role}: {credentials.Email}.";
+                var message = $"Authorization is failed for {account.Role}: {account.Email}.";
                 log.Error(message);
                 throw new Exception(message);
             }
@@ -67,24 +67,24 @@ namespace WHAT_API
                 throw new ArgumentNullException(nameof(client));
             }
 
-            Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role);
-            credentials.Role = role;
-            return GetToken(credentials);
+            Account account = ReaderFileJson.ReadFileJsonAccounts(role);
+            account.Role = role;
+            return GetToken(account);
         }
 
-        protected string GetToken(Credentials credentials)
+        protected string GetToken(Account account)
         {
             var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
-            request.AddJsonBody(new { credentials.Email, credentials.Password });
+            request.AddJsonBody(new { account.Email, account.Password });
             var response = client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                log.Info($"Successfully get token by role {credentials.Role}");
+                log.Info($"Successfully get token by role {account.Role}");
                 return response.Headers.Single(h => h.Name == "Authorization").Value.ToString();
             }
             else
             {
-                var message = $"Authorization is failed for {credentials.Role}: {credentials.Email}.";
+                var message = $"Authorization is failed for {account.Role}: {account.Email}.";
                 log.Error(message);
                 throw new Exception(message);
             }
@@ -108,8 +108,8 @@ namespace WHAT_API
                 System.Diagnostics.Debug.WriteLine(ex.Message);
                 if (role != Role.Admin)
                 {
-                    Credentials credentials = GetUserWithRole(role);
-                    accessToken = GetToken(credentials);
+                    Account account = GetUserWithRole(role);
+                    accessToken = GetToken(account);
                 }
             }
 
@@ -123,19 +123,19 @@ namespace WHAT_API
             return authenticator;
         }
 
-        private Credentials GetUserWithRole(Role role)
+        private Account GetUserWithRole(Role role)
         {
             var userInfo = new GenerateUser();
             var newUser = RegistrationUser(userInfo);
             newUser.LastName = $"{role}_{newUser.Email.Substring(0, 5)}";
             AssignRole(newUser, role);
-            var credentials = new Credentials
+            var account = new Account
             {
                 Email = userInfo.Email,
                 Password = userInfo.Password,
                 Role = role
             };
-            return credentials;
+            return account;
         }
 
         protected RestRequest InitNewRequest(string endPointName, Method method,

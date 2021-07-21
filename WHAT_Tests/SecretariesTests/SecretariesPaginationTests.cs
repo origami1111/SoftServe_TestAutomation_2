@@ -12,10 +12,10 @@ namespace WHAT_Tests
         [SetUp]
         public void Setup()
         {
-            var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+            var account = ReaderFileJson.ReadFileJsonAccounts(Role.Admin);
 
             secretariesPage = new SignInPage(driver)
-                            .SignInAsAdmin(credentials.Email, credentials.Password)
+                            .SignInAsAdmin(account.Email, account.Password)
                             .SidebarNavigateTo<SecretariesPage>();
         }
 

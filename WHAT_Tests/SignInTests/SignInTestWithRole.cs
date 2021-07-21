@@ -10,7 +10,7 @@ namespace WHAT_Tests
     class SignInTestWithRole : TestBase
     {
         private SignInPage signInPage;
-        private Credentials credentials;
+        private Account account;
         private WebDriverWait wait;
 
         [SetUp]
@@ -24,10 +24,10 @@ namespace WHAT_Tests
         [Test]
         public void SignInAsAdmin()
         {
-            credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+            account = ReaderFileJson.ReadFileJsonAccounts(Role.Admin);
             string expected = ReaderUrlsJSON.GetUrlByName("StudentsPage", LinksPath);
 
-            signInPage.SignInAsAdmin(credentials.Email, credentials.Password);
+            signInPage.SignInAsAdmin(account.Email, account.Password);
 
             wait.Until(d => d.Url == expected);
 
@@ -39,10 +39,10 @@ namespace WHAT_Tests
         [Test]
         public void SignInAsSecretar()
         {
-            credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretary);
+            account = ReaderFileJson.ReadFileJsonAccounts(Role.Secretary);
             string expected = ReaderUrlsJSON.GetUrlByName("MentorsPage", LinksPath);
 
-            signInPage.SignInAsSecretar(credentials.Email, credentials.Password);
+            signInPage.SignInAsSecretar(account.Email, account.Password);
 
             wait.Until(d => d.Url == expected);
 
@@ -54,10 +54,10 @@ namespace WHAT_Tests
         [Test]
         public void SignInAsMentor()
         {
-            credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
+            account = ReaderFileJson.ReadFileJsonAccounts(Role.Mentor);
             string expected = ReaderUrlsJSON.GetUrlByName("LessonsPage", LinksPath);
 
-            signInPage.SignInAsMentor(credentials.Email, credentials.Password);
+            signInPage.SignInAsMentor(account.Email, account.Password);
 
             wait.Until(d => d.Url == expected);
 
@@ -69,10 +69,10 @@ namespace WHAT_Tests
         [Test]
         public void SignInAsStudent()
         {
-            credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Student);
+            account = ReaderFileJson.ReadFileJsonAccounts(Role.Student);
             string expected = ReaderUrlsJSON.GetUrlByName("SupportPage", LinksPath);
 
-            signInPage.SignInAsStudent(credentials.Email, credentials.Password);
+            signInPage.SignInAsStudent(account.Email, account.Password);
 
             wait.Until(d => d.Url == expected);
 

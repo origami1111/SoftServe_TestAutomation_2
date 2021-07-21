@@ -1718,7 +1718,7 @@
         </xs:attribute>
         <xs:attribute name="revertToSelf" type="xs:boolean">
           <xs:annotation>
-            <xs:documentation>Indicates whether to revert to the credentials of the process instead of impersonating another user.</xs:documentation>
+            <xs:documentation>Indicates whether to revert to the account of the process instead of impersonating another user.</xs:documentation>
           </xs:annotation>
         </xs:attribute>
         <xs:attribute name="userName" type="xs:string">
@@ -1754,7 +1754,7 @@
       <xs:enumeration value="Batch" />
       <xs:enumeration value="Service" />
       <xs:enumeration value="NetworkClearText" />
-      <xs:enumeration value="NewCredentials" />
+      <xs:enumeration value="Newaccount" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="LimitingWrapper">

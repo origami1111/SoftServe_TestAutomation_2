@@ -9,16 +9,16 @@ namespace WHAT_Tests
     public class StudentsTests_VerifySearchingStudents_Invalid : TestBase
     {
         private StudentsPage studentsPage;
-        private static Credentials mentor = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
-        private static Credentials admin = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
-        private static Credentials secretary = ReaderFileJson.ReadFileJsonCredentials(Role.Secretary);
+        private static Account mentor = ReaderFileJson.ReadFileJsonAccounts(Role.Mentor);
+        private static Account admin = ReaderFileJson.ReadFileJsonAccounts(Role.Admin);
+        private static Account secretary = ReaderFileJson.ReadFileJsonAccounts(Role.Secretary);
 
         [SetUp]
         public void Precondition()
         {
-            var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+            var account = ReaderFileJson.ReadFileJsonAccounts(Role.Admin);
             studentsPage = new SignInPage(driver)
-                                .SignInAsAdmin(credentials.Email, credentials.Password)
+                                .SignInAsAdmin(account.Email, account.Password)
                                 .SidebarNavigateTo<StudentsPage>();
         }
 
@@ -58,9 +58,9 @@ namespace WHAT_Tests
 
         public static IEnumerable<TestCaseData> InfoSource()
         {
-            yield return new TestCaseData(new object[] { mentor.ID, mentor.FirstName, mentor.LastName });
-            yield return new TestCaseData(new object[] { secretary.ID, secretary.FirstName, secretary.LastName });
-            yield return new TestCaseData(new object[] { admin.ID, admin.FirstName, admin.LastName });
+            yield return new TestCaseData(new object[] { mentor.Id, mentor.FirstName, mentor.LastName });
+            yield return new TestCaseData(new object[] { secretary.Id, secretary.FirstName, secretary.LastName });
+            yield return new TestCaseData(new object[] { admin.Id, admin.FirstName, admin.LastName });
         }
     }
 }

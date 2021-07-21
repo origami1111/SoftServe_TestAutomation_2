@@ -8,13 +8,13 @@ namespace WHAT_Tests
     public class CancelInPopUpMenuTest : TestBase
     {
         private ChangePasswordPage changePasswordPage;
-        Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
+        Account account = ReaderFileJson.ReadFileJsonAccounts(Role.Mentor);
 
         [SetUp]
         public void SetupPage()
         {
             changePasswordPage = new SignInPage(driver)
-                            .SignInAsMentor(credentials.Email, credentials.Password)
+                            .SignInAsMentor(account.Email, account.Password)
                             .ClickChangePassword();
         }
 
@@ -32,7 +32,7 @@ namespace WHAT_Tests
             changePasswordPage.Logout();
 
             changePasswordPage = new SignInPage(driver)
-                            .SignInAsMentor(credentials.Email, credentials.Password)
+                            .SignInAsMentor(account.Email, account.Password)
                             .ClickChangePassword();
         }
 

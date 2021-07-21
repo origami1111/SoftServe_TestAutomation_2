@@ -11,7 +11,7 @@ namespace WHAT_Tests
     {
         private CoursesPage coursesPage;
 
-        private readonly Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretary);
+        private readonly Account account = ReaderFileJson.ReadFileJsonAccounts(Role.Secretary);
 
         private static string GenerateRandomCourseName() =>
             $"Test course {Guid.NewGuid():N}";
@@ -20,7 +20,7 @@ namespace WHAT_Tests
         public void Precondition()
         {
             coursesPage = new SignInPage(driver)
-                            .SignInAsAdmin(credentials.Email, credentials.Password)
+                            .SignInAsAdmin(account.Email, account.Password)
                             .SidebarNavigateTo<CoursesPage>();
         }
 

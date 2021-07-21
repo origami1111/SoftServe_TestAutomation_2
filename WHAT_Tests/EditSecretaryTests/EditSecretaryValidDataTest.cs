@@ -43,10 +43,10 @@ namespace WHAT_Tests
         [SetUp]
         public void Set()
         {
-            var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+            var account = ReaderFileJson.ReadFileJsonAccounts(Role.Admin);
 
             editSecretaryPage = new SignInPage(driver)
-                            .SignInAsAdmin(credentials.Email, credentials.Password)
+                            .SignInAsAdmin(account.Email, account.Password)
                             .SidebarNavigateTo<SecretariesPage>()
                             .EditSecretary(5);
 

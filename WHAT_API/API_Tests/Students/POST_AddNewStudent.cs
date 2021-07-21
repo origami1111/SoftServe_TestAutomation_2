@@ -2,8 +2,10 @@
 using NLog;
 using NUnit.Framework;
 using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Students
@@ -13,27 +15,14 @@ namespace WHAT_API.API_Tests.Students
     {
         private RestRequest request;
         private IRestResponse response;
-
         public POST_AddNewStudent()
         {
             log = LogManager.GetLogger($"Students/{nameof(POST_AddNewStudent)}");
         }
 
-        /// <summary>
-        /// That auto test verify adding new students using POST request / Student section with Admin/Secretary role
-        ///
-        /// Steps:
-        /// 1.Generate student and register him using POST request gor registration users / Account section
-        /// 2.Find student ID at the end of active students list using GET request / Account section
-        /// 3.Execute adding new students using POST request / Students section
-        /// 4.Find new student in students list using GET request / Students section
-        /// 
-        /// Postcondition:
-        /// 1. Delete this student from list using DELETE request / Student section
-        /// </summary>
         [Test]
         [TestCase (Role.Admin)]
-        [TestCase (Role.Secretary)]
+        [TestCase(Role.Secretary)]
         public void VerifyAddingStudentAccount_Valid(Role role)
         {
             var expectedUser = new GenerateUser();

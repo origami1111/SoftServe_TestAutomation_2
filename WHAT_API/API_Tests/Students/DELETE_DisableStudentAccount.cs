@@ -26,13 +26,11 @@ namespace WHAT_API.API_Tests.Students
             request.AddJsonBody(expectedUser);
             response = client.Execute(request);
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
-            //
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
             int newUserAccountId = JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(response.Content).Max(s => s.Id);
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
-            //
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsAccountId", endpointsPath), Method.POST);
             request = InitNewRequest("ApiStudentsAccountId", Method.POST, GetAuthenticatorFor(role));
             request.AddUrlSegment("accountId", newUserAccountId.ToString());
@@ -51,7 +49,7 @@ namespace WHAT_API.API_Tests.Students
         /// 3.Execute adding new students using POST request / Students section
         ///
         /// Steps:
-        /// 1.Find student ID at the end of active students list using GET request / Account section
+        /// 1.Get list of active students list using GET request / Account section
         /// 2.Delete this student from list using DELETE request / Student section
         /// 3.Сheck that the list has decreased by one
         ///</remarks>

@@ -1,20 +1,27 @@
 ﻿using Newtonsoft.Json;
+using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using WHAT_API.Entities;
 using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Accounts
 {
+    [AllureNUnit]
     [TestFixture]
     class AllRegisteredAccountsGetRequest : API_BaseTest
     {
         private RestRequest request;
         private IRestResponse response;
-        private RegistrationResponseBody expectedData;
+        private Account expectedData;
+
+        public AllRegisteredAccountsGetRequest()
+        {
+            log = LogManager.GetLogger($"Accounts/{nameof(AllRegisteredAccountsGetRequest)}");
+        }
 
         /// <summary>
         /// Create account by POST method
@@ -38,15 +45,19 @@ namespace WHAT_API.API_Tests.Accounts
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
             string json = response.Content;
-            var users = JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(json);
+            var users = JsonConvert.DeserializeObject<List<Account>>(json);
             var actualData = users.Where(user => user.Email == expectedData.Email).FirstOrDefault();
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(expectedData, actualData);
+                Assert.AreEqual(expectedData.Email, actualData.Email, "Email");
+                Assert.AreEqual(expectedData.FirstName, actualData.FirstName, "First name");
+                Assert.AreEqual(expectedData.LastName, actualData.LastName, "Last name");
+                Assert.AreEqual(expectedData.Role, actualData.Role, "Role");
+                Assert.AreEqual(expectedData.Activity, actualData.Activity, "IsActive");
             });
             log.Info($"Expected and actual results is checked");
         }
@@ -66,7 +77,7 @@ namespace WHAT_API.API_Tests.Accounts
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
         }
 
     }

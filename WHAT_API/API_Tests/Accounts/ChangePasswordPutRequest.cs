@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.Collections.Generic;
@@ -9,13 +11,19 @@ using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Accounts
 {
+    [AllureNUnit]
     [TestFixture]
     class ChangePasswordPutRequest : API_BaseTest
     {
         private RestRequest request;
         private IRestResponse response;
-        private RegistrationResponseBody registeredUser;
-        private ChangePasswordRequestBody changePasswordRequestBody;
+        private Account registeredUser;
+        private ChangeCurrentPassword changePasswordRequestBody;
+
+        public ChangePasswordPutRequest()
+        {
+            log = LogManager.GetLogger($"Accounts/{nameof(ChangePasswordPutRequest)}");
+        }
 
         /// <summary>
         /// 1. Create account by POST method
@@ -39,7 +47,7 @@ namespace WHAT_API.API_Tests.Accounts
             response = client.Execute(request);
 
             string json = response.Content;
-            var users = JsonConvert.DeserializeObject<List<RegistrationResponseBody>>(json);
+            var users = JsonConvert.DeserializeObject<List<Account>>(json);
             var searchedUser = users.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
             registeredUser.Id = searchedUser.Id;
 
@@ -50,7 +58,7 @@ namespace WHAT_API.API_Tests.Accounts
 
             registeredUser.Role = Role.Mentor;
 
-            changePasswordRequestBody = new ChangePasswordRequestBody()
+            changePasswordRequestBody = new ChangeCurrentPassword()
             {
                 Email = registeredUser.Email,
                 CurrentPassword = "Qwerty_123",
@@ -76,16 +84,23 @@ namespace WHAT_API.API_Tests.Accounts
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
             string json = response.Content;
-            RegistrationResponseBody actualDataChangePassword = JsonConvert.DeserializeObject<RegistrationResponseBody>(json);
+            Account actualDataChangePassword = JsonConvert.DeserializeObject<Account>(json);
 
-            Assert.AreEqual(registeredUser, actualDataChangePassword);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(registeredUser.Email, actualDataChangePassword.Email, "Email");
+                Assert.AreEqual(registeredUser.FirstName, actualDataChangePassword.FirstName, "First name");
+                Assert.AreEqual(registeredUser.LastName, actualDataChangePassword.LastName, "Last name");
+                Assert.AreEqual(registeredUser.Role, actualDataChangePassword.Role, "Role");
+                Assert.AreEqual(registeredUser.Activity, actualDataChangePassword.Activity, "IsActive");
+            });
             log.Info($"Expected and actual results is checked");
 
             // 6
-            SignInRequestBody signInRequestBody = new SignInRequestBody()
+            Authentication signInRequestBody = new Authentication()
             {
                 Email = changePasswordRequestBody.Email,
                 Password = changePasswordRequestBody.NewPassword
@@ -97,16 +112,16 @@ namespace WHAT_API.API_Tests.Accounts
 
             actualStatusCode = response.StatusCode;
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
             json = response.Content;
             SignInResponseBody actualData = JsonConvert.DeserializeObject<SignInResponseBody>(json);
 
             Assert.Multiple(() =>
             {
-                Assert.IsTrue(actualDataChangePassword.FirstName == actualData.FirstName
-                    && actualDataChangePassword.LastName == actualData.LastName
-                    && actualDataChangePassword.Role == actualData.Role);
+                Assert.AreEqual(actualDataChangePassword.FirstName, actualData.FirstName, "First name");
+                Assert.AreEqual(actualDataChangePassword.LastName, actualData.LastName, "Last name");
+                Assert.AreEqual(actualDataChangePassword.Role, actualData.Role, "Role");
             });
             log.Info($"Expected and actual results is checked");
         }

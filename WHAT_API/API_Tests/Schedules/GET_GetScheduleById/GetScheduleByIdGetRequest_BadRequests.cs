@@ -1,15 +1,23 @@
-﻿using NUnit.Framework;
+﻿using NLog;
+using NUnit.Allure.Core;
+using NUnit.Framework;
 using RestSharp;
 using System.Net;
 using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     class GetScheduleByIdGetRequest_BadRequests : API_BaseTest
     {
         private RestRequest request;
         private IRestResponse response;
+
+        public GetScheduleByIdGetRequest_BadRequests()
+        {
+            log = LogManager.GetLogger($"Schedule/{nameof(GetScheduleByIdGetRequest_BadRequests)}");
+        }
 
         [Test]
         [TestCase(HttpStatusCode.NotFound, Role.Admin, -10)]
@@ -27,7 +35,7 @@ namespace WHAT_API
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
         }
 
     }

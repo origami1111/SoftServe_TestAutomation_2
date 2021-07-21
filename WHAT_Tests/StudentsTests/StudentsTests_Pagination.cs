@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using WHAT_PageObject;
 using WHAT_Utilities;
-using System.Linq;
 
 namespace WHAT_Tests
 {
     [TestFixture]
     public class StudentsTests_Pagination : TestBase
     {
-
         private StudentsPage studentsPage;
 
         [SetUp]

@@ -19,9 +19,8 @@ namespace WHAT_PageObject
         private By nextPage = By.CssSelector("nav > ul:nth-child(3) > li > button");
         private By studentsCount = By.CssSelector(".col-2:nth-child(2)");
         private By countPages = By.CssSelector("li[class='page-item']");
-        private By alert = By.XPath("//div[@role='alert']/button");
+        private By alert = By.CssSelector(".fade");
         #endregion
-
         public StudentsPage(IWebDriver driver) : base(driver)
         {
 
@@ -68,11 +67,9 @@ namespace WHAT_PageObject
                 return false;
             }
         }
-        public string GetPopUpText()
+        public string GetAlertText()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(2));
-            IWebElement firstResult = wait.Until(e => e.FindElement(alert));
-            return driver.FindElement(alert).GetAttribute("value");
+            return driver.FindElement(alert).Text;
         }
 
         public Dictionary<int, string[]> GetStudentsFromTable()

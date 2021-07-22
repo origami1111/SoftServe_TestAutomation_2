@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System;
 using WHAT_PageObject;
@@ -6,6 +7,7 @@ using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
+    [AllureNUnit]
     [TestFixture]
     public class CoursesTests : TestBase
     {

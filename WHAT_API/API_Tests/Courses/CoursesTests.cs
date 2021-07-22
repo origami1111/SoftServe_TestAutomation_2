@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,9 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
-    public class Courses_Tests : API_BaseTest
+    public class CoursesTests : API_BaseTest
     {
         private static string GenerateNameOf<T>() =>
             $"Test {typeof(T).Name} {Guid.NewGuid():N}";
@@ -36,71 +38,70 @@ namespace WHAT_API
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(expected);
             var actual = Execute<Course>(addCourseRequest);
-            Assert.NotNull(actual);
-
+            
+            Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode, "Http Status code");
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(expected.Name, actual.Name);
-                Assert.True(actual.IsActive);
+                Assert.AreEqual(expected.Name, actual.Data.Name, "Course name");
+                Assert.True(actual.Data.IsActive, "Is new course active");
             });
         }
 
         [Test]
-        public void AddNewCourse_InvalidCourseName_VerifyStatusCode(
+        public void AddNewCourse_InvalidCourseName_IsStatusCodeUnprocessableEntity(
             [Values(Role.Admin, Role.Secretary)] Role role,
             [ValueSource(nameof(invalidCourseName))] string invalidCourseName)
         {
             var authenticator = GetAuthenticatorFor(role);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(invalidCourseName));
-            var actual = client.Execute(addCourseRequest);
+            var actual = Execute<object>(addCourseRequest);
 
-            Assert.AreEqual(HttpStatusCode.UnprocessableEntity, actual.StatusCode);
+            Assert.AreEqual(HttpStatusCode.UnprocessableEntity, actual.StatusCode, "Http Status Code");
         }
 
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]
-        public void AddNewCourse_SameCourseName(Role role)
+        public void AddNewCourse_SameCourseName_IsStatusCodeConflict(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            client.Execute(addCourseRequest);
-            var actual = client.Execute(addCourseRequest);
+            Execute(addCourseRequest);
+            var actual = Execute<object>(addCourseRequest);
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(HttpStatusCode.Conflict, actual.StatusCode);
-                StringAssert.Contains("Course already exists", actual.Content);
+                Assert.AreEqual(HttpStatusCode.Conflict, actual.StatusCode, "Http Status Code");
+                StringAssert.Contains("Course already exists", actual.Content, "Error message");
             });
         }
 
         [TestCase(Role.Mentor)]
         [TestCase(Role.Student)]
-        [TestCase(Role.Unassigned)]
-        public void AddNewCourse_ForbiddenStatusCode(Role role)
+        public void AddNewCourse_ForbiddenRole_IsStatusCodeForbidden(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var actual = client.Execute(addCourseRequest);
+            var actual = Execute(addCourseRequest);
 
-            Assert.AreEqual(HttpStatusCode.Forbidden, actual.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Forbidden, actual.StatusCode, "Http Status Code");
         }
 
         [Test]
-        public void AddNewCourse_UnauthorizedStatusCode()
+        public void AddNewCourse_UnauthorizedUser_IsStatusCodeUnauthorized()
         {
             var resource = ReaderUrlsJSON.ByName("Add new course", endpointsPath);
             var addCourseRequest = new RestRequest(resource, Method.POST);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var actual = client.Execute(addCourseRequest);
+            var actual = Execute(addCourseRequest);
 
-            Assert.AreEqual(HttpStatusCode.Unauthorized, actual.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, actual.StatusCode, "Http Status Code");
         }
 
         [Test]
-        public void GetCourses_ActiveNotActive(
+        public void GetCourses_ActiveNotActive_IsSuccess(
             [Values(Role.Admin, Role.Student, Role.Mentor, Role.Secretary)] Role role,
             [Values] bool isActive)
         {
@@ -109,11 +110,12 @@ namespace WHAT_API
             getCoursesRequest.AddQueryParameter("isActive", isActive.ToString());
             var actualCourses = Execute<List<Course>>(getCoursesRequest);
 
-            Assert.NotNull(actualCourses);
+            Assert.AreEqual(HttpStatusCode.OK, actualCourses.StatusCode, "Http Status code");
             Assert.Multiple(() =>
             {
-                CollectionAssert.IsNotEmpty(actualCourses);
-                Assert.True(actualCourses.All(course => course.IsActive == isActive));
+                CollectionAssert.IsNotEmpty(actualCourses.Data, "List of courses");
+                Assert.True(actualCourses.Data.All(course => course.IsActive == isActive),
+                    $"Are all courses {isActive}");
             });
         }
 
@@ -121,249 +123,238 @@ namespace WHAT_API
         [TestCase(Role.Secretary)]
         [TestCase(Role.Mentor)]
         [TestCase(Role.Student)]
-        public void GetCourses_All(Role role)
+        public void GetCourses_All_IsAllCoursesEqualActiveAndNotActive(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
             RestRequest getCoursesRequest = InitNewRequest("Get courses", Method.GET, authenticator);
             var actualCourses = Execute<List<Course>>(getCoursesRequest);
-            Assert.NotNull(actualCourses);
-            
+            Assert.AreEqual(HttpStatusCode.OK, actualCourses.StatusCode, "Http Status code");
+
             getCoursesRequest.AddQueryParameter("isActive", "true");
-            var activeCourses = Execute<List<Course>>(getCoursesRequest);
+            var activeCourses = Execute<List<Course>>(getCoursesRequest).Data;
             getCoursesRequest.AddOrUpdateParameter("isActive", "false", ParameterType.QueryString);
-            var notActiveCourses = Execute<List<Course>>(getCoursesRequest);
+            var notActiveCourses = Execute<List<Course>>(getCoursesRequest).Data;
             var expectedCourses = activeCourses.Concat(notActiveCourses).ToList();
 
             Assert.Multiple(() =>
             {
-                CollectionAssert.IsNotEmpty(actualCourses);
-                CollectionAssert.AreEquivalent(expectedCourses, actualCourses);
+                CollectionAssert.IsNotEmpty(actualCourses.Data, "List of courses");
+                CollectionAssert.AreEquivalent(expectedCourses, actualCourses.Data,
+                    "Active and not active courses are equivalent all courses");
             });
         }
 
         [Test]
-        public void GetCourses_ActiveNotActive_ForbiddenStatusCode([Values] bool? isActive)
-        {
-            var authenticator = GetAuthenticatorFor(Role.Unassigned);
-            RestRequest getCoursesRequest = InitNewRequest("Get courses", Method.GET, authenticator);
-            getCoursesRequest.AddQueryParameter("isActive", isActive.ToString());
-            var actual = client.Execute(getCoursesRequest);
-
-            Assert.AreEqual(HttpStatusCode.Forbidden, actual.StatusCode);
-        }
-
-        [Test]
-        public void GetCourses_ActiveNotActive_UnauthorizedStatusCode([Values] bool? isActive)
+        public void GetCourses_UnauthorizedUser_UnauthorizedStatusCode([Values] bool? isActive)
         {
             var resource = ReaderUrlsJSON.ByName("Get courses", endpointsPath);
             var getCoursesRequest = new RestRequest(resource, Method.GET);
             getCoursesRequest.AddQueryParameter("isActive", isActive.ToString());
-            var actual = client.Execute(getCoursesRequest);
+            var actual = Execute(getCoursesRequest);
 
-            Assert.AreEqual(HttpStatusCode.Unauthorized, actual.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, actual.StatusCode, "Http Status Code");
         }
 
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]
-        public void UpdateCourse_ValidCourseName(Role role)
+        public void UpdateCourse_ValidCourseName_IsNameUpdated(Role role)
         {
             var expected = new CreateOrUpdateCourse(GenerateNameOf<Course>());
 
             var authenticator = GetAuthenticatorFor(role);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
 
             RestRequest updateCourseRequest = InitNewRequest("Update course", Method.PUT, authenticator);
             updateCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
             updateCourseRequest.AddJsonBody(expected);
             var actual = Execute<Course>(updateCourseRequest);
-            Assert.NotNull(actual);
-
+            
+            Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode, "Http Status code");
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(expected.Name, actual.Name);
-                Assert.True(actual.IsActive);
+                Assert.AreEqual(expected.Name, actual.Data.Name, "Course name");
+                Assert.True(actual.Data.IsActive, "Is updated course active");
             });
         }
 
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]
-        public void UpdateCourse_SameCourseName(Role role)
+        public void UpdateCourse_SameCourseName_IsStatusCodeConflict(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             var courseName = new CreateOrUpdateCourse(GenerateNameOf<Course>());
             addCourseRequest.AddJsonBody(courseName);
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
 
             RestRequest updateCourseRequest = InitNewRequest("Update course", Method.PUT, authenticator);
             updateCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
             updateCourseRequest.AddJsonBody(courseName);
-            var actual = client.Execute(updateCourseRequest);
+            var actual = Execute(updateCourseRequest);
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(HttpStatusCode.Conflict, actual.StatusCode);
-                StringAssert.Contains("Course already exist", actual.Content);
+                Assert.AreEqual(HttpStatusCode.Conflict, actual.StatusCode, "Http Status Code");
+                StringAssert.Contains("Course already exist", actual.Content, "Error message");
             });
         }
 
         [Test]
-        public void UpdateCourse_InvalidCourseName_VerifyStatusCode(
+        public void UpdateCourse_InvalidCourseName_IsStatusCodeUnprocessableEntity(
             [Values(Role.Admin, Role.Secretary)] Role role,
             [ValueSource(nameof(invalidCourseName))] string invalidCourseName)
         {
             var authenticator = GetAuthenticatorFor(role);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
 
             RestRequest updateCourseRequest = InitNewRequest("Update course", Method.PUT, authenticator);
             updateCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
             updateCourseRequest.AddJsonBody(new CreateOrUpdateCourse(invalidCourseName));
-            var actual = client.Execute(updateCourseRequest);
+            var actual = Execute(updateCourseRequest);
 
-            Assert.AreEqual(HttpStatusCode.UnprocessableEntity, actual.StatusCode, "Update course with bad request - status code test");
+            Assert.AreEqual(HttpStatusCode.UnprocessableEntity, actual.StatusCode, "Http Status Code");
         }
 
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]
-        public void UpdateCourse_IncorrectRequestFormat_VerifyStatusCode(Role role)
+        public void UpdateCourse_IncorrectRequestFormat_IsStatusCodeBadRequest(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
 
             RestRequest updateCourseRequest = InitNewRequest("Update course", Method.PUT, authenticator);
             updateCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
             updateCourseRequest.AddJsonBody(GenerateNameOf<Course>());
-            var actual = client.Execute(updateCourseRequest);
+            var actual = Execute(updateCourseRequest);
 
-            Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode, "Update course with bad request - status code test");
+            Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode, "Http Status Code");
         }
 
         [TestCase(Role.Mentor)]
         [TestCase(Role.Student)]
-        [TestCase(Role.Unassigned)]
-        public void UpdateCourse_ForbiddenStatusCode(Role role)
+        public void UpdateCourse_ForbiddenRole_IsStatusCodeForbidden(Role role)
         {
             var authenticator = GetAuthenticatorFor(Role.Admin);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
 
             authenticator = GetAuthenticatorFor(role);
             RestRequest updateCourseRequest = InitNewRequest("Update course", Method.PUT, authenticator);
             updateCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
             updateCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var actual = client.Execute(updateCourseRequest);
+            var actual = Execute(updateCourseRequest);
 
-            Assert.AreEqual(HttpStatusCode.Forbidden, actual.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Forbidden, actual.StatusCode, "Http Status Code");
         }
 
         [Test]
-        public void UpdateCourse_UnauthorizedStatusCode()
+        public void UpdateCourse_UnauthorizedUser_IsStatusCodeUnauthorized()
         {
             var authenticator = GetAuthenticatorFor(Role.Admin);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
 
             var resource = ReaderUrlsJSON.ByName("Update course", endpointsPath);
             var updateCourseRequest = new RestRequest(resource, Method.PUT);
             updateCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
             updateCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var actual = client.Execute(updateCourseRequest);
+            var actual = Execute(updateCourseRequest);
 
-            Assert.AreEqual(HttpStatusCode.Unauthorized, actual.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, actual.StatusCode, "Http Status Code");
         }
 
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]
-        public void DisableCourse_Success(Role role)
+        public void DisableCourse_WithoutActiveStudentGroup_IsTrue(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
             
             RestRequest disableCourseRequest = InitNewRequest("Disable course", Method.DELETE, authenticator);
             disableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
             var actual = Execute<bool>(disableCourseRequest);
             
-            Assert.IsTrue(actual);
+            Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode, "Http Status Code");
+            Assert.IsTrue(actual.Data, "Is course without active student group disabled");
         }
 
         [TestCase(Role.Mentor)]
         [TestCase(Role.Student)]
-        [TestCase(Role.Unassigned)]
-        public void DisableCourse_ForbiddenStatusCode(Role role)
+        public void DisableCourse_ForbiddenUser_IsStatusCodeForbidden(Role role)
         {
             var authenticator = GetAuthenticatorFor(Role.Admin);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
 
             authenticator = GetAuthenticatorFor(role);
             RestRequest disableCourseRequest = InitNewRequest("Disable course", Method.DELETE, authenticator);
             disableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
-            var actual = client.Execute(disableCourseRequest);
+            var actual = Execute(disableCourseRequest);
 
-            Assert.AreEqual(HttpStatusCode.Forbidden, actual.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Forbidden, actual.StatusCode, "Http Status Code");
         }
 
         [Test]
-        public void DisableCourse_UnauthorizedStatusCode()
+        public void DisableCourse_UnauthorizedUser_IsStatusCodeUnauthorized()
         {
             var authenticator = GetAuthenticatorFor(Role.Admin);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
 
             var resource = ReaderUrlsJSON.ByName("Disable course", endpointsPath);
             var disableCourseRequest = new RestRequest(resource, Method.DELETE);
             disableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
-            var actual = client.Execute(disableCourseRequest);
+            var actual = Execute(disableCourseRequest);
            
-            Assert.AreEqual(HttpStatusCode.Unauthorized, actual.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, actual.StatusCode, "Http Status Code");
         }
 
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]
-        public void DisableCourse_WithActiveStudentGroup(Role role)
+        public void DisableCourse_WithActiveStudentGroup_IsStatusCodeBadRequest(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
 
             RestRequest addStudentGroupRequest = InitNewRequest("Add new student group", Method.POST, authenticator);
             var studentGroup = new CreateStudentGroup { CourseId = originCourse.Id };
             addStudentGroupRequest.AddJsonBody(studentGroup);
-            client.Execute(addStudentGroupRequest);
+            Execute(addStudentGroupRequest);
 
             RestRequest disableCourseRequest = InitNewRequest("Disable course", Method.DELETE, authenticator);
             disableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
-            var actual = client.Execute(disableCourseRequest);
+            var actual = Execute(disableCourseRequest);
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
-                StringAssert.Contains("Course has active student group", actual.Content);
+                Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode, "Http Status Code");
+                StringAssert.Contains("Course has active student group", actual.Content, "Error message");
             });
         }
 
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]
-        public void EnableCourse_Success(Role role)
+        public void EnableCourse_IsSuccess(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
             
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
 
             RestRequest disableCourseRequest = InitNewRequest("Disable course", Method.DELETE, authenticator);
             disableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
@@ -372,19 +363,19 @@ namespace WHAT_API
             RestRequest enableCourseRequest = InitNewRequest("Enable course", Method.PATCH, authenticator);
             enableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
             var actual = Execute<bool>(enableCourseRequest);
-
-            Assert.IsTrue(actual);
+            
+            Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode, "Http Status Code");
+            Assert.IsTrue(actual.Data, "Is course enabled");
         }
 
         [TestCase(Role.Mentor)]
         [TestCase(Role.Student)]
-        [TestCase(Role.Unassigned)]
-        public void EnableCourse_ForbiddenStatusCode(Role role)
+        public void EnableCourse_ForbiddenRole_IsStatusCodeForbidden(Role role)
         {
             var authenticator = GetAuthenticatorFor(Role.Admin);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
             
             RestRequest disableCourseRequest = InitNewRequest("Disable course", Method.DELETE, authenticator);
             disableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
@@ -393,18 +384,18 @@ namespace WHAT_API
             authenticator = GetAuthenticatorFor(role);
             RestRequest enableCourseRequest = InitNewRequest("Enable course", Method.PATCH, authenticator);
             enableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
-            var actual = client.Execute(enableCourseRequest);
+            var actual = Execute(enableCourseRequest);
 
-            Assert.AreEqual(HttpStatusCode.Forbidden, actual.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Forbidden, actual.StatusCode, "Http Status Code");
         }
 
         [Test]
-        public void EnableCourse_UnauthorizedStatusCode()
+        public void EnableCourse_UnauthorizedUser_IsStatusCodeUnauthorized()
         {
             var authenticator = GetAuthenticatorFor(Role.Admin);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
 
             RestRequest disableCourseRequest = InitNewRequest("Disable course", Method.DELETE, authenticator);
             disableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
@@ -413,28 +404,28 @@ namespace WHAT_API
             var resource = ReaderUrlsJSON.ByName("Enable course", endpointsPath);
             var enableCourseRequest = new RestRequest(resource, Method.PATCH);
             enableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
-            var actual = client.Execute(enableCourseRequest);
+            var actual = Execute(enableCourseRequest);
 
-            Assert.AreEqual(HttpStatusCode.Unauthorized, actual.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, actual.StatusCode, "Http Status Code");
         }
 
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]
-        public void EnableCourse_CourseAlreadyActive(Role role)
+        public void EnableCourse_CourseAlreadyActive_IsStatusCodeConflict(Role role)
         {
             var authenticator = GetAuthenticatorFor(role);
             RestRequest addCourseRequest = InitNewRequest("Add new course", Method.POST, authenticator);
             addCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
-            var originCourse = Execute<Course>(addCourseRequest);
+            var originCourse = Execute<Course>(addCourseRequest).Data;
 
             RestRequest enableCourseRequest = InitNewRequest("Enable course", Method.PATCH, authenticator);
             enableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
-            var actual = client.Execute(enableCourseRequest);
+            var actual = Execute(enableCourseRequest);
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(HttpStatusCode.Conflict, actual.StatusCode);
-                StringAssert.Contains("Course is already active", actual.Content);
+                Assert.AreEqual(HttpStatusCode.Conflict, actual.StatusCode, "Http Status Code");
+                StringAssert.Contains("Course is already active", actual.Content, "Error message");
             });
         }
     }

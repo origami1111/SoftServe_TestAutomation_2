@@ -47,6 +47,7 @@ namespace WHAT_PageObject
             driver.FindElement(previousPage).Click();
             return this;
         }
+
         public StudentsPage ClickSortingRow(RowOfElement row)
         {
             driver.FindElement(SortingRow(row)).Click();

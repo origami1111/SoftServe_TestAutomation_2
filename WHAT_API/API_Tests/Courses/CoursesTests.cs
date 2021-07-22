@@ -47,6 +47,7 @@ namespace WHAT_API
             });
         }
 
+        [Ignore("Data validation hasn't implemented")]
         [Test]
         public void AddNewCourse_InvalidCourseName_IsStatusCodeUnprocessableEntity(
             [Values(Role.Admin, Role.Secretary)] Role role,
@@ -201,6 +202,7 @@ namespace WHAT_API
             });
         }
 
+        [Ignore("Data validation hasn't implemented")]
         [Test]
         public void UpdateCourse_InvalidCourseName_IsStatusCodeUnprocessableEntity(
             [Values(Role.Admin, Role.Secretary)] Role role,
@@ -217,6 +219,23 @@ namespace WHAT_API
             var actual = Execute(updateCourseRequest);
 
             Assert.AreEqual(HttpStatusCode.UnprocessableEntity, actual.StatusCode, "Http Status Code");
+        }
+
+        [TestCase(Role.Admin)]
+        [TestCase(Role.Secretary)]
+        public void UpdateCourse_IncorrectCourseId_IsStatusCodeNotFound(Role role)
+        {
+            var authenticator = GetAuthenticatorFor(role);
+            RestRequest updateCourseRequest = InitNewRequest("Update course", Method.PUT, authenticator);
+            updateCourseRequest.AddUrlSegment("id", long.MaxValue);
+            updateCourseRequest.AddJsonBody(new CreateOrUpdateCourse(GenerateNameOf<Course>()));
+            var actual = Execute(updateCourseRequest);
+            
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(HttpStatusCode.NotFound, actual.StatusCode, "Http Status Code");
+                StringAssert.Contains("Not Found", actual.Content, "Error message");
+            });
         }
 
         [TestCase(Role.Admin)]
@@ -283,9 +302,24 @@ namespace WHAT_API
             RestRequest disableCourseRequest = InitNewRequest("Disable course", Method.DELETE, authenticator);
             disableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
             var actual = Execute<bool>(disableCourseRequest);
-            
-            Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode, "Http Status Code");
-            Assert.IsTrue(actual.Data, "Is course without active student group disabled");
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode, "Http Status Code");
+                Assert.IsTrue(actual.Data, "Is course without active student group disabled");
+            });
+        }
+
+        [TestCase(Role.Admin)]
+        [TestCase(Role.Secretary)]
+        public void DisableCourse_IncorrectCourseId_IsStatusCodeNotFound(Role role)
+        {
+            var authenticator = GetAuthenticatorFor(role);
+            RestRequest disableCourseRequest = InitNewRequest("Disable course", Method.DELETE, authenticator);
+            disableCourseRequest.AddUrlSegment("id", long.MaxValue);
+            var actual = Execute(disableCourseRequest);
+
+            Assert.AreEqual(HttpStatusCode.NotFound, actual.StatusCode, "Http Status Code");
         }
 
         [TestCase(Role.Mentor)]
@@ -364,8 +398,23 @@ namespace WHAT_API
             enableCourseRequest.AddUrlSegment("id", originCourse.Id.ToString());
             var actual = Execute<bool>(enableCourseRequest);
             
-            Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode, "Http Status Code");
-            Assert.IsTrue(actual.Data, "Is course enabled");
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode, "Http Status Code");
+                Assert.IsTrue(actual.Data, "Is course enabled");
+            });
+        }
+
+        [TestCase(Role.Admin)]
+        [TestCase(Role.Secretary)]
+        public void EnableCourse_IncorrectCourseId_IsStatusCodeNotFound(Role role)
+        {
+            var authenticator = GetAuthenticatorFor(role);
+            RestRequest enableCourseRequest = InitNewRequest("Enable course", Method.PATCH, authenticator);
+            enableCourseRequest.AddUrlSegment("id", long.MaxValue);
+            var actual = Execute(enableCourseRequest);
+
+            Assert.AreEqual(HttpStatusCode.NotFound, actual.StatusCode, "Http Status Code");
         }
 
         [TestCase(Role.Mentor)]

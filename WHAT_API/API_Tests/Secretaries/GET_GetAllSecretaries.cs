@@ -5,7 +5,6 @@ using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using WHAT_API.Entities.Secretaries;
 using WHAT_Utilities;
 
 namespace WHAT_API
@@ -29,7 +28,7 @@ namespace WHAT_API
             //GET Accounts
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAll", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(Role.Admin));
-            response = client.Execute(request);
+            response = Execute(request);
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsAll", endpointsPath)}");
             var expectedSecretariesList = from account in JsonConvert.DeserializeObject<List<Account>>(response.Content)
                                           where account.Role.Equals(Role.Secretary)
@@ -38,7 +37,7 @@ namespace WHAT_API
             //GET All Secretaries
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretaries", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
-            response = client.Execute(request);
+            response = Execute(request);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath)}");
             var actualSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);

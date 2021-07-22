@@ -5,7 +5,6 @@ using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using WHAT_API.Entities.Secretaries;
 using WHAT_Utilities;
 
 namespace WHAT_API
@@ -29,13 +28,13 @@ namespace WHAT_API
             var expectedUser = new GenerateUser();
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(expectedUser);
-            response = client.Execute(request);
+            Execute(request);
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
 
             //GET
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
-            response = client.Execute(request);
+            response = Execute(request);
             int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
 
@@ -44,14 +43,14 @@ namespace WHAT_API
             request = InitNewRequest("ApiSecretariesAccountId", Method.POST, GetAuthenticatorFor(role));
             request.AddUrlSegment("accountId", newUserAccountId.ToString());
             request.AddParameter("accountId", newUserAccountId);
-            response = client.Execute(request);
+            response = Execute(request);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             log.Info($"POST request to {response.ResponseUri}");
 
             //GET
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
-            response = client.Execute(request);
+            response = Execute(request);
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath)}");
             var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
             int maxId = activeSecretariesList.Max(i => i.Id);
@@ -67,7 +66,7 @@ namespace WHAT_API
 
             request = InitNewRequest("ApiSecretariesId", Method.DELETE, GetAuthenticatorFor(Role.Admin));
             request.AddUrlSegment("id", maxId.ToString());
-            response = client.Execute(request);
+            Execute(request);
             log.Info($"Last secretary in list is deleted");
         }
     }       

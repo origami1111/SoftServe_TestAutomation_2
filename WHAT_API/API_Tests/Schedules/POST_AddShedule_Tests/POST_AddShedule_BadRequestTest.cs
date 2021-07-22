@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using WHAT_Utilities;
+using NLog;
 
 namespace WHAT_API
 {
@@ -14,6 +15,11 @@ namespace WHAT_API
         private RestRequest request;
         private IRestResponse response;
 
+        public POST_AddShedule_BadRequestTest()
+        {
+            log = LogManager.GetLogger($"Schedules/{nameof(POST_AddShedule_BadRequestTest)}");
+        }
+
         [OneTimeSetUp]
         public void PreConditions()
         {
@@ -23,19 +29,18 @@ namespace WHAT_API
 
         [Test, TestCase(HttpStatusCode.BadRequest, "wrongData")]
 
-        public void POST_MissingData(HttpStatusCode expected, string data)
+        public void POST_MissingData(HttpStatusCode expectedStatus, string data)
         {
             request.AddJsonBody(data);
             response = client.Execute(request);
 
-            var actual = response.StatusCode;
+            var actualStatus = response.StatusCode;
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expectedStatus, actualStatus);
         }
 
         [Test, TestCase(HttpStatusCode.BadRequest)]
-
-        public void POST_WrongDate(HttpStatusCode expected)
+        public void POST_WrongDate(HttpStatusCode expectedStatus)
         {
             List<DayOfWeek> list = new List<DayOfWeek>() { DayOfWeek.Monday, DayOfWeek.Friday };
             DateTime startDate = new DateTime(2022, 1, 2, 13, 27, 09).ToUniversalTime();
@@ -47,9 +52,9 @@ namespace WHAT_API
             request.AddJsonBody(schedule);
             response = client.Execute(request);
 
-            var actual = response.StatusCode;
+            var actualStatus = response.StatusCode;
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expectedStatus, actualStatus);
         }
     }
 }

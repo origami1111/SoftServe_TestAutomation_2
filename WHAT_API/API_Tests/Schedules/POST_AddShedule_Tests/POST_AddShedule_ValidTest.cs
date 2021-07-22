@@ -4,6 +4,7 @@ using RestSharp;
 using System;
 using System.Net;
 using WHAT_Utilities;
+using NLog;
 
 namespace WHAT_API
 {
@@ -14,6 +15,11 @@ namespace WHAT_API
         private RestRequest request;
         private IRestResponse response;
         long? occurrenceID;
+
+        public POST_AddShedule_ValidTest()
+        {
+            log = LogManager.GetLogger($"Schedules/{nameof(POST_AddShedule_ValidTest)}");
+        }
 
         [OneTimeSetUp]
         public void PreConditions()
@@ -33,24 +39,24 @@ namespace WHAT_API
         {
             RestRequest deleteRequest = new RestRequest($"schedules/{occurrenceID}", Method.DELETE);
             deleteRequest.AddHeader("Authorization", GetToken(Role.Admin));
+
             IRestResponse deleteResponse = client.Execute(deleteRequest);
 
             if (deleteResponse.StatusCode != HttpStatusCode.OK)
             {
-                throw new Exception();
+                throw new Exception($"Status code: {deleteResponse.StatusCode} is not {HttpStatusCode.OK}");
             }
         }
 
         [Test, TestCase(HttpStatusCode.OK)]
-
-        public void POST_ValidData(HttpStatusCode expected)
+        public void POST_ValidData(HttpStatusCode expectedStatus)
         {
-            var actual = response.StatusCode;
+            var actualStatus = response.StatusCode;
             string stream = response.Content;
             var jsonSchedule = JsonConvert.DeserializeObject<EventOccurrence>(stream);
             occurrenceID = jsonSchedule.Id;
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expectedStatus, actualStatus);
 
             Assert.Multiple(() =>
             {

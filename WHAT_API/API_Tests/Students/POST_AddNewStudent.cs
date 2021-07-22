@@ -42,21 +42,21 @@ namespace WHAT_API.API_Tests.Students
             string expectedUserAvatarUrl = null;
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(expectedUser);
-            response = client.Execute(request);
+            response = Execute(request);
             log.Info($"Request is done with {response.StatusCode} StatusCode");
 
-            //log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
+            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
             log.Info($"Request is done with {response.StatusCode} StatusCode");
 
             int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id); ;
-            //log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
             request = InitNewRequest("ApiStudentsAccountId", Method.POST, GetAuthenticatorFor(role));
             request.AddUrlSegment("accountId", newUserAccountId.ToString());
             request.AddParameter("accountId", newUserAccountId);
-            response = client.Execute(request);
+            response = Execute(request);
             log.Info($"Request is done with {response.StatusCode} StatusCode");
 
             log.Info($"POST request to {response.ResponseUri}");
@@ -65,7 +65,7 @@ namespace WHAT_API.API_Tests.Students
             response = client.Execute(request);
 
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath)}");
-            var listActiveStudents = JsonConvert.DeserializeObject<List<StudentDetails>>(response.Content); ;
+            var listActiveStudents = JsonConvert.DeserializeObject<List<StudentDetails>>(response.Content);
             int maxId = listActiveStudents.Max(i=>i.Id);
             var actualUser = listActiveStudents.First(x => x.Id == maxId);
             Assert.Multiple(() =>

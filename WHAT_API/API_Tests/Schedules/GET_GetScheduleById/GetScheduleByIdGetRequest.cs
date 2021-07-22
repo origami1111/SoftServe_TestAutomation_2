@@ -37,7 +37,7 @@ namespace WHAT_API
 
             request.AddJsonBody(schedule);
 
-            expected = Execute<EventOccurrence>(request);
+            expected = Execute<EventOccurrence>(request).Data;
         }
 
         /// <summary>

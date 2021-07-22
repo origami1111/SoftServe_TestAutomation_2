@@ -23,7 +23,7 @@ namespace WHAT_API
             // POST
             RestRequest postRequest = InitNewRequest("ApiSchedules", Method.POST, authenticator);
             postRequest.AddJsonBody(requestData);
-            var originalSchedule = Execute<EventOccurrence>(postRequest);
+            var originalSchedule = Execute<EventOccurrence>(postRequest).Data;
 
             // PUT
             RestRequest putRequest = InitNewRequest("ApiSchedulesEventOccurrences-eventOccurrenceID",
@@ -31,7 +31,7 @@ namespace WHAT_API
             putRequest.AddUrlSegment("eventOccurrenceID", originalSchedule.Id.ToString());
             requestData = File.ReadAllText("JsonDataFiles/UpdateSchedule.json");
             putRequest.AddJsonBody(requestData);
-            var actualSchedule = Execute<EventOccurrence>(putRequest);
+            var actualSchedule = Execute<EventOccurrence>(putRequest).Data;
 
             Assert.Multiple(() =>
             {
@@ -44,7 +44,7 @@ namespace WHAT_API
             RestRequest deleteRequest = InitNewRequest("ApiSchedulesEventOccurrenceID",
                 Method.DELETE, authenticator);
             deleteRequest.AddUrlSegment("eventOccurrenceID", originalSchedule.Id.ToString());
-            var deleteSchedule = Execute<EventOccurrence>(deleteRequest);
+            var deleteSchedule = Execute<EventOccurrence>(deleteRequest).Data;
         }
     }
 }

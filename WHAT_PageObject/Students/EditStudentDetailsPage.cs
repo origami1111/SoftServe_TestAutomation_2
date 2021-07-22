@@ -17,7 +17,6 @@ namespace WHAT_PageObject
         private By emailDangerField = By.XPath("//input[@name = 'email']/following-sibling::div");
         private By clearButton = By.XPath("//button[@class='w-100 btn btn-secondary edit-students-details__button___WOMG6']");
         private By saveButton = By.XPath("//button[@class='w-100 btn btn-info edit-students-details__button___WOMG6']");
-        private By excludeButton= By.XPath("//button[@class='btn button__default___3hOmG button__button___24ZfP edit-students-details__exclude-btn___1Bizc w-100']");
         private By container = By.XPath("//div[@class='container']");
         #endregion
         public EditStudentDetailsPage(IWebDriver driver) : base(driver)
@@ -99,11 +98,12 @@ namespace WHAT_PageObject
 
         public string GetErrorMessageEmail()
         {
-            if (driver.FindElement(emailDangerField).Enabled)
+            try
             {
+                driver.FindElement(emailDangerField);
                 return driver.FindElement(emailDangerField).Text;
             }
-            else
+            catch (Exception)
             {
                 return null;
             }

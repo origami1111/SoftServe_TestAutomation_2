@@ -5,7 +5,7 @@ namespace WHAT_API
     public class Mentor
     {
         [JsonProperty("id")]
-        public int ID { get; set; }
+        public int Id { get; set; }
         [JsonProperty("email")]
         public string Email { get; set; }
         [JsonProperty("firstName")]

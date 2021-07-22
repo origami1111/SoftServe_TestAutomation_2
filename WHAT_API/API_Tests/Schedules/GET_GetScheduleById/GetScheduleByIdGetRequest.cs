@@ -37,7 +37,7 @@ namespace WHAT_API
 
             request.AddJsonBody(schedule);
 
-            expected = Execute<EventOccurrence>(request);
+            expected = Execute<EventOccurrence>(request).Data;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace WHAT_API
 
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                throw new Exception();
+                throw new Exception("Failed to delete schedule");
             }
         }
 

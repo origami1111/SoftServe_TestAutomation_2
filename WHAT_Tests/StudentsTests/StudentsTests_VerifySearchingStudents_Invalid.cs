@@ -1,10 +1,13 @@
-﻿using NUnit.Framework;
+﻿using NLog;
+using NUnit.Allure.Core;
+using NUnit.Framework;
 using System.Collections.Generic;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
+    [AllureNUnit]
     [TestFixture]
     public class StudentsTests_VerifySearchingStudents_Invalid : TestBase
     {
@@ -12,6 +15,10 @@ namespace WHAT_Tests
         private static Credentials mentor = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
         private static Credentials admin = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
         private static Credentials secretary = ReaderFileJson.ReadFileJsonCredentials(Role.Secretary);
+        public StudentsTests_VerifySearchingStudents_Invalid()
+        {
+            log = LogManager.GetLogger($"StudentsPage/{nameof(StudentsTests_VerifySearchingStudents_Invalid)}");
+        }
 
         [SetUp]
         public void Precondition()
@@ -20,6 +27,7 @@ namespace WHAT_Tests
             studentsPage = new SignInPage(driver)
                                 .SignInAsAdmin(credentials.Email, credentials.Password)
                                 .SidebarNavigateTo<StudentsPage>();
+            log.Info($"Go to {driver.Url}");
         }
 
         [TearDown]
@@ -33,13 +41,15 @@ namespace WHAT_Tests
         public void FillSearchingField_ValidData(int id, string firstName, string lastName)
         {
             studentsPage.FillSearchingField($@"{firstName} {lastName}");
-            Dictionary<int, string[]> allStudentsInfo = studentsPage.GetStudentsFromTable();
-            KeyValuePair<int, string[]> ourPair = new KeyValuePair<int, string[]>(id, new string[] { firstName, lastName });
+            log.Info($"Fill int field {firstName} and {lastName}");
+            List<string[]> allStudentsInfo = studentsPage.GetStudentsFromTable();
+            log.Info($"Get student table, count: {allStudentsInfo.Count}");
+            string[] ourPair = new string[] { firstName, lastName };
             int expected = 1;
             int actual = 0;
             foreach (var item in allStudentsInfo)
             {
-                if (item.Value[0] == ourPair.Value[0] && item.Value[1] == ourPair.Value[1])
+                if (item[0] == ourPair[0] && item[1] == ourPair[1])
                 {
                     actual++;
                     break;

@@ -16,31 +16,34 @@ namespace WHAT_API.API_Tests.Students
     {
         private RestRequest request;
         private IRestResponse response;
+
         public DELETE_DisableStudentAccount()
         {
             log = LogManager.GetLogger($"Students/{nameof(DELETE_DisableStudentAccount)}");
         }
 
-        public void Precondition(Role role)
+        private void Precondition(Role role)
         {
             var expectedUser = new GenerateUser();
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(expectedUser);
             response = client.Execute(request);
+            log.Info($"Request is done with {response.StatusCode} StatusCode");
 
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
+            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
-
+            log.Info($"Request is done with {response.StatusCode} StatusCode");
             int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
-            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsAccountId", endpointsPath), Method.POST);
+            log.Info($"Get user id: {newUserAccountId}");
+
+            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiStudentsAccountId", endpointsPath)}");
             request = InitNewRequest("ApiStudentsAccountId", Method.POST, GetAuthenticatorFor(role));
             request.AddUrlSegment("accountId", newUserAccountId.ToString());
             request.AddParameter("accountId", newUserAccountId);
             response = client.Execute(request);
-            log.Info($"POST request to {response.ResponseUri}");
+            log.Info($"Request is done with {response.StatusCode} StatusCode");
         }
 
         /// <summary>
@@ -66,11 +69,13 @@ namespace WHAT_API.API_Tests.Students
             int lastUserId = GetActiveStudentsList(role).Last().Id;
             int expect = GetActiveStudentsList(role).Count-1;
             log.Info($"List of students is taken, there are {GetActiveStudentsList(role).Count} active students");
-           
+            
+            log.Info($"DELETE request to {ReaderUrlsJSON.ByName("ApiStudentsId", endpointsPath)}");
             request = InitNewRequest("ApiStudentsId", Method.DELETE, GetAuthenticatorFor(role));
             request.AddUrlSegment("id", lastUserId.ToString());
             response = client.Execute(request);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            log.Info($"Request is done with {response.StatusCode} StatusCode");
 
             log.Info($"Deleted students with max id : {lastUserId}");
             int actual = GetActiveStudentsList(role).Count;
@@ -86,6 +91,7 @@ namespace WHAT_API.API_Tests.Students
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(role));
             IRestResponse getResponse = client.Execute(getRequest);
+            log.Info($"Request is done with {response.StatusCode} StatusCode");
             return JsonConvert.DeserializeObject<List<StudentDetails>>(getResponse.Content);
         }
     }

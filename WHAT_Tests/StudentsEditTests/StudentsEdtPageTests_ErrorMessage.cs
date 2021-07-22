@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using NLog;
+using NUnit.Allure.Core;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using WHAT_PageObject;
@@ -6,11 +8,17 @@ using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
+    [AllureNUnit]
     [TestFixture]
     public class StudentsEdtPageTests_ErrorMessage: TestBase
     {
         private EditStudentDetailsPage studentsEditDetailsPage;
         private Random random = new Random();
+
+        public StudentsEdtPageTests_ErrorMessage()
+        {
+            log = LogManager.GetLogger($"Students Edit Details page/{nameof(StudentsEdtPageTests_ErrorMessage)}");
+        }
 
         [SetUp]
         public void Precondition()
@@ -22,6 +30,7 @@ namespace WHAT_Tests
                                 .ClickChoosedStudent(random.Next(1, 10))
                                 .ClickEditStudentsDetaisNav()
                                 .WaitStudentsEditingLoad();
+            log.Info($"Go to {driver.Url}");
         }
 
         [TearDown]
@@ -35,6 +44,7 @@ namespace WHAT_Tests
         {
             var actualErrorMessage = studentsEditDetailsPage.FillFirstName(invalidData)
                                                            .GetErrorMessageFirstName();
+            log.Info($"Get allert text from first name field");
             Assert.AreEqual(expectedErrorMessage, actualErrorMessage);
         }
 
@@ -43,6 +53,7 @@ namespace WHAT_Tests
         {
             var actualErrorMessage = studentsEditDetailsPage.FillLastName(invalidData)
                                                            .GetErrorMessageLastName();
+            log.Info($"Get allert text from last name field");
             Assert.AreEqual(expectedErrorMessage, actualErrorMessage);
         }
 
@@ -51,6 +62,7 @@ namespace WHAT_Tests
         {
             var actualErrorMessage = studentsEditDetailsPage.FillEmail(invalidData)
                                                            .GetErrorMessageEmail();
+            log.Info($"Get allert text from email address field");
             Assert.AreEqual(expectedErrorMessage, actualErrorMessage);
         }
 
@@ -68,6 +80,7 @@ namespace WHAT_Tests
             yield return new object[] { "Na*me", "Invalid first name" };
             yield return new object[] { "Name'", "Invalid first name" };
         }
+
         private static IEnumerable<object[]> InvalidLastNameSource()
         {
             yield return new object[] { "b", "Too short" };
@@ -82,6 +95,7 @@ namespace WHAT_Tests
             yield return new object[] { "Na*me", "Invalid last name" };
             yield return new object[] { "Name@", "Invalid last name" };
         }
+
         private static IEnumerable<object[]> InvalidEmailSource()
         {
             yield return new object[] { "c", "Too short" };

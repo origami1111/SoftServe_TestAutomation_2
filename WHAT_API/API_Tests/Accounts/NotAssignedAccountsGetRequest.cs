@@ -4,7 +4,6 @@ using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using WHAT_Utilities;
 
@@ -48,8 +47,7 @@ namespace WHAT_API.API_Tests.Accounts
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
-            string json = response.Content;
-            var users = JsonConvert.DeserializeObject<List<Account>>(json);
+            var users = JsonConvert.DeserializeObject<List<Account>>(response.Content);
 
             Assert.Multiple(() =>
             {

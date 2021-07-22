@@ -46,9 +46,8 @@ namespace WHAT_API.API_Tests.Accounts
             request = InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
             response = Execute(request);
 
-            string json = response.Content;
-            var users = JsonConvert.DeserializeObject<List<Account>>(json);
-            var searchedUser = users.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
+            var searchedUser = JsonConvert.DeserializeObject<List<Account>>(response.Content)
+                .Where(user => user.Email == registeredUser.Email).First();
             registeredUser.Id = searchedUser.Id;
 
             // 3. Assign account to ROLE(mentor)
@@ -86,8 +85,7 @@ namespace WHAT_API.API_Tests.Accounts
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
-            string json = response.Content;
-            Account actualDataChangePassword = JsonConvert.DeserializeObject<Account>(json);
+            Account actualDataChangePassword = JsonConvert.DeserializeObject<Account>(response.Content);
 
             Assert.Multiple(() =>
             {
@@ -111,11 +109,9 @@ namespace WHAT_API.API_Tests.Accounts
             response = Execute(request);
 
             actualStatusCode = response.StatusCode;
-
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
-            json = response.Content;
-            SignInResponseBody actualData = JsonConvert.DeserializeObject<SignInResponseBody>(json);
+            SignInResponseBody actualData = JsonConvert.DeserializeObject<SignInResponseBody>(response.Content);
 
             Assert.Multiple(() =>
             {

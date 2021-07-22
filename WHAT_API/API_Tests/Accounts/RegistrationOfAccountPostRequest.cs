@@ -37,8 +37,7 @@ namespace WHAT_API.API_Tests.Accounts
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
-            string json = response.Content;
-            Account actualData = JsonConvert.DeserializeObject<Account>(json);
+            Account actualData = JsonConvert.DeserializeObject<Account>(response.Content);
 
             Assert.Multiple(() =>
             {
@@ -55,8 +54,10 @@ namespace WHAT_API.API_Tests.Accounts
         [TestCase(HttpStatusCode.Conflict, "admin.@gmail.com")]
         public void RegistrationOfAccountWithEmailAlreadyExists(HttpStatusCode expectedStatusCode, string email)
         {
-            var expectedData = new GenerateUser();
-            expectedData.Email = email;
+            var expectedData = new GenerateUser
+            {
+                Email = email
+            };
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(expectedData);
 

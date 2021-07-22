@@ -45,6 +45,7 @@ namespace WHAT_API.API_Tests.Students
             request = InitNewRequest("ApiStudentsId", Method.DELETE, GetAuthenticatorFor(role));
             request.AddUrlSegment("id", lastUserId.ToString());
             response = client.Execute(request);
+            log.Info($"Last student in list is deleted");
         }
 
         /// <summary>

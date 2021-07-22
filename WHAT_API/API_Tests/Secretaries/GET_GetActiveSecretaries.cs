@@ -4,6 +4,7 @@ using NUnit.Framework;
 using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using WHAT_API.Entities.Secretaries;
 using WHAT_Utilities;
 
@@ -38,10 +39,10 @@ namespace WHAT_API
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
             response = client.Execute(request);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath)}");
             var actualSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
-
-            //Assert.AreEqual(actualSecretariesList.Last().FirstName, expectedSecretariesList.Last().FirstName);
+            
             CollectionAssert.AreEquivalent(actualSecretariesList, expectedSecretariesList);
 
             log.Info($"Expected and actual results is checked");

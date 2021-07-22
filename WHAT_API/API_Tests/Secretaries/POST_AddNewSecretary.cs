@@ -4,6 +4,7 @@ using NUnit.Framework;
 using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using WHAT_API.Entities.Secretaries;
 using WHAT_Utilities;
 
@@ -44,6 +45,7 @@ namespace WHAT_API
             request.AddUrlSegment("accountId", newUserAccountId.ToString());
             request.AddParameter("accountId", newUserAccountId);
             response = client.Execute(request);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             log.Info($"POST request to {response.ResponseUri}");
 
             //GET

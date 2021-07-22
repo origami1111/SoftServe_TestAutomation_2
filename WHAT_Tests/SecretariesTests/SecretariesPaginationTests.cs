@@ -42,7 +42,6 @@ namespace WHAT_Tests
 
             if (secretariesPage.GetLastUserIndex(out lastUserIndex) && secretariesPage.GetUsersAtPage(out selectedUsersAtPage))
             {
-
                 if (lastUserIndex >= selectedUsersAtPage)
                 {
                     expected = selectedUsersAtPage;
@@ -51,7 +50,6 @@ namespace WHAT_Tests
                 {
                     expected = lastUserIndex;
                 }
-
             }
             else
             {
@@ -85,7 +83,6 @@ namespace WHAT_Tests
             
             int actual = secretariesPage.GetShowedUsersAmount();
             Assert.AreEqual(expected, actual);
-            
         }
 
         [TestCase(ShowedUsers.ten)]
@@ -104,11 +101,6 @@ namespace WHAT_Tests
                 int actual = secretariesPage.PrevPage().GetShowedUsersAmount();
                 Assert.AreEqual(expected, actual);
             }
-            else
-            {
-                
-            }
         }
-
     }
 }

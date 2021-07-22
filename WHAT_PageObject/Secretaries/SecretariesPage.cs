@@ -8,14 +8,12 @@ namespace WHAT_PageObject
     public class SecretariesPage : BasePageWithHeaderSidebar
     {
         WebDriverWait wait;
-        #region Locators
 
+        #region Locators
         By addSecretaryButton = By.XPath("//span[contains(.,'Add a secretary')]");
         By disabledSwitch = By.XPath("//label[contains(.,'Disabled Secretaries')]");
         By searchField = By.XPath("//input[@type='text']");
         By visibleUsersSelect = By.Id("change-visible-people");
-        private int usersAtPageIndex = 0;
-        private int usersTotalIndex = 2;
         By countUsersReport = By.XPath("//span[contains(.,'secretaries')]");
         By prevPageLink = By.XPath("//button[contains(.,'<')]");
         By nextPageLink = By.XPath("//button[contains(.,'>')]");
@@ -24,7 +22,8 @@ namespace WHAT_PageObject
         By firstPage = By.XPath("//nav/ul[2]/li[1]");
         By lastPage = By.XPath("//nav/ul[2]/li[last()]");
         By lastUserIndex = By.XPath($"//tbody/tr[last()]/td[{(int)ColumnName.index}]");
-
+        private int usersAtPageIndex = 0;
+        private int usersTotalIndex = 2;
         #endregion
 
         public SecretariesPage(IWebDriver driver) : base(driver)
@@ -42,10 +41,6 @@ namespace WHAT_PageObject
         {
             driver.FindElement(By.XPath($"//td[@data-secretary-id={index}]")).Click();
             return new EditSecretaryPage(driver);
-        }
-        public bool GetPagesAmount(out int pagesAmount)
-        {
-            return Int32.TryParse(driver.FindElement(lastPage).Text, out pagesAmount);
         }
 
         #region navigation
@@ -104,9 +99,6 @@ namespace WHAT_PageObject
             return Int32.Parse(driver.FindElement(countUsersReport).Text.Split(" ")[usersTotalIndex]);
         }
 
-
-        #endregion
-
         public List<string> GetDataList(ColumnName column)
         {
             int count = GetShowedUsersAmount();
@@ -116,6 +108,12 @@ namespace WHAT_PageObject
                 dataList.Add(GetUserData((int)column, i));
             }
             return dataList;
+        }
+        #endregion
+
+        public bool GetPagesAmount(out int pagesAmount)
+        {
+            return Int32.TryParse(driver.FindElement(lastPage).Text, out pagesAmount);
         }
 
         public int GetShowedUsersAmount()
@@ -141,8 +139,5 @@ namespace WHAT_PageObject
         {
             return Int32.TryParse(LastPage().driver.FindElement(lastUserIndex).Text, out index);
         }
-
     }
-
-
 }

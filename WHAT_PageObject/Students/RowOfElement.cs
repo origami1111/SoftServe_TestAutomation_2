@@ -2,8 +2,7 @@
 {
     public enum RowOfElement
     {
-        Id = 1,
-        FirstName ,
+        FirstName = 1,
         LastName,
         Email,
         EditIcon

@@ -6,11 +6,11 @@ namespace WHAT_API.Entities.Lessons
     public class UpdateLesson
     {
         [JsonProperty("themeName")]
-        public string? ThemeName { get; set; }
+        public string ThemeName { get; set; }
         [JsonProperty("lessonDate")]
         public string LessonDate { get; set; }
         [JsonProperty("lessonVisits")]
-        public List<CreateVisit>? LessonVisits { get; set; }
+        public List<CreateVisit> LessonVisits { get; set; }
 
         public UpdateLesson WithThemaName(string themeName)
         {

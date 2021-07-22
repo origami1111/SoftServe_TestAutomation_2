@@ -1,13 +1,15 @@
-﻿using NUnit.Framework;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using WHAT_PageObject;
+using WHAT_Tests.LessonsTests;
 using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
     [TestFixture]
+    [AllureNUnit]
     public class SearchLessonTest : TestBase
     {
-
         private LessonsPage lessonsPage;
         Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
 
@@ -15,18 +17,14 @@ namespace WHAT_Tests
         public void SetupPage()
         {
             lessonsPage = new SignInPage(driver)
-                            .SignInAsMentor(credentials.Email, credentials.Password);
+                .SignInAsMentor(credentials.Email, credentials.Password);
         }
 
-        [Test]
-        [TestCase("Junit", "1")]
-        [TestCase("TestNG", "1")]
-        [TestCase("API testing", "1")]
+        [TestCaseSource(typeof(TestCasesLessons), nameof(TestCasesLessons.SearchLesson))]
         public void SearchValidLessonTest(string input, string number)
         {
             string expected = input;
-            string actual =
-                lessonsPage
+            string actual = lessonsPage
                 .SearchByThemaName(input)
                 .GetLessonThemaName(number);
 

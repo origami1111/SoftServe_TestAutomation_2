@@ -1,10 +1,13 @@
-﻿using NUnit.Framework;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using WHAT_PageObject;
+using WHAT_Tests.LessonsTests;
 using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
     [TestFixture]
+    [AllureNUnit]
     public class EditLessonTest : TestBase
     {
         private LessonsPage lessonsPage;
@@ -14,15 +17,12 @@ namespace WHAT_Tests
         public void SetupPage()
         {
             lessonsPage = new SignInPage(driver)
-                            .SignInAsMentor(credentials.Email, credentials.Password);
+                .SignInAsMentor(credentials.Email, credentials.Password);                        
         }
 
-        [Test]
-        [TestCase("1", "nunit", "2021-06-29T08:00", "×\r\nClose alert\r\nThe lesson has been edit successfully!")]
-        public void EditLessonValidTest(string number, string tema, string time, string message)
+        [TestCaseSource(typeof(TestCasesLessons), nameof(TestCasesLessons.EditLesson))]
+        public void EditLessonValidTest(string number, string tema, string time, string expected)
         {
-            string expected = message;
-
             string actual = lessonsPage
                 .ClickEditLesson(number)
                 .FillLessonTheme(tema)
@@ -30,7 +30,7 @@ namespace WHAT_Tests
                 .ClickSaveButton()
                 .VerifySuccesMessage();
 
-            Assert.AreEqual(expected, actual);
+            StringAssert.Contains(expected, actual);
         }
 
         [TearDown]

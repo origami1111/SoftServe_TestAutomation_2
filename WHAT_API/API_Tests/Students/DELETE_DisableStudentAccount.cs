@@ -21,7 +21,7 @@ namespace WHAT_API.API_Tests.Students
             log = LogManager.GetLogger($"Students/{nameof(DELETE_DisableStudentAccount)}");
         }
 
-        public void Precondition(Role role)
+        private void Precondition(Role role)
         {
             var expectedUser = new GenerateUser();
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
@@ -71,6 +71,7 @@ namespace WHAT_API.API_Tests.Students
             request.AddUrlSegment("id", lastUserId.ToString());
             response = client.Execute(request);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            log.Info($"Request is done with {response.StatusCode} StatusCode");
 
             log.Info($"Deleted students with max id : {lastUserId}");
             int actual = GetActiveStudentsList(role).Count;
@@ -86,6 +87,8 @@ namespace WHAT_API.API_Tests.Students
             RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath), Method.GET);
             getRequest.AddHeader("Authorization", GetToken(role));
             IRestResponse getResponse = client.Execute(getRequest);
+            log.Info($"Request is done with {response.StatusCode} StatusCode");
+
             return JsonConvert.DeserializeObject<List<StudentDetails>>(getResponse.Content);
         }
     }

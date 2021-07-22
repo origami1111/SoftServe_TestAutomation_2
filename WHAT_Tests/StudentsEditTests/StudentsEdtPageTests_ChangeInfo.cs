@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using NLog;
+using NUnit.Allure.Core;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using WHAT_PageObject;
@@ -6,12 +8,19 @@ using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
+    [AllureNUnit]
     [TestFixture]
     public class StudentsEdtPageTests_ChangeInfo : TestBase
     {
         private EditStudentDetailsPage studentsEditDetailsPage;
         private Random random = new Random();
         private int studentId;
+
+        public StudentsEdtPageTests_ChangeInfo()
+        {
+            log = LogManager.GetLogger($"Students Details page/{nameof(StudentsEdtPageTests_ChangeInfo)}");
+        }
+
         [SetUp]
         public void Precondition()
         {
@@ -23,6 +32,7 @@ namespace WHAT_Tests
                                 .ClickChoosedStudent(studentId)
                                 .ClickEditStudentsDetaisNav()
                                 .WaitStudentsEditingLoad();
+            log.Info($"Go to {driver.Url}");
         }
 
         [TearDown]
@@ -48,21 +58,20 @@ namespace WHAT_Tests
                                                      .FillEmail(generatedUser.Email)
                                                      .ClickSaveButton();
             string actualAlert = studentsPage.GetAlertText();
+            log.Info($"Get allert text: {actualAlert}");
             StringAssert.Contains(expectAlert, actualAlert);
             KeyValuePair<int, string[]> validPair = new KeyValuePair<int, string[]>(studentId, new string[] { firstName, lastName, generatedUser.Email });
-            Dictionary<int, string[]> studentTable = studentsPage.GetStudentsFromTable();
+            List< string[]> studentTable = studentsPage.GetStudentsFromTable();
+            log.Info($"Get student table, count: {studentTable.Count}");
             foreach (var item in studentTable)
             {
-                if (item.Key==validPair.Key)
-                {
                     Assert.Multiple(() =>
                     {
-                        Assert.AreEqual(validPair.Value[0], item.Value[0]);
-                        Assert.AreEqual(validPair.Value[1], item.Value[1]);
-                        Assert.AreEqual(validPair.Value[2], item.Value[2]);
+                        Assert.AreEqual(validPair.Value[0], item[0]);
+                        Assert.AreEqual(validPair.Value[1], item[1]);
+                        Assert.AreEqual(validPair.Value[2], item[2]);
                     });
                     actual++;
-                }
             }
             Assert.AreEqual(expected, actual);
         }

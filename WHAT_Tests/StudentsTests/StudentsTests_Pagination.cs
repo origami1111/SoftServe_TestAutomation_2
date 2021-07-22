@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using NLog;
+using NUnit.Allure.Core;
+using NUnit.Framework;
 using System.Collections.Generic;
 using WHAT_PageObject;
 using WHAT_Utilities;
@@ -6,6 +8,7 @@ using WHAT_Utilities;
 namespace WHAT_Tests
 {
     [TestFixture]
+    [AllureNUnit]
     public class StudentsTests_Pagination : TestBase
     {
         private StudentsPage studentsPage;
@@ -17,6 +20,11 @@ namespace WHAT_Tests
             studentsPage = new SignInPage(driver)
                                 .SignInAsAdmin(credentials.Email, credentials.Password)
                                 .SidebarNavigateTo<StudentsPage>();
+            log.Info($"Go to {driver.Url}");
+        }
+        public StudentsTests_Pagination()
+        {
+            log = LogManager.GetLogger($"StudentsPage/{nameof(StudentsTests_Pagination)}");
         }
 
         [TearDown]
@@ -28,16 +36,19 @@ namespace WHAT_Tests
         [Test]
         public void VerifyPagination_PrevAndNextPageButton()
         {
-            Dictionary<int, string[]> expect = studentsPage.GetStudentsFromTable();
+            List<string[]> expect = studentsPage.GetStudentsFromTable();
+            log.Info($"Get student table, count: {expect.Count}");
             studentsPage.ClickNextPage();
             studentsPage.ClickPreviousPage();
-            Dictionary<int, string[]> actual = studentsPage.GetStudentsFromTable();
+            List<string[]> actual = studentsPage.GetStudentsFromTable();
+            log.Info($"Get student table, count: {actual.Count}");
             CollectionAssert.AreEqual(expect, actual);
         }
 
         [Test]
         public void VerifyPagination_PrevAndNextPageButton_DisabledStudents()
         {
+            log.Info($"Get disabed student list");
             studentsPage.ClickDisabledStudents_CheckBox();
             VerifyPagination_PrevAndNextPageButton();
         }
@@ -45,8 +56,8 @@ namespace WHAT_Tests
         [Test]
         public void VerifyPagination_ClickPrevPageButtonToEnd()
         {
-            Dictionary<int, string[]> expectTable = studentsPage.GetStudentsFromTable();
-            Dictionary<int, string[]> expectCurrPage = new Dictionary<int, string[]>();
+            List<string[]> expectTable = studentsPage.GetStudentsFromTable();
+            log.Info($"Get student table, count: {expectTable.Count}");
             int countPage = studentsPage.GetCountOfPages();
             int indexPage = 1;
             while (indexPage <= countPage)
@@ -59,12 +70,14 @@ namespace WHAT_Tests
                 studentsPage.ClickPreviousPage();
                 indexPage--;
             }
-            Dictionary<int, string[]> actualTable = studentsPage.GetStudentsFromTable();
+            List<string[]> actualTable = studentsPage.GetStudentsFromTable();
+            log.Info($"Get student table, count: {actualTable.Count}");
             CollectionAssert.AreEqual(expectTable, actualTable);
         }
         [Test]
         public void VerifyPagination_ClickPrevPageButtonToEnd_DisabledStudents()
         {
+            log.Info($"Get disabed student list");
             studentsPage.ClickDisabledStudents_CheckBox();
             VerifyPagination_ClickPrevPageButtonToEnd();
         }

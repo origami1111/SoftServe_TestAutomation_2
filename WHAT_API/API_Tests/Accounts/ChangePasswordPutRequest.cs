@@ -44,7 +44,7 @@ namespace WHAT_API.API_Tests.Accounts
 
             // 2. Get the id of the last unassigned user
             request = InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
-            response = client.Execute(request);
+            response = Execute(request);
 
             string json = response.Content;
             var users = JsonConvert.DeserializeObject<List<Account>>(json);
@@ -54,7 +54,7 @@ namespace WHAT_API.API_Tests.Accounts
             // 3. Assign account to ROLE(mentor)
             request = InitNewRequest("ApiMentorsAssignAccountToMentor-accountID", Method.POST, authenticator);
             request.AddUrlSegment("accountId", registeredUser.Id.ToString());
-            response = client.Execute(request);
+            response = Execute(request);
 
             registeredUser.Role = Role.Mentor;
 
@@ -79,7 +79,7 @@ namespace WHAT_API.API_Tests.Accounts
             request.AddJsonBody(changePasswordRequestBody);
 
             log.Info($"PUT request to {ReaderUrlsJSON.ByName("ApiAccountsChangePassword", endpointsPath)}");
-            response = client.Execute(request);
+            response = Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
@@ -108,7 +108,7 @@ namespace WHAT_API.API_Tests.Accounts
 
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
             request.AddJsonBody(signInRequestBody);
-            response = client.Execute(request);
+            response = Execute(request);
 
             actualStatusCode = response.StatusCode;
 

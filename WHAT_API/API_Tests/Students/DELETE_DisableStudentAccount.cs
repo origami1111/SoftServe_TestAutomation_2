@@ -75,7 +75,6 @@ namespace WHAT_API.API_Tests.Students
             request.AddUrlSegment("id", lastUserId.ToString());
             response = client.Execute(request);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            log.Info($"Request is done with {response.StatusCode} StatusCode");
 
             log.Info($"Deleted students with max id : {lastUserId}");
             int actual = GetActiveStudentsList(role).Count;

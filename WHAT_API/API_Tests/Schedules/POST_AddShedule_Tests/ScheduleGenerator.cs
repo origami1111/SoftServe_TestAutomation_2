@@ -97,7 +97,7 @@ namespace WHAT_API
 
             List<Mentor> mentors = JsonConvert.DeserializeObject<List<Mentor>>(response.Content.ToString());
             var searchedMentor = mentors.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
-            mentorID = searchedMentor.ID;
+            mentorID = searchedMentor.Id;
 
             return mentorID;
         }

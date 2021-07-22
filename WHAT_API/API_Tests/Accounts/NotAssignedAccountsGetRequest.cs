@@ -41,7 +41,7 @@ namespace WHAT_API.API_Tests.Accounts
             request = InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
 
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
-            response = client.Execute(request);
+            response = Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
@@ -70,7 +70,7 @@ namespace WHAT_API.API_Tests.Accounts
             request = InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
 
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
-            response = client.Execute(request);
+            response = Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");

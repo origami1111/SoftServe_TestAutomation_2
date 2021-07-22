@@ -33,7 +33,7 @@ namespace WHAT_API
             request.AddJsonBody(new { expectedData.Email, expectedData.Password });
 
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
-            response = client.Execute(request);
+            response = Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
@@ -61,7 +61,7 @@ namespace WHAT_API
             request.AddJsonBody(new { credentials.Email, credentials.Password });
 
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
-            response = client.Execute(request);
+            response = Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
@@ -86,7 +86,7 @@ namespace WHAT_API
             request.AddJsonBody(new { credentials.Email, credentials.Password });
 
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
-            response = client.Execute(request);
+            response = Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
@@ -113,7 +113,7 @@ namespace WHAT_API
             request.AddJsonBody(new { email, password });
 
             log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
-            response = client.Execute(request);
+            response = Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");

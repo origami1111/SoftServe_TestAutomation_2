@@ -37,7 +37,8 @@ namespace WHAT_API
 
             request.AddJsonBody(schedule);
 
-            expected = Execute<EventOccurrence>(request).Data;
+            response = Execute(request);
+            expected = JsonConvert.DeserializeObject<EventOccurrence>(response.Content);
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace WHAT_API
             request = InitNewRequest("ApiSchedulesEventOccurenceID-eventOccurenceID", Method.DELETE, authenticator);
             request.AddUrlSegment("eventOccurenceID", expected.Id.ToString());
 
-            response = client.Execute(request);
+            response = Execute(request);
 
             if (response.StatusCode != HttpStatusCode.OK)
             {
@@ -68,7 +69,7 @@ namespace WHAT_API
             request.AddUrlSegment("id", expected.Id.ToString());
 
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
-            response = client.Execute(request);
+            response = Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
 
@@ -113,7 +114,7 @@ namespace WHAT_API
             request.AddUrlSegment("id", expected.Id.ToString());
 
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
-            response = client.Execute(request);
+            response = Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");

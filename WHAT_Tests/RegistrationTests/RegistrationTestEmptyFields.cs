@@ -1,9 +1,11 @@
-﻿using NUnit.Framework;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using WHAT_PageObject;
 
 namespace WHAT_Tests
 {
+    [AllureNUnit]
     [TestFixture]
     class RegistrationTestEmptyFields : TestBase
     {

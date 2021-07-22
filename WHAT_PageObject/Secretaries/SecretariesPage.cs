@@ -7,6 +7,7 @@ namespace WHAT_PageObject
 {
     public class SecretariesPage : BasePageWithHeaderSidebar
     {
+        WebDriverWait wait;
         #region Locators
 
         By addSecretaryButton = By.XPath("//span[contains(.,'Add a secretary')]");
@@ -28,7 +29,7 @@ namespace WHAT_PageObject
 
         public SecretariesPage(IWebDriver driver) : base(driver)
         {
-
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
         public UnassignedUsersPage AddSecretary()
@@ -62,6 +63,7 @@ namespace WHAT_PageObject
 
         public SecretariesPage LastPage()
         {
+            wait.Until(e => e.FindElement(lastPage));
             driver.FindElement(lastPage).Click();
             return this;
         }
@@ -123,15 +125,16 @@ namespace WHAT_PageObject
 
         public bool GetUsersAtPage(out int usersAtPage)
         {
+            wait.Until(e => e.FindElement(visibleUsersSelect));
             SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
             return Int32.TryParse(selectedOption.SelectedOption.Text, out usersAtPage);
         }
 
-        public void SelectUsersAtPage(ShowedUsers showedUsers)
+        public void SelectUsersAtPage(ShowedUsers usersAtPage)
         {
             driver.FindElement(visibleUsersSelect).Click();
             SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
-            selectedOption.SelectByIndex((int)showedUsers - 1);
+            selectedOption.SelectByIndex((int)usersAtPage - 1);
         }
 
         public bool GetLastUserIndex(out int index)

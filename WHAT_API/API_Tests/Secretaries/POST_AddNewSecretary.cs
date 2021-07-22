@@ -12,7 +12,7 @@ namespace WHAT_API
     [TestFixture]
     class POST_AddNewSecretary : API_BaseTest
     {
-       private RestRequest request;
+        private RestRequest request;
         private IRestResponse response;
 
         public POST_AddNewSecretary()
@@ -45,6 +45,7 @@ namespace WHAT_API
             request.AddParameter("accountId", newUserAccountId);
             response = client.Execute(request);
             log.Info($"POST request to {response.ResponseUri}");
+
             //GET
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(role));
@@ -53,6 +54,7 @@ namespace WHAT_API
             var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
             int maxId = activeSecretariesList.Max(i => i.Id);
             var actualUser = activeSecretariesList.First(x => x.Id == maxId);
+
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedUser.FirstName, actualUser.FirstName);
@@ -61,11 +63,10 @@ namespace WHAT_API
             });
             log.Info($"Expected and actual results is checked");
 
-            request = InitNewRequest("ApiStudentsId", Method.DELETE, GetAuthenticatorFor(role));
+            request = InitNewRequest("ApiSecretariesId", Method.DELETE, GetAuthenticatorFor(Role.Admin));
             request.AddUrlSegment("id", maxId.ToString());
             response = client.Execute(request);
-
-            log.Info($"Last student in list is deleted");
+            log.Info($"Last secretary in list is deleted");
         }
     }       
 }

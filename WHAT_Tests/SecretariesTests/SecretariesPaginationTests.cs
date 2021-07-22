@@ -1,4 +1,7 @@
 ﻿using NUnit.Framework;
+using OpenQA.Selenium.Support.UI;
+using System;
+using System.Threading;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
@@ -29,19 +32,20 @@ namespace WHAT_Tests
         [TestCase(ShowedUsers.fifty)]
         [TestCase(ShowedUsers.oneHundred)]
         [Test]
-        public void VerifyFirstPageCount(ShowedUsers usersOnPage)
+        public void VerifyFirstPageCount(ShowedUsers usersAtPage)
         {
             int expected;
             int lastUserIndex;
-            secretariesPage.SelectUsersAtPage(usersOnPage);
+            secretariesPage.SelectUsersAtPage(usersAtPage);
+            int selectedUsersAtPage;
             int actual = secretariesPage.GetShowedUsersAmount();
 
-            if (secretariesPage.GetLastUserIndex(out lastUserIndex))
+            if (secretariesPage.GetLastUserIndex(out lastUserIndex) && secretariesPage.GetUsersAtPage(out selectedUsersAtPage))
             {
 
-                if (lastUserIndex >= (int)usersOnPage)
+                if (lastUserIndex >= selectedUsersAtPage)
                 {
-                    expected = (int)usersOnPage;
+                    expected = selectedUsersAtPage;
                 }
                 else
                 {
@@ -62,43 +66,47 @@ namespace WHAT_Tests
         [TestCase(ShowedUsers.fifty)]
         [TestCase(ShowedUsers.oneHundred)]
         [Test]
-        public void VerifyLastPageCount(ShowedUsers usersOnPage)
+        public void VerifyLastPageCount(ShowedUsers usersAtPage)
         {
-            secretariesPage.SelectUsersAtPage(usersOnPage);
+            secretariesPage.SelectUsersAtPage(usersAtPage);
             int expected;
             int lastUserIndex;
-
-            if (secretariesPage.GetLastUserIndex(out lastUserIndex))
+            int selectedUsersAtPage;
+            
+            if (secretariesPage.GetUsersAtPage(out selectedUsersAtPage) && secretariesPage.GetLastUserIndex(out lastUserIndex))
             {
-                expected = lastUserIndex % (int)usersOnPage;
+                expected = lastUserIndex % selectedUsersAtPage;
             }
             else
             {
                 expected = 0;
                 Assert.Fail();
             }
-
+            
             int actual = secretariesPage.GetShowedUsersAmount();
             Assert.AreEqual(expected, actual);
+            
         }
 
         [TestCase(ShowedUsers.ten)]
         [TestCase(ShowedUsers.fifty)]
         [TestCase(ShowedUsers.oneHundred)]
         [Test]
-        public void VerifyMidlePageCount(ShowedUsers usersOnPage)
+        public void VerifyMidlePageCount(ShowedUsers usersAtPage)
         {
-            secretariesPage.SelectUsersAtPage(usersOnPage);
+            secretariesPage.SelectUsersAtPage(usersAtPage);
             int pagesAmount;
-            if (secretariesPage.GetPagesAmount(out pagesAmount) && (pagesAmount > 2))
+            int selectedUsersAtPage;
+
+            if (secretariesPage.GetPagesAmount(out pagesAmount) && (pagesAmount > 2) && secretariesPage.GetUsersAtPage(out selectedUsersAtPage))
             {
-                int expected = (int)usersOnPage;
+                int expected = (int)usersAtPage;
                 int actual = secretariesPage.PrevPage().GetShowedUsersAmount();
                 Assert.AreEqual(expected, actual);
             }
             else
             {
-
+                
             }
         }
 

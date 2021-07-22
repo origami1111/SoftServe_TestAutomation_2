@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     public class POST_ReturnsEventsList_Valid_ByElement: API_BaseTest
     {
@@ -72,7 +74,6 @@ namespace WHAT_API
                 log.Info($"Expected and actual results is checked");
             });
         }
-
         
         [Test]
         [TestCase(Role.Admin)]
@@ -103,6 +104,5 @@ namespace WHAT_API
                 log.Info($"Expected and actual results is checked");
             });
         }
-
     }
 }

@@ -14,6 +14,7 @@ namespace WHAT_API
     public class ScheduleGenerator : API_BaseTest
     {       
         private CreateSchedule schedule = new CreateSchedule();
+        private Account registeredUser;
         Random random = new Random();
 
         public CreateSchedule GenerateShedule(PatternType type, int interval,
@@ -45,17 +46,17 @@ namespace WHAT_API
 
         public CreateSchedule GenerateShedule()
         {
-           
+
             schedule.Pattern = new Pattern()
             {
                 Type = PatternType.Daily,
-                Interval = 1
+                Interval = random.Next(0, 4)
             };
 
             schedule.Range = new OccurrenceRange()
             {
-                StartDate = new DateTime(2021, 6, 2, 13, 27, 09).ToUniversalTime(),
-                FinishDate = new DateTime(2021, 7, 7, 15, 27, 09).ToUniversalTime()
+                StartDate = DateTime.Now.ToUniversalTime(),
+                FinishDate = DateTime.Now.ToUniversalTime()
             };
 
             schedule.Context = new Context()
@@ -72,20 +73,32 @@ namespace WHAT_API
         public int GetMentorID()
         {
             int mentorID;
+            registeredUser = RegistrationUser();
+
             RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
-            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiOnlyActiveMentors", endpointsPath), Method.GET);
-            getRequest.AddHeader("Authorization", GetToken(Role.Admin,getClient));
-            IRestResponse getResponse = getClient.Execute(getRequest);
-            List<Mentor> listOfMentors = JsonConvert.DeserializeObject<List<Mentor>>(getResponse.Content.ToString());
-            if ( !listOfMentors.Any() || getResponse.StatusCode != HttpStatusCode.OK )
-            {
-                throw new Exception();
-            }
-            else 
-            {
-                int randomElement = random.Next(0, listOfMentors.Count);
-                mentorID = listOfMentors.ElementAt(randomElement).ID;
-            }
+
+            RestRequest  request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
+            request.AddHeader("Authorization", GetToken(Role.Admin, getClient));
+            IRestResponse response = client.Execute(request);
+
+
+            string json = response.Content;
+            var users = JsonConvert.DeserializeObject<List<Account>>(json);
+            var searchedUser = users.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
+            registeredUser.Id = searchedUser.Id;
+
+            request = new RestRequest($"mentors/{registeredUser.Id}", Method.POST);
+            request.AddHeader("Authorization", GetToken(Role.Admin, getClient));
+            response = client.Execute(request);
+
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiOnlyActiveMentors", endpointsPath), Method.GET);
+            request.AddHeader("Authorization", GetToken(Role.Admin, getClient));
+            response = client.Execute(request);
+
+            List<Mentor> mentors = JsonConvert.DeserializeObject<List<Mentor>>(response.Content.ToString());
+            var searchedMentor = mentors.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
+            mentorID = searchedMentor.Id;
+
             return mentorID;
         }
 
@@ -99,7 +112,7 @@ namespace WHAT_API
             List<StudentGroup> listOfStudentsGroup = JsonConvert.DeserializeObject<List<StudentGroup>>(getResponse.Content.ToString());
             if (!listOfStudentsGroup.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {
-                throw new Exception();
+                throw new Exception($"Status code: {getResponse.StatusCode} is not {HttpStatusCode.OK}");
             }
             else
             {
@@ -119,7 +132,7 @@ namespace WHAT_API
             List<Themes> listOfThemes = JsonConvert.DeserializeObject<List<Themes>>(getResponse.Content.ToString());
             if (!listOfThemes.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {
-                throw new Exception();
+                throw new Exception($"Status code: {getResponse.StatusCode} is not {HttpStatusCode.OK}");
             }
             else
             {

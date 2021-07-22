@@ -116,6 +116,28 @@
   //StudentGroups
   {
     //GET
+    "Name": "ApiOnlyActiveMentors",
+    "Url": "mentors/active"
+  },
+  //Secretaries
+  {
+    //GET
+    "Name": "GET All Secretaries",
+    "Url": "secretaries"
+  },
+  {
+    //GET
+    "Name": "GET Active Secretaries",
+    "Url": "secretaries/active"
+  },
+  {
+    //PUT/DELETE/PATCH
+    "Name": "Change Secretary",
+    "Url": "secretaries/{secretaryId}"
+  },
+  //StudentsGroup
+  {
+    //GET
     "Name": "ApiStudentsGroup",
     "Url": "student_groups"
   },

@@ -1,4 +1,5 @@
 ﻿using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System;
@@ -8,6 +9,7 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     public class POST_ReturnsEventsList_BadRequest : API_BaseTest
     {
@@ -16,7 +18,7 @@ namespace WHAT_API
             log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_BadRequest)}");
         }
 
-        /// <summary> Return set values with filter for POST request</summary>
+        /// <summary> Return set invalid values for POST request</summary>
         private static IEnumerable<TestCaseData> FilterRulesSources()
         {
                 yield return new TestCaseData(12050125, null, 1, 1, 1, 1, null, null);

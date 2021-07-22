@@ -1,14 +1,11 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace WHAT_API.Entities.Secretaries
+namespace WHAT_API
 {
-    class Secretary
+    public class Secretary
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public int ID { get; set; }
         [JsonProperty("email")]
         public string Email { get; set; }
         [JsonProperty("firstName")]

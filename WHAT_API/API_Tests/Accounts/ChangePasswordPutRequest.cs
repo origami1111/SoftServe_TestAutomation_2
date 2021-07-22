@@ -39,10 +39,10 @@ namespace WHAT_API.API_Tests.Accounts
         {
             var authenticator = GetAuthenticatorFor(Role.Admin);
 
-            // 1
+            // 1. Create account by POST method
             registeredUser = RegistrationUser();
 
-            // 2
+            // 2. Get the id of the last unassigned user
             request = InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
             response = client.Execute(request);
 
@@ -51,7 +51,7 @@ namespace WHAT_API.API_Tests.Accounts
             var searchedUser = users.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
             registeredUser.Id = searchedUser.Id;
 
-            // 3
+            // 3. Assign account to ROLE(mentor)
             request = InitNewRequest("ApiMentorsAssignAccountToMentor-accountID", Method.POST, authenticator);
             request.AddUrlSegment("accountId", registeredUser.Id.ToString());
             response = client.Execute(request);
@@ -71,10 +71,10 @@ namespace WHAT_API.API_Tests.Accounts
         [TestCase(HttpStatusCode.OK)]
         public void ChangePasswordWithStatusCode200(HttpStatusCode expectedStatusCode)
         {
-            // 4
+            // 4. Log in
             var authenticator = GetAuthenticatorFor(Role.Admin);
 
-            // 5
+            // 5. Change password
             request = InitNewRequest("ApiAccountsChangePassword", Method.PUT, authenticator);
             request.AddJsonBody(changePasswordRequestBody);
 
@@ -99,7 +99,7 @@ namespace WHAT_API.API_Tests.Accounts
             });
             log.Info($"Expected and actual results is checked");
 
-            // 6
+            // 6. Verify that user can log in the system using new password
             Authentication signInRequestBody = new Authentication()
             {
                 Email = changePasswordRequestBody.Email,

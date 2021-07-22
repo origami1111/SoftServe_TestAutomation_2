@@ -43,7 +43,7 @@ namespace WHAT_API
             request.AddHeader("Authorization", GetToken(Role.Admin));
             response = client.Execute(request);
 
-            List<Secretaries> secretaries = JsonConvert.DeserializeObject<List<Secretaries>>(response.Content.ToString());
+            List<Secretary> secretaries = JsonConvert.DeserializeObject<List<Secretary>>(response.Content.ToString());
             var searchedSecretary = secretaries.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
             SecretaryID = searchedSecretary.ID;
         }

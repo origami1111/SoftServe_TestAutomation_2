@@ -4,7 +4,6 @@ using NUnit.Framework;
 using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
-using WHAT_API.Entities.Secretaries;
 using WHAT_Utilities;
 
 namespace WHAT_API
@@ -51,8 +50,8 @@ namespace WHAT_API
             response = client.Execute(request);
             log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath)}");
             var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
-            int maxId = activeSecretariesList.Max(i => i.Id);
-            var actualUser = activeSecretariesList.First(x => x.Id == maxId);
+            int maxId = activeSecretariesList.Max(i => i.ID);
+            var actualUser = activeSecretariesList.First(x => x.ID == maxId);
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedUser.FirstName, actualUser.FirstName);

@@ -44,7 +44,7 @@ namespace WHAT_API
             request.AddHeader("Authorization", GetToken(Role.Admin));
             response = client.Execute(request);
 
-            List<Secretaries> secretaries = JsonConvert.DeserializeObject<List<Secretaries>>(response.Content.ToString());
+            List<Secretary> secretaries = JsonConvert.DeserializeObject<List<Secretary>>(response.Content.ToString());
             var searchedSecretary = secretaries.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
             SecretaryID = searchedSecretary.ID;
         }
@@ -56,7 +56,7 @@ namespace WHAT_API
             RestRequest request = new RestRequest($"secretaries/{SecretaryID}", Method.PUT);
             request.AddHeader("Authorization", GetToken(Role.Admin));
             email = $"{Guid.NewGuid():N}" + email;
-            Secretaries body = new Secretaries()
+            Secretary body = new Secretary()
             {
                 Email = email,
                 FirstName = firstName,
@@ -67,7 +67,7 @@ namespace WHAT_API
             IRestResponse response = client.Execute(request);
 
             var actualStatus = response.StatusCode;
-            var responseSecretary = JsonConvert.DeserializeObject<Secretaries>(response.Content.ToString());
+            var responseSecretary = JsonConvert.DeserializeObject<Secretary>(response.Content.ToString());
 
             Assert.AreEqual(expectedStatus, actualStatus);
 

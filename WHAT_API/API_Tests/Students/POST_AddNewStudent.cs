@@ -35,7 +35,7 @@ namespace WHAT_API.API_Tests.Students
         /// </summary>
         [Test]
         [TestCase (Role.Admin)]
-        [TestCase(Role.Secretary)]
+        [TestCase (Role.Secretary)]
         public void VerifyAddingStudentAccount_Valid(Role role)
         {
             var expectedUser = new GenerateUser();

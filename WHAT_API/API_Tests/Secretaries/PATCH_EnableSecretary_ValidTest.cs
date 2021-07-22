@@ -45,7 +45,7 @@ namespace WHAT_API
 
             List<Secretary> secretaries = JsonConvert.DeserializeObject<List<Secretary>>(response.Content.ToString());
             var searchedSecretary = secretaries.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
-            SecretaryID = searchedSecretary.ID;
+            SecretaryID = searchedSecretary.Id;
 
             RestRequest deleteRequest = new RestRequest($"secretaries/{SecretaryID}", Method.DELETE);
             deleteRequest.AddHeader("Authorization", GetToken(Role.Admin));

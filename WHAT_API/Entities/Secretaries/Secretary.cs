@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace WHAT_API
 {
@@ -20,6 +21,11 @@ namespace WHAT_API
             return (this.Email == other.Email
                 && this.FirstName == other.FirstName
                 && this.LastName == other.LastName);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
         }
     }
 }

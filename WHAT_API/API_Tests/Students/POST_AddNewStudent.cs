@@ -15,6 +15,7 @@ namespace WHAT_API.API_Tests.Students
     {
         private RestRequest request;
         private IRestResponse response;
+
         public POST_AddNewStudent()
         {
             log = LogManager.GetLogger($"Students/{nameof(POST_AddNewStudent)}");

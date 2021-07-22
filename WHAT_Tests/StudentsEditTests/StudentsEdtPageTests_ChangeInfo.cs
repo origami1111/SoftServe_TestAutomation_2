@@ -13,9 +13,8 @@ namespace WHAT_Tests
     public class StudentsEdtPageTests_ChangeInfo : TestBase
     {
         private EditStudentDetailsPage studentsEditDetailsPage;
+        private StudentsPage studentsPage;
         private Random random = new Random();
-        private int studentId;
-
         public StudentsEdtPageTests_ChangeInfo()
         {
             log = LogManager.GetLogger($"Students Details page/{nameof(StudentsEdtPageTests_ChangeInfo)}");
@@ -24,12 +23,12 @@ namespace WHAT_Tests
         [SetUp]
         public void Precondition()
         {
-            studentId = random.Next(4, 10);
             var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
-            studentsEditDetailsPage = new SignInPage(driver)
+            studentsPage = new SignInPage(driver)
                                 .SignInAsAdmin(credentials.Email, credentials.Password)
-                                .SidebarNavigateTo<StudentsPage>()
-                                .ClickChoosedStudent(studentId)
+                                .SidebarNavigateTo<StudentsPage>();
+            int studentId = random.Next(3, studentsPage.GetCountStudents());
+            studentsEditDetailsPage=studentsPage.ClickChoosedStudent(studentId)
                                 .ClickEditStudentsDetaisNav()
                                 .WaitStudentsEditingLoad();
             log.Info($"Go to {driver.Url}");
@@ -53,25 +52,25 @@ namespace WHAT_Tests
             int expected = 1;
             int actual = 0;
             GenerateUser generatedUser = new GenerateUser();
-            StudentsPage studentsPage = studentsEditDetailsPage.FillFirstName(firstName)
+            log.Info($"Generate user random email: {generatedUser.Email}");
+            studentsPage = studentsEditDetailsPage.FillFirstName(firstName)
                                                      .FillLastName(lastName)
                                                      .FillEmail(generatedUser.Email)
                                                      .ClickSaveButton();
             string actualAlert = studentsPage.GetAlertText();
             log.Info($"Get allert text: {actualAlert}");
             StringAssert.Contains(expectAlert, actualAlert);
-            KeyValuePair<int, string[]> validPair = new KeyValuePair<int, string[]>(studentId, new string[] { firstName, lastName, generatedUser.Email });
+            string[] validPair =  new string[] { firstName, lastName, generatedUser.Email };
             List< string[]> studentTable = studentsPage.GetStudentsFromTable();
             log.Info($"Get student table, count: {studentTable.Count}");
             foreach (var item in studentTable)
             {
-                    Assert.Multiple(() =>
-                    {
-                        Assert.AreEqual(validPair.Value[0], item[0]);
-                        Assert.AreEqual(validPair.Value[1], item[1]);
-                        Assert.AreEqual(validPair.Value[2], item[2]);
-                    });
+                if (item[(int)RowOfElement.Email-1]== validPair[(int)RowOfElement.Email - 1])
+                {
+                    Assert.AreEqual(validPair[(int)RowOfElement.FirstName - 1], item[(int)RowOfElement.FirstName - 1]);
+                    Assert.AreEqual(validPair[(int)RowOfElement.LastName - 1], item[(int)RowOfElement.LastName - 1]);
                     actual++;
+                }
             }
             Assert.AreEqual(expected, actual);
         }

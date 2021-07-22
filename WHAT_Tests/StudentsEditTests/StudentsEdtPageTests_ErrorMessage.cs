@@ -80,6 +80,7 @@ namespace WHAT_Tests
             yield return new object[] { "Na*me", "Invalid first name" };
             yield return new object[] { "Name'", "Invalid first name" };
         }
+
         private static IEnumerable<object[]> InvalidLastNameSource()
         {
             yield return new object[] { "b", "Too short" };
@@ -94,6 +95,7 @@ namespace WHAT_Tests
             yield return new object[] { "Na*me", "Invalid last name" };
             yield return new object[] { "Name@", "Invalid last name" };
         }
+
         private static IEnumerable<object[]> InvalidEmailSource()
         {
             yield return new object[] { "c", "Too short" };

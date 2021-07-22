@@ -16,6 +16,7 @@ namespace WHAT_API.API_Tests.Students
     {
         private RestRequest request;
         private IRestResponse response;
+
         public DELETE_DisableStudentAccount()
         {
             log = LogManager.GetLogger($"Students/{nameof(DELETE_DisableStudentAccount)}");

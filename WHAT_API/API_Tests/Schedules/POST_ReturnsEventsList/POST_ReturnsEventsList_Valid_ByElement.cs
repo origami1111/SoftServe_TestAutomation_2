@@ -74,7 +74,6 @@ namespace WHAT_API
                 log.Info($"Expected and actual results is checked");
             });
         }
-
         
         [Test]
         [TestCase(Role.Admin)]

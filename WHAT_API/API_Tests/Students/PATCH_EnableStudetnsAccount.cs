@@ -10,6 +10,8 @@ using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Students
 {
+    [AllureNUnit]
+    [TestFixture]
     public class PATCH_EnableStudetnsAccount:API_BaseTest
     {
         private RestRequest request;

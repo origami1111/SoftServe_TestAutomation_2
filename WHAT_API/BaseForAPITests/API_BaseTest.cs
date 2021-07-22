@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using WHAT_Utilities;
 
 namespace WHAT_API
@@ -15,36 +16,92 @@ namespace WHAT_API
     {
         protected internal const string endpointsPath = @"DataFiles/Endpoints.json";
         protected internal const string linksPath = @"DataFiles/Links.json";
-        
+
         protected internal static RestClient client =
             new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", API_BaseTest.linksPath));
         protected internal Logger log = LogManager.GetCurrentClassLogger();
-        
+
         private readonly IAuthenticator[] authenticators =
             new IAuthenticator[Enum.GetValues(typeof(Role)).Length];
-        
+
+        [SetUp]
+        public void LogBeforeEachTest()
+        {
+            var context = TestContext.CurrentContext;
+            var testName = context.Test.FullName;
+            log.Info($"{testName} start ...");
+        }
+
         [TearDown]
         public void LogAfterEachTest()
         {
             var context = TestContext.CurrentContext;
             var testName = context.Test.FullName;
-            if (context.Result.Outcome.Status == TestStatus.Passed)
+            if (context.Result.Outcome.Status != TestStatus.Passed)
             {
-                log.Info($"{testName} {context.Result.Outcome.Status}");
-                return;
+                foreach (var assertion in context.Result.Assertions)
+                {
+                    log.Error($"{testName} {assertion.Status}:{Environment.NewLine}{assertion.Message}");
+                }
+            }
+            log.Info($"{testName} {context.Result.Outcome.Status}" +
+                $"{Environment.NewLine}----------------------------------------------------------");
+        }
+
+        protected RestRequest InitNewRequest(string endPointName, Method method,
+            IAuthenticator authenticator)
+        {
+            var resource = ReaderUrlsJSON.ByName(endPointName, endpointsPath);
+            var request = new RestRequest(resource, method);
+            authenticator.Authenticate(client, request);
+
+            return request;
+        }
+
+        protected IRestResponse Execute(RestRequest request)
+        {
+            return Execute<object>(request);
+        }
+
+        protected IRestResponse<T> Execute<T>(RestRequest request) where T : new()
+        {
+            var response = client.Execute<T>(request);
+
+            var text = new StringBuilder();
+            text.Append(request.Method).Append(" ")
+                .Append(client.BuildUri(request).AbsolutePath)
+                .Append("  Http Status Code: ").AppendLine(response.StatusDescription);
+            
+            if (request.Body != null)
+            {
+                text.Append("Request body: ").AppendLine(request.Body.Value?.ToString());
             }
 
-            foreach (var assertion in context.Result.Assertions)
+            if (response.ErrorException != null)
             {
-                log.Error($"{testName} {assertion.Status}:{Environment.NewLine}{assertion.Message}");
+                text.AppendLine(response.ErrorException.Message);
+                log.Error(text.ToString());
+
+                const string message = "Error retrieving response. Check inner details for more info.";
+                throw new Exception(message, response.ErrorException);
             }
+
+            if (response.Content != null)
+            {
+                text.Append("Response content: ").Append(response.Content);
+            }
+            
+            log.Info(text.ToString());
+            return response;
         }
 
         protected string GetToken(Role role)
         {
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role);
-            var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
-            request.RequestFormat = DataFormat.Json;
+            var request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST)
+            {
+                RequestFormat = DataFormat.Json
+            };
             request.AddJsonBody(new { credentials.Email, credentials.Password });
             var response = client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)
@@ -138,31 +195,6 @@ namespace WHAT_API
             return credentials;
         }
 
-        protected RestRequest InitNewRequest(string endPointName, Method method,
-            IAuthenticator authenticator)
-        {
-            var resource = ReaderUrlsJSON.ByName(endPointName, endpointsPath);
-            var request = new RestRequest(resource, method);
-            authenticator.Authenticate(client, request);
-
-            return request;
-        }
-
-        protected T Execute<T>(RestRequest request) where T : new()
-        {
-            var response = client.Execute<T>(request);
-
-            if (response.ErrorException != null)
-            {
-                const string message = "Error retrieving response. Check inner details for more info.";
-                var exception = new Exception(message, response.ErrorException);
-                throw exception;
-            }
-            System.Diagnostics.Debug.WriteLine(response.Content);
-
-            return response.Data;
-        }
-
         protected Account RegistrationUser()
         {
             var userInfo = new GenerateUser();
@@ -180,9 +212,12 @@ namespace WHAT_API
             var adminAuthenticator = GetAuthenticatorFor(Role.Admin);
             var getUnassignedUsersRequest =
                 InitNewRequest("ApiAccountsNotAssigned", Method.GET, adminAuthenticator);
-            var unassignedUsers = Execute<List<Account>>(getUnassignedUsersRequest);
 
-            return unassignedUsers.First(u => u.Email == userInfo.Email);
+            var unassignedUser = Execute<List<Account>>(getUnassignedUsersRequest).Data
+                .First(u => u.Email == userInfo.Email);
+            unassignedUser.Activity = Activity.Active;
+
+            return unassignedUser;
         }
 
         protected void AssignRole(Account user, Role role)

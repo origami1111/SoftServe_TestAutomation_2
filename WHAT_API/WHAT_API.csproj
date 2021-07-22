@@ -13,26 +13,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Remove="C:\Users\user\.nuget\packages\specflow.allure\3.5.0.65\contentFiles\any\netstandard2.0\allureConfig.Template.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="NLog.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Remove="NLog.config" />
+    <None Remove="NLog.xsd" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
-    <PackageReference Include="NLog" Version="4.7.10" />
     <PackageReference Include="NUnit" Version="3.13.1" />
-    <PackageReference Include="NUnit.Allure" Version="1.0.14" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
     <PackageReference Include="RestSharp" Version="106.11.7" />
-    <PackageReference Include="SpecFlow.Allure" Version="3.5.0.65" />
   </ItemGroup>
 
   <ItemGroup>

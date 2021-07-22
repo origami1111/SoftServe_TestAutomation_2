@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.Collections.Generic;
@@ -9,6 +11,7 @@ using WHAT_Utilities;
 
 namespace WHAT_API.API_Tests.Accounts
 {
+    [AllureNUnit]
     [TestFixture]
     class ChangePasswordPutRequest : API_BaseTest
     {
@@ -16,6 +19,11 @@ namespace WHAT_API.API_Tests.Accounts
         private IRestResponse response;
         private Account registeredUser;
         private ChangeCurrentPassword changePasswordRequestBody;
+
+        public ChangePasswordPutRequest()
+        {
+            log = LogManager.GetLogger($"Accounts/{nameof(ChangePasswordPutRequest)}");
+        }
 
         /// <summary>
         /// 1. Create account by POST method
@@ -31,10 +39,10 @@ namespace WHAT_API.API_Tests.Accounts
         {
             var authenticator = GetAuthenticatorFor(Role.Admin);
 
-            // 1
+            // 1. Create account by POST method
             registeredUser = RegistrationUser();
 
-            // 2
+            // 2. Get the id of the last unassigned user
             request = InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
             response = client.Execute(request);
 
@@ -43,7 +51,7 @@ namespace WHAT_API.API_Tests.Accounts
             var searchedUser = users.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
             registeredUser.Id = searchedUser.Id;
 
-            // 3
+            // 3. Assign account to ROLE(mentor)
             request = InitNewRequest("ApiMentorsAssignAccountToMentor-accountID", Method.POST, authenticator);
             request.AddUrlSegment("accountId", registeredUser.Id.ToString());
             response = client.Execute(request);
@@ -63,10 +71,10 @@ namespace WHAT_API.API_Tests.Accounts
         [TestCase(HttpStatusCode.OK)]
         public void ChangePasswordWithStatusCode200(HttpStatusCode expectedStatusCode)
         {
-            // 4
+            // 4. Log in
             var authenticator = GetAuthenticatorFor(Role.Admin);
 
-            // 5
+            // 5. Change password
             request = InitNewRequest("ApiAccountsChangePassword", Method.PUT, authenticator);
             request.AddJsonBody(changePasswordRequestBody);
 
@@ -76,15 +84,22 @@ namespace WHAT_API.API_Tests.Accounts
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
             string json = response.Content;
             Account actualDataChangePassword = JsonConvert.DeserializeObject<Account>(json);
 
-            Assert.AreEqual(registeredUser, actualDataChangePassword);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(registeredUser.Email, actualDataChangePassword.Email, "Email");
+                Assert.AreEqual(registeredUser.FirstName, actualDataChangePassword.FirstName, "First name");
+                Assert.AreEqual(registeredUser.LastName, actualDataChangePassword.LastName, "Last name");
+                Assert.AreEqual(registeredUser.Role, actualDataChangePassword.Role, "Role");
+                Assert.AreEqual(registeredUser.Activity, actualDataChangePassword.Activity, "IsActive");
+            });
             log.Info($"Expected and actual results is checked");
 
-            // 6
+            // 6. Verify that user can log in the system using new password
             Authentication signInRequestBody = new Authentication()
             {
                 Email = changePasswordRequestBody.Email,
@@ -97,16 +112,16 @@ namespace WHAT_API.API_Tests.Accounts
 
             actualStatusCode = response.StatusCode;
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
             json = response.Content;
             SignInResponseBody actualData = JsonConvert.DeserializeObject<SignInResponseBody>(json);
 
             Assert.Multiple(() =>
             {
-                Assert.IsTrue(actualDataChangePassword.FirstName == actualData.FirstName
-                    && actualDataChangePassword.LastName == actualData.LastName
-                    && actualDataChangePassword.Role == actualData.Role);
+                Assert.AreEqual(actualDataChangePassword.FirstName, actualData.FirstName, "First name");
+                Assert.AreEqual(actualDataChangePassword.LastName, actualData.LastName, "Last name");
+                Assert.AreEqual(actualDataChangePassword.Role, actualData.Role, "Role");
             });
             log.Info($"Expected and actual results is checked");
         }

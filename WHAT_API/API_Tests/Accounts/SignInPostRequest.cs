@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.Net;
@@ -7,11 +9,17 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     class SignInPostRequest : API_BaseTest
     {
         private RestRequest request;
         private IRestResponse response;
+
+        public SignInPostRequest()
+        {
+            log = LogManager.GetLogger($"Accounts/{nameof(SignInPostRequest)}");
+        }
 
         [Test]
         [TestCase(HttpStatusCode.OK, Role.Admin, Activity.Active)]
@@ -30,16 +38,16 @@ namespace WHAT_API
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
             string json = response.Content;
             SignInResponseBody actualData = JsonConvert.DeserializeObject<SignInResponseBody>(json);
 
             Assert.Multiple(() =>
             {
-                Assert.IsTrue(expectedData.FirstName == actualData.FirstName
-                    && expectedData.LastName == actualData.LastName
-                    && expectedData.Role == actualData.Role);
+                Assert.AreEqual(expectedData.FirstName, actualData.FirstName, "First name");
+                Assert.AreEqual(expectedData.LastName, actualData.LastName, "Last name");
+                Assert.AreEqual(expectedData.Role, actualData.Role, "Role");
             });
             log.Info($"Expected and actual results is checked");
         }
@@ -58,7 +66,7 @@ namespace WHAT_API
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
             string actual = response.Content;
 
@@ -83,7 +91,7 @@ namespace WHAT_API
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
             string actual = response.Content;
 
@@ -110,7 +118,7 @@ namespace WHAT_API
             HttpStatusCode actualStatusCode = response.StatusCode;
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            Assert.AreEqual(expectedStatusCode, actualStatusCode);
+            Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
         }
 
     }

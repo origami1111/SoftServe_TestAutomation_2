@@ -10,11 +10,10 @@ namespace WHAT_PageObject
         private By
                 userNotFound = By.XPath("//tbody//tr/td[contains (text(), 'not found')]"),
                 inputField = By.XPath("//input[@class = 'search__searchInput___34nMl']");
-
+        private SelectElement select;
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-
 
         private Dictionary<Type, By> listNames = new Dictionary<Type, By>()
         {
@@ -22,10 +21,6 @@ namespace WHAT_PageObject
             [typeof(SecretariesPage)] = By.XPath($"//tr[@class='list-of-secretaries__table-row___3cdmz']"),
             [typeof(StudentsPage)] = By.XPath($"//tr[@class='list-of-students__table-row___2X3jB']")
         };
-
-
-
-        private SelectElement select;
 
         public enum ColumnName
         {
@@ -39,12 +34,10 @@ namespace WHAT_PageObject
 
         private By TableCell(int rowNumber, ColumnName column)
         {
-
             if ((int)column == 5)
             {
                 return By.XPath($"//tr[{rowNumber}]/td[{(int)column}]/div/select[@class='unassigned-list__select___UNLgl']");
             }
-
             else if ((int)column == 6)
             {
                 return By.XPath($"//tr[{rowNumber}]/td[5]/div/button[text()='Add role']");
@@ -52,7 +45,6 @@ namespace WHAT_PageObject
 
             return By.XPath($"//tr[{rowNumber}]/td[{(int)column}]");
         }
-
 
         public UnassignedUsersPage(IWebDriver driver) : base(driver)
         {
@@ -107,12 +99,7 @@ namespace WHAT_PageObject
 
             FillField(inputField, firstName);
 
-            if (IsElementPresent(userNotFound))
-            {
-                return false;
-            }
-
-            else
+            if (!IsElementPresent(userNotFound))
             {
                 var list = driver.FindElements(listNames[typeof(T)]);
                 foreach (var item in list)

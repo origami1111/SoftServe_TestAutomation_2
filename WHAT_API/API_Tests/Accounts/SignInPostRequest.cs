@@ -40,8 +40,7 @@ namespace WHAT_API
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
-            string json = response.Content;
-            SignInResponseBody actualData = JsonConvert.DeserializeObject<SignInResponseBody>(json);
+            SignInResponseBody actualData = JsonConvert.DeserializeObject<SignInResponseBody>(response.Content);
 
             Assert.Multiple(() =>
             {
@@ -54,7 +53,8 @@ namespace WHAT_API
 
         [Test]
         [TestCase(HttpStatusCode.Forbidden, "is registered and waiting assign.", Role.Unassigned, Activity.Active)]
-        public void SignInWithStatusCodeForbidden(HttpStatusCode expectedStatusCode, string expected, Role role, Activity activity)
+        public void SignInWithStatusCodeForbidden(HttpStatusCode expectedStatusCode, string expected, 
+            Role role, Activity activity)
         {
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role, activity);
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
@@ -79,7 +79,8 @@ namespace WHAT_API
 
         [Test]
         [TestCase(HttpStatusCode.Unauthorized, "\"Account is not active!\"", Role.Mentor, Activity.Inactive)]
-        public void SignInWithStatusCodeUnauthorized(HttpStatusCode expectedStatusCode, string expected, Role role, Activity activity)
+        public void SignInWithStatusCodeUnauthorized(HttpStatusCode expectedStatusCode, string expected, 
+            Role role, Activity activity)
         {
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role, activity);
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);

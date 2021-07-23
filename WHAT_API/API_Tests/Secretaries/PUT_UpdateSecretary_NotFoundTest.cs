@@ -37,7 +37,7 @@ namespace WHAT_API
             }
             else
             {
-                SecretaryID = (secretaries.Last().ID) + 1;
+                SecretaryID = (secretaries.Last().Id) + 1;
             }
         }
 

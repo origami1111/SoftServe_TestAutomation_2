@@ -21,11 +21,7 @@ namespace WHAT_PageObject
         private By LessonId(string rowNumber) => By.XPath($"//tr[{rowNumber}]/td[1]");
         private By EditLessonNumber(string rowNumber) => By.XPath($"//tr[{rowNumber}]/td[5]");
         private By elementsInTable = By.XPath("//tr[@class = 'list-of-lessons__table-row___16_kJ']");
-        public string VerifySuccesMessage()
-        {
-            return driver.FindElement(successMessage).Text;
-        }
-
+        
         public AddLessonsPage ClickAddLessonButton()
         {
             ClickItem(addLessonButton);
@@ -79,6 +75,10 @@ namespace WHAT_PageObject
         {
             ClickItem(EditLessonNumber(number));
             return new EditLessonPage(driver);
+        }
+        public string VerifySuccesMessage()
+        {
+            return driver.FindElement(successMessage).Text;
         }
     }
 }

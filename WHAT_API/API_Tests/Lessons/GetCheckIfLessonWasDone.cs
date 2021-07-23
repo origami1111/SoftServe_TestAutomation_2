@@ -24,11 +24,10 @@ namespace WHAT_API.API_Tests.Lessons
                 .AddHeader("Authorization", GetToken(Role.Admin));
             var response = client.Execute(request);
             var responseDetail = JsonConvert.DeserializeObject<List<Lesson>>(response.Content);
-
             int lessonId = responseDetail
                 .Where(l => l.LessonVisits.Any(s => s.Presence == true))
                 .Select(l => l.Id)
-                .FirstOrDefault();
+                .First();
 
             var newrequest = new RestRequest($"lessons/{lessonId}/isdone", Method.GET)
                 .AddHeader("Authorization", GetToken(role));           
@@ -51,7 +50,7 @@ namespace WHAT_API.API_Tests.Lessons
             int lessonId = responseDetail
                 .Where(l => l.LessonVisits.Any(s => s.Presence == true))
                 .Select(l => l.Id)
-                .FirstOrDefault();
+                .First();
 
             var newrequest = new RestRequest($"lessons/{lessonId}/isdone", Method.GET);
             var newresponse = client.Execute(newrequest);

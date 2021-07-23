@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using WHAT_PageObject;
+using WHAT_Tests.ChangePasswordTests;
 using WHAT_Utilities;
 
 namespace WHAT_Tests
@@ -14,12 +15,11 @@ namespace WHAT_Tests
         public void SetupPage()
         {
             changePasswordPage = new SignInPage(driver)
-                           .SignInAsMentor(credentials.Email, credentials.Password)
-                           .ClickChangePassword();
+                .SignInAsMentor(credentials.Email, credentials.Password)
+                .ClickChangePassword();
         }
 
-        [Test]
-        [TestCase("", "What_1234", "This field is required")]
+        [TestCaseSource(typeof(TestCasesChangePassword), nameof(TestCasesChangePassword.InvalidCurrentPass))]
         public void ChangePasswordWithInvalidCurrentPassTest(string invalidCurrentPass, string newPass, string expected)
         {
             string actual = changePasswordPage
@@ -30,10 +30,7 @@ namespace WHAT_Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
-        [TestCase("", "What_1234", "What_123", "This field is required")]
-        [TestCase("111", "What_1234", "What_123", "Password must contain at least 8 characters")]
-        [TestCase("11111111", "What_1234", "What_123", "Must contain at least one uppercase, one lowercase, one number")]
+        [TestCaseSource(typeof(TestCasesChangePassword), nameof(TestCasesChangePassword.InvalidNewPass))]
         public void ChangePasswordWithInvalidNewPassTest(string invalidNewPass, string newPass, string currentPass, string expected)
         {
             string actual = changePasswordPage
@@ -45,9 +42,7 @@ namespace WHAT_Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
-        [TestCase("11111111", "What_123", "What_1234", "You should confirm your password")]
-        [TestCase("", "What_123", "What_1234", "This field is required")]
+        [TestCaseSource(typeof(TestCasesChangePassword), nameof(TestCasesChangePassword.InvalidConfirmPass))]
         public void ChangePasswordWithInvalidConfirmPassTest(string invalidConfirmPass, string currentPass, string newPass, string expected)
         {
             string actual = changePasswordPage

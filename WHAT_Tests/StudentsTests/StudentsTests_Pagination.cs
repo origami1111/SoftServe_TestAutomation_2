@@ -22,6 +22,7 @@ namespace WHAT_Tests
                                 .SidebarNavigateTo<StudentsPage>();
             log.Info($"Go to {driver.Url}");
         }
+
         public StudentsTests_Pagination()
         {
             log = LogManager.GetLogger($"StudentsPage/{nameof(StudentsTests_Pagination)}");

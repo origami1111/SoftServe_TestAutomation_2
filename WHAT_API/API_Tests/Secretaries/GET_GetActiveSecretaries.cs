@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NLog;
+using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     class GET_GetActiveSecretaries : API_BaseTest
     {

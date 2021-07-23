@@ -1,9 +1,11 @@
-﻿using NUnit.Framework;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
+    [AllureNUnit]
     [TestFixture]
     public class SecretariesReportedNumbersTests : TestBase
     {

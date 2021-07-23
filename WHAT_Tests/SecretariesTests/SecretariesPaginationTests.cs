@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Threading;
@@ -7,6 +8,7 @@ using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
+    [AllureNUnit]
     [TestFixture]
     public class SecretariesPaginationTests : TestBase
     {

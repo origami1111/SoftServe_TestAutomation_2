@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using WHAT_Utilities;
+using NUnit.Allure.Core;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     public class DELETE_DisableSecretary_ValidTest: API_BaseTest
     {

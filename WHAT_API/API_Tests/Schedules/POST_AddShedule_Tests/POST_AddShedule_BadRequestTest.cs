@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Net;
 using WHAT_Utilities;
 using NLog;
+using NUnit.Allure.Core;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     public class POST_AddShedule_BadRequestTest : API_BaseTest
     {
@@ -28,7 +30,6 @@ namespace WHAT_API
         }
 
         [Test, TestCase(HttpStatusCode.BadRequest, "wrongData")]
-
         public void POST_MissingData(HttpStatusCode expectedStatus, string data)
         {
             request.AddJsonBody(data);

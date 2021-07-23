@@ -24,57 +24,16 @@ namespace WHAT_Tests
         }
 
         [Test]
-        public void SignInAsAdmin()
+        [TestCase(Role.Admin, "StudentsPage")]
+        [TestCase(Role.Secretary, "MentorsPage")]
+        [TestCase(Role.Mentor, "LessonsPage")]
+        [TestCase(Role.Student, "SupportPage")]
+        public void SignInWithRole(Role role, string url)
         {
-            credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
-            string expected = ReaderUrlsJSON.GetUrlByName("StudentsPage", LinksPath);
+            credentials = ReaderFileJson.ReadFileJsonCredentials(role);
+            string expected = ReaderUrlsJSON.GetUrlByName(url, LinksPath);
 
             signInPage.SignInAsAdmin(credentials.Email, credentials.Password);
-
-            wait.Until(d => d.Url == expected);
-
-            string actual = driver.Url;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void SignInAsSecretar()
-        {
-            credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretary);
-            string expected = ReaderUrlsJSON.GetUrlByName("MentorsPage", LinksPath);
-
-            signInPage.SignInAsSecretar(credentials.Email, credentials.Password);
-
-            wait.Until(d => d.Url == expected);
-
-            string actual = driver.Url;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void SignInAsMentor()
-        {
-            credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
-            string expected = ReaderUrlsJSON.GetUrlByName("LessonsPage", LinksPath);
-
-            signInPage.SignInAsMentor(credentials.Email, credentials.Password);
-
-            wait.Until(d => d.Url == expected);
-
-            string actual = driver.Url;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void SignInAsStudent()
-        {
-            credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Student);
-            string expected = ReaderUrlsJSON.GetUrlByName("SupportPage", LinksPath);
-
-            signInPage.SignInAsStudent(credentials.Email, credentials.Password);
 
             wait.Until(d => d.Url == expected);
 

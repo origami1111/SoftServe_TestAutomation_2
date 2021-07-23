@@ -76,8 +76,7 @@ namespace WHAT_API
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
             log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
-            string json = response.Content;
-            EventOccurrence actual = JsonConvert.DeserializeObject<EventOccurrence>(json);
+            EventOccurrence actual = JsonConvert.DeserializeObject<EventOccurrence>(response.Content);
             actual.Events = actual.Events.OrderBy(ev => ev.EventStart).ToList();
 
             Assert.Multiple(() =>

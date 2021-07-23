@@ -59,23 +59,17 @@ namespace WHAT_PageObject
             return this;
         }
 
-        public string DangerFieldMessage(string fieldName)
+        public string GetFirstNameDangerField()
         {
-            string dangerMessage;
-
-            switch (fieldName)
-            {
-                case "first name":
-                    dangerMessage = driver.FindElement(firstNameDangerField).Text;
-                    break;
-                case "last name":
-                    dangerMessage = driver.FindElement(lastNameDangerField).Text;
-                    break;
-                default:
-                    dangerMessage = driver.FindElement(emailDangerField).Text;
-                    break;
-            }
-            return dangerMessage;
+            return driver.FindElement(firstNameDangerField).Text;
+        }
+        public string GetLastNameDangerField()
+        {
+            return driver.FindElement(lastNameDangerField).Text;
+        }
+        public string GetEmailDangerField()
+        {
+            return driver.FindElement(emailDangerField).Text;
         }
 
         public EditSecretaryPage ClickSaveButton()

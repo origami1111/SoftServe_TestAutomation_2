@@ -17,9 +17,8 @@ namespace WHAT_API
         private Account registeredUser;
         Random random = new Random();
 
-        public CreateSchedule GenerateShedule(PatternType type, int interval,
-                                              List<DayOfWeek> list, DateTime startDate, DateTime finishDate, 
-                                              long? mentorID, long? groupID, long themeID)
+        public CreateSchedule GenerateShedule(PatternType type, int interval, IList<DayOfWeek> list,
+            DateTime startDate, DateTime finishDate, long groupID, long? mentorID = null, long? themeID = null)
         {
             schedule.Pattern = new Pattern()
             {
@@ -37,26 +36,53 @@ namespace WHAT_API
             schedule.Context = new Context()
             {
                 MentorID = mentorID,
-                ThemeID = groupID,
-                GroupID = themeID
+                ThemeID = themeID,
+                GroupID = groupID
             };
 
             return schedule;
         }
 
+        public CreateSchedule GenerateShedule(Pattern pattern, DateTime startDate,
+            DateTime finishDate, long groupID, long? mentorID = null, long? themeID = null)
+        {
+            return new CreateSchedule()
+            {
+                Pattern = pattern,
+                Range = new OccurrenceRange()
+                {
+                    StartDate = startDate,
+                    FinishDate = finishDate
+                },
+                Context = new Context()
+                {
+                    GroupID = groupID,
+                    ThemeID = themeID,
+                    MentorID = mentorID
+                }
+            };
+        }
+
         public CreateSchedule GenerateShedule()
         {
+            DateTime startDate = DateTime.Now.AddMonths(-1);
+            startDate = new DateTime(startDate.Year, startDate.Month,
+                startDate.Day, startDate.Hour, startDate.Minute, startDate.Second);
+
+            DateTime finishDate = DateTime.Now;
+            finishDate = new DateTime(finishDate.Year, finishDate.Month,
+                finishDate.Day, finishDate.Hour, finishDate.Minute, finishDate.Second);
 
             schedule.Pattern = new Pattern()
             {
                 Type = PatternType.Daily,
-                Interval = random.Next(0, 4)
+                Interval = random.Next(1, 4)
             };
 
             schedule.Range = new OccurrenceRange()
             {
-                StartDate = DateTime.Now.ToUniversalTime(),
-                FinishDate = DateTime.Now.ToUniversalTime()
+                StartDate = startDate.ToUniversalTime(),
+                FinishDate = finishDate.ToUniversalTime()
             };
 
             schedule.Context = new Context()
@@ -117,7 +143,7 @@ namespace WHAT_API
             else
             {
                 int randomElement = random.Next(0, listOfStudentsGroup.Count);
-                studentsGroupID = listOfStudentsGroup.ElementAt(randomElement).ID;
+                studentsGroupID = listOfStudentsGroup.ElementAt(randomElement).Id;
             }
             return studentsGroupID;
         }

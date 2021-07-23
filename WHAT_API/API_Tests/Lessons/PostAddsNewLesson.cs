@@ -39,7 +39,7 @@ namespace WHAT_API.API_Tests.Lessons
             CreateLesson newLesson = new CreateLesson()
                 .WithThemaName(thema)
                 .WithMentorId(mentorId)
-                .WithStudentGroupId(studentGroup.ID)
+                .WithStudentGroupId(studentGroup.Id)
                 .WithLessonVisits(lessonvisits)
                 .WithLessonDate(date);
             var jsonfile = JsonConvert.SerializeObject(newLesson);
@@ -55,7 +55,7 @@ namespace WHAT_API.API_Tests.Lessons
             {
                 Assert.AreEqual(thema, resposneDetaile.ThemeName, "Thema name Assert");
                 Assert.AreEqual(mentorId, resposneDetaile.MentorId, "Mentor Id Assert");
-                Assert.AreEqual(studentGroup.ID, resposneDetaile.StudentGroupId, "Student group Id Assert");
+                Assert.AreEqual(studentGroup.Id, resposneDetaile.StudentGroupId, "Student group Id Assert");
                 Assert.AreEqual(Convert.ToDateTime(date), resposneDetaile.LessonDate, "Lesson date Assert");
                 for (int i = 0; i < resposneDetaile.LessonVisits.Count; i++)
                 {
@@ -90,7 +90,7 @@ namespace WHAT_API.API_Tests.Lessons
             CreateLesson newLesson = new CreateLesson()
                 .WithThemaName(thema)
                 .WithMentorId(mentorId)
-                .WithStudentGroupId(studentGroup.ID)
+                .WithStudentGroupId(studentGroup.Id)
                 .WithLessonVisits(lessonvisits)
                 .WithLessonDate(date);
 
@@ -127,7 +127,7 @@ namespace WHAT_API.API_Tests.Lessons
             CreateLesson newLesson = new CreateLesson()
                 .WithThemaName(thema)
                 .WithMentorId(mentorId)
-                .WithStudentGroupId(studentGroup.ID)
+                .WithStudentGroupId(studentGroup.Id)
                 .WithLessonVisits(lessonVisits)
                 .WithLessonDate(date);
             var jsonfile = JsonConvert.SerializeObject(newLesson);

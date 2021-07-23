@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using WHAT_Utilities;
 
-namespace WHAT_API.API_Tests.Accounts
+namespace WHAT_API
 {
     [AllureNUnit]
     [TestFixture]
@@ -47,9 +47,8 @@ namespace WHAT_API.API_Tests.Accounts
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
-            string json = response.Content;
-            var users = JsonConvert.DeserializeObject<List<Account>>(json);
-            var actualData = users.Where(user => user.Email == expectedData.Email).FirstOrDefault();
+            var actualData = JsonConvert.DeserializeObject<List<Account>>(response.Content)
+                .Where(user => user.Email == expectedData.Email).First();
 
             Assert.Multiple(() =>
             {

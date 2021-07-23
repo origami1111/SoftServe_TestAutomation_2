@@ -5,18 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="C:\Users\Alena\.nuget\packages\specflow.allure\3.5.0.65\contentFiles\any\netstandard2.0\allureConfig.Template.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="NLog.config" />
     <None Remove="NLog.xsd" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="C:\Users\user\.nuget\packages\specflow.allure\3.5.0.65\contentFiles\any\netstandard2.0\allureConfig.Template.json" Link="allureConfig.Template.json">
-      <Private>False</Private>
-      <NuGetPackageVersion>3.5.0.65</NuGetPackageVersion>
-      <NuGetItemType>Content</NuGetItemType>
-      <NuGetPackageId>SpecFlow.Allure</NuGetPackageId>
-      <Pack>false</Pack>
-    </Content>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

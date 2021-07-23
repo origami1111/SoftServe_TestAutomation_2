@@ -1,10 +1,13 @@
-﻿using NUnit.Framework;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using WHAT_PageObject;
+using WHAT_Tests.LessonsTests;
 using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
     [TestFixture]
+    [AllureNUnit]
     public class CancelEditLessonTest : TestBase
     {
         private LessonsPage lessonsPage;
@@ -14,15 +17,12 @@ namespace WHAT_Tests
         public void SetupPage()
         {
             lessonsPage = new SignInPage(driver)
-                            .SignInAsMentor(credentials.Email, credentials.Password);
+                .SignInAsMentor(credentials.Email, credentials.Password);                 
         }
 
-        [Test]
-        [TestCase("1", "nunit", "2021-06-29T08:00")]
-        public void CancelEditLessonValidTest(string number, string tema, string time)
+        [TestCaseSource(typeof(TestCasesLessons), nameof(TestCasesLessons.CancelEditLesson))]
+        public void CancelEditLessonValidTest(string number, string tema, string time, string expected)
         {
-            string expected = "http://localhost:8080/lessons";
-
             lessonsPage
               .ClickEditLesson(number)
               .FillLessonTheme(tema)

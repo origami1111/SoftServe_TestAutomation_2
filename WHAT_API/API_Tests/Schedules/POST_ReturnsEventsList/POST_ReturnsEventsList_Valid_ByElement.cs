@@ -3,6 +3,7 @@ using NLog;
 using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -26,13 +27,27 @@ namespace WHAT_API
         /// <summary> Get list of active students using GET request / Student section</summary>
         /// <param name="role"> User role </param>
         /// <returns> LessonsForMentor entity </returns>
-        public LessonsForMentor GetProperFilter(Role role)
+        /// 
+        private int GetMentorID(ref int mentorID)
+        {
+            Random random = new Random();
+            request = new RestRequest(ReaderUrlsJSON.GetUrlByName("ApiOnlyActiveMentors", endpointsPath), Method.GET);
+            request.AddHeader("Authorization", GetToken(Role.Admin));
+            response = client.Execute(request);
+            List<Mentor> listOfMentors = JsonConvert.DeserializeObject<List<Mentor>>(response.Content.ToString());
+            mentorID = listOfMentors.ElementAt(mentorID).Id;
+            return mentorID;
+        }
+
+        private LessonsForMentor GetProperFilter(Role role)
         {
             LessonsForMentor item = new LessonsForMentor();
+            int mentorID = 0;
             bool isValidId = false;
             while (!isValidId)
             {
-                int mentorID = generator.GetMentorID();
+                mentorID++;
+                mentorID = GetMentorID(ref mentorID);
                 request = new RestRequest(ReaderUrlsJSON.ByName("ApiMentorsIdLessons", endpointsPath), Method.GET);
                 request = InitNewRequest("ApiMentorsIdLessons", Method.GET, GetAuthenticatorFor(role));
                 request.AddUrlSegment("id", mentorID.ToString());

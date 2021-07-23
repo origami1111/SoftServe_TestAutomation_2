@@ -1,48 +1,50 @@
-﻿using NUnit.Framework;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
     [TestFixture]
+    [AllureNUnit]
     public class ChangePasswordTestsValid : TestBase
     {
         private ChangePasswordPage changePasswordPage;
         Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Mentor);
+        private string newPassword = "What_1234";
 
         [SetUp]
         public void SetupPage()
         {
             changePasswordPage = new SignInPage(driver)
-                            .SignInAsMentor(credentials.Email, credentials.Password)
-                            .ClickChangePassword();
+                .SignInAsMentor(credentials.Email, credentials.Password)
+                .ClickChangePassword();
         }
 
         [Test]
-        [TestCase("What_123", "What_1234", "×\r\nClose alert\r\nThe password has been successfully changed")]
-        public void ChangePasswordWithValidDataTest(string currentPass, string newPass, string expected)
+        public void ChangePasswordWithValidDataTest()
         {
+            string expected = "The password has been successfully changed";
+
             string actual = changePasswordPage
-                .FillCurrentPassword(currentPass)
-                .FillNewPassword(newPass)
-                .FillConfirmNewPassword(newPass)
+                .FillCurrentPassword(credentials.Password)
+                .FillNewPassword(newPassword)
+                .FillConfirmNewPassword(newPassword)
                 .ClickSaveButton()
                 .ClickSaveInPopUpMenu()
                 .VerifySuccesMessage();
 
-            Assert.AreEqual(expected, actual);
+            StringAssert.Contains(expected,actual);
         }
 
         [TearDown]
         public void SetPostConditions()
         {
-            string postNewPass = "What_123";
-            string postCurrPass = "What_1234";
             changePasswordPage
                 .ClickChangePassword()
-                .FillCurrentPassword(postCurrPass)
-                .FillNewPassword(postNewPass)
-                .FillConfirmNewPassword(postNewPass)
+                .FillCurrentPassword(newPassword)
+                .FillNewPassword(credentials.Password)
+                .FillConfirmNewPassword(credentials.Password)
                 .ClickSaveButton()
                 .ClickSaveInPopUpMenu();
         }

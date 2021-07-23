@@ -1,0 +1,50 @@
+﻿using Newtonsoft.Json;
+using NLog;
+using NUnit.Framework;
+using RestSharp;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using WHAT_Utilities;
+
+namespace WHAT_API
+{
+    [TestFixture]
+    class GET_GetActiveSecretaries : API_BaseTest
+    {
+        private RestRequest request;
+        private IRestResponse response;
+
+        public GET_GetActiveSecretaries()
+        {
+            log = LogManager.GetLogger($"Secretaries/{nameof(GET_GetActiveSecretaries)}");
+        }
+        [Test]
+        [TestCase(Role.Admin)]
+        [TestCase(Role.Secretary)]
+        public void VerifyGettingActiveSecretaries_Valid(Role role)
+        {
+            //GET Accounts
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAll", endpointsPath), Method.GET);
+            request.AddHeader("Authorization", GetToken(Role.Admin));
+            response = Execute(request);
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsAll", endpointsPath)}");
+            var expectedSecretariesList = from account in JsonConvert.DeserializeObject<List<Account>>(response.Content)
+                                          where account.Role.Equals(Role.Secretary)
+                                          where account.Activity.Equals(Activity.Active)
+                                          select account;
+
+            //GET All Secretaries
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath), Method.GET);
+            request.AddHeader("Authorization", GetToken(role));
+            response = Execute(request);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath)}");
+            var actualSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
+            
+            CollectionAssert.AreEquivalent(actualSecretariesList, expectedSecretariesList);
+
+            log.Info($"Expected and actual results is checked");
+        }
+    }
+}

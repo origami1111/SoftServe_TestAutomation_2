@@ -39,7 +39,6 @@ namespace WHAT_Tests
             {
                 Assert.Fail();
             }
-
         }
 
         [Test]

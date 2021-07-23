@@ -10,7 +10,7 @@ namespace WHAT_Tests
         private UnassignedUsersPage unassignedUsers;
 
         [SetUp]
-        public void Setup()
+        public void PreCondition()
         {
             var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
 
@@ -20,21 +20,19 @@ namespace WHAT_Tests
         }
 
         [TearDown]
-        public void Down()
+        public void PostCondition()
         {
             unassignedUsers.Logout();
         }
 
         [Test]
-
-        [TestCase(7)]
+        [TestCase(1)]
         public void AddRole(int secretaryID)
         {
             unassignedUsers.AddSecretaryRole(secretaryID);
 
             SecretariesPage secretariesPage = new SecretariesPage(driver)
                                           .SidebarNavigateTo<SecretariesPage>();
-
             driver.Navigate().Refresh();
 
             bool actual = unassignedUsers.UserVerify<SecretariesPage>(unassignedUsers.FirstName, unassignedUsers.LastName, unassignedUsers.Email);

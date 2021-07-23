@@ -8,11 +8,12 @@ namespace WHAT_Tests
     [TestFixture]
     public class EditSecretaryValidDataTest : TestBase
     {
+        private EditSecretaryPage editSecretaryPage;
         private UnassignedUsersPage findUser;
         private string FirstName { get; set; }
         private string LastName { get; set; }
         private string Email { get; set; }
-
+        private int ID { get; set; } = 3;
 
         #region TestData
 
@@ -38,17 +39,15 @@ namespace WHAT_Tests
 
         #endregion
 
-        private EditSecretaryPage editSecretaryPage;
-
         [SetUp]
-        public void Set()
+        public void PreCondition()
         {
             var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
 
             editSecretaryPage = new SignInPage(driver)
                             .SignInAsAdmin(credentials.Email, credentials.Password)
                             .SidebarNavigateTo<SecretariesPage>()
-                            .EditSecretary(5);
+                            .EditSecretary(ID);
 
             FirstName = editSecretaryPage.GetFirstName();
             LastName = editSecretaryPage.GetLastName();
@@ -56,10 +55,10 @@ namespace WHAT_Tests
         }
 
         [TearDown]
-        public void Down()
+        public void PostCondition()
         {
             editSecretaryPage.SidebarNavigateTo<SecretariesPage>()
-                             .EditSecretary(5)
+                             .EditSecretary(ID)
                              .Fill_FirstName(FirstName)
                              .Fill_LastName(LastName)
                              .Fill_Email(Email)
@@ -69,9 +68,7 @@ namespace WHAT_Tests
         }
 
         [Test]
-
         [TestCaseSource(nameof(ValidCasesData))]
-
         public void ValidDataTest(string firstName, string lastName, string email)
         {
 
@@ -85,7 +82,6 @@ namespace WHAT_Tests
 
             Assert.IsTrue(actual);
         }
-
     }
 }
 

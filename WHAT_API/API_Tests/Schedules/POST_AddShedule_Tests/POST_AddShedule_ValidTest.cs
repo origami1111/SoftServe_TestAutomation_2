@@ -5,9 +5,11 @@ using System;
 using System.Net;
 using WHAT_Utilities;
 using NLog;
+using NUnit.Allure.Core;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     public class POST_AddShedule_ValidTest : API_BaseTest
     {

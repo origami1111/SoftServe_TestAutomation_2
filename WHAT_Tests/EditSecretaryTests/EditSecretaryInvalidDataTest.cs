@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
@@ -7,21 +8,51 @@ namespace WHAT_Tests
     [TestFixture]
     public class EditSecretaryInvalidDataTest : TestBase
     {
-
         #region TestData
+        private static IEnumerable<TestCaseData> InvalidFirstNameData()
+        {
+            yield return new TestCaseData("G", "Too short");
 
-        static string[] DivideCasesNames = new string[] { "G","qrSBFoVkahhXYLDRgtcoHWGQdwnyBzxyurXqHcsfXBlfyBILWJl",
-        " name","name-","name@","name#","name$","name%","name^","name*","name5" };
+            yield return new TestCaseData("qrSBFoVkahhXYLDRgtcoHWGQdwnyBzxyurXqHcsfXBlfyBILWJl",
+                                          "Too long");
 
-        static string[] DivideCasesEmail = new string[] { "fsapf", "ya hah@gmail.com", "yahahgmail.com", "email@com" };
+            yield return new TestCaseData(" name",
+                                          "Invalid first name");
 
+            yield return new TestCaseData("name-", "Invalid first name");
+
+            yield return new TestCaseData("name#", "Invalid first name");
+        }
+        private static IEnumerable<TestCaseData> InvalidLastNameData()
+        {
+            yield return new TestCaseData("B", "Too short");
+
+            yield return new TestCaseData("qrSBFoVkahhXYLDRgtcoHWGQdwnyBzxyurXqHcsfXBlfyBILWJl",
+                                          "Too long");
+
+            yield return new TestCaseData(" LastName", "Invalid last name");
+
+            yield return new TestCaseData("LastName-", "Invalid last name");
+
+            yield return new TestCaseData("LastName#", "Invalid last name");
+        }
+        private static IEnumerable<TestCaseData> InvalidEmailData()
+        {
+            yield return new TestCaseData("fsapf", "Invalid email address");
+
+            yield return new TestCaseData("ya hah@gmail.com", "Invalid email address");
+
+            yield return new TestCaseData("yahahgmail.com", "Invalid email address");
+
+            yield return new TestCaseData("email@com", "Invalid email address");
+        }
         #endregion
 
         private EditSecretaryPage editSecretaryPage;
         private int secretaryID = 5;
 
         [SetUp]
-        public void Set()
+        public void PreCondition()
         {
             var credentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
 
@@ -32,24 +63,19 @@ namespace WHAT_Tests
         }
 
         [TearDown]
-        public void Down()
+        public void PostCondition()
         {
             editSecretaryPage.ClickClearButton();
             editSecretaryPage.Logout();
         }
 
         [Test]
-
-        [TestCaseSource(nameof(DivideCasesNames))]
-
-        public void InvalidFirstNameTest(string data)
+        [TestCaseSource(nameof(InvalidFirstNameData))]
+        public void InvalidFirstNameTest(string firstName, string expected)
         {
-            string expected = WarningMessagesData.WarningMessages(data, WarningMessagesData.FirstName);
+            editSecretaryPage.Fill_FirstName(firstName);
 
-            editSecretaryPage.Fill_FirstName(data);
-
-            string actual = editSecretaryPage.DangerFieldMessage(WarningMessagesData.FirstName);
-
+            string actual = editSecretaryPage.GetFirstNameDangerField();
 
             Assert.Multiple(() =>
             {
@@ -61,16 +87,12 @@ namespace WHAT_Tests
         }
 
         [Test]
-
-        [TestCaseSource(nameof(DivideCasesNames))]
-
-        public void InvalidLastNameTest(string data)
+        [TestCaseSource(nameof(InvalidLastNameData))]
+        public void InvalidLastNameTest(string lastName, string expected)
         {
-            string expected = WarningMessagesData.WarningMessages(data, WarningMessagesData.LastName);
+            editSecretaryPage.Fill_LastName(lastName);
 
-            editSecretaryPage.Fill_LastName(data);
-
-            string actual = editSecretaryPage.DangerFieldMessage(WarningMessagesData.LastName);
+            string actual = editSecretaryPage.GetLastNameDangerField();
 
             Assert.Multiple(() =>
             {
@@ -82,15 +104,12 @@ namespace WHAT_Tests
         }
 
         [Test]
-
-        [TestCaseSource(nameof(DivideCasesEmail))]
-        public void InvalidEmailTest(string data)
+        [TestCaseSource(nameof(InvalidEmailData))]
+        public void InvalidEmailTest(string email, string expected)
         {
-            string expected = WarningMessagesData.WarningMessages(data, WarningMessagesData.Email);
+            editSecretaryPage.Fill_Email(email);
 
-            editSecretaryPage.Fill_Email(data);
-
-            string actual = editSecretaryPage.DangerFieldMessage(WarningMessagesData.Email);
+            string actual = editSecretaryPage.GetEmailDangerField();
 
             Assert.Multiple(() =>
             {
@@ -100,6 +119,5 @@ namespace WHAT_Tests
                 Assert.IsTrue(driver.FindElement(editSecretaryPage.clear).Enabled);
             });
         }
-
     }
 }

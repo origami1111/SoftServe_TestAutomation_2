@@ -46,17 +46,24 @@ namespace WHAT_API
 
         public CreateSchedule GenerateShedule()
         {
+            DateTime startDate = DateTime.Now.AddMonths(-1);
+            startDate = new DateTime(startDate.Year, startDate.Month,
+                startDate.Day, startDate.Hour, startDate.Minute, startDate.Second);
+
+            DateTime finishDate = DateTime.Now;
+            finishDate = new DateTime(finishDate.Year, finishDate.Month,
+                finishDate.Day, finishDate.Hour, finishDate.Minute, finishDate.Second);
 
             schedule.Pattern = new Pattern()
             {
                 Type = PatternType.Daily,
-                Interval = random.Next(0, 4)
+                Interval = random.Next(1, 4)
             };
 
             schedule.Range = new OccurrenceRange()
             {
-                StartDate = DateTime.Now.ToUniversalTime(),
-                FinishDate = DateTime.Now.ToUniversalTime()
+                StartDate = startDate.ToUniversalTime(),
+                FinishDate = finishDate.ToUniversalTime()
             };
 
             schedule.Context = new Context()

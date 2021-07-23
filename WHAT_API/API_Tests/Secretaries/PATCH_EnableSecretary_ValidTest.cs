@@ -7,9 +7,11 @@ using System.Linq;
 using System.Net;
 using WHAT_Utilities;
 using NLog;
+using NUnit.Allure.Core;
 
 namespace WHAT_API
 {
+    [AllureNUnit]
     [TestFixture]
     public class PATCH_EnableSecretary_ValidTest: API_BaseTest
     {

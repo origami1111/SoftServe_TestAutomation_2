@@ -7,7 +7,7 @@ using System.Net;
 using WHAT_API.Entities;
 using WHAT_Utilities;
 
-namespace WHAT_API.API_Tests.Accounts
+namespace WHAT_API
 {
     [AllureNUnit]
     [TestFixture]

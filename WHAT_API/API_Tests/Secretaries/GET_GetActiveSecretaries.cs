@@ -19,31 +19,60 @@ namespace WHAT_API
         {
             log = LogManager.GetLogger($"Secretaries/{nameof(GET_GetActiveSecretaries)}");
         }
+        private IRestResponse GetApiAccountsAll()
+        {
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAll", endpointsPath), Method.GET);
+            request.AddHeader("Authorization", GetToken(Role.Admin));
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsAll", endpointsPath)}");
+            return Execute(request);
+        }
+
+        private IRestResponse GetApiSecretariesActive(Role role)
+        {
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath), Method.GET);
+            request.AddHeader("Authorization", GetToken(role));
+            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath)}");
+            return Execute(request);
+        }
+
         [Test]
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]
         public void VerifyGettingActiveSecretaries_Valid(Role role)
         {
-            //GET Accounts
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAll", endpointsPath), Method.GET);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
-            response = Execute(request);
-            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsAll", endpointsPath)}");
+            response = GetApiAccountsAll();
             var expectedSecretariesList = from account in JsonConvert.DeserializeObject<List<Account>>(response.Content)
                                           where account.Role.Equals(Role.Secretary)
                                           where account.Activity.Equals(Activity.Active)
                                           select account;
-
-            //GET All Secretaries
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath), Method.GET);
-            request.AddHeader("Authorization", GetToken(role));
-            response = Execute(request);
+            response = GetApiSecretariesActive(role);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath)}");
             var actualSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
-            
             CollectionAssert.AreEquivalent(actualSecretariesList, expectedSecretariesList);
+            log.Info($"Expected and actual results is checked");
+        }
 
+        [Test]
+        public void VerifyGettingAllSecretaries_Unauthorized()
+        {
+            var expected = HttpStatusCode.Unauthorized;
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath), Method.GET);
+            response = Execute(request);
+            var actual = response.StatusCode;
+            Assert.AreEqual(expected, actual);
+            log.Info($"Expected and actual results is checked");
+        }
+
+        [TestCase(Role.Mentor)]
+        [TestCase(Role.Student)]
+        [TestCase(Role.Unassigned)]
+        [Test]
+        public void VerifyGettingAllSecretaries_Forbidden(Role role)
+        {
+            var expected = HttpStatusCode.Forbidden;
+            response = GetApiSecretariesActive(role);
+            var actual = response.StatusCode;
+            Assert.AreEqual(expected, actual);
             log.Info($"Expected and actual results is checked");
         }
     }

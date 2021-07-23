@@ -137,10 +137,31 @@ namespace WHAT_API
         {
             response = GET_ApiAccountsNotAssigned();
             int maxUserId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
-            response = POST_ApiSecretariesAccountId(role, maxUserId+1);
+            response = POST_ApiSecretariesAccountId(role, maxUserId + 1);
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
             response = GET_ApiSecretariesActive();
             log.Info($"Expected and actual results is checked");
+        }
+
+        [Test]
+        [TestCase(Role.Admin)]
+        public void VerifyAddingSecretaryAccount_AlreadyAssigned(Role role)
+        {
+            var expected = HttpStatusCode.BadRequest;
+            var newUser = new GenerateUser();
+            POST_ApiAccountsReg(newUser);
+            response = GET_ApiAccountsNotAssigned();
+            int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
+            POST_ApiSecretariesAccountId(role, newUserAccountId);
+            POST_ApiSecretariesAccountId(role, newUserAccountId);
+            var actual = response.StatusCode;
+            Assert.AreEqual(expected, actual);
+            response = GET_ApiSecretariesActive();
+            var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
+            int maxId = activeSecretariesList.Max(i => i.Id);
+            var actualUser = activeSecretariesList.First(x => x.Id == maxId);
+            log.Info($"Expected and actual results is checked");
+            DELETE_ApiSecretariesId(maxId);
         }
     }
 }

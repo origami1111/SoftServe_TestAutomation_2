@@ -115,7 +115,7 @@
   },
   //StudentGroups
   {
-    //GET
+    //GET/POST
     "Name": "ApiStudentsGroup",
     "Url": "student_groups"
   },

@@ -30,7 +30,6 @@ namespace WHAT_API
         }
 
         [Test, TestCase(HttpStatusCode.BadRequest, "wrongData")]
-
         public void POST_MissingData(HttpStatusCode expectedStatus, string data)
         {
             request.AddJsonBody(data);

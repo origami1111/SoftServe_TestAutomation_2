@@ -29,7 +29,7 @@ namespace WHAT_API
             var pattern = PatternGenerator.GetRelativeMonthlyPattern(1, MonthIndex.Second,
                 DayOfWeek.Thursday, DayOfWeek.Friday);
             createSchedule = new ScheduleGenerator().GenerateShedule(pattern, DateTime.UtcNow,
-                DateTime.UtcNow.AddMonths(1), originstudentGroup.ID);
+                DateTime.UtcNow.AddMonths(1), originstudentGroup.Id);
         }
 
         [TestCase(Role.Admin)]

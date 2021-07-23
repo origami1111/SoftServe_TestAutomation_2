@@ -22,7 +22,7 @@ namespace WHAT_API
             log = LogManager.GetLogger($"Secretaries/{nameof(POST_AddNewSecretary)}");
         }
 
-        private IRestResponse POST_ApiAccountsReg(GenerateUser user)
+        private IRestResponse PostApiAccountsReg(GenerateUser user)
         {
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(user);
@@ -30,7 +30,7 @@ namespace WHAT_API
             return Execute(request);
         }
 
-        private IRestResponse GET_ApiAccountsNotAssigned()
+        private IRestResponse GetApiAccountsNotAssigned()
         {
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(Role.Admin));
@@ -38,7 +38,7 @@ namespace WHAT_API
             return Execute(request);
         }
 
-        private IRestResponse POST_ApiSecretariesAccountId(Role role, int accountId)
+        private IRestResponse PostApiSecretariesAccountId(Role role, int accountId)
         {
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesAccountId", endpointsPath), Method.POST);
             request = InitNewRequest("ApiSecretariesAccountId", Method.POST, GetAuthenticatorFor(role));
@@ -49,7 +49,7 @@ namespace WHAT_API
             return response;
         }
 
-        private IRestResponse GET_ApiSecretariesActive()
+        private IRestResponse GetApiSecretariesActive()
         {
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath), Method.GET);
             request.AddHeader("Authorization", GetToken(Role.Admin));
@@ -57,7 +57,7 @@ namespace WHAT_API
             return Execute(request);
         }
 
-        private IRestResponse DELETE_ApiSecretariesId(int userId)
+        private IRestResponse DeleteApiSecretariesId(int userId)
         {
             request = InitNewRequest("ApiSecretariesId", Method.DELETE, GetAuthenticatorFor(Role.Admin));
             request.AddUrlSegment("id", userId.ToString());
@@ -70,12 +70,12 @@ namespace WHAT_API
         public void VerifyAddingSecretaryAccount_Valid(Role role)
         {
             var expectedUser = new GenerateUser();
-            POST_ApiAccountsReg(expectedUser);
-            response = GET_ApiAccountsNotAssigned();
+            PostApiAccountsReg(expectedUser);
+            response = GetApiAccountsNotAssigned();
             int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
-            POST_ApiSecretariesAccountId(role, newUserAccountId);
+            PostApiSecretariesAccountId(role, newUserAccountId);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            response = GET_ApiSecretariesActive();
+            response = GetApiSecretariesActive();
             var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
             int maxId = activeSecretariesList.Max(i => i.Id);
             var actualUser = activeSecretariesList.First(x => x.Id == maxId);
@@ -86,7 +86,7 @@ namespace WHAT_API
                 Assert.AreEqual(expectedUser.Email, actualUser.Email);
             });
             log.Info($"Expected and actual results is checked");
-            DELETE_ApiSecretariesId(maxId);
+            DeleteApiSecretariesId(maxId);
         }
 
         [Test]
@@ -97,26 +97,26 @@ namespace WHAT_API
         public void VerifyAddingSecretaryAccount_Forbidden(Role role)
         {
             var expectedUser = new GenerateUser();
-            POST_ApiAccountsReg(expectedUser);
-            response = GET_ApiAccountsNotAssigned();
+            PostApiAccountsReg(expectedUser);
+            response = GetApiAccountsNotAssigned();
             int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
-            response = POST_ApiSecretariesAccountId(role, newUserAccountId);
+            response = PostApiSecretariesAccountId(role, newUserAccountId);
             Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
-            response = GET_ApiSecretariesActive();
+            response = GetApiSecretariesActive();
             var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
             int maxId = activeSecretariesList.Max(i => i.Id);
             var actualUser = activeSecretariesList.First(x => x.Id == maxId);
             Assert.AreNotEqual(expectedUser.Email, actualUser.Email);
             log.Info($"Expected and actual results is checked");
-            DELETE_ApiSecretariesId(maxId);
+            DeleteApiSecretariesId(maxId);
         }
 
         [Test]
         public void VerifyAddingSecretaryAccount_Unauthorized()
         {
             var expectedUser = new GenerateUser();
-            POST_ApiAccountsReg(expectedUser);
-            response = GET_ApiAccountsNotAssigned();
+            PostApiAccountsReg(expectedUser);
+            response = GetApiAccountsNotAssigned();
             int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
             request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesAccountId", endpointsPath), Method.POST);
             request.AddUrlSegment("accountId", newUserAccountId.ToString());
@@ -124,24 +124,24 @@ namespace WHAT_API
             response = Execute(request);
             log.Info($"POST request to {response.ResponseUri}");
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
-            response = GET_ApiSecretariesActive();
+            response = GetApiSecretariesActive();
             var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
             int maxId = activeSecretariesList.Max(i => i.Id);
             var actualUser = activeSecretariesList.First(x => x.Id == maxId);
             Assert.AreNotEqual(expectedUser.Email, actualUser.Email);
             log.Info($"Expected and actual results is checked");
-            DELETE_ApiSecretariesId(maxId);
+            DeleteApiSecretariesId(maxId);
         }
 
         [Test]
         [TestCase(Role.Admin)]
         public void VerifyAddingSecretaryAccount_AccountNotFound(Role role)
         {
-            response = GET_ApiAccountsNotAssigned();
+            response = GetApiAccountsNotAssigned();
             int maxUserId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
-            response = POST_ApiSecretariesAccountId(role, maxUserId + 1);
+            response = PostApiSecretariesAccountId(role, maxUserId + 1);
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
-            response = GET_ApiSecretariesActive();
+            response = GetApiSecretariesActive();
             log.Info($"Expected and actual results is checked");
         }
 
@@ -151,19 +151,19 @@ namespace WHAT_API
         {
             var expected = HttpStatusCode.BadRequest;
             var newUser = new GenerateUser();
-            POST_ApiAccountsReg(newUser);
-            response = GET_ApiAccountsNotAssigned();
+            PostApiAccountsReg(newUser);
+            response = GetApiAccountsNotAssigned();
             int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
-            POST_ApiSecretariesAccountId(role, newUserAccountId);
-            POST_ApiSecretariesAccountId(role, newUserAccountId);
+            PostApiSecretariesAccountId(role, newUserAccountId);
+            PostApiSecretariesAccountId(role, newUserAccountId);
             var actual = response.StatusCode;
             Assert.AreEqual(expected, actual);
-            response = GET_ApiSecretariesActive();
+            response = GetApiSecretariesActive();
             var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
             int maxId = activeSecretariesList.Max(i => i.Id);
             var actualUser = activeSecretariesList.First(x => x.Id == maxId);
             log.Info($"Expected and actual results is checked");
-            DELETE_ApiSecretariesId(maxId);
+            DeleteApiSecretariesId(maxId);
         }
     }
 }

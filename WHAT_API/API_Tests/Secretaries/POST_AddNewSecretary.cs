@@ -71,20 +71,18 @@ namespace WHAT_API
             POST_ApiAccountsReg(expectedUser);
             response = GET_ApiAccountsNotAssigned();
             int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
-            /*response = */POST_ApiSecretariesAccountId(role, newUserAccountId);
+            POST_ApiSecretariesAccountId(role, newUserAccountId);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             response = GET_ApiSecretariesActive();
             var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
             int maxId = activeSecretariesList.Max(i => i.Id);
             var actualUser = activeSecretariesList.First(x => x.Id == maxId);
-
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedUser.FirstName, actualUser.FirstName);
                 Assert.AreEqual(expectedUser.LastName, actualUser.LastName);
                 Assert.AreEqual(expectedUser.Email, actualUser.Email);
             });
-
             log.Info($"Expected and actual results is checked");
             DELETE_ApiSecretariesId(maxId);
         }
@@ -106,9 +104,7 @@ namespace WHAT_API
             var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
             int maxId = activeSecretariesList.Max(i => i.Id);
             var actualUser = activeSecretariesList.First(x => x.Id == maxId);
-           
             Assert.AreNotEqual(expectedUser.Email, actualUser.Email);
-
             log.Info($"Expected and actual results is checked");
             DELETE_ApiSecretariesId(maxId);
         }
@@ -116,7 +112,6 @@ namespace WHAT_API
         [Test]
         public void VerifyAddingSecretaryAccount_Unauthorized()
         {
-
             var expectedUser = new GenerateUser();
             POST_ApiAccountsReg(expectedUser);
             response = GET_ApiAccountsNotAssigned();
@@ -131,9 +126,7 @@ namespace WHAT_API
             var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
             int maxId = activeSecretariesList.Max(i => i.Id);
             var actualUser = activeSecretariesList.First(x => x.Id == maxId);
-
             Assert.AreNotEqual(expectedUser.Email, actualUser.Email);
-
             log.Info($"Expected and actual results is checked");
             DELETE_ApiSecretariesId(maxId);
         }

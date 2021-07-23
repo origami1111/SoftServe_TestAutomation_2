@@ -44,7 +44,7 @@ namespace WHAT_API.API_Tests.Lessons
             CreateLesson newLesson = new CreateLesson()
                 .WithThemaName(thema)
                 .WithMentorId(mentorId)
-                .WithStudentGroupId(studentGroup.ID)
+                .WithStudentGroupId(studentGroup.Id)
                 .WithLessonVisits(lessonVisits)
                 .WithLessonDate(date);
             var jsonfile = JsonConvert.SerializeObject(newLesson);

@@ -7,7 +7,7 @@ namespace WHAT_API
     public class StudentGroup
     {
         [JsonProperty("id")]
-        public int ID { get; set; }
+        public int Id { get; set; }
         [JsonProperty("courseId")]
         public int CourseId { get; set; }
         [JsonProperty("name")]

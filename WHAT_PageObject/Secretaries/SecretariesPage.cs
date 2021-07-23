@@ -7,14 +7,13 @@ namespace WHAT_PageObject
 {
     public class SecretariesPage : BasePageWithHeaderSidebar
     {
-        #region Locators
+        WebDriverWait wait;
 
+        #region Locators
         By addSecretaryButton = By.XPath("//span[contains(.,'Add a secretary')]");
         By disabledSwitch = By.XPath("//label[contains(.,'Disabled Secretaries')]");
         By searchField = By.XPath("//input[@type='text']");
         By visibleUsersSelect = By.Id("change-visible-people");
-        private int usersAtPageIndex = 0;
-        private int usersTotalIndex = 2;
         By countUsersReport = By.XPath("//span[contains(.,'secretaries')]");
         By prevPageLink = By.XPath("//button[contains(.,'<')]");
         By nextPageLink = By.XPath("//button[contains(.,'>')]");
@@ -23,12 +22,13 @@ namespace WHAT_PageObject
         By firstPage = By.XPath("//nav/ul[2]/li[1]");
         By lastPage = By.XPath("//nav/ul[2]/li[last()]");
         By lastUserIndex = By.XPath($"//tbody/tr[last()]/td[{(int)ColumnName.index}]");
-
+        private int usersAtPageIndex = 0;
+        private int usersTotalIndex = 2;
         #endregion
 
         public SecretariesPage(IWebDriver driver) : base(driver)
         {
-
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
         public UnassignedUsersPage AddSecretary()
@@ -41,10 +41,6 @@ namespace WHAT_PageObject
         {
             driver.FindElement(By.XPath($"//td[@data-secretary-id={index}]")).Click();
             return new EditSecretaryPage(driver);
-        }
-        public bool GetPagesAmount(out int pagesAmount)
-        {
-            return Int32.TryParse(driver.FindElement(lastPage).Text, out pagesAmount);
         }
 
         #region navigation
@@ -62,6 +58,7 @@ namespace WHAT_PageObject
 
         public SecretariesPage LastPage()
         {
+            wait.Until(e => e.FindElement(lastPage));
             driver.FindElement(lastPage).Click();
             return this;
         }
@@ -102,9 +99,6 @@ namespace WHAT_PageObject
             return Int32.Parse(driver.FindElement(countUsersReport).Text.Split(" ")[usersTotalIndex]);
         }
 
-
-        #endregion
-
         public List<string> GetDataList(ColumnName column)
         {
             int count = GetShowedUsersAmount();
@@ -115,6 +109,12 @@ namespace WHAT_PageObject
             }
             return dataList;
         }
+        #endregion
+
+        public bool GetPagesAmount(out int pagesAmount)
+        {
+            return Int32.TryParse(driver.FindElement(lastPage).Text, out pagesAmount);
+        }
 
         public int GetShowedUsersAmount()
         {
@@ -123,23 +123,21 @@ namespace WHAT_PageObject
 
         public bool GetUsersAtPage(out int usersAtPage)
         {
+            wait.Until(e => e.FindElement(visibleUsersSelect));
             SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
             return Int32.TryParse(selectedOption.SelectedOption.Text, out usersAtPage);
         }
 
-        public void SelectUsersAtPage(ShowedUsers showedUsers)
+        public void SelectUsersAtPage(ShowedUsers usersAtPage)
         {
             driver.FindElement(visibleUsersSelect).Click();
             SelectElement selectedOption = new SelectElement(driver.FindElement(visibleUsersSelect));
-            selectedOption.SelectByIndex((int)showedUsers - 1);
+            selectedOption.SelectByIndex((int)usersAtPage - 1);
         }
 
         public bool GetLastUserIndex(out int index)
         {
             return Int32.TryParse(LastPage().driver.FindElement(lastUserIndex).Text, out index);
         }
-
     }
-
-
 }

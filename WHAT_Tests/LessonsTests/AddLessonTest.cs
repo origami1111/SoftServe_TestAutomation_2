@@ -1,11 +1,13 @@
-﻿using NUnit.Framework;
-using System;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using WHAT_PageObject;
+using WHAT_Tests.LessonsTests;
 using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
     [TestFixture]
+    [AllureNUnit]
     public class AddLessonTest : TestBase
     {
         private LessonsPage lessonsPage;
@@ -15,27 +17,23 @@ namespace WHAT_Tests
         public void SetupPage()
         {
             lessonsPage = new SignInPage(driver)
-                            .SignInAsMentor(credentials.Email, credentials.Password);
+                .SignInAsMentor(credentials.Email, credentials.Password);             
         }
 
-        [Test]
-        public void AddLessonWithValidDataTest()
+        [TestCaseSource(typeof(TestCasesLessons), nameof(TestCasesLessons.AddLesson))]
+        public void AddLessonWithValidDataTest(string thema,string groupName,string date,string mentorEmail, string expected)
         {
-            Lesson lesson = new Lesson("Test" + DateTime.Now.ToString(), "Advanced", "2021-06-28T09:00", "MentoR01@gmail.com");
-
-            string expected = "×\r\nClose alert\r\nThe lesson has been added successfully!";
-
             string actual = lessonsPage
               .ClickAddLessonButton()
-              .FillLessonsTheme(lesson.GetLessonThema())
-              .FillGroupName(lesson.GetGroupName())
-              .FillDateTime(lesson.GetDateTime())
-              .FillMentorEmail(lesson.GetMentorEmail())
+              .FillLessonsTheme(thema)
+              .FillGroupName(groupName)
+              .FillDateTime(date)
+              .FillMentorEmail(mentorEmail)
               .ClickClassRegisterButton()
               .ClickSaveButton()
               .VerifySuccesMessage();
 
-            Assert.AreEqual(expected, actual);
+            StringAssert.Contains(expected, actual);
         }
 
         [TearDown]
@@ -43,6 +41,5 @@ namespace WHAT_Tests
         {
             lessonsPage.Logout();
         }
-
     }
 }

@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace WHAT_API.Entities.Secretaries
+namespace WHAT_API
 {
-    class Secretary
+    public class Secretary
     {
         [JsonProperty("id")]
         public int Id { get; set; }
@@ -15,5 +13,19 @@ namespace WHAT_API.Entities.Secretaries
         public string FirstName { get; set; }
         [JsonProperty("lastName")]
         public string LastName { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            Account other = (Account)obj;
+
+            return (this.Email == other.Email
+                && this.FirstName == other.FirstName
+                && this.LastName == other.LastName);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
+        }
     }
 }

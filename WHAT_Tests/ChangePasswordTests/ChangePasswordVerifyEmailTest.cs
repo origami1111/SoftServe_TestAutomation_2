@@ -1,10 +1,12 @@
-﻿using NUnit.Framework;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
     [TestFixture]
+    [AllureNUnit]
     public class ChangePasswordVerifyEmailTest : TestBase
     {
         private ChangePasswordPage changePasswordPage;
@@ -14,9 +16,10 @@ namespace WHAT_Tests
         public void SetupPage()
         {
             changePasswordPage = new SignInPage(driver)
-                               .SignInAsMentor(credentials.Email, credentials.Password)
-                               .ClickChangePassword();
+                .SignInAsMentor(credentials.Email, credentials.Password)
+                .ClickChangePassword();
         }
+
         [Test]
         public void VerifyEmailTest()
         {

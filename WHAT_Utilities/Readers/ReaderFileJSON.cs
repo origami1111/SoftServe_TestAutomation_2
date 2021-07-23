@@ -18,13 +18,5 @@ namespace WHAT_Utilities
             return creds.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).FirstOrDefault();
         }
 
-        public static List<Credentials> ReadFileJsonListCredentials(Role role, Activity activity = Activity.Active)
-        {
-            string json = File.ReadAllText(path);
-            List<Credentials> creds = JsonConvert.DeserializeObject<List<Credentials>>(json);
-
-            return creds.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).ToList();
-        }
-
     }
 }

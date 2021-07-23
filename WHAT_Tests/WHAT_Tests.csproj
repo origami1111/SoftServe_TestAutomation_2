@@ -36,8 +36,4 @@
     <ProjectReference Include="..\WHAT_Utilities\WHAT_Utilities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ChangePasswordTests\" />
-  </ItemGroup>
-
 </Project>

@@ -25,7 +25,7 @@ namespace WHAT_API
             "Space after course name ",
             "Course name with special symbols?",
             "Not only Latin letters Кириллица",
-            String.Empty
+            ""
         };
 
         [TestCase(Role.Admin)]

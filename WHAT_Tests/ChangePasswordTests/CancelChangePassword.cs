@@ -1,10 +1,13 @@
-﻿using NUnit.Framework;
+﻿using NUnit.Allure.Core;
+using NUnit.Framework;
 using WHAT_PageObject;
+using WHAT_Tests.ChangePasswordTests;
 using WHAT_Utilities;
 
 namespace WHAT_Tests
 {
     [TestFixture]
+    [AllureNUnit]
     public class CancelChangePassword : TestBase
     {
         private ChangePasswordPage changePasswordPage;
@@ -14,12 +17,11 @@ namespace WHAT_Tests
         public void SetupPage()
         {
             changePasswordPage = new SignInPage(driver)
-                            .SignInAsMentor(credentials.Email, credentials.Password)
-                            .ClickChangePassword();
+                .SignInAsMentor(credentials.Email, credentials.Password)
+                .ClickChangePassword();
         }
 
-        [Test]
-        [TestCase("What_123", "What_1234")]
+        [TestCaseSource(typeof(TestCasesChangePassword), nameof(TestCasesChangePassword.CancelChangePassword))]
         public void CancelChangePasswordTest(string currentPass, string newPass)
         {
             changePasswordPage
@@ -31,8 +33,8 @@ namespace WHAT_Tests
             changePasswordPage.Logout();
 
             changePasswordPage = new SignInPage(driver)
-                            .SignInAsMentor(credentials.Email, credentials.Password)
-                            .ClickChangePassword();
+                .SignInAsMentor(credentials.Email, credentials.Password)
+                .ClickChangePassword();
         }
 
         [TearDown]

@@ -117,7 +117,7 @@ namespace WHAT_API
             else
             {
                 int randomElement = random.Next(0, listOfStudentsGroup.Count);
-                studentsGroupID = listOfStudentsGroup.ElementAt(randomElement).ID;
+                studentsGroupID = listOfStudentsGroup.ElementAt(randomElement).Id;
             }
             return studentsGroupID;
         }

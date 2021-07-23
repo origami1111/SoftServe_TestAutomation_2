@@ -22,31 +22,6 @@ namespace WHAT_PageObject
 
         }
 
-        public string VerifyCurrentEmail()
-        {
-            return driver.FindElement(email).GetAttribute("value");
-        }
-
-        public string VerifySuccesMessage()
-        {
-            return driver.FindElement(passSuccessMessage).Text;
-        }
-
-        public string VerifyErrorMassegeForCurrentPassword()
-        {
-            return driver.FindElement(currentPassErrorField).Text;
-        }
-
-        public string VerifyErrorMassegeForNewPassword()
-        {
-            return driver.FindElement(newPassErrorField).Text;
-        }
-
-        public string VerifyErrorMassegeForConfirmPassword()
-        {
-            return driver.FindElement(confirmPassErrorField).Text;
-        }
-
         public ChangePasswordPage FillCurrentPassword(string currentPass)
         {
             FillField(currentPassword, currentPass);
@@ -87,6 +62,31 @@ namespace WHAT_PageObject
         {
             ClickItem(saveInPopUpMenu);
             return this;
+        }
+
+        public string VerifyCurrentEmail()
+        {
+            return driver.FindElement(email).GetAttribute("value");
+        }
+
+        public string VerifySuccesMessage()
+        {
+            return driver.FindElement(passSuccessMessage).Text;
+        }
+
+        public string VerifyErrorMassegeForCurrentPassword()
+        {
+            return driver.FindElement(currentPassErrorField).Text;
+        }
+
+        public string VerifyErrorMassegeForNewPassword()
+        {
+            return driver.FindElement(newPassErrorField).Text;
+        }
+
+        public string VerifyErrorMassegeForConfirmPassword()
+        {
+            return driver.FindElement(confirmPassErrorField).Text;
         }
     }
 }

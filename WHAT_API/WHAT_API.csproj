@@ -30,12 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="JsonDataFiles\UpdateSchedule.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="JsonDataFiles\CreateSchedule.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <ProjectReference Include="..\WHAT_Utilities\WHAT_Utilities.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,6 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace WHAT_PageObject
 {
@@ -15,7 +17,13 @@ namespace WHAT_PageObject
         {
 
         }
-        public EditMentorDetailsPage ClickEditStudentsDetaisNav()
+        private void WaitForMentorToLoad()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
+            IWebElement firstName = wait.Until(e => e.FindElement(mentorFirstName));
+        }
+
+        public EditMentorDetailsPage ClickEditMentorDetaisNav()
         {
             driver.FindElement(editDetailsNavLink).Click();
             return new EditMentorDetailsPage(driver);

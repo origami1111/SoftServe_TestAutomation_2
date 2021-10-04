@@ -8,26 +8,25 @@ namespace WHAT_PageObject
     public class MentorsPage : BasePageWithHeaderSidebar
     {
         #region LOCATORS
-        private By disabledMentorsToggle = By.XPath("//input[@type ='checkbox']");
-        private By searchField = By.XPath("//input[@type='text']");
-        private By rowAmountDropdownMenu = By.XPath("//select");
-        private By switchToCardViewButton = By.XPath("//*[contains(@href,'Card.svg')]/parent::*/parent::button");
-        private By switchToTableViewButton = By.XPath("//*[contains(@href,'List.svg')]/parent::*/parent::button");
-        private By addMentorButton = By.XPath("//span[text()='Add a mentor']/parent::button");
+        private By disabledMentorsToggle = By.XPath(Locators.MentorsPage.DISABLED_MENTORS_TOGGLE);
+        private By searchField = By.XPath(Locators.MentorsPage.SEARCH_FIELD);
+        private By rowAmountDropdownMenu = By.XPath(Locators.MentorsPage.ROW_AMOUNT_DROPDOWN);
+        private By switchToCardViewButton = By.XPath(Locators.MentorsPage.SWITCH_TO_CARDS);
+        private By switchToTableViewButton = By.XPath(Locators.MentorsPage.SWITCH_TO_TABLE);
+        private By addMentorButton = By.XPath(Locators.MentorsPage.ADD_MENTOR_BUTTON);
 
-        private By previousPageTopButton = By.XPath("//h2[text()='Mentors']/parent::div//button[text()='<']");
-        private By nextPageTopButton = By.XPath("//h2[text()='Mentors']/parent::div//button[text()='>']");
+        private By previousPageTopButton = By.XPath(Locators.MentorsPage.PREVIOUS_PAGE_TOP_BUTTON);
+        private By nextPageTopButton = By.XPath(Locators.MentorsPage.NEXT_PAGE_TOP_BUTTON);
 
-        private By previousPageBottomButton = By.XPath("//div[@class='row mr-0']//button[text()='<']");
-        private By nextPageBottomButton = By.XPath("//div[@class='row mr-0']//button[text()='>']");
+        private By previousPageBottomButton = By.XPath(Locators.MentorsPage.PREVIOUS_PAGE_BOTTOM_BUTTON);
+        private By nextPageBottomButton = By.XPath(Locators.MentorsPage.NEXT_PAGE_BOTTOM_BUTTON);
 
-        private By sortingRowFirstName = By.XPath("//span[@data-sorting-param='firstName']");
-        private By sortingRowLastName = By.XPath("//span[@data-sorting-param='lastName']");
-        private By sortingRowEmail = By.XPath("//span[@data-sorting-param='email']");
+        private By sortingRowFirstName = By.XPath(Locators.MentorsPage.SORTING_FIRST_NAME);
+        private By sortingRowLastName = By.XPath(Locators.MentorsPage.SORTING_LAST_NAME);
+        private By sortingRowEmail = By.XPath(Locators.MentorsPage.SORTING_EMAIL);
 
-        private By mentorsTable = By.XPath("//table");
-
-        private By mentorsCount = By.XPath("//span[text()[4]=' mentors']");
+        private By mentorsTable = By.XPath(Locators.MentorsPage.MENTORS_TABLE);
+        private By mentorsCount = By.XPath(Locators.MentorsPage.MENTORS_COUNT);
         #endregion
 
         private By mentorFirstName(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[1]");

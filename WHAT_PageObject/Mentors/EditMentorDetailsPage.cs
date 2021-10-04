@@ -7,17 +7,17 @@ namespace WHAT_PageObject
     public class EditMentorDetailsPage : BasePageWithHeaderSidebar
     {
         #region LOCATORS
-        private By mentorDetailsNavLink = By.LinkText("Mentor details");
-        private By firstNameField = By.XPath("//input[@id='firstName']");
-        private By lastNameField = By.XPath("//input[@id='lastName']");
-        private By emailField = By.XPath("//input[@id='email']");
-        private By groupsInput = By.XPath("//input[@id='groupsInput']");
-        private By addGroupsButton = By.XPath("//button[@id='addGroup']");
-        private By coursesInput = By.XPath("//button[@id='coursesInput']");
-        private By addCourseButton = By.XPath("//button[@id='addCourse']");
-        private By resetButton = By.XPath("//button[@id='resetBtn']");
-        private By saveButton = By.XPath("//button[text()='Save']");
-        private By disableButton = By.XPath("//button[text()='Disable']");
+        private By mentorDetailsNavLink = By.LinkText(Locators.EditMentorDetailsPage.MENTOR_DETAILS_LINK);
+        private By firstNameField = By.XPath(Locators.EditMentorDetailsPage.FIRST_NAME);
+        private By lastNameField = By.XPath(Locators.EditMentorDetailsPage.LAST_NAME);
+        private By emailField = By.XPath(Locators.EditMentorDetailsPage.EMAIL);
+        private By groupsInput = By.XPath(Locators.EditMentorDetailsPage.GROUPS);
+        private By addGroupsButton = By.XPath(Locators.EditMentorDetailsPage.ADD_GROUP_BUTTON);
+        private By coursesInput = By.XPath(Locators.EditMentorDetailsPage.COURSES);
+        private By addCourseButton = By.XPath(Locators.EditMentorDetailsPage.ADD_COURSE_BUTTON);
+        private By resetButton = By.XPath(Locators.EditMentorDetailsPage.RESET_BUTTON);
+        private By saveButton = By.XPath(Locators.EditMentorDetailsPage.SAVE_BUTTON);
+        private By disableButton = By.XPath(Locators.EditMentorDetailsPage.DISABLE_BUTTON);
         #endregion
 
         public EditMentorDetailsPage(IWebDriver driver) : base(driver)

@@ -23,6 +23,9 @@ namespace WHAT_PageObject
             public const string SORTING_EMAIL = "//span[@data-sorting-param='email']";
             public const string MENTORS_TABLE = "//table";
             public const string MENTORS_COUNT = "//span[text()[4]=' mentors']";
+            public const string ALL_FIRST_NAMES = "//td[1]";
+            public const string ALL_LAST_NAMES = "//td[2]";
+            public const string ALL_EMAILS = "//td[3]";
         }
 
         public static class MentorDetailsPage
@@ -35,6 +38,7 @@ namespace WHAT_PageObject
 
         public static class EditMentorDetailsPage
         {
+            public const string FORM = "//form";
             public const string MENTOR_DETAILS_LINK = "Mentor details";
             public const string FIRST_NAME = "//input[@id='firstName']";
             public const string LAST_NAME = "//input[@id='lastName']";
@@ -46,6 +50,9 @@ namespace WHAT_PageObject
             public const string RESET_BUTTON = "//button[@id='resetBtn']";
             public const string SAVE_BUTTON = "//button[text()='Save']";
             public const string DISABLE_BUTTON = "//button[text()='Disable']";
+            public const string FIRST_NAME_ERROR = "//input[@id='firstName']/parent::div/div";
+            public const string LAST_NAME_ERROR = "//input[@id='lastName']/parent::div/div";
+            public const string EMAIL_ERROR = "//input[@id='email']/parent::div/div";
         }
     }
 }

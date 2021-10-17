@@ -22,6 +22,11 @@ namespace WHAT_Utilities
                 stringBuilder.Append(letter);
             }
             return stringBuilder.ToString();
-        }        
+        }
+
+        public static string GenerageEmail()
+        {
+            return $"{Guid.NewGuid():N}@example.com";
+        }
     }
 }

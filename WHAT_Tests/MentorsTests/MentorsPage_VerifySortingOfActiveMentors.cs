@@ -9,8 +9,6 @@ namespace WHAT_Tests
     [AllureNUnit]
     class MentorsPage_VerifySortingOfActiveMentors : TestBase
     {
-        private MentorsPage mentorsPage;
-
         [SetUp]
         public void Precondition()
         {
@@ -20,7 +18,7 @@ namespace WHAT_Tests
         [TearDown]
         public void Postcondition()
         {
-            mentorsPage.Logout();
+            
         }
 
         [Test, Description("DP213-67")]

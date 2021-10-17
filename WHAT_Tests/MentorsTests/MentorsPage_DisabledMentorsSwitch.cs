@@ -12,26 +12,19 @@ namespace WHAT_Tests
         WhatAccount enabledMentor;
         WhatAccount disabledMentor;
 
-        string enabledFirstName = StringGenerator.GenerateStringOfLetters(30);
-        string enabledLastName = StringGenerator.GenerateStringOfLetters(30);
-        string disabledFirstName = StringGenerator.GenerateStringOfLetters(30);
-        string disabledLastName = StringGenerator.GenerateStringOfLetters(30);
-
         [SetUp]
         public void Precondition()
         {
             var newUser = new GenerateUser();
-            newUser.Email = StringGenerator.GenerageEmail();
-            newUser.FirstName = enabledFirstName;
-            newUser.LastName = enabledLastName;
+            newUser.FirstName = StringGenerator.GenerateStringOfLetters(30); ;
+            newUser.LastName = StringGenerator.GenerateStringOfLetters(30); ;
 
             var unassigned = api.RegistrationUser(newUser);
             enabledMentor = api.AssignRole(unassigned, Role.Mentor);
 
             newUser = new GenerateUser();
-            newUser.Email = StringGenerator.GenerageEmail();
-            newUser.FirstName = disabledFirstName;
-            newUser.LastName = disabledLastName;
+            newUser.FirstName = StringGenerator.GenerateStringOfLetters(30); ;
+            newUser.LastName = StringGenerator.GenerateStringOfLetters(30); ;
 
             unassigned = api.RegistrationUser(newUser);
             disabledMentor = api.AssignRole(unassigned, Role.Mentor);
@@ -54,7 +47,6 @@ namespace WHAT_Tests
             var enabledMentorName = $"{enabledMentor.FirstName} {enabledMentor.LastName}";
             var disabledMentorName = $"{disabledMentor.FirstName} {disabledMentor.LastName}";
             var credentials = ReaderFileJson.ReadFileJsonCredentials(role);
-            var secretaryCredentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretary);
             new SignInPage(driver)
                 .SignInAsAdmin(credentials.Email, credentials.Password)
                 .SidebarNavigateTo<MentorsPage>()

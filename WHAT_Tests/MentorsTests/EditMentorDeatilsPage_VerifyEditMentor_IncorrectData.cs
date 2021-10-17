@@ -21,7 +21,7 @@ namespace WHAT_Tests
             var unassigned = api.RegistrationUser(newUser);
             mentor = api.AssignRole(unassigned, Role.Mentor);
 
-            log.Info($"Go to {driver.Url}");            
+            log.Info($"Go to {driver.Url}");
         }
 
         [TearDown]

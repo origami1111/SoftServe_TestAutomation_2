@@ -17,11 +17,6 @@ namespace WHAT_PageObject
         {
 
         }
-        private void WaitForMentorToLoad()
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
-            IWebElement firstName = wait.Until(e => e.FindElement(mentorFirstName));
-        }
 
         public EditMentorDetailsPage ClickEditMentorDetaisNav()
         {
@@ -29,12 +24,12 @@ namespace WHAT_PageObject
             return new EditMentorDetailsPage(driver);
         }
 
-        public string[] GetTexFromAllFields()
+        private string[] GetTexFromAllFields()
         {
-            return new string[]{
-            driver.FindElement(mentorFirstName).Text,
-            driver.FindElement(mentorLastName).Text,
-            driver.FindElement(mentorEmail).Text
+            return new string[] {
+                driver.FindElement(mentorFirstName).Text,
+                driver.FindElement(mentorLastName).Text,
+                driver.FindElement(mentorEmail).Text
             };
         }
     }

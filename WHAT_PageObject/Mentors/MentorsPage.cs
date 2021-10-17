@@ -1,7 +1,9 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
 
 namespace WHAT_PageObject
 {
@@ -27,15 +29,19 @@ namespace WHAT_PageObject
 
         private By mentorsTable = By.XPath(Locators.MentorsPage.MENTORS_TABLE);
         private By mentorsCount = By.XPath(Locators.MentorsPage.MENTORS_COUNT);
+
+        private By allFirstNames = By.XPath(Locators.MentorsPage.ALL_FIRST_NAMES);
+        private By allLastNames = By.XPath(Locators.MentorsPage.ALL_LAST_NAMES);
+        private By allEmails = By.XPath(Locators.MentorsPage.ALL_EMAILS);
         #endregion
 
-        private By mentorFirstName(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[1]");
-        private By mentorLastName(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[2]");
-        private By mentorEmail(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[3]");
-        private By editMentorButton(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[4]");
+        static public By mentorFirstName(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[1]");
+        static public By mentorLastName(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[2]");
+        static public By mentorEmail(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[3]");
+        static public By editMentorButton(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[4]");
 
-        private By pageTopButton(int pageNumber) => By.XPath($"//h2[text()='Mentors']/parent::div//button[text()='{pageNumber}']");
-        private By pageBottomButton(int pageNumber) => By.XPath($"//div[@class='row mr-0']//button[text()='{pageNumber}']");
+        static public By pageTopButton(int pageNumber) => By.XPath($"//h2[text()='Mentors']/parent::div//button[text()='{pageNumber}']");
+        static public By pageBottomButton(int pageNumber) => By.XPath($"//div[@class='row mr-0']//button[text()='{pageNumber}']");
 
         public MentorsPage(IWebDriver driver) : base(driver)
         {
@@ -60,6 +66,43 @@ namespace WHAT_PageObject
             return mentorCount;
         }
 
+        private List<string> GetFirstNames()
+        {
+            var elements = driver.FindElements(allFirstNames);
+            List<string> firstNameList = new List<string>();
+            foreach (IWebElement element in elements)
+            {
+                firstNameList.Add(element.Text);
+            }
+            return firstNameList;
+        }
+        private List<string> GetLastNames()
+        {
+            var elements = driver.FindElements(allLastNames);
+            List<string> lastNameList = new List<string>();
+            foreach (IWebElement element in elements)
+            {
+                lastNameList.Add(element.Text);
+            }
+            return lastNameList;
+        }
+        private List<string> GetEmails()
+        {
+            var elements = driver.FindElements(allEmails);
+            List<string> emailsList = new List<string>();
+            foreach (IWebElement element in elements)
+            {
+                emailsList.Add(element.Text);
+            }
+            return emailsList;
+        }
+
+        public void WaitUntilElementLoad(By element)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
+            wait.Until(e => e.FindElement(element));
+        }
+
         private void WaitMentorsLoad()
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
@@ -73,13 +116,16 @@ namespace WHAT_PageObject
             return this;
         }
 
+        public EditMentorDetailsPage ClickEditMentorButtonOnRow(int row)
+        {
+            IWebElement element = driver.FindElement(editMentorButton(row));
+            element.Click();
+            return new EditMentorDetailsPage(driver);
+        }
+
         public MentorsPage ClickDisabledMentorsToggle()
         {
-            //ClickItem(disabledMentorsToggle);
-            //TODO: possibly swap ClickItem code with this:
-            IWebElement element = driver.FindElement(disabledMentorsToggle);
-            Actions actions = new Actions(driver);
-            actions.MoveToElement(element).Click().Build().Perform();
+            ActionClickItem(disabledMentorsToggle);
             return this;
         }
 
@@ -143,24 +189,70 @@ namespace WHAT_PageObject
             return this;
         }
 
-        public MentorsPage WaitUntilMentorsTableLoads()
+        public MentorsPage SelectFromRowAmountDropdown(string value)
         {
-            WaitMentorsLoad();
+            var dropDownMenu = driver.FindElement(rowAmountDropdownMenu);
+            var selectElement = new SelectElement(dropDownMenu);
+            selectElement.SelectByText(value);
             return this;
         }
 
-        public IWebElement verifyMentorsTableExists()
+        public MentorsPage WaitUntilMentorsTableLoads()
         {
-            IWebElement table = null;
-            try
-            {
-                table = driver.FindElement(mentorsTable);
-            }
-            catch
-            {
+            WaitUntilElementLoads<MentorsPage>(mentorsTable);
+            return this;
+        }
 
-            }
-            return table;
+        public MentorsPage VerifyCorrectSorftingByFirstNameAsc()
+        {
+            List<string> firstNamesSortedByFrontEnd = GetFirstNames();
+            List<string> firstNamesSortedByTest = new List<string>(firstNamesSortedByFrontEnd);
+            firstNamesSortedByTest.Sort(StringComparer.Ordinal);
+            CollectionAssert.AreEqual(firstNamesSortedByTest, firstNamesSortedByFrontEnd);
+            return this;
+        }
+        public MentorsPage VerifyCorrectSorftingByFirstNameDesc()
+        {
+            List<string> firstNamesSortedByFrontEnd = GetFirstNames();
+            List<string> firstNamesSortedByTest = new List<string>(firstNamesSortedByFrontEnd);
+            firstNamesSortedByTest.Sort(StringComparer.Ordinal);
+            firstNamesSortedByTest.Reverse();
+            CollectionAssert.AreEqual(firstNamesSortedByTest, firstNamesSortedByFrontEnd);
+            return this;
+        }
+        public MentorsPage VerifyCorrectSorftingByLastNameAsc()
+        {
+            List<string> lastNamesSortedByFrontEnd = GetLastNames();
+            List<string> lastNamesSortedByTest = new List<string>(lastNamesSortedByFrontEnd);
+            lastNamesSortedByTest.Sort(StringComparer.Ordinal);
+            CollectionAssert.AreEqual(lastNamesSortedByTest, lastNamesSortedByFrontEnd);
+            return this;
+        }
+        public MentorsPage VerifyCorrectSorftingByLastNameDesc()
+        {
+            List<string> lastNamesSortedByFrontEnd = GetLastNames();
+            List<string> lastNamesSortedByTest = new List<string>(lastNamesSortedByFrontEnd);
+            lastNamesSortedByTest.Sort(StringComparer.Ordinal);
+            lastNamesSortedByTest.Reverse();
+            CollectionAssert.AreEqual(lastNamesSortedByTest, lastNamesSortedByFrontEnd);
+            return this;
+        }
+        public MentorsPage VerifyCorrectSorftingByEmailAsc()
+        {
+            List<string> emailsSortedByFrontEnd = GetEmails();
+            List<string> emailsSortedByTest = new List<string>(emailsSortedByFrontEnd);
+            emailsSortedByTest.Sort(StringComparer.Ordinal);
+            CollectionAssert.AreEqual(emailsSortedByTest, emailsSortedByFrontEnd);
+            return this;
+        }
+        public MentorsPage VerifyCorrectSorftingByEmailDesc()
+        {
+            List<string> emailsSortedByFrontEnd = GetEmails();
+            List<string> emailsSortedByTest = new List<string>(emailsSortedByFrontEnd);
+            emailsSortedByTest.Sort(StringComparer.Ordinal);
+            emailsSortedByTest.Reverse();
+            CollectionAssert.AreEqual(emailsSortedByTest, emailsSortedByFrontEnd);
+            return this;
         }
     }
 }

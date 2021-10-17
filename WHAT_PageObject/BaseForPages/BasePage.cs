@@ -2,17 +2,21 @@
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
+using WHAT_Utilities;
 
 namespace WHAT_PageObject
 {
     public abstract class BasePage
     {
         protected IWebDriver driver;
+        protected WebDriverWait wait;
 
         public BasePage(IWebDriver driver)
         {
             this.driver = driver;
-        }
+            this.wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
+        }        
 
         protected void FillField(By locator, string text)
         {
@@ -22,7 +26,6 @@ namespace WHAT_PageObject
             field.SendKeys(Keys.Control + "a");
             field.SendKeys(Keys.Delete);
             field.SendKeys(text);
-
         }
 
         protected void ClickItem(By locator)
@@ -36,10 +39,29 @@ namespace WHAT_PageObject
             Actions actions = new Actions(driver);
             actions.MoveToElement(element).Click().Perform();
         }
+        public T SoftAssertAdd<T>(SoftAssert sAssert, Object expected, Object actual, string errorMessage = "") where T : BasePage
+        {
+            sAssert.Add(expected, actual, errorMessage);
+            return GetPageInstance<T>(driver);
+        }
+
+        public T SoftAssertAll<T>(SoftAssert sAssert) where T : BasePage
+        {
+            sAssert.AssertAll();
+            return GetPageInstance<T>(driver);
+        }
+
+        public T ForEachEntry<T,A>(IEnumerable<A> collection, T page, Action<A> action) where T : BasePage
+        {
+            foreach (A item in collection)
+            {
+                action(item);
+            }            
+            return GetPageInstance<T>(driver);
+        }
 
         public T WaitUntilElementLoads<T>(By locator) where T : BasePage
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
             wait.Until(e => e.FindElement(locator));
             return GetPageInstance<T>(driver);
         }

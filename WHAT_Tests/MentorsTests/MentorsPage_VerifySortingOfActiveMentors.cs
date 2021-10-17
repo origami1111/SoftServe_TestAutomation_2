@@ -1,9 +1,5 @@
 ﻿using NUnit.Allure.Core;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
@@ -11,7 +7,7 @@ namespace WHAT_Tests
 {
     [TestFixture]
     [AllureNUnit]
-    class MentorsTablePage_VerifySortingOfActiveMentors : TestBase
+    class MentorsPage_VerifySortingOfActiveMentors : TestBase
     {
         private MentorsPage mentorsPage;
 
@@ -28,14 +24,16 @@ namespace WHAT_Tests
         }
 
         [Test, Description("DP213-67")]
-        public void TestMentorsTablePage_VerifySortingOfActiveMentors()
+        [TestCase(Role.Admin)]
+        [TestCase(Role.Secretary)]
+
+        public void TestMentorsTablePage_VerifySortingOfActiveMentors(Role role)
         {
-            var adminCredentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
-            var secretaryCredentials = ReaderFileJson.ReadFileJsonCredentials(Role.Secretary);
+            var credentials = ReaderFileJson.ReadFileJsonCredentials(role);
             string entryCount = "99";
 
-            mentorsPage = new SignInPage(driver)
-                .SignInAsAdmin(adminCredentials.Email, adminCredentials.Password)
+            new SignInPage(driver)
+                .SignInAsAdmin(credentials.Email, credentials.Password)
                 .SidebarNavigateTo<MentorsPage>()
                 .WaitUntilMentorsTableLoads()
                 .SelectFromRowAmountDropdown(entryCount)
@@ -50,8 +48,7 @@ namespace WHAT_Tests
                 .ClickSortByEmail()
                 .VerifyCorrectSorftingByEmailAsc()
                 .ClickSortByEmail()
-                .VerifyCorrectSorftingByEmailDesc()
-                ;
+                .VerifyCorrectSorftingByEmailDesc();
         }
     }
 }

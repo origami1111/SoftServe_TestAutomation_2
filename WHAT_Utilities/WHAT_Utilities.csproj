@@ -39,6 +39,15 @@
     <None Update="DataFiles\Links.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="DataFiles\MentorsPage\EditMentorsPageInvalidEmails.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DataFiles\MentorsPage\EditMentorsPageInvalidLastNames.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DataFiles\MentorsPage\EditMentorsPageInvalidFirstNames.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

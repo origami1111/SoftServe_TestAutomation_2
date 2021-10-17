@@ -1,0 +1,11 @@
+[
+  {
+    "value": "",
+    "result": "This field is required"
+
+  },
+  {
+    "value": "email",
+    "result": "Invalid email address"
+  }
+]

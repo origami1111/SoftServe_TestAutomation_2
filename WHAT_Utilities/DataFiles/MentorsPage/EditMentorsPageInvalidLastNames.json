@@ -1,0 +1,44 @@
+[
+  //{
+  //  "value": "n2me",
+  //  "result": "Invalid first name"
+  //},
+  {
+    "value": "n2me",
+    "result": "Invalid last name"
+  },
+  {
+    "value": "",
+    "result": "This field is required"
+
+  },
+  {
+    "value": "A",
+    "result": "Too short"
+
+  },
+  {
+    "value": "namenamenamenamenamenamenamenamenamenamenamenamenam",
+    "result": "Too long"
+  },
+  //{
+
+  //  "value": "Surname-",
+  //  "result": "Invalid first name"
+
+  //},
+  //{
+  //  "value": "s0rname",
+  //  "result": "Invalid first name"
+  //},
+  {
+
+    "value": "Surname-",
+    "result": "Invalid last name"
+
+  },
+  {
+    "value": "s0rname",
+    "result": "Invalid last name"
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "value": "",
+    "result": "This field is required"
+
+  },
+  {
+    "value": "a",
+    "result": "Too short"
+
+  },
+  {
+    "value": "namenamenamenamenamenamenamenamenamenamenamenamenam",
+    "result": "Too long"
+  },
+  {
+    "value": "-name",
+    "result": "Invalid first name"
+  }
+]

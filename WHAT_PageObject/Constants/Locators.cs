@@ -34,6 +34,7 @@ namespace WHAT_PageObject
             public const string FIRST_NAME = "//span[@data-testid='firstName']";
             public const string LAST_NAME = "//span[@data-testid='lastName']";
             public const string EMAIL = "//span[@data-testid='email']";
+            public const string MENTOR_DETAILS = "//div[@data-testid='mentorDetails']";
         }
 
         public static class EditMentorDetailsPage

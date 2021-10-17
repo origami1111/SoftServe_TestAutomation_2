@@ -18,5 +18,11 @@ namespace WHAT_Utilities
             return creds.Where(x => x.Role.Equals(role) && x.Activity.Equals(activity)).FirstOrDefault();
         }
 
+        public static List<TestData> ReadFileJsonTestData(string path)
+        {
+            string json = File.ReadAllText(path);
+            List<TestData> testData = JsonConvert.DeserializeObject<List<TestData>>(json);
+            return testData;
+        }
     }
 }

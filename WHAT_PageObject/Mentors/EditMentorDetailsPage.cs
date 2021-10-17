@@ -116,7 +116,7 @@ namespace WHAT_PageObject
 
         #endregion
 
-        #region Verification
+        #region VERIFICATION
 
         public EditMentorDetailsPage VerifyFields(List<TestData> firstNames, List<TestData> lastNames, List<TestData> emails)
         {

@@ -1,6 +1,5 @@
 ﻿using NUnit.Allure.Core;
 using NUnit.Framework;
-using System;
 using WHAT_PageObject;
 using WHAT_Utilities;
 
@@ -10,24 +9,34 @@ namespace WHAT_Tests
     [AllureNUnit]
     class EditMentorDeatilsPage_VerifyEditMentor_IncorrectData : TestBase
     {
+        WhatAccount mentor;
+
         [SetUp]
         public void Precondition()
         {
-            //log.Info($"Go to {driver.Url}");
+            var newUser = new GenerateUser();
+            newUser.FirstName = StringGenerator.GenerateStringOfLetters(30); ;
+            newUser.LastName = StringGenerator.GenerateStringOfLetters(30); ;
+
+            var unassigned = api.RegistrationUser(newUser);
+            mentor = api.AssignRole(unassigned, Role.Mentor);
+
+            log.Info($"Go to {driver.Url}");            
         }
 
         [TearDown]
         public void Postcondition()
         {
-            new MentorsPage(driver).Logout();
+            api.DisableAccount(mentor, Role.Mentor);
         }
 
         [Test, Description("DP213-170")]
-        [TestCase (Role.Admin)]
-        [TestCase (Role.Secretary)]
+        [TestCase(Role.Admin)]
+        [TestCase(Role.Secretary)]
         public void TestEditMentorDeatilsPage_VerifyEditMentor_IncorrectData(Role role)
         {
             var credentials = ReaderFileJson.ReadFileJsonCredentials(role);
+            var userName = $"{mentor.FirstName} {mentor.LastName}";
             var invalidFirstNames = ReaderFileJson.ReadFileJsonTestData(@"DataFiles\MentorsPage\EditMentorsPageInvalidFirstNames.json");
             var invalidLastNames = ReaderFileJson.ReadFileJsonTestData(@"DataFiles\MentorsPage\EditMentorsPageInvalidLastNames.json");
             var invalidEmails = ReaderFileJson.ReadFileJsonTestData(@"DataFiles\MentorsPage\EditMentorsPageInvalidEmails.json");
@@ -38,6 +47,7 @@ namespace WHAT_Tests
                 .SignInAsSecretar(credentials.Email, credentials.Password)
                 .SidebarNavigateTo<MentorsPage>()
                 .WaitUntilMentorsTableLoads()
+                .FillSearchField(userName)
                 .ClickEditMentorButtonOnRow(1)
                 .WaitUntilFormLoads()
                 .ForEachEntry<EditMentorDetailsPage, TestData>(invalidFirstNames, page, (data) => 
@@ -51,7 +61,7 @@ namespace WHAT_Tests
                         AssertionMessages.EditMentorsDetailsPage.FIRST_NAME_ERROR_MESSAGE)
                     .SoftAssertAdd<EditMentorDetailsPage>(
                         softAssetions, 
-                        true,
+                        false,
                         page.IsSaveButtonEnabled(), 
                         AssertionMessages.EditMentorsDetailsPage.SAVE_BUTTON_ENABLED_MESSAGE);
                 })
@@ -88,32 +98,6 @@ namespace WHAT_Tests
                         AssertionMessages.EditMentorsDetailsPage.SAVE_BUTTON_ENABLED_MESSAGE);
                 })
                 .SoftAssertAll<EditMentorDetailsPage>(softAssetions);
-        }
-
-        [Test, Description("DP213-150")]
-        [TestCase(Role.Admin)]
-        [TestCase(Role.Secretary)]
-        public void TestEditMentorDeatilsPage_VerifyEditMentor_CorrectData(Role role)
-        {
-            var credentials = ReaderFileJson.ReadFileJsonCredentials(role);
-            var firstName = StringGenerator.GenerateStringOfLetters(50);
-            var lastName = StringGenerator.GenerateStringOfLetters(50);
-            var email = $"{Guid.NewGuid():N}@example.com";
-
-            new SignInPage(driver)
-                .SignInAsAdmin(credentials.Email, credentials.Password)
-                .SidebarNavigateTo<MentorsPage>()
-                .WaitUntilMentorsTableLoads()
-                .ClickEditMentorButtonOnRow(1)
-                .WaitUntilFormLoads()
-                .FillFirstNameField(firstName)
-                .VerifyFirstNameFilled(firstName)
-                .FillLastNameField(lastName)
-                .VerifyLastNameFilled(lastName)
-                .FillEmailField(email)
-                .VerifyEmailFilled(email)
-                //.ClickSaveButton()
-                ;
         }
     }
 }

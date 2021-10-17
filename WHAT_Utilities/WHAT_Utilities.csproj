@@ -26,6 +26,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NLog" Version="4.7.10" />
     <PackageReference Include="NUnit.Allure" Version="1.0.14" />
+    <PackageReference Include="RestSharp" Version="106.12.0" />
     <PackageReference Include="SpecFlow.Allure" Version="3.5.0.65" />
   </ItemGroup>
 

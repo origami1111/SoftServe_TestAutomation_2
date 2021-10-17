@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -35,6 +34,8 @@ namespace WHAT_PageObject
         private By allEmails = By.XPath(Locators.MentorsPage.ALL_EMAILS);
         #endregion
 
+        #region DYNAMIC_LOCATORS
+
         static public By mentorFirstName(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[1]");
         static public By mentorLastName(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[2]");
         static public By mentorEmail(int rowNumber) => By.XPath($"//tr[{rowNumber}]/td[3]");
@@ -43,75 +44,31 @@ namespace WHAT_PageObject
         static public By pageTopButton(int pageNumber) => By.XPath($"//h2[text()='Mentors']/parent::div//button[text()='{pageNumber}']");
         static public By pageBottomButton(int pageNumber) => By.XPath($"//div[@class='row mr-0']//button[text()='{pageNumber}']");
 
+        #endregion
+
+        #region CONSTRUCTOR
+
         public MentorsPage(IWebDriver driver) : base(driver)
         {
             
         }
 
-        private int GetDisplayedMentorCount()
+        #endregion        
+
+        #region WAITS
+
+        public MentorsPage WaitUntilMentorsTableLoads()
         {
-            string mentorCountElement = driver.FindElement(mentorsCount).Text;
-            string[] countComponents = mentorCountElement.Split(" ");
-            int mentorCount;
-            int.TryParse(countComponents[0], out mentorCount);
-            return mentorCount;
+            WaitUntilElementLoads<MentorsPage>(mentorsTable);
+            return this;
         }
 
-        private int GetTotalMentorCount()
-        {
-            string mentorCountElement = driver.FindElement(mentorsCount).Text;
-            string[] countComponents = mentorCountElement.Split(" ");
-            int mentorCount;
-            int.TryParse(countComponents[2], out mentorCount);
-            return mentorCount;
-        }
+        #endregion
 
-        private List<string> GetFirstNames()
-        {
-            var elements = driver.FindElements(allFirstNames);
-            List<string> firstNameList = new List<string>();
-            foreach (IWebElement element in elements)
-            {
-                firstNameList.Add(element.Text);
-            }
-            return firstNameList;
-        }
-        private List<string> GetLastNames()
-        {
-            var elements = driver.FindElements(allLastNames);
-            List<string> lastNameList = new List<string>();
-            foreach (IWebElement element in elements)
-            {
-                lastNameList.Add(element.Text);
-            }
-            return lastNameList;
-        }
-        private List<string> GetEmails()
-        {
-            var elements = driver.FindElements(allEmails);
-            List<string> emailsList = new List<string>();
-            foreach (IWebElement element in elements)
-            {
-                emailsList.Add(element.Text);
-            }
-            return emailsList;
-        }
-
-        public void WaitUntilElementLoad(By element)
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
-            wait.Until(e => e.FindElement(element));
-        }
-
-        private void WaitMentorsLoad()
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
-            IWebElement firstResult = wait.Until(e => e.FindElement(mentorsTable));
-        }
+        #region ACTIONS
 
         public MentorsPage FillSearchField(string searchText)
         {
-            WaitMentorsLoad();
             FillField(searchField, searchText);
             return this;
         }
@@ -197,11 +154,9 @@ namespace WHAT_PageObject
             return this;
         }
 
-        public MentorsPage WaitUntilMentorsTableLoads()
-        {
-            WaitUntilElementLoads<MentorsPage>(mentorsTable);
-            return this;
-        }
+        #endregion
+
+        #region VERIFICATION
 
         public MentorsPage VerifyCorrectSorftingByFirstNameAsc()
         {
@@ -254,5 +209,101 @@ namespace WHAT_PageObject
             CollectionAssert.AreEqual(emailsSortedByTest, emailsSortedByFrontEnd);
             return this;
         }
+
+        public MentorsPage VerifyFirstNameAtRow(int row, string expected)
+        {
+            string actual = GetFirstName(row);
+            Assert.AreEqual(expected, actual);
+            return this;
+        }
+
+        public MentorsPage VerifyLastNameAtRow(int row, string expected)
+        {
+            string actual = GetLastName(row);
+            Assert.AreEqual(expected, actual);
+            return this;
+        }
+
+        public MentorsPage VerifyEmailAtRow(int row, string expected)
+        {
+            string actual = GetEmail(row);
+            Assert.AreEqual(expected, actual);
+            return this;
+        }
+
+        #endregion
+
+        #region GETTERS
+
+        private string GetFirstName(int row)
+        {
+            IWebElement element = driver.FindElement(mentorFirstName(row));
+            string name = element.Text;
+            return name;
+        }
+
+        private string GetLastName(int row)
+        {
+            IWebElement element = driver.FindElement(mentorLastName(row));
+            string name = element.Text;
+            return name;
+        }
+        private string GetEmail(int row)
+        {
+            IWebElement element = driver.FindElement(mentorEmail(row));
+            string name = element.Text;
+            return name;
+        }
+
+        private int GetDisplayedMentorCount()
+        {
+            string mentorCountElement = driver.FindElement(mentorsCount).Text;
+            string[] countComponents = mentorCountElement.Split(" ");
+            int mentorCount;
+            int.TryParse(countComponents[0], out mentorCount);
+            return mentorCount;
+        }
+
+        private int GetTotalMentorCount()
+        {
+            string mentorCountElement = driver.FindElement(mentorsCount).Text;
+            string[] countComponents = mentorCountElement.Split(" ");
+            int mentorCount;
+            int.TryParse(countComponents[2], out mentorCount);
+            return mentorCount;
+        }
+
+        private List<string> GetFirstNames()
+        {
+            var elements = driver.FindElements(allFirstNames);
+            List<string> firstNameList = new List<string>();
+            foreach (IWebElement element in elements)
+            {
+                firstNameList.Add(element.Text);
+            }
+            return firstNameList;
+        }
+        private List<string> GetLastNames()
+        {
+            var elements = driver.FindElements(allLastNames);
+            List<string> lastNameList = new List<string>();
+            foreach (IWebElement element in elements)
+            {
+                lastNameList.Add(element.Text);
+            }
+            return lastNameList;
+        }
+        private List<string> GetEmails()
+        {
+            var elements = driver.FindElements(allEmails);
+            List<string> emailsList = new List<string>();
+            foreach (IWebElement element in elements)
+            {
+                emailsList.Add(element.Text);
+            }
+            return emailsList;
+        }
+
+        #endregion
     }
 }

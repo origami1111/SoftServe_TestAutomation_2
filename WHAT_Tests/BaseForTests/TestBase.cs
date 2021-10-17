@@ -13,6 +13,7 @@ namespace WHAT_Tests
     {
         protected IWebDriver driver;
         public readonly string LinksPath = @"DataFiles/Links.json";
+        public APIClient api = new APIClient();
         protected internal Logger log = LogManager.GetCurrentClassLogger();
 
         [SetUp]

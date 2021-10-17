@@ -146,6 +146,12 @@ namespace WHAT_PageObject
             return this;
         }
 
+        public MentorDetailsPage ClickMentorNameOnRow(int row)
+        {
+            ClickItem(mentorFirstName(row));
+            return new MentorDetailsPage(driver);
+        }
+
         public MentorsPage SelectFromRowAmountDropdown(string value)
         {
             var dropDownMenu = driver.FindElement(rowAmountDropdownMenu);
@@ -163,7 +169,7 @@ namespace WHAT_PageObject
             List<string> firstNamesSortedByFrontEnd = GetFirstNames();
             List<string> firstNamesSortedByTest = new List<string>(firstNamesSortedByFrontEnd);
             firstNamesSortedByTest.Sort(StringComparer.Ordinal);
-            CollectionAssert.AreEqual(firstNamesSortedByTest, firstNamesSortedByFrontEnd);
+            CollectionAssert.AreEqual(firstNamesSortedByTest, firstNamesSortedByFrontEnd, AssertionMessages.MentorsPage.FIRST_NAME_ASC_SORT);
             return this;
         }
         public MentorsPage VerifyCorrectSorftingByFirstNameDesc()
@@ -172,7 +178,7 @@ namespace WHAT_PageObject
             List<string> firstNamesSortedByTest = new List<string>(firstNamesSortedByFrontEnd);
             firstNamesSortedByTest.Sort(StringComparer.Ordinal);
             firstNamesSortedByTest.Reverse();
-            CollectionAssert.AreEqual(firstNamesSortedByTest, firstNamesSortedByFrontEnd);
+            CollectionAssert.AreEqual(firstNamesSortedByTest, firstNamesSortedByFrontEnd, AssertionMessages.MentorsPage.FIRST_NAME_DESC_SORT);
             return this;
         }
         public MentorsPage VerifyCorrectSorftingByLastNameAsc()
@@ -180,7 +186,7 @@ namespace WHAT_PageObject
             List<string> lastNamesSortedByFrontEnd = GetLastNames();
             List<string> lastNamesSortedByTest = new List<string>(lastNamesSortedByFrontEnd);
             lastNamesSortedByTest.Sort(StringComparer.Ordinal);
-            CollectionAssert.AreEqual(lastNamesSortedByTest, lastNamesSortedByFrontEnd);
+            CollectionAssert.AreEqual(lastNamesSortedByTest, lastNamesSortedByFrontEnd, AssertionMessages.MentorsPage.LAST_NAME_ASC_SORT);
             return this;
         }
         public MentorsPage VerifyCorrectSorftingByLastNameDesc()
@@ -189,7 +195,7 @@ namespace WHAT_PageObject
             List<string> lastNamesSortedByTest = new List<string>(lastNamesSortedByFrontEnd);
             lastNamesSortedByTest.Sort(StringComparer.Ordinal);
             lastNamesSortedByTest.Reverse();
-            CollectionAssert.AreEqual(lastNamesSortedByTest, lastNamesSortedByFrontEnd);
+            CollectionAssert.AreEqual(lastNamesSortedByTest, lastNamesSortedByFrontEnd, AssertionMessages.MentorsPage.LAST_NAME_DESC_SORT);
             return this;
         }
         public MentorsPage VerifyCorrectSorftingByEmailAsc()
@@ -197,7 +203,7 @@ namespace WHAT_PageObject
             List<string> emailsSortedByFrontEnd = GetEmails();
             List<string> emailsSortedByTest = new List<string>(emailsSortedByFrontEnd);
             emailsSortedByTest.Sort(StringComparer.Ordinal);
-            CollectionAssert.AreEqual(emailsSortedByTest, emailsSortedByFrontEnd);
+            CollectionAssert.AreEqual(emailsSortedByTest, emailsSortedByFrontEnd, AssertionMessages.MentorsPage.EMAIL_ASC_SORT);
             return this;
         }
         public MentorsPage VerifyCorrectSorftingByEmailDesc()
@@ -206,28 +212,28 @@ namespace WHAT_PageObject
             List<string> emailsSortedByTest = new List<string>(emailsSortedByFrontEnd);
             emailsSortedByTest.Sort(StringComparer.Ordinal);
             emailsSortedByTest.Reverse();
-            CollectionAssert.AreEqual(emailsSortedByTest, emailsSortedByFrontEnd);
+            CollectionAssert.AreEqual(emailsSortedByTest, emailsSortedByFrontEnd, AssertionMessages.MentorsPage.EMAIL_DESC_SORT);
             return this;
         }
 
         public MentorsPage VerifyFirstNameAtRow(int row, string expected)
         {
             string actual = GetFirstName(row);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual, AssertionMessages.MentorsPage.FIRST_NAME);
             return this;
         }
 
         public MentorsPage VerifyLastNameAtRow(int row, string expected)
         {
             string actual = GetLastName(row);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual, AssertionMessages.MentorsPage.LAST_NAME);
             return this;
         }
 
         public MentorsPage VerifyEmailAtRow(int row, string expected)
         {
             string actual = GetEmail(row);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual, AssertionMessages.MentorsPage.EMAIL);
             return this;
         }
 

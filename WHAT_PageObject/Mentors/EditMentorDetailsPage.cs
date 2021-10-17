@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
 using System.Collections.Generic;
 using WHAT_Utilities;
 
@@ -171,7 +169,7 @@ namespace WHAT_PageObject
 
         public EditMentorDetailsPage VerifySaveButtonEnabled(bool expected = true)
         {
-            string assertMessage = "Save button verification";
+            string assertMessage = AssertionMessages.EditMentorsDetailsPage.SAVE_BUTTON_ENABLED_MESSAGE;
             bool actual = driver.FindElement(saveButton).Enabled;
             Assert.AreEqual(expected, actual, assertMessage);
             return this;
@@ -180,25 +178,27 @@ namespace WHAT_PageObject
         public EditMentorDetailsPage VerifyFirstNameFilled(string expected)
         {
             string actual = driver.FindElement(firstNameField).GetAttribute("Value");
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual, AssertionMessages.EditMentorsDetailsPage.FIRST_NAME);
             return this;
         }
 
         public EditMentorDetailsPage VerifyLastNameFilled(string expected)
         {
             string actual = driver.FindElement(lastNameField).GetAttribute("Value");
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual, AssertionMessages.EditMentorsDetailsPage.LAST_NAME);
             return this;
         }
 
         public EditMentorDetailsPage VerifyEmailFilled(string expected)
         {
             string actual = driver.FindElement(emailField).GetAttribute("Value");
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual, AssertionMessages.EditMentorsDetailsPage.EMAIL);
             return this;
         }
 
         #endregion
+
+        #region GETTERS
 
         public string GetFirstNameError()
         {
@@ -216,5 +216,7 @@ namespace WHAT_PageObject
         {
             return driver.FindElement(saveButton).Enabled;
         }
+
+        #endregion
     }
 }

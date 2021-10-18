@@ -11,11 +11,12 @@ namespace WHAT_PageObject
     {
         protected IWebDriver driver;
         protected WebDriverWait wait;
+        static List<BasePage> pages = new List<BasePage>();
 
         public BasePage(IWebDriver driver)
         {
             this.driver = driver;
-            this.wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(4));
         }        
 
         protected void FillField(By locator, string text)
@@ -71,15 +72,23 @@ namespace WHAT_PageObject
             return GetPageInstance<T>(driver);
         }
 
-        public T Log<T>(string text) where T : BasePage
-        {
-
-            return GetPageInstance<T>(driver);
-        }
-
         protected T GetPageInstance<T>(params object[] args) where T : BasePage
         {
-            return (T)Activator.CreateInstance(typeof(T), args);
+            T foundPage = null;
+            foreach (BasePage page in BasePage.pages)
+            {
+                if (page is T)
+                {
+                    foundPage = (T)page;
+                    break;
+                }
+            }
+            if (foundPage == null)
+            {
+                foundPage = (T)Activator.CreateInstance(typeof(T), args);
+                BasePage.pages.Add(foundPage);
+            }
+            return foundPage;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace WHAT_PageObject
         public EditMentorDetailsPage ClickEditMentorDetaisNav()
         {
             driver.FindElement(editDetailsNavLink).Click();
-            return new EditMentorDetailsPage(driver);
+            return ChangePageInstance<EditMentorDetailsPage>();
         }
 
         private string[] GetTexFromAllFields()

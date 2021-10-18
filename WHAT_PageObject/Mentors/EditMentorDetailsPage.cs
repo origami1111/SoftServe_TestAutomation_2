@@ -39,7 +39,7 @@ namespace WHAT_PageObject
         public MentorDetailsPage ClickMentorDetailsNav()
         {
             ClickItem(mentorDetailsNavLink);
-            return new MentorDetailsPage(driver);
+            return ChangePageInstance<MentorDetailsPage>();
         }
 
         public EditMentorDetailsPage FillFirstNameField(string firstName)

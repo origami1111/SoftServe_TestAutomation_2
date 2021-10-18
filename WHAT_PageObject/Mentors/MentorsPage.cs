@@ -77,7 +77,7 @@ namespace WHAT_PageObject
         {
             IWebElement element = driver.FindElement(editMentorButton(row));
             element.Click();
-            return new EditMentorDetailsPage(driver);
+            return ChangePageInstance<EditMentorDetailsPage>();
         }
 
         public MentorsPage ClickDisabledMentorsToggle()
@@ -101,7 +101,7 @@ namespace WHAT_PageObject
         public UnassignedUsersPage ClickAddMentorButton()
         {
             ClickItem(addMentorButton);
-            return new UnassignedUsersPage(driver);
+            return ChangePageInstance<UnassignedUsersPage>();
         }
 
         public MentorsPage ClickPreviousPageTopButton()
@@ -149,7 +149,7 @@ namespace WHAT_PageObject
         public MentorDetailsPage ClickMentorNameOnRow(int row)
         {
             ClickItem(mentorFirstName(row));
-            return new MentorDetailsPage(driver);
+            return ChangePageInstance<MentorDetailsPage>();
         }
 
         public MentorsPage SelectFromRowAmountDropdown(string value)

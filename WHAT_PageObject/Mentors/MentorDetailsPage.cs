@@ -13,10 +13,14 @@ namespace WHAT_PageObject
         private By mentorDetails = By.XPath(Locators.MentorDetailsPage.MENTOR_DETAILS);
         #endregion
 
+        #region CONSTRUCTOR
         public MentorDetailsPage(IWebDriver driver) : base(driver)
         {
 
         }
+        #endregion
+
+        #region WAITS
 
         public EditMentorDetailsPage ClickEditMentorDetaisNav()
         {
@@ -24,14 +28,9 @@ namespace WHAT_PageObject
             return ChangePageInstance<EditMentorDetailsPage>();
         }
 
-        private string[] GetTexFromAllFields()
-        {
-            return new string[] {
-                driver.FindElement(mentorFirstName).Text,
-                driver.FindElement(mentorLastName).Text,
-                driver.FindElement(mentorEmail).Text
-            };
-        }
+        #endregion
+
+        #region ACTIONS
 
         public MentorDetailsPage WaitUntilMentorDetailsLoads()
         {
@@ -60,6 +59,10 @@ namespace WHAT_PageObject
             return this;
         }
 
+        #endregion
+
+        #region GETTERS
+
         public string GetFirstName()
         {
             return driver.FindElement(mentorFirstName).Text;
@@ -74,5 +77,7 @@ namespace WHAT_PageObject
         {
             return driver.FindElement(mentorEmail).Text;
         }
+
+        #endregion
     }
 }

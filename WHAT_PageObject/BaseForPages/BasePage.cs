@@ -23,7 +23,6 @@ namespace WHAT_PageObject
         {
             var field = driver.FindElement(locator);
             field.Click();
-            field.Clear();
             field.SendKeys(Keys.Control + "a");
             field.SendKeys(Keys.Delete);
             field.SendKeys(text);

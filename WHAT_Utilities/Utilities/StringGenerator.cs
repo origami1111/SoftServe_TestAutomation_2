@@ -18,6 +18,10 @@ namespace WHAT_Utilities
             {
                 int shift = Convert.ToInt32(Math.Floor(asciiRange * random.NextDouble()));
                 letter = Convert.ToChar(shift + asciiOffset);
+                if (i == 0)
+                {
+                    letter = char.ToUpper(letter);
+                }
                 stringBuilder.Append(letter);
             }
             return stringBuilder.ToString();

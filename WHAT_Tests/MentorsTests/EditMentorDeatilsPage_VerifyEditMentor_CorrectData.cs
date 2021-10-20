@@ -36,9 +36,10 @@ namespace WHAT_Tests
         public void TestEditMentorDeatilsPage_VerifyEditMentor_CorrectData(Role role)
         {
             var credentials = ReaderFileJson.ReadFileJsonCredentials(role);
-            var userName = $"{mentor.FirstName} {mentor.LastName}";
+            var userName = $"{mentor.FirstName} {mentor.LastName}";            
             var changedFirstName = StringGenerator.GenerateStringOfLetters(30);
             var changedLastName = StringGenerator.GenerateStringOfLetters(30);
+            var newUserName = $"{changedFirstName} {changedLastName}";
             var changedEmail = StringGenerator.GenerageEmail();
 
             new SignInPage(driver)
@@ -54,7 +55,14 @@ namespace WHAT_Tests
                 .VerifyLastNameFilled(changedLastName)
                 .FillEmailField(changedEmail)
                 .VerifyEmailFilled(changedEmail)
-                .ClickSaveButton();
+                .ClickSaveButton()
+                .WaitUntilMentorsTableLoads()
+                .FillSearchField(newUserName)
+                .ClickEditMentorButtonOnRow(1)
+                .WaitUntilFormLoads()
+                .VerifyFirstNameFilled(changedFirstName)
+                .VerifyLastNameFilled(changedLastName)
+                .VerifyEmailFilled(changedEmail);
         }
     }
 }

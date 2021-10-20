@@ -90,10 +90,10 @@ namespace WHAT_PageObject
             return this;
         }
 
-        public EditMentorDetailsPage ClickSaveButton()
+        public MentorsPage ClickSaveButton()
         {
             ClickItem(saveButton);
-            return this;
+            return ChangePageInstance<MentorsPage>();
         }
 
         public EditMentorDetailsPage ClickDisableButton()

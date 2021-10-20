@@ -104,7 +104,7 @@ namespace WHAT_PageObject
 
         #endregion
 
-        #region Waits
+        #region WAITS
 
         public EditMentorDetailsPage WaitUntilFormLoads()
         {

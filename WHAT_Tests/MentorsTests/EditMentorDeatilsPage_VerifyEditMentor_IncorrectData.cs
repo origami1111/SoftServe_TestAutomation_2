@@ -37,9 +37,9 @@ namespace WHAT_Tests
         {
             var credentials = ReaderFileJson.ReadFileJsonCredentials(role);
             var userName = $"{mentor.FirstName} {mentor.LastName}";
-            var invalidFirstNames = ReaderFileJson.ReadFileJsonTestData(@"DataFiles\MentorsPage\EditMentorsPageInvalidFirstNames.json");
-            var invalidLastNames = ReaderFileJson.ReadFileJsonTestData(@"DataFiles\MentorsPage\EditMentorsPageInvalidLastNames.json");
-            var invalidEmails = ReaderFileJson.ReadFileJsonTestData(@"DataFiles\MentorsPage\EditMentorsPageInvalidEmails.json");
+            var invalidFirstNames = ReaderFileJson.ReadFileJsonTestData(JsonFiles.EditMentorsInvalidFirstNames);
+            var invalidLastNames = ReaderFileJson.ReadFileJsonTestData(JsonFiles.EditMentorsInvalidLastNames);
+            var invalidEmails = ReaderFileJson.ReadFileJsonTestData(JsonFiles.EditMentorsInvalidEmails);
             var softAssetions = new SoftAssert();
             var page = new EditMentorDetailsPage(driver);
 
@@ -55,14 +55,14 @@ namespace WHAT_Tests
                     new EditMentorDetailsPage(driver)
                     .FillFirstNameField(data.Value)
                     .SoftAssertAdd<EditMentorDetailsPage>(
-                        softAssetions, 
-                        data.Result, 
-                        page.GetFirstNameError(), 
+                        softAssetions,
+                        data.Result,
+                        page.GetFirstNameError(),
                         AssertionMessages.EditMentorsDetailsPage.FIRST_NAME_ERROR_MESSAGE)
                     .SoftAssertAdd<EditMentorDetailsPage>(
-                        softAssetions, 
+                        softAssetions,
                         false,
-                        page.IsSaveButtonEnabled(), 
+                        page.IsSaveButtonEnabled(),
                         AssertionMessages.EditMentorsDetailsPage.SAVE_BUTTON_ENABLED_MESSAGE);
                 })
                 .ClickResetButton()
@@ -71,14 +71,14 @@ namespace WHAT_Tests
                     new EditMentorDetailsPage(driver)
                     .FillLastNameField(data.Value)
                     .SoftAssertAdd<EditMentorDetailsPage>(
-                        softAssetions, 
-                        data.Result, 
+                        softAssetions,
+                        data.Result,
                         page.GetLastNameError(),
                         AssertionMessages.EditMentorsDetailsPage.LAST_NAME_ERROR_MESSAGE)
                     .SoftAssertAdd<EditMentorDetailsPage>(
-                        softAssetions, 
-                        false, 
-                        page.IsSaveButtonEnabled(), 
+                        softAssetions,
+                        false,
+                        page.IsSaveButtonEnabled(),
                         AssertionMessages.EditMentorsDetailsPage.SAVE_BUTTON_ENABLED_MESSAGE);
                 })
                 .ClickResetButton()
@@ -87,14 +87,14 @@ namespace WHAT_Tests
                     new EditMentorDetailsPage(driver)
                     .FillEmailField(data.Value)
                     .SoftAssertAdd<EditMentorDetailsPage>(
-                        softAssetions, 
-                        data.Result, 
-                        page.GetEmailError(), 
+                        softAssetions,
+                        data.Result,
+                        page.GetEmailError(),
                         AssertionMessages.EditMentorsDetailsPage.EMAIL_ERROR_MESSAGE)
                     .SoftAssertAdd<EditMentorDetailsPage>(
-                        softAssetions, 
-                        false, 
-                        page.IsSaveButtonEnabled(), 
+                        softAssetions,
+                        false,
+                        page.IsSaveButtonEnabled(),
                         AssertionMessages.EditMentorsDetailsPage.SAVE_BUTTON_ENABLED_MESSAGE);
                 })
                 .SoftAssertAll<EditMentorDetailsPage>(softAssetions);

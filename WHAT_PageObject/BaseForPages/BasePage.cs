@@ -11,7 +11,7 @@ namespace WHAT_PageObject
     {
         protected IWebDriver driver;
         protected WebDriverWait wait;
-        static List<BasePage> pages = new List<BasePage>();
+        List<BasePage> pages = new List<BasePage>();
 
         public BasePage(IWebDriver driver)
         {
@@ -75,7 +75,7 @@ namespace WHAT_PageObject
         protected T GetPageInstance<T>(params object[] args) where T : BasePage
         {
             T foundPage = null;
-            foreach (BasePage page in BasePage.pages)
+            foreach (BasePage page in pages)
             {
                 if (page is T)
                 {
@@ -86,7 +86,7 @@ namespace WHAT_PageObject
             if (foundPage == null)
             {
                 foundPage = (T)Activator.CreateInstance(typeof(T), args);
-                BasePage.pages.Add(foundPage);
+                pages.Add(foundPage);
             }
             return foundPage;
         }

@@ -237,6 +237,26 @@ namespace WHAT_PageObject
             return this;
         }
 
+        public MentorsPage VerifySearchResults(string searchRequest)
+        {
+            var allFirstNames = GetFirstNames();
+            var allLastNames = GetLastNames();
+            bool expected = true;
+            bool actual = true;
+            for (int i = 0; i < allFirstNames.Count; i++)
+            {
+                if (!(allFirstNames[i].ToLower().Contains(searchRequest.ToLower()) 
+                    || allLastNames[i].ToLower().Contains(searchRequest.ToLower())
+                    || $"{allFirstNames[i]} {allLastNames[i]}".ToLower().Contains(searchRequest.ToLower())))
+                {
+                    actual = false;
+                    break;
+                }
+            }
+            Assert.AreEqual(expected, actual, AssertionMessages.MentorsPage.SEARCH_RESULTS);
+            return this;
+        }
+
         #endregion
 
         #region GETTERS

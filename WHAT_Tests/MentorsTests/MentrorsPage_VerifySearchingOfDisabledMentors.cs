@@ -28,7 +28,6 @@ namespace WHAT_Tests
 
         [Test, Description("DP213-168")]
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretary)]
         public void TestMentrorsPage_VerifySearchingOfDisabledMentors(Role role)
         {
             var mentorName = $"{mentor.FirstName} {mentor.LastName}";

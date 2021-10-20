@@ -25,6 +25,7 @@
             public static string FIRST_NAME = "First name in table verification";
             public static string LAST_NAME = "Last name in table verification";
             public static string EMAIL = "Email in table verification";
+            public static string SEARCH_RESULTS = "Search results verification";
         }
 
         public static class MentorDetailsPage

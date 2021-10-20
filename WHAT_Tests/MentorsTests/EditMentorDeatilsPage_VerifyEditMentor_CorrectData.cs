@@ -32,7 +32,6 @@ namespace WHAT_Tests
 
         [Test, Description("DP213-150")]
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretary)]
         public void TestEditMentorDeatilsPage_VerifyEditMentor_CorrectData(Role role)
         {
             var credentials = ReaderFileJson.ReadFileJsonCredentials(role);

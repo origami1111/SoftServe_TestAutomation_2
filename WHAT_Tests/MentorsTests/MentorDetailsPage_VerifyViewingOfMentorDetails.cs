@@ -32,7 +32,6 @@ namespace WHAT_Tests
 
         [Test, Description("DP213-147")]
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretary)]
         public void TestMentorsTablePage_VerifySortingOfActiveMentors(Role role)
         {
             var mentorName = $"{mentor.FirstName} {mentor.LastName}";

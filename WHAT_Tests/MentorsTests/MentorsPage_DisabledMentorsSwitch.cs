@@ -41,7 +41,6 @@ namespace WHAT_Tests
 
         [Test, Description("DP213-158")]
         [TestCase(Role.Admin)]
-        [TestCase(Role.Secretary)]
         public void TestDisabledMentorsSwitch(Role role)
         {
             var enabledMentorName = $"{enabledMentor.FirstName} {enabledMentor.LastName}";

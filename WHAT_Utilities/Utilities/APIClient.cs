@@ -14,7 +14,7 @@ namespace WHAT_Utilities
     {
         protected internal const string endpointsPath = @"DataFiles/Endpoints.json";
         protected internal const string linksPath = @"DataFiles/Links.json";
-        protected internal static RestClient client =
+        public static RestClient client =
             new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
         protected internal Logger log = LogManager.GetCurrentClassLogger();
 
@@ -150,6 +150,17 @@ namespace WHAT_Utilities
 
             authenticator = new JwtAuthenticator(accessToken);
             authenticators[(int)role] = authenticator;
+            return authenticator;
+        }
+
+        public IAuthenticator GetAuthenticatorFor(Credentials credentials)
+        {
+            string accessToken = GetToken(credentials);
+            if (accessToken.StartsWith("Bearer ", StringComparison.InvariantCultureIgnoreCase))
+            {
+                accessToken = accessToken["Bearer ".Length..];                
+            }
+            IAuthenticator authenticator = new JwtAuthenticator(accessToken);
             return authenticator;
         }
 

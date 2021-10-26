@@ -17,12 +17,15 @@ namespace WHAT_API
         protected internal const string endpointsPath = @"DataFiles/Endpoints.json";
         protected internal const string linksPath = @"DataFiles/Links.json";
 
+        protected APIClient api = new APIClient();
+
         protected internal static RestClient client =
             new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", API_BaseTest.linksPath));
         protected internal Logger log = LogManager.GetCurrentClassLogger();
 
         private readonly IAuthenticator[] authenticators =
             new IAuthenticator[Enum.GetValues(typeof(Role)).Length];
+
 
         [SetUp]
         public void LogBeforeEachTest()

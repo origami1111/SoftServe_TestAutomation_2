@@ -21,7 +21,7 @@ namespace WHAT_API
         private LessonsForMentor lessonsForMentor = new LessonsForMentor();
         public POST_ReturnsEventsList_Valid_ByElement()
         {
-            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_Valid_ByElement)}");
+            api.log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_Valid_ByElement)}");
         }
 
         /// <summary> Get list of active students using GET request / Student section</summary>
@@ -31,9 +31,9 @@ namespace WHAT_API
         private int GetMentorID(ref int mentorID)
         {
             Random random = new Random();
-            request = new RestRequest(ReaderUrlsJSON.GetUrlByName("ApiOnlyActiveMentors", endpointsPath), Method.GET);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
-            response = client.Execute(request);
+            request = new RestRequest(ReaderUrlsJSON.GetUrlByName("ApiOnlyActiveMentors", api.endpointsPath), Method.GET);
+            request.AddHeader("Authorization", api.GetToken(Role.Admin));
+            response = APIClient.client.Execute(request);
             List<Mentor> listOfMentors = JsonConvert.DeserializeObject<List<Mentor>>(response.Content.ToString());
             mentorID = listOfMentors.ElementAt(mentorID).Id;
             return mentorID;
@@ -48,11 +48,11 @@ namespace WHAT_API
             {
                 mentorID++;
                 mentorID = GetMentorID(ref mentorID);
-                request = new RestRequest(ReaderUrlsJSON.ByName("ApiMentorsIdLessons", endpointsPath), Method.GET);
-                request = InitNewRequest("ApiMentorsIdLessons", Method.GET, GetAuthenticatorFor(role));
+                request = new RestRequest(ReaderUrlsJSON.ByName("ApiMentorsIdLessons", api.endpointsPath), Method.GET);
+                request = api.InitNewRequest("ApiMentorsIdLessons", Method.GET, api.GetAuthenticatorFor(role));
                 request.AddUrlSegment("id", mentorID.ToString());
                 request.AddParameter("id", mentorID);
-                response = client.Execute(request);
+                response = APIClient.client.Execute(request);
                 var listLessonsForMentors = JsonConvert.DeserializeObject<List<LessonsForMentor>>(response.Content);
                 if (listLessonsForMentors.Any())
                 {
@@ -71,12 +71,12 @@ namespace WHAT_API
         {
             lessonsForMentor = GetProperFilter(role);
             int expectedMentorId = lessonsForMentor.MentorId;
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath)}");
-            request.AddHeader("Authorization", GetToken(role));
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath), Method.POST);
+            api.log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath)}");
+            request.AddHeader("Authorization", api.GetToken(role));
             request.AddJsonBody(new { mentorID = expectedMentorId });
-            response = client.Execute(request);
-            log.Info($"Request is done with {response.StatusCode} StatusCode");
+            response = APIClient.client.Execute(request);
+            api.log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "StatusCode");
             var events = JsonConvert.DeserializeObject<List<ScheduledEvent>>(response.Content);
             Assert.That(events.Count, Is.GreaterThan(0));
@@ -86,7 +86,7 @@ namespace WHAT_API
                 {
                     Assert.AreEqual(expectedMentorId, item.MentorId, "Presence of an item in the list");
                 }
-                log.Info($"Expected and actual results is checked");
+                api.log.Info($"Expected and actual results is checked");
             });
         }
         
@@ -98,15 +98,15 @@ namespace WHAT_API
         {
             lessonsForMentor = GetProperFilter(role);
             int expectedGroupId = lessonsForMentor.StudentGroupId;
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath)}");
-            request.AddHeader("Authorization", GetToken(role));
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath), Method.POST);
+            api.log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath)}");
+            request.AddHeader("Authorization", api.GetToken(role));
             request.AddJsonBody(new 
             { 
                 groupID=expectedGroupId 
             });
-            response = client.Execute(request);
-            log.Info($"Request is done with {response.StatusCode} StatusCode");
+            response = APIClient.client.Execute(request);
+            api.log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "StatusCode");
             var events = JsonConvert.DeserializeObject<List<ScheduledEvent>>(response.Content);
             Assert.That(events.Count, Is.GreaterThan(0));
@@ -116,7 +116,7 @@ namespace WHAT_API
                 {
                     Assert.AreEqual(expectedGroupId, item.StudentGroupId, "Presence of an item in the list");
                 }
-                log.Info($"Expected and actual results is checked");
+                api.log.Info($"Expected and actual results is checked");
             });
         }
     }

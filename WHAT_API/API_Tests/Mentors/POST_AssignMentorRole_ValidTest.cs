@@ -29,13 +29,13 @@ namespace WHAT_API
         [TestCase(Role.Secretary)]
         public void VerifyAssignMentorRole_Valid(Role role)
         {
-            log = LogManager.GetLogger($"Mentors/{nameof(POST_AssignMentorRole_ValidTest)}");
+            api.log = LogManager.GetLogger($"Mentors/{nameof(POST_AssignMentorRole_ValidTest)}");
 
             var endpoint = "ApiMentorsAssignAccountToMentor-accountID";
-            var adminAuthenticator = GetAuthenticatorFor(role);
-            var assignRoleRequest = InitNewRequest(endpoint, Method.POST, adminAuthenticator);
+            var adminAuthenticator = api.GetAuthenticatorFor(role);
+            var assignRoleRequest = api.InitNewRequest(endpoint, Method.POST, adminAuthenticator);
             assignRoleRequest.AddUrlSegment("accountId", unassigned.Id.ToString());
-            IRestResponse assignRoleResponse = client.Execute(assignRoleRequest);
+            IRestResponse assignRoleResponse = APIClient.client.Execute(assignRoleRequest);
             string assignJson = assignRoleResponse.Content;
             mentor = JsonConvert.DeserializeObject<WhatAccount>(assignJson);
             Assert.Multiple(() =>

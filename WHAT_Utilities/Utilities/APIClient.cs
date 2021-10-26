@@ -12,11 +12,11 @@ namespace WHAT_Utilities
 {
     public class APIClient
     {
-        protected internal const string endpointsPath = @"DataFiles/Endpoints.json";
-        protected internal const string linksPath = @"DataFiles/Links.json";
+        public string endpointsPath = @"DataFiles/Endpoints.json";
+        public static string linksPath = @"DataFiles/Links.json";
         public static RestClient client =
             new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
-        protected internal Logger log = LogManager.GetCurrentClassLogger();
+        public Logger log = LogManager.GetCurrentClassLogger();
 
         private readonly IAuthenticator[] authenticators =
             new IAuthenticator[Enum.GetValues(typeof(Role)).Length];

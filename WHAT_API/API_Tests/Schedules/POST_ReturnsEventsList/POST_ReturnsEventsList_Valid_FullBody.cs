@@ -20,7 +20,7 @@ namespace WHAT_API
 
         public POST_ReturnsEventsList_Valid_FullBody()
         {
-            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_Valid_FullBody)}");
+            api.log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_Valid_FullBody)}");
         }
 
         /// <summary> Return set values with filter for POST request</summary>
@@ -46,9 +46,9 @@ namespace WHAT_API
         public void VerifyReturnsEventrsList_FullBody_Valid([ValueSource(nameof(FilterRulesSources))] int[] filter,
             [ValueSource(nameof(FilterRoleSources))] Role role)
         {
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath)}");
-            request.AddHeader("Authorization", GetToken(role));
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath), Method.POST);
+            api.log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath)}");
+            request.AddHeader("Authorization", api.GetToken(role));
             request.AddJsonBody(new
             {
                 mentorID = filter[(int)FilterIndex.MentorId],
@@ -56,8 +56,8 @@ namespace WHAT_API
                 themeID = filter[(int)FilterIndex.ThemeId],
                 eventOccurrenceID = filter[(int)FilterIndex.EventOccurrenceId],
             });
-            response = client.Execute(request);
-            log.Info($"Request is done with {response.StatusCode} StatusCode");
+            response = APIClient.client.Execute(request);
+            api.log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "StatusCode");
             var events = JsonConvert.DeserializeObject<List<ScheduledEvent>>(response.Content);
             Assert.That(events.Count, Is.GreaterThan(0));
@@ -70,7 +70,7 @@ namespace WHAT_API
                     Assert.AreEqual(filter[(int)FilterIndex.ThemeId], item.ThemeId, "Presence of ThemeId");
                     Assert.AreEqual(filter[(int)FilterIndex.EventOccurrenceId], item.EventOccuranceId, "Presence of EventOccuranceId");
                 }
-                log.Info($"Expected and actual results is checked");
+                api.log.Info($"Expected and actual results is checked");
             });
         }
 
@@ -80,16 +80,16 @@ namespace WHAT_API
             var role = Role.Unassigned;
             try
             {
-                request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
-                log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath)}");
-                request.AddHeader("Authorization", GetToken(role));
+                request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath), Method.POST);
+                api.log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath)}");
+                request.AddHeader("Authorization", api.GetToken(role));
                 Assert.Fail();
-                log.Fatal("Not correct token, user is valid");
+                api.log.Fatal("Not correct token, user is valid");
             }
             catch (Exception)
             {
                 Assert.Pass();
-                log.Info("Exception is cought and correctly handled");
+                api.log.Info("Exception is cought and correctly handled");
             }
         }
     }

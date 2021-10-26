@@ -19,9 +19,9 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.OK, Role.Secretary, 1)]
         public void MethodPutEventUpdateRange(HttpStatusCode expectedStatusCode, Role role, int themeId)
         {
-            log = LogManager.GetLogger($"Schedules/{nameof(PUT_EventUpdateRange)}");
-            var StudentGroupRequest = InitNewRequest("ApiStudentsGroup", Method.GET, GetAuthenticatorFor(Role.Admin));
-            var StudentGroupResponse = client.Execute(StudentGroupRequest);
+            api.log = LogManager.GetLogger($"Schedules/{nameof(PUT_EventUpdateRange)}");
+            var StudentGroupRequest = api.InitNewRequest("ApiStudentsGroup", Method.GET, api.GetAuthenticatorFor(Role.Admin));
+            var StudentGroupResponse = APIClient.client.Execute(StudentGroupRequest);
             var responseDetail = JsonConvert.DeserializeObject<List<StudentGroup>>(StudentGroupResponse.Content);
             var group = responseDetail.First();
             int mentorId = group.MentorIds.First();
@@ -40,10 +40,10 @@ namespace WHAT_API
                 .WithRequest(myRequest);
             var jsonfile = JsonConvert.SerializeObject(mainRequest);
             
-            var request = InitNewRequest("ApiSchedulesEventsUpdateRange", Method.PUT, GetAuthenticatorFor(role)).AddJsonBody(jsonfile);
-            var response = client.Execute(request);
+            var request = api.InitNewRequest("ApiSchedulesEventsUpdateRange", Method.PUT, api.GetAuthenticatorFor(role)).AddJsonBody(jsonfile);
+            var response = APIClient.client.Execute(request);
             var actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            api.log.Info($"Request is done with {actualStatusCode} StatusCode");
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status Code Assert");
 
             var resposneDetaile = JsonConvert.DeserializeObject<List<EventFilterResponse>>(response.Content);
@@ -58,32 +58,32 @@ namespace WHAT_API
                     Assert.LessOrEqual(item.EventFinish, group.FinishDate, "Finish Date Assert");
                 }
             });
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
 
         [TestCase(HttpStatusCode.Forbidden, Role.Mentor)]
         [TestCase(HttpStatusCode.Forbidden, Role.Student)]
         public void VerifyForbiddenStatusCode(HttpStatusCode expectedStatusCode, Role role)
         {
-            log = LogManager.GetLogger($"Schedules/{nameof(PUT_EventUpdateRange)}");
-            var request = InitNewRequest("ApiSchedulesEventsUpdateRange", Method.PUT, GetAuthenticatorFor(role));
-            var response = client.Execute(request);
+            api.log = LogManager.GetLogger($"Schedules/{nameof(PUT_EventUpdateRange)}");
+            var request = api.InitNewRequest("ApiSchedulesEventsUpdateRange", Method.PUT, api.GetAuthenticatorFor(role));
+            var response = APIClient.client.Execute(request);
             var actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            api.log.Info($"Request is done with {actualStatusCode} StatusCode");
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status Code Assert");
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
 
         [TestCase(HttpStatusCode.Unauthorized)]
         public void VerifyUnauthorizedStatusCode(HttpStatusCode expectedStatusCode)
         {
-            log = LogManager.GetLogger($"Schedules/{nameof(PUT_EventUpdateRange)}");
-            var request = new RestRequest(ReaderUrlsJSON.GetUrlByName("ApiSchedulesEventsUpdateRange", endpointsPath), Method.PUT);
-            var response = client.Execute(request);
+            api.log = LogManager.GetLogger($"Schedules/{nameof(PUT_EventUpdateRange)}");
+            var request = new RestRequest(ReaderUrlsJSON.GetUrlByName("ApiSchedulesEventsUpdateRange", api.endpointsPath), Method.PUT);
+            var response = APIClient.client.Execute(request);
             var actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            api.log.Info($"Request is done with {actualStatusCode} StatusCode");
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status Code Assert");
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
     }
 }

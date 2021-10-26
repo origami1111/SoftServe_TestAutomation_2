@@ -16,35 +16,35 @@ namespace WHAT_API
     public class PUT_UpdateSecretary_ValidTest : API_BaseTest
     {
         Random random = new Random();
-        private Account registeredUser;
+        private WhatAccount registeredUser;
 
         int SecretaryID { get; set; }
 
         public PUT_UpdateSecretary_ValidTest()
         {
-            log = LogManager.GetLogger($"Secretaries/{nameof(PUT_UpdateSecretary_ValidTest)}");
+            api.log = LogManager.GetLogger($"Secretaries/{nameof(PUT_UpdateSecretary_ValidTest)}");
         }
 
         [OneTimeSetUp]
         public void PreConditions()
         {
-            var authenticator = GetAuthenticatorFor(Role.Admin);
-            registeredUser = RegistrationUser();
-            RestRequest request = InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
-            IRestResponse response = client.Execute(request);
+            var authenticator = api.GetAuthenticatorFor(Role.Admin);
+            registeredUser = api.RegistrationUser();
+            RestRequest request = api.InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
+            IRestResponse response = APIClient.client.Execute(request);
 
             string json = response.Content;
             var users = JsonConvert.DeserializeObject<List<Account>>(json);
             var searchedUser = users.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
             registeredUser.Id = searchedUser.Id;
 
-            request = InitNewRequest("ApiSecretariesAccountId", Method.POST, authenticator);
+            request = api.InitNewRequest("ApiSecretariesAccountId", Method.POST, authenticator);
             request.AddUrlSegment("accountId", registeredUser.Id.ToString());
-            response = client.Execute(request);
+            response = APIClient.client.Execute(request);
 
-            request = new RestRequest(ReaderUrlsJSON.ByName("GET All Secretaries", endpointsPath), Method.GET);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
-            response = client.Execute(request);
+            request = new RestRequest(ReaderUrlsJSON.ByName("GET All Secretaries", api.endpointsPath), Method.GET);
+            request.AddHeader("Authorization", api.GetToken(Role.Admin));
+            response = APIClient.client.Execute(request);
 
             List<Secretary> secretaries = JsonConvert.DeserializeObject<List<Secretary>>(response.Content.ToString());
             var searchedSecretary = secretaries.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
@@ -56,7 +56,7 @@ namespace WHAT_API
         public void PUT_UpdateTest(HttpStatusCode expectedStatus, string email, string firstName, string lastName)
         {
             RestRequest request = new RestRequest($"secretaries/{SecretaryID}", Method.PUT);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
+            request.AddHeader("Authorization", api.GetToken(Role.Admin));
             email = $"{Guid.NewGuid():N}" + email;
             Secretary body = new Secretary()
             {
@@ -66,7 +66,7 @@ namespace WHAT_API
             };
 
             request.AddJsonBody(body);
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = APIClient.client.Execute(request);
 
             var actualStatus = response.StatusCode;
             var responseSecretary = JsonConvert.DeserializeObject<Secretary>(response.Content.ToString());

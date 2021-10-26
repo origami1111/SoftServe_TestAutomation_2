@@ -19,7 +19,7 @@ namespace WHAT_API.API_Tests.Students
         private IRestResponse response;
         public PUT_UpdatesStudent()
         {
-            log = LogManager.GetLogger($"Students/{nameof(PUT_UpdatesStudent)}");
+            api.log = LogManager.GetLogger($"Students/{nameof(PUT_UpdatesStudent)}");
         }
         /// <summary>
         /// That auto test verify updating students using PUT request / Student section with Admin/Secretary role
@@ -35,8 +35,8 @@ namespace WHAT_API.API_Tests.Students
         public void VerifyDeletingStudentAccount_Valid(Role role)
         {
             StudentDetails randomStudent = GetRandomActiveStudent(role);
-            log.Info($"Student information is generated: id={randomStudent.Id}");
-            request = InitNewRequest("ApiStudentsStudentId", Method.PUT, GetAuthenticatorFor(role));
+            api.log.Info($"Student information is generated: id={randomStudent.Id}");
+            request = api.InitNewRequest("ApiStudentsStudentId", Method.PUT, api.GetAuthenticatorFor(role));
             request.AddUrlSegment("studentId", randomStudent.Id.ToString());
             request.AddParameter("studentId", randomStudent.Id);
             UpdateStudent updateRequestBody = new UpdateStudent();
@@ -45,10 +45,10 @@ namespace WHAT_API.API_Tests.Students
             updateRequestBody.Email = randomStudent.Email;
             var updateStudent = JsonConvert.SerializeObject(updateRequestBody);
             request.AddJsonBody(updateStudent);
-            log.Info($"PUT request to {ReaderUrlsJSON.ByName("ApiStudentsStudentId", endpointsPath)}");
-            response = client.Execute(request);
+            api.log.Info($"PUT request to {ReaderUrlsJSON.ByName("ApiStudentsStudentId", api.endpointsPath)}");
+            response = APIClient.client.Execute(request);
 
-            log.Info($"Request is done with {response.StatusCode} StatusCode");
+            api.log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var changedStudent = JsonConvert.DeserializeObject<UpdateStudent>(response.Content);
             Assert.Multiple(() =>
@@ -56,15 +56,15 @@ namespace WHAT_API.API_Tests.Students
                 Assert.AreEqual(randomStudent.Email, changedStudent.Email);
                 Assert.AreEqual(randomStudent.FirstName, changedStudent.FirstName);
                 Assert.AreEqual(randomStudent.LastName, changedStudent.LastName);
-                log.Info($"Expected and actual results is checked");
+                api.log.Info($"Expected and actual results is checked");
             });
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsId", endpointsPath), Method.GET);
-            request = InitNewRequest("ApiStudentsId", Method.GET, GetAuthenticatorFor(role));
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsId", api.endpointsPath), Method.GET);
+            request = api.InitNewRequest("ApiStudentsId", Method.GET, api.GetAuthenticatorFor(role));
             request.AddUrlSegment("id", randomStudent.Id.ToString());
             request.AddParameter("id", randomStudent.Id);
-            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiStudentsStudentId", endpointsPath)}");
-            response = client.Execute(request);
-            log.Info($"Request is done with {response.StatusCode} StatusCode");
+            api.log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiStudentsStudentId", api.endpointsPath)}");
+            response = APIClient.client.Execute(request);
+            api.log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             var student = JsonConvert.DeserializeObject<StudentDetails>(response.Content);
             Assert.Multiple(() =>
@@ -72,7 +72,7 @@ namespace WHAT_API.API_Tests.Students
                 Assert.AreEqual(randomStudent.Email, student.Email);
                 Assert.AreEqual(randomStudent.FirstName, student.FirstName);
                 Assert.AreEqual(randomStudent.LastName, student.LastName);
-                log.Info($"Expected and actual results is checked");
+                api.log.Info($"Expected and actual results is checked");
             });
         }
 
@@ -87,9 +87,9 @@ namespace WHAT_API.API_Tests.Students
             const int MIN_RANDOM = 4;
             Random random = new Random();
             StudentDetails randomStudent = new StudentDetails();
-            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", endpointsPath), Method.GET);
-            getRequest.AddHeader("Authorization", GetToken(role));
-            IRestResponse getResponse = client.Execute(getRequest);
+            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsActive", api.endpointsPath), Method.GET);
+            getRequest.AddHeader("Authorization", api.GetToken(role));
+            IRestResponse getResponse = APIClient.client.Execute(getRequest);
             var listOfActiveStudentsJsonConvert = JsonConvert.DeserializeObject<List<StudentDetails>>(getResponse.Content);
             if (!listOfActiveStudentsJsonConvert.Any() || getResponse.StatusCode != HttpStatusCode.OK)
             {

@@ -19,50 +19,50 @@ namespace WHAT_API
 
         public POST_AddNewSecretary()
         {
-            log = LogManager.GetLogger($"Secretaries/{nameof(POST_AddNewSecretary)}");
+            api.log = LogManager.GetLogger($"Secretaries/{nameof(POST_AddNewSecretary)}");
         }
 
         private IRestResponse PostApiAccountsReg(GenerateUser user)
         {
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", api.endpointsPath), Method.POST);
             request.AddJsonBody(user);
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
-            return Execute(request);
+            api.log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", api.endpointsPath)}");
+            return api.Execute(request);
         }
 
         private IRestResponse GetApiAccountsNotAssigned()
         {
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
-            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
-            return Execute(request);
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", api.endpointsPath), Method.GET);
+            request.AddHeader("Authorization", api.GetToken(Role.Admin));
+            api.log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", api.endpointsPath)}");
+            return api.Execute(request);
         }
 
         private IRestResponse PostApiSecretariesAccountId(Role role, int accountId)
         {
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesAccountId", endpointsPath), Method.POST);
-            request = InitNewRequest("ApiSecretariesAccountId", Method.POST, GetAuthenticatorFor(role));
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesAccountId", api.endpointsPath), Method.POST);
+            request = api.InitNewRequest("ApiSecretariesAccountId", Method.POST, api.GetAuthenticatorFor(role));
             request.AddUrlSegment("accountId", accountId.ToString());
             request.AddParameter("accountId", accountId);
-            response = Execute(request);
-            log.Info($"POST request to {response.ResponseUri}");
+            response = api.Execute(request);
+            api.log.Info($"POST request to {response.ResponseUri}");
             return response;
         }
 
         private IRestResponse GetApiSecretariesActive()
         {
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath), Method.GET);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
-            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSecretariesActive", endpointsPath)}");
-            return Execute(request);
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesActive", api.endpointsPath), Method.GET);
+            request.AddHeader("Authorization", api.GetToken(Role.Admin));
+            api.log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSecretariesActive", api.endpointsPath)}");
+            return api.Execute(request);
         }
 
         private IRestResponse DeleteApiSecretariesId(int userId)
         {
-            request = InitNewRequest("ApiSecretariesId", Method.DELETE, GetAuthenticatorFor(Role.Admin));
+            request = api.InitNewRequest("ApiSecretariesId", Method.DELETE, api.GetAuthenticatorFor(Role.Admin));
             request.AddUrlSegment("id", userId.ToString());
-            log.Info($"Last secretary in list is deleted");
-            return Execute(request);
+            api.log.Info($"Last secretary in list is deleted");
+            return api.Execute(request);
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace WHAT_API
                 Assert.AreEqual(expectedUser.LastName, actualUser.LastName);
                 Assert.AreEqual(expectedUser.Email, actualUser.Email);
             });
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
             DeleteApiSecretariesId(maxId);
         }
 
@@ -107,7 +107,7 @@ namespace WHAT_API
             int maxId = activeSecretariesList.Max(i => i.Id);
             var actualUser = activeSecretariesList.First(x => x.Id == maxId);
             Assert.AreNotEqual(expectedUser.Email, actualUser.Email);
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
             DeleteApiSecretariesId(maxId);
         }
 
@@ -118,18 +118,18 @@ namespace WHAT_API
             PostApiAccountsReg(expectedUser);
             response = GetApiAccountsNotAssigned();
             int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesAccountId", endpointsPath), Method.POST);
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSecretariesAccountId", api.endpointsPath), Method.POST);
             request.AddUrlSegment("accountId", newUserAccountId.ToString());
             request.AddParameter("accountId", newUserAccountId);
-            response = Execute(request);
-            log.Info($"POST request to {response.ResponseUri}");
+            response = api.Execute(request);
+            api.log.Info($"POST request to {response.ResponseUri}");
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
             response = GetApiSecretariesActive();
             var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
             int maxId = activeSecretariesList.Max(i => i.Id);
             var actualUser = activeSecretariesList.First(x => x.Id == maxId);
             Assert.AreNotEqual(expectedUser.Email, actualUser.Email);
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
             DeleteApiSecretariesId(maxId);
         }
 
@@ -142,7 +142,7 @@ namespace WHAT_API
             response = PostApiSecretariesAccountId(role, maxUserId + 1);
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
             response = GetApiSecretariesActive();
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
 
         [Test]
@@ -162,7 +162,7 @@ namespace WHAT_API
             var activeSecretariesList = JsonConvert.DeserializeObject<List<Secretary>>(response.Content);
             int maxId = activeSecretariesList.Max(i => i.Id);
             var actualUser = activeSecretariesList.First(x => x.Id == maxId);
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
             DeleteApiSecretariesId(maxId);
         }
     }

@@ -43,7 +43,7 @@ namespace WHAT_API
         [Test]
         public void VerifyAssignMentorRole_Invalid()
         {
-            log = LogManager.GetLogger($"Mentors/{nameof(POST_AssignMentorRole_InvalidTest)}");
+            api.log = LogManager.GetLogger($"Mentors/{nameof(POST_AssignMentorRole_InvalidTest)}");
             var endpoint = "ApiMentorsAssignAccountToMentor-accountID";
             var adminAuthenticator = api.GetAuthenticatorFor(assignerCredentials);
             var assignRoleRequest = api.InitNewRequest(endpoint, Method.POST, adminAuthenticator);

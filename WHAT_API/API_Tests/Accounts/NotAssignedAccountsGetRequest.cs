@@ -15,11 +15,11 @@ namespace WHAT_API
     {
         private RestRequest request;
         private IRestResponse response;
-        private Account expectedData;
+        private WhatAccount expectedData;
 
         public NotAssignedAccountsGetRequest()
         {
-            log = LogManager.GetLogger($"Accounts/{nameof(NotAssignedAccountsGetRequest)}");
+            api.log = LogManager.GetLogger($"Accounts/{nameof(NotAssignedAccountsGetRequest)}");
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace WHAT_API
         [OneTimeSetUp]
         public void PreCondition()
         {
-            expectedData = RegistrationUser();
+            expectedData = api.RegistrationUser();
         }
 
         [Test]
@@ -36,14 +36,14 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.OK, Role.Secretary)]
         public void ReturnAllNotRegisteredAccounts(HttpStatusCode expectedStatusCode, Role role)
         {
-            var authenticator = GetAuthenticatorFor(role);
-            request = InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
+            var authenticator = api.GetAuthenticatorFor(role);
+            request = api.InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
 
-            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
-            response = Execute(request);
+            api.log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", api.endpointsPath)}");
+            response = api.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
+            api.log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
@@ -56,7 +56,7 @@ namespace WHAT_API
                     Assert.AreEqual(expectedData.Role, user.Role, "Role");
                 }
             });
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
 
         [Test]
@@ -64,14 +64,14 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.Forbidden, Role.Student)]
         public void ReturnAllNotRegisteredAccountsWithStatusCode403(HttpStatusCode expectedStatusCode, Role role)
         {
-            var authenticator = GetAuthenticatorFor(role);
-            request = InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
+            var authenticator = api.GetAuthenticatorFor(role);
+            request = api.InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
 
-            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
-            response = Execute(request);
+            api.log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", api.endpointsPath)}");
+            response = api.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
+            api.log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
         }

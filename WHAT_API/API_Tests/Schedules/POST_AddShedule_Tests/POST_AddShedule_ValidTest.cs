@@ -20,29 +20,29 @@ namespace WHAT_API
 
         public POST_AddShedule_ValidTest()
         {
-            log = LogManager.GetLogger($"Schedules/{nameof(POST_AddShedule_ValidTest)}");
+            api.log = LogManager.GetLogger($"Schedules/{nameof(POST_AddShedule_ValidTest)}");
         }
 
         [OneTimeSetUp]
         public void PreConditions()
         {
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedules", endpointsPath), Method.POST);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedules", api.endpointsPath), Method.POST);
+            request.AddHeader("Authorization", api.GetToken(Role.Admin));
 
             schedule = new ScheduleGenerator()
                            .GenerateShedule();
 
             request.AddJsonBody(schedule);
-            response = client.Execute(request);
+            response = APIClient.client.Execute(request);
         }
 
         [OneTimeTearDown]
         public void PostConditions()
         {
             RestRequest deleteRequest = new RestRequest($"schedules/{occurrenceID}", Method.DELETE);
-            deleteRequest.AddHeader("Authorization", GetToken(Role.Admin));
+            deleteRequest.AddHeader("Authorization", api.GetToken(Role.Admin));
 
-            IRestResponse deleteResponse = client.Execute(deleteRequest);
+            IRestResponse deleteResponse = APIClient.client.Execute(deleteRequest);
 
             if (deleteResponse.StatusCode != HttpStatusCode.OK)
             {

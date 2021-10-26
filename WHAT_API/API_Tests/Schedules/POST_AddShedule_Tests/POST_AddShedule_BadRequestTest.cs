@@ -19,21 +19,21 @@ namespace WHAT_API
 
         public POST_AddShedule_BadRequestTest()
         {
-            log = LogManager.GetLogger($"Schedules/{nameof(POST_AddShedule_BadRequestTest)}");
+            api.log = LogManager.GetLogger($"Schedules/{nameof(POST_AddShedule_BadRequestTest)}");
         }
 
         [OneTimeSetUp]
         public void PreConditions()
         {
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedules", endpointsPath), Method.POST);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedules", api.endpointsPath), Method.POST);
+            request.AddHeader("Authorization", api.GetToken(Role.Admin));
         }
 
         [Test, TestCase(HttpStatusCode.BadRequest, "wrongData")]
         public void POST_MissingData(HttpStatusCode expectedStatus, string data)
         {
             request.AddJsonBody(data);
-            response = client.Execute(request);
+            response = APIClient.client.Execute(request);
 
             var actualStatus = response.StatusCode;
 
@@ -51,7 +51,7 @@ namespace WHAT_API
                            .GenerateShedule(PatternType.Daily, 3, list, startDate, finishDate, 1, 3, 4);
 
             request.AddJsonBody(schedule);
-            response = client.Execute(request);
+            response = APIClient.client.Execute(request);
 
             var actualStatus = response.StatusCode;
 

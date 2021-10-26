@@ -14,7 +14,7 @@ namespace WHAT_API
     public class ScheduleGenerator : API_BaseTest
     {       
         private CreateSchedule schedule = new CreateSchedule();
-        private Account registeredUser;
+        private WhatAccount registeredUser;
         Random random = new Random();
 
         public CreateSchedule GenerateShedule(PatternType type, int interval, IList<DayOfWeek> list,
@@ -99,13 +99,13 @@ namespace WHAT_API
         public int GetMentorID()
         {
             int mentorID;
-            registeredUser = RegistrationUser();
+            registeredUser = api.RegistrationUser();
 
-            RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
+            RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", APIClient.linksPath));
 
-            RestRequest  request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
-            request.AddHeader("Authorization", GetToken(Role.Admin, getClient));
-            IRestResponse response = client.Execute(request);
+            RestRequest  request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", api.endpointsPath), Method.GET);
+            request.AddHeader("Authorization", api.GetToken(Role.Admin, getClient));
+            IRestResponse response = APIClient.client.Execute(request);
 
 
             string json = response.Content;
@@ -114,12 +114,12 @@ namespace WHAT_API
             registeredUser.Id = searchedUser.Id;
 
             request = new RestRequest($"mentors/{registeredUser.Id}", Method.POST);
-            request.AddHeader("Authorization", GetToken(Role.Admin, getClient));
-            response = client.Execute(request);
+            request.AddHeader("Authorization", api.GetToken(Role.Admin, getClient));
+            response = APIClient.client.Execute(request);
 
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiOnlyActiveMentors", endpointsPath), Method.GET);
-            request.AddHeader("Authorization", GetToken(Role.Admin, getClient));
-            response = client.Execute(request);
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiOnlyActiveMentors", api.endpointsPath), Method.GET);
+            request.AddHeader("Authorization", api.GetToken(Role.Admin, getClient));
+            response = APIClient.client.Execute(request);
 
             List<Mentor> mentors = JsonConvert.DeserializeObject<List<Mentor>>(response.Content.ToString());
             var searchedMentor = mentors.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
@@ -131,9 +131,9 @@ namespace WHAT_API
         public int GetStudentsGroupID()
         {
             int studentsGroupID;
-            RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
-            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsGroup", endpointsPath), Method.GET);
-            getRequest.AddHeader("Authorization", GetToken(Role.Admin, getClient));
+            RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", APIClient.linksPath));
+            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsGroup", api.endpointsPath), Method.GET);
+            getRequest.AddHeader("Authorization", api.GetToken(Role.Admin, getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
             List<StudentGroup> listOfStudentsGroup = JsonConvert.DeserializeObject<List<StudentGroup>>(getResponse.Content.ToString());
             if (!listOfStudentsGroup.Any() || getResponse.StatusCode != HttpStatusCode.OK)
@@ -151,9 +151,9 @@ namespace WHAT_API
         public int GetThemeID()
         {
             int themeID;
-            RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", linksPath));
-            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiThemes", endpointsPath), Method.GET);
-            getRequest.AddHeader("Authorization", GetToken(Role.Admin, getClient));
+            RestClient getClient = new RestClient(ReaderUrlsJSON.ByName("BaseURLforAPI", APIClient.linksPath));
+            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName("ApiThemes", api.endpointsPath), Method.GET);
+            getRequest.AddHeader("Authorization", api.GetToken(Role.Admin, getClient));
             IRestResponse getResponse = getClient.Execute(getRequest);
             List<Themes> listOfThemes = JsonConvert.DeserializeObject<List<Themes>>(getResponse.Content.ToString());
             if (!listOfThemes.Any() || getResponse.StatusCode != HttpStatusCode.OK)

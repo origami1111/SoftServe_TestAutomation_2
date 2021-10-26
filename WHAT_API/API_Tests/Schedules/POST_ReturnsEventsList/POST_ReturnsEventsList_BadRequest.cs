@@ -15,7 +15,7 @@ namespace WHAT_API
     {
         public POST_ReturnsEventsList_BadRequest()
         {
-            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_BadRequest)}");
+            api.log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_BadRequest)}");
         }
 
         /// <summary> Return set invalid values for POST request</summary>
@@ -32,9 +32,9 @@ namespace WHAT_API
             int mentorID, int groupID, int themeID, int studentAccountID, int eventOccurrenceID,
             DateTime startDate, DateTime finishDate)
         {
-            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath)}");
-            request.AddHeader("Authorization", GetToken(Role.Admin));
+            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath), Method.POST);
+            api.log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath)}");
+            request.AddHeader("Authorization", api.GetToken(Role.Admin));
             request.AddJsonBody(new
             {
 
@@ -47,10 +47,10 @@ namespace WHAT_API
                 startDate = startDate,
                 finishDate = finishDate
             });
-            IRestResponse response = client.Execute(request);
-            log.Info($"Request is done with {response.StatusCode} StatusCode");
+            IRestResponse response = APIClient.client.Execute(request);
+            api.log.Info($"Request is done with {response.StatusCode} StatusCode");
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
     }
 }

@@ -19,16 +19,16 @@ namespace WHAT_API
 
         public PUT_UpdateSecretary_NotFoundTest()
         {
-            log = LogManager.GetLogger($"Secretaries/{nameof(PUT_UpdateSecretary_NotFoundTest)}");
+            api.log = LogManager.GetLogger($"Secretaries/{nameof(PUT_UpdateSecretary_NotFoundTest)}");
         }
 
         [OneTimeSetUp]
         public void PreConditions()
         {
-            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("GET All Secretaries", endpointsPath), Method.GET);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
+            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("GET All Secretaries", api.endpointsPath), Method.GET);
+            request.AddHeader("Authorization", api.GetToken(Role.Admin));
 
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = APIClient.client.Execute(request);
 
             List<Secretary> secretaries = JsonConvert.DeserializeObject<List<Secretary>>(response.Content.ToString());
             if (!secretaries.Any() || response.StatusCode != HttpStatusCode.OK)
@@ -45,11 +45,11 @@ namespace WHAT_API
         public void PUT_UpdateNotFoundTest(HttpStatusCode expectedStatus)
         {
             RestRequest request = new RestRequest($"secretaries/{SecretaryID}", Method.PUT);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
+            request.AddHeader("Authorization", api.GetToken(Role.Admin));
 
             request.AddJsonBody("{}");
 
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = APIClient.client.Execute(request);
 
             var actualStatus = response.StatusCode;
 

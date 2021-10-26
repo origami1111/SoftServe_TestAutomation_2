@@ -18,7 +18,7 @@ namespace WHAT_API
 
         public SignInPostRequest()
         {
-            log = LogManager.GetLogger($"Accounts/{nameof(SignInPostRequest)}");
+            api.log = LogManager.GetLogger($"Accounts/{nameof(SignInPostRequest)}");
         }
 
         [Test]
@@ -29,14 +29,14 @@ namespace WHAT_API
         public void SignInWithStatusCode200(HttpStatusCode expectedStatusCode, Role role, Activity activity)
         {
             Credentials expectedData = ReaderFileJson.ReadFileJsonCredentials(role, activity);
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", api.endpointsPath), Method.POST);
             request.AddJsonBody(new { expectedData.Email, expectedData.Password });
 
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
-            response = Execute(request);
+            api.log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", api.endpointsPath)}");
+            response = api.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
+            api.log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
@@ -48,7 +48,7 @@ namespace WHAT_API
                 Assert.AreEqual(expectedData.LastName, actualData.LastName, "Last name");
                 Assert.AreEqual(expectedData.Role, actualData.Role, "Role");
             });
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
 
         [Test]
@@ -57,14 +57,14 @@ namespace WHAT_API
             Role role, Activity activity)
         {
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role, activity);
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", api.endpointsPath), Method.POST);
             request.AddJsonBody(new { credentials.Email, credentials.Password });
 
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
-            response = Execute(request);
+            api.log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", api.endpointsPath)}");
+            response = api.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
+            api.log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
@@ -74,7 +74,7 @@ namespace WHAT_API
             {
                 Assert.AreEqual($"\"{credentials.Email} {expected}\"", actual);
             });
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
 
         [Test]
@@ -83,14 +83,14 @@ namespace WHAT_API
             Role role, Activity activity)
         {
             Credentials credentials = ReaderFileJson.ReadFileJsonCredentials(role, activity);
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", api.endpointsPath), Method.POST);
             request.AddJsonBody(new { credentials.Email, credentials.Password });
 
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
-            response = Execute(request);
+            api.log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", api.endpointsPath)}");
+            response = api.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
+            api.log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
@@ -100,7 +100,7 @@ namespace WHAT_API
             {
                 Assert.AreEqual(expected, actual);
             });
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
 
         [Test]
@@ -110,14 +110,14 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.Unauthorized, "admin@gmail.com", "Qwerty_123")]
         public void SignInWithInvalidData(HttpStatusCode expectedStatusCode, string email, string password)
         {
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", api.endpointsPath), Method.POST);
             request.AddJsonBody(new { email, password });
 
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
-            response = Execute(request);
+            api.log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", api.endpointsPath)}");
+            response = api.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
+            api.log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
         }

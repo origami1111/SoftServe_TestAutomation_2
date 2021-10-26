@@ -13,17 +13,17 @@ namespace WHAT_API
     {
         public POST_ReturnsEventsList_Unauthorized()
         {
-            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_Unauthorized)}");
+            api.log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_Unauthorized)}");
         }
 
         [Test]
         public void VerifyReturnsEventrsList_StatusCode401()
         {
-            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath)}");
-            IRestResponse response = client.Execute(request);
+            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath), Method.POST);
+            api.log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath)}");
+            IRestResponse response = APIClient.client.Execute(request);
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode, "StatusCode");
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
     }
 }

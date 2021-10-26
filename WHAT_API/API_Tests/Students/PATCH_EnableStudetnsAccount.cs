@@ -18,34 +18,34 @@ namespace WHAT_API.API_Tests.Students
         private IRestResponse response;
         public PATCH_EnableStudetnsAccount()
         {
-            log = LogManager.GetLogger($"Students/{nameof(PATCH_EnableStudetnsAccount)}");
+            api.log = LogManager.GetLogger($"Students/{nameof(PATCH_EnableStudetnsAccount)}");
         }
 
         private void Precondition(Role role)
         {
             var expectedUser = new GenerateUser();
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", api.endpointsPath), Method.POST);
             request.AddJsonBody(expectedUser);
-            response = client.Execute(request);
+            response = APIClient.client.Execute(request);
 
-            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath)}");
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath), Method.GET);
-            request.AddHeader("Authorization", GetToken(role));
-            response = client.Execute(request);
+            api.log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiAccountsAuth", api.endpointsPath)}");
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", api.endpointsPath), Method.GET);
+            request.AddHeader("Authorization", api.GetToken(role));
+            response = APIClient.client.Execute(request);
 
             int newUserAccountId = JsonConvert.DeserializeObject<List<Account>>(response.Content).Max(s => s.Id);
-            log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", endpointsPath)}");
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsAccountId", endpointsPath), Method.POST);
-            request = InitNewRequest("ApiStudentsAccountId", Method.POST, GetAuthenticatorFor(role));
+            api.log.Info($"POST request to {ReaderUrlsJSON.ByName("ApiAccountsNotAssigned", api.endpointsPath)}");
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiStudentsAccountId", api.endpointsPath), Method.POST);
+            request = api.InitNewRequest("ApiStudentsAccountId", Method.POST, api.GetAuthenticatorFor(role));
             request.AddUrlSegment("accountId", newUserAccountId.ToString());
             request.AddParameter("accountId", newUserAccountId);
-            response = client.Execute(request);
+            response = APIClient.client.Execute(request);
 
             int lastUserId = GetActiveStudentsList("ApiStudentsActive", role).Last().Id;
-            request = InitNewRequest("ApiStudentsId", Method.DELETE, GetAuthenticatorFor(role));
+            request = api.InitNewRequest("ApiStudentsId", Method.DELETE, api.GetAuthenticatorFor(role));
             request.AddUrlSegment("id", lastUserId.ToString());
-            response = client.Execute(request);
-            log.Info($"Last student in list is deleted");
+            response = APIClient.client.Execute(request);
+            api.log.Info($"Last student in list is deleted");
         }
 
         /// <summary>
@@ -75,12 +75,12 @@ namespace WHAT_API.API_Tests.Students
             var allStudents = GetActiveStudentsList("ApiStudents", role).ToList();
             var activeStudents = GetActiveStudentsList("ApiStudentsActive", role).ToList();
             var expectedStudent = allStudents.Except(activeStudents).ToList().OrderBy(x=>x.Id).First();
-            request = InitNewRequest("ApiStudentsId", Method.PATCH, GetAuthenticatorFor(role));
+            request = api.InitNewRequest("ApiStudentsId", Method.PATCH, api.GetAuthenticatorFor(role));
             request.AddUrlSegment("id", expectedStudent.Id.ToString());
-            log.Info($"PATCH request to {response.ResponseUri}");
-            response = client.Execute(request);
+            api.log.Info($"PATCH request to {response.ResponseUri}");
+            response = APIClient.client.Execute(request);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            log.Info($"Request is done with {response.StatusCode} StatusCode");
+            api.log.Info($"Request is done with {response.StatusCode} StatusCode");
             var actualStudent = GetActiveStudentsList("ApiStudentsActive", role).Where(x=>x.Id==expectedStudent.Id).First();
             Assert.Multiple(() =>
             {
@@ -88,16 +88,16 @@ namespace WHAT_API.API_Tests.Students
                 Assert.AreEqual(expectedStudent.LastName, actualStudent.LastName);
                 Assert.AreEqual(expectedStudent.Email, actualStudent.Email);
                 Assert.AreEqual(expectedStudent.AvatarUrl, actualStudent.AvatarUrl);
-                log.Info($"Expected and actual results is checked");
+                api.log.Info($"Expected and actual results is checked");
             });
         }
 
         private List<StudentDetails> GetActiveStudentsList(string endpoint, Role role)
         {
-            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName(endpoint, endpointsPath), Method.GET);
-            getRequest.AddHeader("Authorization", GetToken(role));
-            IRestResponse getResponse = client.Execute(getRequest);
-            log.Info($"GET request to {response.ResponseUri}");
+            RestRequest getRequest = new RestRequest(ReaderUrlsJSON.ByName(endpoint, api.endpointsPath), Method.GET);
+            getRequest.AddHeader("Authorization", api.GetToken(role));
+            IRestResponse getResponse = APIClient.client.Execute(getRequest);
+            api.log.Info($"GET request to {response.ResponseUri}");
             return JsonConvert.DeserializeObject<List<StudentDetails>>(getResponse.Content);
         }
     }

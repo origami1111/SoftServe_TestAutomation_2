@@ -16,34 +16,34 @@ namespace WHAT_API
     public class DELETE_DisableSecretary_ValidTest: API_BaseTest
     {
         Random random = new Random();
-        private Account registeredUser;
+        private WhatAccount registeredUser;
         int SecretaryID { get; set; }
 
         public DELETE_DisableSecretary_ValidTest()
         {
-            log = LogManager.GetLogger($"Secretaries/{nameof(DELETE_DisableSecretary_ValidTest)}");
+            api.log = LogManager.GetLogger($"Secretaries/{nameof(DELETE_DisableSecretary_ValidTest)}");
         }
 
         [OneTimeSetUp]
         public void PreConditions()
         {
-            var authenticator = GetAuthenticatorFor(Role.Admin);
-            registeredUser = RegistrationUser();
-            RestRequest request = InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
-            IRestResponse response = client.Execute(request);
+            var authenticator = api.GetAuthenticatorFor(Role.Admin);
+            registeredUser = api.RegistrationUser();
+            RestRequest request = api.InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
+            IRestResponse response = APIClient.client.Execute(request);
 
             string json = response.Content;
             var users = JsonConvert.DeserializeObject<List<Account>>(json);
             var searchedUser = users.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
             registeredUser.Id = searchedUser.Id;
 
-            request = InitNewRequest("ApiSecretariesAccountId", Method.POST, authenticator);
+            request = api.InitNewRequest("ApiSecretariesAccountId", Method.POST, authenticator);
             request.AddUrlSegment("accountId", registeredUser.Id.ToString());
-            response = client.Execute(request);
+            response = APIClient.client.Execute(request);
 
-            request = new RestRequest(ReaderUrlsJSON.ByName("GET All Secretaries", endpointsPath), Method.GET);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
-            response = client.Execute(request);
+            request = new RestRequest(ReaderUrlsJSON.ByName("GET All Secretaries", api.endpointsPath), Method.GET);
+            request.AddHeader("Authorization", api.GetToken(Role.Admin));
+            response = APIClient.client.Execute(request);
 
             List<Secretary> secretaries = JsonConvert.DeserializeObject<List<Secretary>>(response.Content.ToString());
             var searchedSecretary = secretaries.Where(user => user.Email == registeredUser.Email).FirstOrDefault();
@@ -54,9 +54,9 @@ namespace WHAT_API
         public void DELETE_DisableTest(HttpStatusCode expectedStatus, string expectedResponse)
         {
             RestRequest request = new RestRequest($"secretaries/{SecretaryID}", Method.DELETE);
-            request.AddHeader("Authorization", GetToken(Role.Admin));
+            request.AddHeader("Authorization", api.GetToken(Role.Admin));
 
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = APIClient.client.Execute(request);
 
             var actualStatus = response.StatusCode;
             string responseActual = response.Content;

@@ -20,9 +20,9 @@ namespace WHAT_API.API_Tests.Lessons
         [TestCaseSource(typeof(TestCase), nameof(TestCase.ValidUpdatesGivenLesson))]
         public void UpdatesGivenLesson(HttpStatusCode expectedStatusCode, Role role)
         {
-            log = LogManager.GetLogger($"Lessons/{nameof(PutUpdatesGivenLesson)}");
-            var lessonRequest = InitNewRequest("Lessons", Method.GET, GetAuthenticatorFor(Role.Admin));
-            var lessonResponse = client.Execute(lessonRequest);
+            api.log = LogManager.GetLogger($"Lessons/{nameof(PutUpdatesGivenLesson)}");
+            var lessonRequest = api.InitNewRequest("Lessons", Method.GET, api.GetAuthenticatorFor(Role.Admin));
+            var lessonResponse = APIClient.client.Execute(lessonRequest);
             int lessonId = JsonConvert.DeserializeObject<List<Lesson>>(lessonResponse.Content).FirstOrDefault().Id;
             string themaName = Guid.NewGuid().ToString();
             DateTime date = DateTime.Now;
@@ -32,12 +32,12 @@ namespace WHAT_API.API_Tests.Lessons
             var jsonfile = JsonConvert.SerializeObject(updatesGivenLesson);
 
             var request = new RestRequest($"lessons/{lessonId}", Method.PUT)
-                .AddHeader("Authorization", GetToken(role))
+                .AddHeader("Authorization", api.GetToken(role))
                 .AddJsonBody(jsonfile);
 
-            var response = client.Execute(request);
+            var response = APIClient.client.Execute(request);
             var actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            api.log.Info($"Request is done with {actualStatusCode} StatusCode");
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status Code Assert");
 
             var resposneDetaile = JsonConvert.DeserializeObject<Lesson>(response.Content);
@@ -46,15 +46,15 @@ namespace WHAT_API.API_Tests.Lessons
                 Assert.AreEqual(resposneDetaile.LessonDate, date, "Assert lesson date");
                 Assert.AreEqual(resposneDetaile.ThemeName, themaName, "Assert thema name");
             });
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
 
         [TestCaseSource(typeof(TestCase), nameof(TestCase.ForbiddenUpdatesGivenLesson))]
         public void VerifyForbiddenStatusCode(HttpStatusCode expectedStatusCode, Role role)
         {
-            log = LogManager.GetLogger($"Lessons/{nameof(PutUpdatesGivenLesson)}");
-            var lessonRequest = InitNewRequest("Lessons", Method.GET, GetAuthenticatorFor(Role.Admin));
-            var lessonResponse = client.Execute(lessonRequest);
+            api.log = LogManager.GetLogger($"Lessons/{nameof(PutUpdatesGivenLesson)}");
+            var lessonRequest = api.InitNewRequest("Lessons", Method.GET, api.GetAuthenticatorFor(Role.Admin));
+            var lessonResponse = APIClient.client.Execute(lessonRequest);
             int lessonId = JsonConvert.DeserializeObject<List<Lesson>>(lessonResponse.Content).FirstOrDefault().Id;
             string themaName = Guid.NewGuid().ToString();
             DateTime date = DateTime.Now;
@@ -64,22 +64,22 @@ namespace WHAT_API.API_Tests.Lessons
             var jsonfile = JsonConvert.SerializeObject(updatesGivenLesson);
 
             var request = new RestRequest($"lessons/{lessonId}", Method.PUT)
-                .AddHeader("Authorization", GetToken(role))
+                .AddHeader("Authorization", api.GetToken(role))
                 .AddJsonBody(jsonfile);
 
-            var response = client.Execute(request);
+            var response = APIClient.client.Execute(request);
             var actuaStatuslCode = response.StatusCode;
-            log.Info($"Request is done with {actuaStatuslCode} StatusCode");
+            api.log.Info($"Request is done with {actuaStatuslCode} StatusCode");
             Assert.AreEqual(expectedStatusCode, actuaStatuslCode, "Status Code Assert");
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
 
         [TestCase(HttpStatusCode.Unauthorized)]
         public void VerifyUnauthorizedStatusCode(HttpStatusCode expectedStatusCode)
         {
-            log = LogManager.GetLogger($"Lessons/{nameof(PutUpdatesGivenLesson)}");
-            var lessonRequest = InitNewRequest("Lessons", Method.GET, GetAuthenticatorFor(Role.Admin));
-            var lessonResponse = client.Execute(lessonRequest);
+            api.log = LogManager.GetLogger($"Lessons/{nameof(PutUpdatesGivenLesson)}");
+            var lessonRequest = api.InitNewRequest("Lessons", Method.GET, api.GetAuthenticatorFor(Role.Admin));
+            var lessonResponse = APIClient.client.Execute(lessonRequest);
             int lessonId = JsonConvert.DeserializeObject<List<Lesson>>(lessonResponse.Content).FirstOrDefault().Id;
             string themaName = Guid.NewGuid().ToString();
             DateTime date = DateTime.Now;
@@ -91,11 +91,11 @@ namespace WHAT_API.API_Tests.Lessons
             var request = new RestRequest($"lessons/{lessonId}", Method.PUT)
                 .AddJsonBody(jsonfile);
 
-            var response = client.Execute(request);
+            var response = APIClient.client.Execute(request);
             var actuaStatuslCode = response.StatusCode;
-            log.Info($"Request is done with {actuaStatuslCode} StatusCode");
+            api.log.Info($"Request is done with {actuaStatuslCode} StatusCode");
             Assert.AreEqual(expectedStatusCode, actuaStatuslCode, "Status Code Assert");
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
     }
 }

@@ -18,23 +18,23 @@ namespace WHAT_API.API_Tests.Lessons
         [TestCaseSource(typeof(TestCase), nameof(TestCase.ValidRole))]
         public void GetLessonInformationById(HttpStatusCode expectedStatusCode,Role role)
         {
-            log = LogManager.GetLogger($"Lessons/{nameof(GetLessonInformationByLessonId)}");
-            var request = InitNewRequest("ApiStudentsGroup", Method.GET, GetAuthenticatorFor(Role.Admin));
-            var response = client.Execute(request);
+            api.log = LogManager.GetLogger($"Lessons/{nameof(GetLessonInformationByLessonId)}");
+            var request = api.InitNewRequest("ApiStudentsGroup", Method.GET, api.GetAuthenticatorFor(Role.Admin));
+            var response = APIClient.client.Execute(request);
             var responseDetail = JsonConvert.DeserializeObject<List<Lesson>>(response.Content);
             int id = responseDetail
                 .Select(l=>l.Id)
                 .FirstOrDefault();
             
             var newRequest = new RestRequest($"lessons/{id}", Method.GET)
-                .AddHeader("Authorization", GetToken(role));
-            var newResponse = client.Execute(newRequest);
+                .AddHeader("Authorization", api.GetToken(role));
+            var newResponse = APIClient.client.Execute(newRequest);
             var actualCode = newResponse.StatusCode;
-            log.Info($"Request is done with {actualCode} StatusCode");
+            api.log.Info($"Request is done with {actualCode} StatusCode");
             Assert.AreEqual(expectedStatusCode, actualCode, "Status Code Assert");
             var resposneDetaile = JsonConvert.DeserializeObject<Lesson>(newResponse.Content);
             Assert.AreEqual(resposneDetaile.Id, id,"Assert  lesson id");
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
     }
 }

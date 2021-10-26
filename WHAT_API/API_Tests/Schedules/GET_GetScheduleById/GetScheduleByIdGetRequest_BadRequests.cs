@@ -16,7 +16,7 @@ namespace WHAT_API
 
         public GetScheduleByIdGetRequest_BadRequests()
         {
-            log = LogManager.GetLogger($"Schedule/{nameof(GetScheduleByIdGetRequest_BadRequests)}");
+            api.log = LogManager.GetLogger($"Schedule/{nameof(GetScheduleByIdGetRequest_BadRequests)}");
         }
 
         [Test]
@@ -25,15 +25,15 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.NotFound, Role.Admin, 100000)]
         public void GetScheduleWithStatusCodeError(HttpStatusCode expectedStatusCode, Role role, int id)
         {
-            var authenticator = GetAuthenticatorFor(role);
-            request = InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
+            var authenticator = api.GetAuthenticatorFor(role);
+            request = api.InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
             request.AddUrlSegment("id", id.ToString());
 
-            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
-            response = Execute(request);
+            api.log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", api.endpointsPath)}");
+            response = api.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
+            api.log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
         }

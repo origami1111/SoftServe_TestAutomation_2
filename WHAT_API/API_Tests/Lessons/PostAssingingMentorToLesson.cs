@@ -19,21 +19,21 @@ namespace WHAT_API.API_Tests.Lessons
         [TestCaseSource(typeof(TestCase), nameof(TestCase.ValidAssingingMentorToLesson))]
         public void AssingingMentorToLesson(HttpStatusCode expectedStatusCode, Role role)
         {
-            log = LogManager.GetLogger($"Lessons/{nameof(PostAssingingMentorToLesson)}");
-            var mentorRequest = InitNewRequest("ApiOnlyActiveMentors",Method.GET, GetAuthenticatorFor(Role.Admin));
-            var mentorResponse = client.Execute(mentorRequest);
+            api.log = LogManager.GetLogger($"Lessons/{nameof(PostAssingingMentorToLesson)}");
+            var mentorRequest = api.InitNewRequest("ApiOnlyActiveMentors",Method.GET, api.GetAuthenticatorFor(Role.Admin));
+            var mentorResponse = APIClient.client.Execute(mentorRequest);
             int mentorId = JsonConvert.DeserializeObject<List<Mentor>>(mentorResponse.Content).FirstOrDefault().Id;
-            var lessonRequest = InitNewRequest("Lessons", Method.GET, GetAuthenticatorFor(Role.Admin));
-            var lessonResponse = client.Execute(lessonRequest);
+            var lessonRequest = api.InitNewRequest("Lessons", Method.GET, api.GetAuthenticatorFor(Role.Admin));
+            var lessonResponse = APIClient.client.Execute(lessonRequest);
             int lessonId = JsonConvert.DeserializeObject<List<Lesson>>(lessonResponse.Content).FirstOrDefault().Id;
             AssignMentorToLesson assingingMentorRequest = new AssignMentorToLesson()
                 .WithMentorId(mentorId)
                 .WithLessonId(lessonId);
             var jsonfile = JsonConvert.SerializeObject(assingingMentorRequest);
-            var request = InitNewRequest("LessonsAssign", Method.POST, GetAuthenticatorFor(role)).AddJsonBody(jsonfile);
-            var response = client.Execute(request);
+            var request = api.InitNewRequest("LessonsAssign", Method.POST, api.GetAuthenticatorFor(role)).AddJsonBody(jsonfile);
+            var response = APIClient.client.Execute(request);
             var actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            api.log.Info($"Request is done with {actualStatusCode} StatusCode");
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status Code Assert");
 
             var resposneDetaile = JsonConvert.DeserializeObject<AssignedMentorToLesson>(response.Content);
@@ -45,29 +45,29 @@ namespace WHAT_API.API_Tests.Lessons
                     Assert.AreEqual(visit.LessonId, lessonId, "Assert lesson id");
                 }
             });
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
         
         [TestCaseSource(typeof(TestCase), nameof(TestCase.ForbiddenAssingingMentorToLesson))]
         public void VerifyForbiddenStatusCode(HttpStatusCode expectedStatusCode, Role role)
         {
-            log = LogManager.GetLogger($"Lessons/{nameof(PostAssingingMentorToLesson)}");
-            var mentorRequest = InitNewRequest("ApiOnlyActiveMentors", Method.GET, GetAuthenticatorFor(Role.Admin));
-            var mentorResponse = client.Execute(mentorRequest);
+            api.log = LogManager.GetLogger($"Lessons/{nameof(PostAssingingMentorToLesson)}");
+            var mentorRequest = api.InitNewRequest("ApiOnlyActiveMentors", Method.GET, api.GetAuthenticatorFor(Role.Admin));
+            var mentorResponse = APIClient.client.Execute(mentorRequest);
             int mentorId = JsonConvert.DeserializeObject<List<Mentor>>(mentorResponse.Content).FirstOrDefault().Id;
-            var lessonRequest = InitNewRequest("Lessons", Method.GET, GetAuthenticatorFor(Role.Admin));
-            var lessonResponse = client.Execute(lessonRequest);
+            var lessonRequest = api.InitNewRequest("Lessons", Method.GET, api.GetAuthenticatorFor(Role.Admin));
+            var lessonResponse = APIClient.client.Execute(lessonRequest);
             int lessonId = JsonConvert.DeserializeObject<List<Lesson>>(lessonResponse.Content).FirstOrDefault().Id;
             AssignMentorToLesson assingingMentorRequest = new AssignMentorToLesson()
                 .WithMentorId(mentorId)
                 .WithLessonId(lessonId);
             var jsonfile = JsonConvert.SerializeObject(assingingMentorRequest);
-            var request = InitNewRequest("LessonsAssign", Method.POST, GetAuthenticatorFor(role)).AddJsonBody(jsonfile);
-            var response = client.Execute(request);
+            var request = api.InitNewRequest("LessonsAssign", Method.POST, api.GetAuthenticatorFor(role)).AddJsonBody(jsonfile);
+            var response = APIClient.client.Execute(request);
             var actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with {actualStatusCode} StatusCode");
+            api.log.Info($"Request is done with {actualStatusCode} StatusCode");
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status Code Assert");
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
     }
 }

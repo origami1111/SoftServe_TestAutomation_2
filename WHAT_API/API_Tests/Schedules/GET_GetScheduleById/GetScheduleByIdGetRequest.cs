@@ -20,7 +20,7 @@ namespace WHAT_API
 
         public GetScheduleByIdGetRequest()
         {
-            log = LogManager.GetLogger($"Schedule/{nameof(GetScheduleByIdGetRequest)}");
+            api.log = LogManager.GetLogger($"Schedule/{nameof(GetScheduleByIdGetRequest)}");
         }
 
         /// <summary>
@@ -29,15 +29,15 @@ namespace WHAT_API
         [OneTimeSetUp]
         public void PreCondition()
         {
-            var authenticator = GetAuthenticatorFor(Role.Admin);
-            request = InitNewRequest("ApiSchedules", Method.POST, authenticator);
+            var authenticator = api.GetAuthenticatorFor(Role.Admin);
+            request = api.InitNewRequest("ApiSchedules", Method.POST, authenticator);
 
             ScheduleGenerator scheduleGenerator = new ScheduleGenerator();
             CreateSchedule schedule = scheduleGenerator.GenerateShedule();
 
             request.AddJsonBody(schedule);
 
-            response = Execute(request);
+            response = api.Execute(request);
             expected = JsonConvert.DeserializeObject<EventOccurrence>(response.Content);
         }
 
@@ -47,11 +47,11 @@ namespace WHAT_API
         [OneTimeTearDown]
         public void PostCondition()
         {
-            var authenticator = GetAuthenticatorFor(Role.Admin);
-            request = InitNewRequest("ApiSchedulesEventOccurenceID-eventOccurenceID", Method.DELETE, authenticator);
+            var authenticator = api.GetAuthenticatorFor(Role.Admin);
+            request = api.InitNewRequest("ApiSchedulesEventOccurenceID-eventOccurenceID", Method.DELETE, authenticator);
             request.AddUrlSegment("eventOccurenceID", expected.Id.ToString());
 
-            response = Execute(request);
+            response = api.Execute(request);
 
             if (response.StatusCode != HttpStatusCode.OK)
             {
@@ -64,17 +64,17 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.OK, Role.Secretary)]
         public void GetScheduleWithStatusCode200(HttpStatusCode expectedStatusCode, Role role)
         {
-            var authenticator = GetAuthenticatorFor(role);
-            request = InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
+            var authenticator = api.GetAuthenticatorFor(role);
+            request = api.InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
             request.AddUrlSegment("id", expected.Id.ToString());
 
-            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
-            response = Execute(request);
+            api.log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", api.endpointsPath)}");
+            response = api.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
-            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
+            api.log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             EventOccurrence actual = JsonConvert.DeserializeObject<EventOccurrence>(response.Content);
             actual.Events = actual.Events.OrderBy(ev => ev.EventStart).ToList();
@@ -100,7 +100,7 @@ namespace WHAT_API
                     Assert.AreEqual(expected.Events[i].EventFinish, actual.Events[i].EventFinish, "Event finish");
                 }
             });
-            log.Info($"Expected and actual result is checked");
+            api.log.Info($"Expected and actual result is checked");
         }
 
         [Test]
@@ -108,15 +108,15 @@ namespace WHAT_API
         [TestCase(HttpStatusCode.Forbidden, Role.Student)]
         public void GetScheduleWithStatusCode403(HttpStatusCode expectedStatusCode, Role role)
         {
-            var authenticator = GetAuthenticatorFor(role);
-            request = InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
+            var authenticator = api.GetAuthenticatorFor(role);
+            request = api.InitNewRequest("ApiSchedulesById-id", Method.GET, authenticator);
             request.AddUrlSegment("id", expected.Id.ToString());
 
-            log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", endpointsPath)}");
-            response = Execute(request);
+            api.log.Info($"GET request to {ReaderUrlsJSON.ByName("ApiSchedulesById-id", api.endpointsPath)}");
+            response = api.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
+            api.log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
         }

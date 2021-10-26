@@ -17,12 +17,12 @@ namespace WHAT_API
     {
         private RestRequest request;
         private IRestResponse response;
-        private Account registeredUser;
+        private WhatAccount registeredUser;
         private ChangeCurrentPassword changePasswordRequestBody;
 
         public ChangePasswordPutRequest()
         {
-            log = LogManager.GetLogger($"Accounts/{nameof(ChangePasswordPutRequest)}");
+            api.log = LogManager.GetLogger($"Accounts/{nameof(ChangePasswordPutRequest)}");
         }
 
         /// <summary>
@@ -37,23 +37,23 @@ namespace WHAT_API
         [OneTimeSetUp]
         public void PreCondition()
         {
-            var authenticator = GetAuthenticatorFor(Role.Admin);
+            var authenticator = api.GetAuthenticatorFor(Role.Admin);
 
             // 1. Create account by POST method
-            registeredUser = RegistrationUser();
+            registeredUser = api.RegistrationUser();
 
             // 2. Get the id of the last unassigned user
-            request = InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
-            response = Execute(request);
+            request = api.InitNewRequest("ApiAccountsNotAssigned", Method.GET, authenticator);
+            response = api.Execute(request);
 
             var searchedUser = JsonConvert.DeserializeObject<List<Account>>(response.Content)
                 .Where(user => user.Email == registeredUser.Email).First();
             registeredUser.Id = searchedUser.Id;
 
             // 3. Assign account to ROLE(mentor)
-            request = InitNewRequest("ApiMentorsAssignAccountToMentor-accountID", Method.POST, authenticator);
+            request = api.InitNewRequest("ApiMentorsAssignAccountToMentor-accountID", Method.POST, authenticator);
             request.AddUrlSegment("accountId", registeredUser.Id.ToString());
-            response = Execute(request);
+            response = api.Execute(request);
 
             registeredUser.Role = Role.Mentor;
 
@@ -71,17 +71,17 @@ namespace WHAT_API
         public void ChangePasswordWithStatusCode200(HttpStatusCode expectedStatusCode)
         {
             // 4. Log in
-            var authenticator = GetAuthenticatorFor(Role.Admin);
+            var authenticator = api.GetAuthenticatorFor(Role.Admin);
 
             // 5. Change password
-            request = InitNewRequest("ApiAccountsChangePassword", Method.PUT, authenticator);
+            request = api.InitNewRequest("ApiAccountsChangePassword", Method.PUT, authenticator);
             request.AddJsonBody(changePasswordRequestBody);
 
-            log.Info($"PUT request to {ReaderUrlsJSON.ByName("ApiAccountsChangePassword", endpointsPath)}");
-            response = Execute(request);
+            api.log.Info($"PUT request to {ReaderUrlsJSON.ByName("ApiAccountsChangePassword", api.endpointsPath)}");
+            response = api.Execute(request);
 
             HttpStatusCode actualStatusCode = response.StatusCode;
-            log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
+            api.log.Info($"Request is done with StatusCode: {actualStatusCode}, expected was: {expectedStatusCode}");
 
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
 
@@ -95,7 +95,7 @@ namespace WHAT_API
                 Assert.AreEqual(registeredUser.Role, actualDataChangePassword.Role, "Role");
                 Assert.AreEqual(registeredUser.Activity, actualDataChangePassword.Activity, "IsActive");
             });
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
 
             // 6. Verify that user can log in the system using new password
             Authentication signInRequestBody = new Authentication()
@@ -104,9 +104,9 @@ namespace WHAT_API
                 Password = changePasswordRequestBody.NewPassword
             };
 
-            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", endpointsPath), Method.POST);
+            request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsAuth", api.endpointsPath), Method.POST);
             request.AddJsonBody(signInRequestBody);
-            response = Execute(request);
+            response = api.Execute(request);
 
             actualStatusCode = response.StatusCode;
             Assert.AreEqual(expectedStatusCode, actualStatusCode, "Status code");
@@ -119,7 +119,7 @@ namespace WHAT_API
                 Assert.AreEqual(actualDataChangePassword.LastName, actualData.LastName, "Last name");
                 Assert.AreEqual(actualDataChangePassword.Role, actualData.Role, "Role");
             });
-            log.Info($"Expected and actual results is checked");
+            api.log.Info($"Expected and actual results is checked");
         }
 
     }

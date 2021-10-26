@@ -13,7 +13,7 @@ namespace WHAT_API
     {
         public POST_ReturnsEventsList_InvalidRole()
         {
-            log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_InvalidRole)}");
+            api.log = LogManager.GetLogger($"Schedule/{nameof(POST_ReturnsEventsList_InvalidRole)}");
         }
 
         [Test]
@@ -21,15 +21,15 @@ namespace WHAT_API
         {
             try
             {
-                RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", endpointsPath), Method.POST);
-                request.AddHeader("Authorization", GetToken(role));
+                RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiSchedulesEvent", api.endpointsPath), Method.POST);
+                request.AddHeader("Authorization", api.GetToken(role));
                 Assert.Fail();
-                log.Fatal("Not correct token, user is valid");
+                api.log.Fatal("Not correct token, user is valid");
             }
             catch (Exception)
             {
                 Assert.Pass();
-                log.Info("Exception is cought and correctly handled");
+                api.log.Info("Exception is cought and correctly handled");
             }
         }
     }

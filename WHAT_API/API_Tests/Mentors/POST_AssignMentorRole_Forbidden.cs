@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
-using NLog;
+﻿using NLog;
 using NUnit.Allure.Core;
 using NUnit.Framework;
 using RestSharp;
-using System;
 using System.Net;
 using WHAT_Utilities;
 
@@ -12,14 +10,14 @@ namespace WHAT_API
     [TestFixture(Role.Mentor)]
     [TestFixture(Role.Student)]
     [AllureNUnit]
-    class POST_AssignMentorRole_InvalidTest : API_BaseTest
+    class POST_AssignMentorRole_Forbidden : API_BaseTest
     {
         WhatAccount unassigned;
         WhatAccount assigner;
         Credentials assignerCredentials;
         Role role;
 
-        public POST_AssignMentorRole_InvalidTest(Role role) : base()
+        public POST_AssignMentorRole_Forbidden(Role role) : base()
         {
             this.role = role;
         }
@@ -43,12 +41,12 @@ namespace WHAT_API
         [Test]
         public void VerifyAssignMentorRole_Invalid()
         {
-            api.log = LogManager.GetLogger($"Mentors/{nameof(POST_AssignMentorRole_InvalidTest)}");
+            api.log = LogManager.GetLogger($"Mentors/{nameof(POST_AssignMentorRole_Forbidden)}");
             var endpoint = "ApiMentorsAssignAccountToMentor-accountID";
-            var adminAuthenticator = api.GetAuthenticatorFor(assignerCredentials);
-            var assignRoleRequest = api.InitNewRequest(endpoint, Method.POST, adminAuthenticator);
-            assignRoleRequest.AddUrlSegment("accountId", unassigned.Id.ToString());
-            IRestResponse assignRoleResponse = APIClient.client.Execute(assignRoleRequest);
+            var authenticator = api.GetAuthenticatorFor(assignerCredentials);
+            var request = api.InitNewRequest(endpoint, Method.POST, authenticator);
+            request.AddUrlSegment("accountId", unassigned.Id.ToString());
+            IRestResponse assignRoleResponse = APIClient.client.Execute(request);
             Assert.AreEqual(HttpStatusCode.Forbidden, assignRoleResponse.StatusCode);            
         }
 

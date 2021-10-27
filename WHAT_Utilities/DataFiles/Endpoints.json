@@ -170,9 +170,14 @@
   },
   {
     //GET
+    "Name": "ApiGetMentorInfo",
+    "Url": "mentors/{accountId}"
+  },
+  {
+    //GET
     "Name": "ApiMentorsIdLessons",
     "Url": "mentors/{id}/lessons"
-  },  
+  },
   //Lessons
   {
     //POST,GET

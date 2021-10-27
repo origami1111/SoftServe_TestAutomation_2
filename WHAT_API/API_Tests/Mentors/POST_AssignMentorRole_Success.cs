@@ -10,7 +10,7 @@ namespace WHAT_API
 {
     [TestFixture]
     [AllureNUnit]
-    class POST_AssignMentorRole_ValidTest : API_BaseTest
+    class POST_AssignMentorRole_Success : API_BaseTest
     {
         WhatAccount unassigned;
         WhatAccount mentor;
@@ -27,9 +27,9 @@ namespace WHAT_API
         [Test]
         [TestCase(Role.Admin)]
         [TestCase(Role.Secretary)]
-        public void VerifyAssignMentorRole_Valid(Role role)
+        public void VerifyAssignMentorRole_Success(Role role)
         {
-            api.log = LogManager.GetLogger($"Mentors/{nameof(POST_AssignMentorRole_ValidTest)}");
+            api.log = LogManager.GetLogger($"Mentors/{nameof(POST_AssignMentorRole_Success)}");
 
             var endpoint = "ApiMentorsAssignAccountToMentor-accountID";
             var adminAuthenticator = api.GetAuthenticatorFor(role);

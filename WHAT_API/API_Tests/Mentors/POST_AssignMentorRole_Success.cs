@@ -8,12 +8,21 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
-    [TestFixture]
+    [TestFixture(Role.Admin)]
+    [TestFixture(Role.Secretary)]
     [AllureNUnit]
     class POST_AssignMentorRole_Success : API_BaseTest
     {
-        WhatAccount unassigned;
         WhatAccount mentor;
+        WhatAccount assigner;
+        Credentials assignerCredentials;
+
+        Role role;
+
+        public POST_AssignMentorRole_Success(Role role) : base()
+        {
+            this.role = role;
+        }
 
         [SetUp]
         public void Precondition()
@@ -21,29 +30,39 @@ namespace WHAT_API
             var newUser = new GenerateUser();
             newUser.FirstName = StringGenerator.GenerateStringOfLetters(30);
             newUser.LastName = StringGenerator.GenerateStringOfLetters(30);
-            unassigned = api.RegistrationUser(newUser);           
+            mentor = api.RegistrationUser(newUser);
+
+            if (role == Role.Admin)
+            {
+                assignerCredentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+                return;
+            }
+            var userAssigner = new GenerateUser();
+            userAssigner.FirstName = StringGenerator.GenerateStringOfLetters(30);
+            userAssigner.LastName = StringGenerator.GenerateStringOfLetters(30);
+            assigner = api.RegistrationUser(userAssigner);
+            assigner = api.AssignRole(assigner, role);
+            assignerCredentials = new Credentials { Email = userAssigner.Email, Password = userAssigner.Password, Role = role };
         }
 
-        [Test]
-        [TestCase(Role.Admin)]
-        [TestCase(Role.Secretary)]
-        public void VerifyAssignMentorRole_Success(Role role)
+        [Test]        
+        public void VerifyAssignMentorRole_Success()
         {
             api.log = LogManager.GetLogger($"Mentors/{nameof(POST_AssignMentorRole_Success)}");
 
             var endpoint = "ApiMentorsAssignAccountToMentor-accountID";
-            var adminAuthenticator = api.GetAuthenticatorFor(role);
-            var assignRoleRequest = api.InitNewRequest(endpoint, Method.POST, adminAuthenticator);
-            assignRoleRequest.AddUrlSegment("accountId", unassigned.Id.ToString());
-            IRestResponse assignRoleResponse = APIClient.client.Execute(assignRoleRequest);
-            string assignJson = assignRoleResponse.Content;
-            mentor = JsonConvert.DeserializeObject<WhatAccount>(assignJson);
+            var authenticator = api.GetAuthenticatorFor(assignerCredentials);
+            var request = api.InitNewRequest(endpoint, Method.POST, authenticator);
+            request.AddUrlSegment("accountId", mentor.Id.ToString());
+            IRestResponse response = APIClient.client.Execute(request);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            string contentJson = response.Content;
+            var userInfo = JsonConvert.DeserializeObject<WhatAccount>(contentJson);
             Assert.Multiple(() =>
-            {
-                Assert.AreEqual(HttpStatusCode.OK, assignRoleResponse.StatusCode);
-                Assert.AreEqual(unassigned.FirstName, mentor.FirstName);
-                Assert.AreEqual(unassigned.LastName, mentor.LastName);
-                Assert.AreEqual(unassigned.Email, mentor.Email);
+            {                
+                Assert.AreEqual(mentor.FirstName, userInfo.FirstName);
+                Assert.AreEqual(mentor.LastName, userInfo.LastName);
+                Assert.AreEqual(mentor.Email, userInfo.Email);
             });
         }
 

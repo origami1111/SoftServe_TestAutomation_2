@@ -8,12 +8,22 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
-    [TestFixture]
+    [TestFixture(Role.Admin)]
+    [TestFixture(Role.Secretary)]
+    [TestFixture(Role.Mentor)]
     [AllureNUnit]
     class GET_GetMentorInfo_Success : API_BaseTest
     {
-        WhatAccount unassigned;
         WhatAccount mentor;
+        WhatAccount infoGetter;
+        Credentials infoGetterCredentials;
+
+        Role role;
+
+        public GET_GetMentorInfo_Success(Role role) : base()
+        {
+            this.role = role;
+        }
 
         [SetUp]
         public void Precondition()
@@ -21,20 +31,29 @@ namespace WHAT_API
             var newUser = new GenerateUser();
             newUser.FirstName = StringGenerator.GenerateStringOfLetters(30);
             newUser.LastName = StringGenerator.GenerateStringOfLetters(30);
-            unassigned = api.RegistrationUser(newUser);
-            mentor = api.AssignRole(unassigned, Role.Mentor);
+            mentor = api.RegistrationUser(newUser);
+            mentor = api.AssignRole(mentor, Role.Mentor);
+
+            if (role == Role.Admin)
+            {
+                infoGetterCredentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+                return;
+            }
+            var userInfoGetter = new GenerateUser();
+            userInfoGetter.FirstName = StringGenerator.GenerateStringOfLetters(30);
+            userInfoGetter.LastName = StringGenerator.GenerateStringOfLetters(30);
+            infoGetter = api.RegistrationUser(userInfoGetter);
+            infoGetter = api.AssignRole(infoGetter, role);
+            infoGetterCredentials = new Credentials { Email = userInfoGetter.Email, Password = userInfoGetter.Password, Role = role };
         }
 
         [Test]
-        [TestCase(Role.Admin)]
-        [TestCase(Role.Secretary)]
-        [TestCase(Role.Mentor)]
-        public void VerifyGetMentorInfo_Success(Role role)
+        public void VerifyGetMentorInfo_Success()
         {
             api.log = LogManager.GetLogger($"Mentors/{nameof(GET_GetMentorInfo_Success)}");
 
             var endpoint = "ApiGetMentorInfo";
-            var authenticator = api.GetAuthenticatorFor(role);
+            var authenticator = api.GetAuthenticatorFor(infoGetterCredentials);
             var request = api.InitNewRequest(endpoint, Method.GET, authenticator);
             request.AddUrlSegment("accountId", mentor.Id.ToString());
             IRestResponse response = APIClient.client.Execute(request);
@@ -53,6 +72,10 @@ namespace WHAT_API
         [TearDown]
         public void Postcondition()
         {
+            if (role != Role.Admin)
+            {
+                api.DisableAccount(infoGetter, role);
+            }
             api.DisableAccount(mentor, Role.Mentor);
         }
     }

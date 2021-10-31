@@ -1,7 +1,7 @@
 ﻿[
   {
     "Name": "BaseURLforAPI",
-    "Url": "https://whatbackend.azurewebsites.net/api/"
+    "Url": "https://charliebackendapi.azurewebsites.net/api/v2/"
   },
   {
     "Name": "SigninPage",

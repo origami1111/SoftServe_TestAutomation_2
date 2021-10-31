@@ -10,17 +10,16 @@ namespace WHAT_API
 {
     [TestFixture(Role.Admin)]
     [TestFixture(Role.Secretary)]
-    [TestFixture(Role.Mentor)]
     [AllureNUnit]
-    class GET_GetMentorInfo_Success : API_BaseTest
+    class DELETE_DisableMentorAccount_Success : API_BaseTest
     {
         WhatAccount mentor;
-        WhatAccount infoGetter;
-        Credentials infoGetterCredentials;
+        WhatAccount accountDeactivator;
+        Credentials accountDeactivatorCredentials;
 
         Role role;
 
-        public GET_GetMentorInfo_Success(Role role) : base()
+        public DELETE_DisableMentorAccount_Success(Role role) : base()
         {
             this.role = role;
         }
@@ -36,37 +35,31 @@ namespace WHAT_API
 
             if (role == Role.Admin)
             {
-                infoGetterCredentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+                accountDeactivatorCredentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
                 return;
             }
             var userInfoGetter = new GenerateUser();
             userInfoGetter.FirstName = StringGenerator.GenerateStringOfLetters(30);
             userInfoGetter.LastName = StringGenerator.GenerateStringOfLetters(30);
-            infoGetter = api.RegistrationUser(userInfoGetter);
-            infoGetter = api.AssignRole(infoGetter, role);
-            infoGetterCredentials = new Credentials { Email = userInfoGetter.Email, Password = userInfoGetter.Password, Role = role };
+            accountDeactivator = api.RegistrationUser(userInfoGetter);
+            accountDeactivator = api.AssignRole(accountDeactivator, role);
+            accountDeactivatorCredentials = new Credentials { Email = userInfoGetter.Email, Password = userInfoGetter.Password, Role = role };
         }
 
         [Test]
-        public void VerifyGetMentorInfo_Success()
+        public void VerifyDisableMentorAccount_Success()
         {
-            api.log = LogManager.GetLogger($"Mentors/{nameof(GET_GetMentorInfo_Success)}");
+            api.log = LogManager.GetLogger($"Mentors/{nameof(DELETE_DisableMentorAccount_Success)}");
 
+            var expectedContent = "true";
             var endpoint = "ApiMentorId";
-            var authenticator = api.GetAuthenticatorFor(infoGetterCredentials);
-            var request = api.InitNewRequest(endpoint, Method.GET, authenticator);
+            var authenticator = api.GetAuthenticatorFor(accountDeactivatorCredentials);
+            var request = api.InitNewRequest(endpoint, Method.DELETE, authenticator);
             request.AddUrlSegment("accountId", mentor.Id.ToString());
             IRestResponse response = APIClient.client.Execute(request);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             string contentJson = response.Content;
-            var userInfo = JsonConvert.DeserializeObject<WhatAccount>(contentJson);
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(mentor.Id, userInfo.Id);
-                Assert.AreEqual(mentor.FirstName, userInfo.FirstName);
-                Assert.AreEqual(mentor.LastName, userInfo.LastName);
-                Assert.AreEqual(mentor.Email, userInfo.Email);
-            });
+            Assert.AreEqual(expectedContent, contentJson);
         }
 
         [TearDown]
@@ -74,9 +67,8 @@ namespace WHAT_API
         {
             if (role != Role.Admin)
             {
-                api.DisableAccount(infoGetter, role);
+                api.DisableAccount(accountDeactivator, role);
             }
-            api.DisableAccount(mentor, Role.Mentor);
         }
     }
 }

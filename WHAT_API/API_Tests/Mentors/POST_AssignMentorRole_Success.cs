@@ -50,7 +50,7 @@ namespace WHAT_API
         {
             api.log = LogManager.GetLogger($"Mentors/{nameof(POST_AssignMentorRole_Success)}");
 
-            var endpoint = "ApiMentorsAssignAccountToMentor-accountID";
+            var endpoint = "ApiMentorId";
             var authenticator = api.GetAuthenticatorFor(assignerCredentials);
             var request = api.InitNewRequest(endpoint, Method.POST, authenticator);
             request.AddUrlSegment("accountId", mentor.Id.ToString());

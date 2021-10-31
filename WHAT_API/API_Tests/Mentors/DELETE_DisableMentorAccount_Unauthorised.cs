@@ -9,7 +9,7 @@ namespace WHAT_API
 {
     [TestFixture]
     [AllureNUnit]
-    class GET_GetMentorInfo_Unauthorised : API_BaseTest
+    class DELETE_DisableMentorAccount_Unauthorised : API_BaseTest
     {
         WhatAccount mentor;
 
@@ -24,11 +24,11 @@ namespace WHAT_API
         }
 
         [Test]
-        public void VerifyGetMentorInfo_Unauthorised()
+        public void VerifyDisableMentorAccount_Unauthorised()
         {
-            api.log = LogManager.GetLogger($"Mentors/{nameof(GET_GetMentorInfo_Unauthorised)}");
+            api.log = LogManager.GetLogger($"Mentors/{nameof(DELETE_DisableMentorAccount_Unauthorised)}");
             var endpoint = "ApiMentorId";
-            var request = new RestRequest(ReaderUrlsJSON.ByName(endpoint, api.endpointsPath), Method.GET);
+            var request = new RestRequest(ReaderUrlsJSON.ByName(endpoint, api.endpointsPath), Method.DELETE);
             request.AddUrlSegment("accountId", mentor.Id.ToString());
             IRestResponse response = APIClient.client.Execute(request);
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);

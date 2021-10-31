@@ -159,18 +159,13 @@
   },
   // Mentors
   {
-    // POST
-    "Name": "ApiMentorsAssignAccountToMentor-accountID",
-    "Url": "mentors/{accountId}"
-  },
-  {
     //GET
     "Name": "ApiOnlyActiveMentors",
     "Url": "mentors/active"
   },
   {
-    //GET
-    "Name": "ApiGetMentorInfo",
+    //GET/POST/DELETE/PUT/PATCH
+    "Name": "ApiMentorId",
     "Url": "mentors/{accountId}"
   },
   {

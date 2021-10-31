@@ -51,7 +51,7 @@ namespace WHAT_API
             registeredUser.Id = searchedUser.Id;
 
             // 3. Assign account to ROLE(mentor)
-            request = api.InitNewRequest("ApiMentorsAssignAccountToMentor-accountID", Method.POST, authenticator);
+            request = api.InitNewRequest("ApiMentorId", Method.POST, authenticator);
             request.AddUrlSegment("accountId", registeredUser.Id.ToString());
             response = api.Execute(request);
 

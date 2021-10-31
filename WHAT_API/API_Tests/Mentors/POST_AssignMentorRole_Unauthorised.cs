@@ -27,7 +27,7 @@ namespace WHAT_API
         {
             api.log = LogManager.GetLogger($"Mentors/{nameof(POST_AssignMentorRole_Unauthorised)}");
 
-            var endpoint = "ApiMentorsAssignAccountToMentor-accountID";
+            var endpoint = "ApiMentorId";
             var request = new RestRequest(ReaderUrlsJSON.ByName(endpoint, api.endpointsPath), Method.POST);
             request.AddUrlSegment("accountId", unassigned.Id.ToString());
             IRestResponse assignRoleResponse = APIClient.client.Execute(request);

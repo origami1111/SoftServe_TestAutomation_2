@@ -7,16 +7,17 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
+    [TestFixture(Role.Mentor)]
     [TestFixture(Role.Student)]
     [AllureNUnit]
-    class GET_GetMentorInfo_Forbidden : API_BaseTest
+    class DELETE_DisableMentorAccount_Forbidden : API_BaseTest
     {
         WhatAccount mentor;
-        WhatAccount infoGetter;
-        Credentials infoGetterCredentials;
+        WhatAccount accountDeactivator;
+        Credentials accountDeactivatorCredentials;
         Role role;
 
-        public GET_GetMentorInfo_Forbidden(Role role) : base()
+        public DELETE_DisableMentorAccount_Forbidden(Role role) : base()
         {
             this.role = role;
         }
@@ -33,18 +34,18 @@ namespace WHAT_API
             var userInfoGetter = new GenerateUser();
             userInfoGetter.FirstName = StringGenerator.GenerateStringOfLetters(30);
             userInfoGetter.LastName = StringGenerator.GenerateStringOfLetters(30);
-            infoGetter = api.RegistrationUser(userInfoGetter);
-            infoGetter = api.AssignRole(infoGetter, role);
-            infoGetterCredentials = new Credentials { Email = userInfoGetter.Email, Password = userInfoGetter.Password, Role = role };
+            accountDeactivator = api.RegistrationUser(userInfoGetter);
+            accountDeactivator = api.AssignRole(accountDeactivator, role);
+            accountDeactivatorCredentials = new Credentials { Email = userInfoGetter.Email, Password = userInfoGetter.Password, Role = role };
         }
 
         [Test]
-        public void VerifyAssignMentorRole_Invalid()
+        public void VerifyDisableMentorAccount_Forbidden()
         {
-            api.log = LogManager.GetLogger($"Mentors/{nameof(GET_GetMentorInfo_Forbidden)}");
+            api.log = LogManager.GetLogger($"Mentors/{nameof(DELETE_DisableMentorAccount_Forbidden)}");
             var endpoint = "ApiMentorId";
-            var authenticator = api.GetAuthenticatorFor(infoGetterCredentials);
-            var request = api.InitNewRequest(endpoint, Method.POST, authenticator);
+            var authenticator = api.GetAuthenticatorFor(accountDeactivatorCredentials);
+            var request = api.InitNewRequest(endpoint, Method.DELETE, authenticator);
             request.AddUrlSegment("accountId", mentor.Id.ToString());
             IRestResponse assignRoleResponse = APIClient.client.Execute(request);
             Assert.AreEqual(HttpStatusCode.Forbidden, assignRoleResponse.StatusCode);            
@@ -53,7 +54,7 @@ namespace WHAT_API
         [TearDown]
         public void Postcondition()
         {
-            api.DisableAccount(infoGetter, role);
+            api.DisableAccount(accountDeactivator, role);
             api.DisableAccount(mentor, Role.Mentor);
         }
     }

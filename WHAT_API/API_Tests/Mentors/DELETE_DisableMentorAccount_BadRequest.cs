@@ -9,14 +9,14 @@ namespace WHAT_API
 {
     [TestFixture(Role.Admin)]
     [AllureNUnit]
-    class GET_GetMentorInfo_BadRequest : API_BaseTest
+    class DELETE_DisableMentorAccount_BadRequest : API_BaseTest
     {
-        WhatAccount infoGetter;
-        Credentials infoGetterCredentials;
+        WhatAccount accountDeactivator;
+        Credentials accountDeactivatorCredentials;
 
         Role role;
 
-        public GET_GetMentorInfo_BadRequest(Role role) : base()
+        public DELETE_DisableMentorAccount_BadRequest(Role role) : base()
         {
             this.role = role;
         }
@@ -26,26 +26,26 @@ namespace WHAT_API
         {
             if (role == Role.Admin)
             {
-                infoGetterCredentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+                accountDeactivatorCredentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
                 return;
             }
             var userInfoGetter = new GenerateUser();
             userInfoGetter.FirstName = StringGenerator.GenerateStringOfLetters(30);
             userInfoGetter.LastName = StringGenerator.GenerateStringOfLetters(30);
-            infoGetter = api.RegistrationUser(userInfoGetter);
-            infoGetter = api.AssignRole(infoGetter, role);
-            infoGetterCredentials = new Credentials { Email = userInfoGetter.Email, Password = userInfoGetter.Password, Role = role };
+            accountDeactivator = api.RegistrationUser(userInfoGetter);
+            accountDeactivator = api.AssignRole(accountDeactivator, role);
+            accountDeactivatorCredentials = new Credentials { Email = userInfoGetter.Email, Password = userInfoGetter.Password, Role = role };
         }
 
         [Test]
-        public void VerifyGetMentorInfo_BadRequest()
+        public void VerifyDisableMentorAccount_BadRequest()
         {
-            api.log = LogManager.GetLogger($"Mentors/{nameof(GET_GetMentorInfo_BadRequest)}");
+            api.log = LogManager.GetLogger($"Mentors/{nameof(DELETE_DisableMentorAccount_BadRequest)}");
             ulong TooLongtMentorId = ulong.MaxValue;
 
             var endpoint = "ApiMentorId";
-            var authenticator = api.GetAuthenticatorFor(infoGetterCredentials);
-            var request = api.InitNewRequest(endpoint, Method.GET, authenticator);
+            var authenticator = api.GetAuthenticatorFor(accountDeactivatorCredentials);
+            var request = api.InitNewRequest(endpoint, Method.DELETE, authenticator);
             request.AddUrlSegment("accountId", TooLongtMentorId.ToString());
             IRestResponse response = APIClient.client.Execute(request);
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);            
@@ -56,7 +56,7 @@ namespace WHAT_API
         {
             if (role != Role.Admin)
             {
-                api.DisableAccount(infoGetter, role);
+                api.DisableAccount(accountDeactivator, role);
             }
         }
     }

@@ -9,14 +9,14 @@ namespace WHAT_API
 {
     [TestFixture(Role.Admin)]
     [AllureNUnit]
-    class GET_GetMentorInfo_NotFound : API_BaseTest
+    class DELETE_DisableMentorAccount_NotFound : API_BaseTest
     {
-        WhatAccount infoGetter;
-        Credentials infoGetterCredentials;
+        WhatAccount accountDeactivator;
+        Credentials accountDeactivatorCredentials;
 
         Role role;
 
-        public GET_GetMentorInfo_NotFound(Role role) : base()
+        public DELETE_DisableMentorAccount_NotFound(Role role) : base()
         {
             this.role = role;
         }
@@ -26,26 +26,26 @@ namespace WHAT_API
         {
             if (role == Role.Admin)
             {
-                infoGetterCredentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
+                accountDeactivatorCredentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
                 return;
             }
             var userInfoGetter = new GenerateUser();
             userInfoGetter.FirstName = StringGenerator.GenerateStringOfLetters(30);
             userInfoGetter.LastName = StringGenerator.GenerateStringOfLetters(30);
-            infoGetter = api.RegistrationUser(userInfoGetter);
-            infoGetter = api.AssignRole(infoGetter, role);
-            infoGetterCredentials = new Credentials { Email = userInfoGetter.Email, Password = userInfoGetter.Password, Role = role };
+            accountDeactivator = api.RegistrationUser(userInfoGetter);
+            accountDeactivator = api.AssignRole(accountDeactivator, role);
+            accountDeactivatorCredentials = new Credentials { Email = userInfoGetter.Email, Password = userInfoGetter.Password, Role = role };
         }
 
         [Test]
-        public void VerifyGetMentorInfo_NotFound()
+        public void VerifyDisableMentorAccount_NotFound()
         {
-            api.log = LogManager.GetLogger($"Mentors/{nameof(GET_GetMentorInfo_NotFound)}");
+            api.log = LogManager.GetLogger($"Mentors/{nameof(DELETE_DisableMentorAccount_NotFound)}");
             long NonExistantMentorId = long.MaxValue;
 
             var endpoint = "ApiMentorId";
-            var authenticator = api.GetAuthenticatorFor(infoGetterCredentials);
-            var request = api.InitNewRequest(endpoint, Method.GET, authenticator);
+            var authenticator = api.GetAuthenticatorFor(accountDeactivatorCredentials);
+            var request = api.InitNewRequest(endpoint, Method.DELETE, authenticator);
             request.AddUrlSegment("accountId", NonExistantMentorId.ToString());
             IRestResponse response = APIClient.client.Execute(request);
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);            
@@ -56,7 +56,7 @@ namespace WHAT_API
         {
             if (role != Role.Admin)
             {
-                api.DisableAccount(infoGetter, role);
+                api.DisableAccount(accountDeactivator, role);
             }
         }
     }

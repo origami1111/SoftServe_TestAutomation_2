@@ -42,7 +42,7 @@ namespace WHAT_API
         public void VerifyAssignMentorRole_Invalid()
         {
             api.log = LogManager.GetLogger($"Mentors/{nameof(POST_AssignMentorRole_Forbidden)}");
-            var endpoint = "ApiMentorsAssignAccountToMentor-accountID";
+            var endpoint = "ApiMentorId";
             var authenticator = api.GetAuthenticatorFor(assignerCredentials);
             var request = api.InitNewRequest(endpoint, Method.POST, authenticator);
             request.AddUrlSegment("accountId", unassigned.Id.ToString());

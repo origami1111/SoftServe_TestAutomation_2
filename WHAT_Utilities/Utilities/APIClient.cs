@@ -210,7 +210,7 @@ namespace WHAT_Utilities
             {
                 string endpoint = role switch
                 {
-                    Role.Mentor => "ApiMentorsAssignAccountToMentor-accountID",
+                    Role.Mentor => "ApiMentorId",
                     Role.Secretary => "ApiSecretariesAccountId",
                     Role.Student => "ApiStudentsAccountId",
                     _ => throw new NotSupportedException()
@@ -235,7 +235,7 @@ namespace WHAT_Utilities
             {
                 string endpoint = role switch
                 {
-                    Role.Mentor => "ApiMentorsAssignAccountToMentor-accountID",
+                    Role.Mentor => "ApiMentorId",
                     Role.Secretary => "ApiSecretariesAccountId",
                     Role.Student => "ApiStudentsAccountId",
                     _ => throw new NotSupportedException()

@@ -39,7 +39,7 @@ namespace WHAT_Tests
             var changedFirstName = StringGenerator.GenerateStringOfLetters(30);
             var changedLastName = StringGenerator.GenerateStringOfLetters(30);
             var newUserName = $"{changedFirstName} {changedLastName}";
-            var changedEmail = StringGenerator.GenerageEmail();
+            var changedEmail = StringGenerator.GenerateEmail();
 
             new SignInPage(driver)
                 .SignInAsAdmin(credentials.Email, credentials.Password)

@@ -27,7 +27,7 @@ namespace WHAT_Utilities
             return stringBuilder.ToString();
         }
 
-        public static string GenerageEmail()
+        public static string GenerateEmail()
         {
             return $"{Guid.NewGuid():N}@example.com";
         }

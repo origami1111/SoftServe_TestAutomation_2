@@ -188,17 +188,14 @@ namespace WHAT_Utilities
 
         public WhatAccount RegistrationUser(GenerateUser userInfo)
         {
-            RestRequest request =
-                new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
+            RestRequest request = new RestRequest(ReaderUrlsJSON.ByName("ApiAccountsReg", endpointsPath), Method.POST);
             request.AddJsonBody(userInfo);
             client.Execute(request);
 
             var adminAuthenticator = GetAuthenticatorFor(Role.Admin);
-            var getUnassignedUsersRequest =
-                InitNewRequest("ApiAccountsNotAssigned", Method.GET, adminAuthenticator);
+            var getUnassignedUsersRequest = InitNewRequest("ApiAccountsNotAssigned", Method.GET, adminAuthenticator);
 
-            var unassignedUser = Execute<List<WhatAccount>>(getUnassignedUsersRequest).Data
-                .First(u => u.Email == userInfo.Email);
+            var unassignedUser = Execute<List<WhatAccount>>(getUnassignedUsersRequest).Data.First(u => u.Email == userInfo.Email);
             unassignedUser.Activity = Activity.Active;
 
             return unassignedUser;
@@ -249,6 +246,39 @@ namespace WHAT_Utilities
             {
                 throw new NotSupportedException();
             }
+        }
+
+        public CourseDto CreateCourse(CreateCourseDto course)
+        {
+            var endpoint = "Add new course";
+            var adminAuthenticator = GetAuthenticatorFor(Role.Admin);
+            var request = InitNewRequest(endpoint, Method.POST, adminAuthenticator);
+            request.AddJsonBody(course);
+            IRestResponse response = client.Execute(request);
+            string responseJson = response.Content;
+            CourseDto CourseResponse = JsonConvert.DeserializeObject<CourseDto>(responseJson);
+            return CourseResponse;
+        }
+
+        public void DisableCourse(CourseDto course)
+        {
+            var endpoint = "Disable course";
+            var adminAuthenticator = GetAuthenticatorFor(Role.Admin);
+            var request = InitNewRequest(endpoint, Method.DELETE, adminAuthenticator);
+            request.AddUrlSegment("id", course.Id.ToString());
+            IRestResponse response = client.Execute(request);
+        }
+
+        public StudentGroupDto CreateStudentGroup(CreateStudentGroupDto studentGroup)
+        {
+            var endpoint = "ApiStudentsGroup";
+            var adminAuthenticator = GetAuthenticatorFor(Role.Admin);
+            var request = InitNewRequest(endpoint, Method.POST, adminAuthenticator);
+            request.AddJsonBody(studentGroup);
+            IRestResponse response = client.Execute(request);
+            string responseJson = response.Content;
+            StudentGroupDto StudentGroupResponse = JsonConvert.DeserializeObject<StudentGroupDto>(responseJson);
+            return StudentGroupResponse;
         }
     }
 }

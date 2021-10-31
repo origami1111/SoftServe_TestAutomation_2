@@ -164,6 +164,11 @@
     "Url": "mentors/active"
   },
   {
+    //GET
+    "Name": "ApiAllMentors",
+    "Url": "mentors"
+  },
+  {
     //GET/POST/DELETE/PUT/PATCH
     "Name": "ApiMentorId",
     "Url": "mentors/{accountId}"

@@ -7,6 +7,7 @@ using WHAT_Utilities;
 namespace WHAT_Tests
 {
     [TestFixture]
+    [Category("FrontEndTest-Mentors")]
     [AllureNUnit]
     class MentrorsPage_VerifySearchingOfDisabledMentors : TestBase
     {

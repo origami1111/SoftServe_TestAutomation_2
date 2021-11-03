@@ -6,6 +6,7 @@ using WHAT_Utilities;
 namespace WHAT_Tests
 {
     [TestFixture]
+    [Category("FrontEndTest-Mentors")]
     [AllureNUnit]    
     class EditMentorDeatilsPage_VerifyEditMentor_CorrectData : TestBase
     {

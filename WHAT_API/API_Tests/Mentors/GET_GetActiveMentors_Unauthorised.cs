@@ -8,6 +8,7 @@ using WHAT_Utilities;
 namespace WHAT_API
 {
     [AllureNUnit]
+    [Category("ApiTest-Mentors")]
     class GET_GetActiveMentors_Unauthorised : API_BaseTest
     {
         [Test]

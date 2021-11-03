@@ -10,6 +10,7 @@ namespace WHAT_API
 {
     [TestFixture(Role.Admin)]
     [TestFixture(Role.Secretary)]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class POST_AssignMentorRole_Success : API_BaseTest
     {

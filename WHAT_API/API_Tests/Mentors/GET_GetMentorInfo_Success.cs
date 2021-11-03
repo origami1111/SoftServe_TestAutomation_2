@@ -11,6 +11,7 @@ namespace WHAT_API
     [TestFixture(Role.Admin)]
     [TestFixture(Role.Secretary)]
     [TestFixture(Role.Mentor)]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class GET_GetMentorInfo_Success : API_BaseTest
     {

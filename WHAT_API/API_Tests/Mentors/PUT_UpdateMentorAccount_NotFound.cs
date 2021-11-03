@@ -9,6 +9,7 @@ using WHAT_Utilities;
 namespace WHAT_API
 {
     [TestFixture(Role.Admin)]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class PUT_UpdateMentorAccount_NotFound : API_BaseTest
     {

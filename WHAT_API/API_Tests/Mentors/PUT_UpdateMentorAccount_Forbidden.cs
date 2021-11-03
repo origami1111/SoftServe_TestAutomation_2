@@ -11,6 +11,7 @@ namespace WHAT_API
 {
     [TestFixture(Role.Mentor)]
     [TestFixture(Role.Student)]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class PUT_UpdateMentorAccount_Forbidden : API_BaseTest
     {

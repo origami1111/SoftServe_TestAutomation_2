@@ -10,6 +10,7 @@ namespace WHAT_API
 {
     [TestFixture(Role.Admin)]
     [TestFixture(Role.Secretary)]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class DELETE_DisableMentorAccount_Success : API_BaseTest
     {

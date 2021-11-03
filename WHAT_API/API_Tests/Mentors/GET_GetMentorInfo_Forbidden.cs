@@ -8,6 +8,7 @@ using WHAT_Utilities;
 namespace WHAT_API
 {
     [TestFixture(Role.Student)]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class GET_GetMentorInfo_Forbidden : API_BaseTest
     {

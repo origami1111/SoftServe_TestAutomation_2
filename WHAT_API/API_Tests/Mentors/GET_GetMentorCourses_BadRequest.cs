@@ -9,18 +9,17 @@ using WHAT_Utilities;
 
 namespace WHAT_API
 {
-    [TestFixture(Role.Mentor)]
-    [TestFixture(Role.Student)]
+    [TestFixture(Role.Admin)]
     [Category("ApiTest-Mentors")]
     [AllureNUnit]
-    class GET_GetAllMentors_Forbidden : API_BaseTest
+    class GET_GetMentorCourses_BadRequest : API_BaseTest
     {
         WhatAccount infoGetter;
         Credentials infoGetterCredentials;
 
         Role role;
 
-        public GET_GetAllMentors_Forbidden(Role role) : base()
+        public GET_GetMentorCourses_BadRequest(Role role) : base()
         {
             this.role = role;
         }
@@ -28,6 +27,9 @@ namespace WHAT_API
         [SetUp]
         public void Precondition()
         {
+            var newUser = new GenerateUser();
+            newUser.FirstName = StringGenerator.GenerateStringOfLetters(30);
+            newUser.LastName = StringGenerator.GenerateStringOfLetters(30);
             if (role == Role.Admin)
             {
                 infoGetterCredentials = ReaderFileJson.ReadFileJsonCredentials(Role.Admin);
@@ -42,15 +44,16 @@ namespace WHAT_API
         }
 
         [Test]
-        public void VerifyGetAllMentors_Forbidden()
+        public void VerifyGetMentorCourses_BadRequest()
         {
-            api.log = LogManager.GetLogger($"Mentors/{nameof(GET_GetAllMentors_Forbidden)}");
-
-            var endpoint = "ApiAllMentors";
+            api.log = LogManager.GetLogger($"Mentors/{nameof(GET_GetMentorCourses_BadRequest)}");
+            ulong TooLongtMentorId = ulong.MaxValue;
+            var endpoint = "ApiMentorsIdCourses";
             var authenticator = api.GetAuthenticatorFor(infoGetterCredentials);
             var request = api.InitNewRequest(endpoint, Method.GET, authenticator);
+            request.AddUrlSegment("id", TooLongtMentorId.ToString());
             IRestResponse response = APIClient.client.Execute(request);
-            Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [TearDown]

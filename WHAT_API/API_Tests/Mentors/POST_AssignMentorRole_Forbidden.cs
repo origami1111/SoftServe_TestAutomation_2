@@ -9,6 +9,7 @@ namespace WHAT_API
 {
     [TestFixture(Role.Mentor)]
     [TestFixture(Role.Student)]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class POST_AssignMentorRole_Forbidden : API_BaseTest
     {

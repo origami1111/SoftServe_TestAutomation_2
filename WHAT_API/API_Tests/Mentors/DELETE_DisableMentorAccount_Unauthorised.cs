@@ -8,6 +8,7 @@ using WHAT_Utilities;
 namespace WHAT_API
 {
     [TestFixture]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class DELETE_DisableMentorAccount_Unauthorised : API_BaseTest
     {

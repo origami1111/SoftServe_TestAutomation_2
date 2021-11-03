@@ -8,6 +8,7 @@ using WHAT_Utilities;
 namespace WHAT_API
 {
     [TestFixture(Role.Admin)]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class GET_GetMentorInfo_BadRequest : API_BaseTest
     {

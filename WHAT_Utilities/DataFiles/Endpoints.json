@@ -175,6 +175,11 @@
   },
   {
     //GET
+    "Name": "ApiMentorsIdCourses",
+    "Url": "mentors/{id}/courses"
+  },
+  {
+    //GET
     "Name": "ApiMentorsIdLessons",
     "Url": "mentors/{id}/lessons"
   },

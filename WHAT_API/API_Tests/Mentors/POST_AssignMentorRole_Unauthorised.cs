@@ -8,6 +8,7 @@ using WHAT_Utilities;
 namespace WHAT_API
 {
     [TestFixture]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class POST_AssignMentorRole_Unauthorised : API_BaseTest
     {

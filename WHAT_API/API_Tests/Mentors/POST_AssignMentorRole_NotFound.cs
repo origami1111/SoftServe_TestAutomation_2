@@ -9,6 +9,7 @@ using WHAT_Utilities;
 namespace WHAT_API
 {
     [TestFixture(Role.Admin)]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class POST_AssignMentorRole_NotFound : API_BaseTest
     {

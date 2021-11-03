@@ -10,6 +10,7 @@ namespace WHAT_API
 {
     [TestFixture(Role.Admin)]
     [TestFixture(Role.Secretary)]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class PATCH_EnableMentorAccount_Success : API_BaseTest
     {

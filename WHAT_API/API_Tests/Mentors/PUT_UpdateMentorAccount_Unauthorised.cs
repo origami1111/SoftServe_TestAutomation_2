@@ -8,7 +8,9 @@ using System.Net;
 using WHAT_Utilities;
 
 namespace WHAT_API
-{
+{    
+    [TestFixture]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class PUT_UpdateMentorAccount_Unauthorised : API_BaseTest
     {

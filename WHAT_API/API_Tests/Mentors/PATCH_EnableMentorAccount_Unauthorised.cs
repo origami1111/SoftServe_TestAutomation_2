@@ -8,6 +8,7 @@ using WHAT_Utilities;
 namespace WHAT_API
 {
     [TestFixture]
+    [Category("ApiTest-Mentors")]
     [AllureNUnit]
     class PATCH_EnableMentorAccount_Unauthorised : API_BaseTest
     {

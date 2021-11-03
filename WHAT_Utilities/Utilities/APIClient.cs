@@ -260,6 +260,25 @@ namespace WHAT_Utilities
             return CourseResponse;
         }
 
+        public WhatAccount AssignCourseToMentor(CourseDto course, WhatAccount mentor)
+        {
+            var endpoint = "ApiMentorId";
+            var newMentorInfo = new UpdateMentorDto()
+            {
+                FirstName = mentor.FirstName,
+                LastName = mentor.LastName,
+                Email = mentor.Email,
+                CourseIds = new List<int> { course.Id }
+            };
+            var authenticator = GetAuthenticatorFor(Role.Admin);            
+            var request = InitNewRequest(endpoint, Method.PUT, authenticator);
+            request.AddUrlSegment("accountId", mentor.Id.ToString());
+            request.AddJsonBody(newMentorInfo);
+            IRestResponse response = APIClient.client.Execute(request);
+            WhatAccount account = JsonConvert.DeserializeObject<WhatAccount>(response.Content);
+            return account;
+        }
+
         public void DisableCourse(CourseDto course)
         {
             var endpoint = "Disable course";
